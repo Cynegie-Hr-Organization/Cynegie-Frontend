@@ -6,11 +6,11 @@ import NavLinks from "./nav-links"
 import { useState } from "react"
 
 const Sidebar = () => {
-    const [openMobiMenu, setOpenMobiMenu] = useState<boolean>(false);
+    const [openMobileMenu, setOpenMobileMenu] = useState<boolean>(false);
 
     return (
         <div
-            className={`${openMobiMenu ? 'flex animate-slideIn' : 'hidden animate-slideOut'} 
+            className={`${openMobileMenu ? 'flex animate-slideIn' : 'hidden animate-slideOut'} 
         xl:flex shadow-xl bg-white h-dvh z-50 fixed w-[272px] px-4 pt-7 flex-col gap-5`}
         >
 
@@ -27,8 +27,8 @@ const Sidebar = () => {
 
             <div>
                 <NavLinks
-                    openMobiMenu={openMobiMenu}
-                    setOpenMobiMenu={setOpenMobiMenu}
+                    openMobileMenu={openMobileMenu}
+                    setOpenMobileMenu={setOpenMobileMenu}
                 />
             </div>
 

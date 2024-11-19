@@ -8,11 +8,11 @@ import { TbFileUpload } from 'react-icons/tb';
 
 
 interface Props {
-    openMobiMenu: boolean
-    setOpenMobiMenu: React.Dispatch<React.SetStateAction<boolean>>
+    openMobileMenu: boolean
+    setOpenMobileMenu: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const NavLinks = ({ openMobiMenu, setOpenMobiMenu }: Props) => {
+const NavLinks = ({ openMobileMenu, setOpenMobileMenu: setOpenMobileMenu }: Props) => {
     const [openMenu, setOpenMenu] = useState<string | null>("/hr-admin");
     const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
     const [, setUrl] = useState<string | null>(null);
@@ -102,13 +102,12 @@ const NavLinks = ({ openMobiMenu, setOpenMobiMenu }: Props) => {
     const handleToggle = (path: string) => {
         setOpenMenu(openMenu === path ? null : path);
         handleSubMenuToggle(path)
-        setOpenMobiMenu(!openMobiMenu)
+        setOpenMobileMenu(!openMobileMenu)
     };
 
     const handleSubMenuToggle = (path: string) => {
         setOpenSubMenu(openSubMenu === path ? null : path);
-        setOpenMobiMenu(!openMobiMenu)
-
+        setOpenMobileMenu(!openMobileMenu)
     };
 
 
