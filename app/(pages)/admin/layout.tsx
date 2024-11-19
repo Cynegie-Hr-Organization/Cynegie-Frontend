@@ -8,9 +8,10 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <Sidebar />
-      <div className="bg-[#F9FAFB] h-dvh overflow-y-scroll">
+      <div className="bg-[#F9FAFB] h-dvh overflow-y-scroll w-full xl:pl-[17rem]">
         <Header />
-        <main className="max-w-[960px] mx-auto">
+
+        <main className="max-w-[1080px] 2xl:max-w-[1440px] mx-auto mt-6">
           {children}
         </main>
       </div>

@@ -33,29 +33,27 @@ const Sidebar = () => {
             </div>
 
             <div className="absolute bottom-0 mb-20 overflow-hidden">
-                <div>
-                    <div className="flex items-center gap-3">
-                        <Image
-                            width={40}
-                            height={40}
-                            className="w-[40px] h-[40px]"
-                            src="/avatar.svg"
-                            alt="avatar"
-                        />
+                <div className="flex items-center gap-3">
+                    <Image
+                        width={40}
+                        height={40}
+                        className="w-[40px] h-[40px]"
+                        src="/avatar.svg"
+                        alt="avatar"
+                    />
 
-                        <div className='truncate'>
-                            <p className="font-sans text-sm font-bold text-Sambucus">
-                                {`name emil`}
-                            </p>
-                            <p className="font-sans text-xs font-normal text-Charcoal">
-                                email
-                            </p>
-                        </div>
-
-                        <button onClick={() => { }}>
-                            <FiLogOut />
-                        </button>
+                    <div className='truncate'>
+                        <p className="font-sans text-sm font-bold text-Sambucus">
+                            {`name emil`}
+                        </p>
+                        <p className="font-sans text-xs font-normal text-Charcoal">
+                            email
+                        </p>
                     </div>
+
+                    <button onClick={() => { }}>
+                        <FiLogOut />
+                    </button>
                 </div>
             </div>
         </div>
