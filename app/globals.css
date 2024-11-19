@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    background-color: #F9FAFB;
+}
+
+.common-card {
+    border: 1.13px solid #E4E7EC;
+    border-radius: 12.56px;
+    padding: 20px;
+    background-color: white;
+}
+
+.card-title-large {
+    font-size: 20px;
+    font-weight: 600;
+    color: #000000
+}
+
+.section-heading {
+    font-weight: 700; font-size: 24px; color: #000000
+}
