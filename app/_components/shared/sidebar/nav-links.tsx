@@ -12,7 +12,7 @@ interface Props {
     setOpenMobileMenu: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const NavLinks = ({ openMobileMenu, setOpenMobileMenu: setOpenMobileMenu }: Props) => {
+const NavLinks = ({ openMobileMenu, setOpenMobileMenu }: Props) => {
     const [openMenu, setOpenMenu] = useState<string | null>("/hr-admin");
     const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
     const [, setUrl] = useState<string | null>(null);
