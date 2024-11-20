@@ -1,8 +1,8 @@
+import NewHireList from "./overview/newHireList";
+
 const OnBoarding = () => {
   return (
-    <div>
-      Hey there! I am the onboarding page
-    </div>
+    <NewHireList />
   )
 }
 
