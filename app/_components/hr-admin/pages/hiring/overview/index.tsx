@@ -1,4 +1,5 @@
 'use client';
+import StatusPill from '@/app/_components/shared/pills/status';
 import {
   Avatar,
   Box,
@@ -17,8 +18,6 @@ import {
 import { PieChart } from '@mui/x-charts';
 import { LineChart } from '@mui/x-charts/LineChart';
 import Image from 'next/image';
-import Todo from '../../../todo';
-import StatusPill from '../../../shared/pills/status';
 
 const red = '#D42620';
 const grey = '#E6EBF9';
@@ -37,7 +36,7 @@ const size = {
   height: 150,
 };
 
-const HrAdminDashboardPage = () => {
+const HrAdminHiringOverviewPage = () => {
   return (
     <Stack
       style={{
@@ -184,46 +183,6 @@ const HrAdminDashboardPage = () => {
           </Stack>
         </Grid2>
       </Grid2>
-      <Grid2 className='common-card' size={{ xs: 12, sm: 6, md: 8.5 }}>
-        <Stack gap={2}>
-          <Stack direction='row'>
-            <Box
-              sx={{
-                flexGrow: 1,
-              }}
-              className='card-title-large'
-            >
-              Priority Todos
-            </Box>
-            <Select
-              defaultValue='Monthly'
-              sx={{ height: '30px', borderRadius: '4.62px', pr: '15px' }}
-              disabled
-            >
-              <MenuItem value='Monthly'>Today</MenuItem>
-            </Select>
-          </Stack>
-          <Grid2 columnSpacing={2} rowSpacing={2} container>
-            {Array(3)
-              .fill(undefined)
-              .map((_, index) => (
-                <Grid2 size={{ xs: 12, md: 4 }} key={index}>
-                  <Todo />
-                </Grid2>
-              ))}
-          </Grid2>
-          <Box
-            sx={{
-              fontWeight: 400,
-              fontSize: '16px',
-              textDecoration: 'underline',
-              color: '#0035C3',
-            }}
-          >
-            View All
-          </Box>
-        </Stack>
-      </Grid2>
       <Stack gap={2}>
         <Box className='section-heading'>Candidates</Box>
         <Box sx={{ overflowX: 'auto' }}>
@@ -330,4 +289,4 @@ const CandidatesTable = () => {
   );
 };
 
-export default HrAdminDashboardPage;
+export default HrAdminHiringOverviewPage;
