@@ -1,55 +1,16 @@
 'use client';
 import { Box, Button, Grid2, MenuItem, Select, Stack } from '@mui/material';
 import React from 'react';
-import { Doughnut } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  ChartOptions,
-} from 'chart.js';
 import './style.css';
 import PayrollTable from '../../tables/overview';
 import { CalendarTodayOutlined } from '@mui/icons-material';
 import PayrollOverviewChartLarge from '../../charts/payroll-overview/large';
 import PayrollOverviewChartMobile from '../../charts/payroll-overview/mobile';
-
-ChartJS.register(ArcElement, Tooltip, Legend);
+import BonusAndIncentivesChart from '../../charts/bonuses-and-incentives-chart';
 
 const HrAdminPayrollOverviewPage = () => {
-  const data = {
-    labels: ['Completed', 'Remaining'],
-    datasets: [
-      {
-        data: [2764000, 29764000],
-        backgroundColor: ['#8AA2E3', '#0035C3'],
-        borderWidth: 0,
-      },
-    ],
-  };
-
-  const options: ChartOptions<'doughnut'> = {
-    rotation: -90,
-    circumference: 180,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        enabled: true,
-      },
-    },
-    cutout: '70%',
-  };
   return (
-    <Stack
-      style={{
-        padding: '30px',
-        minHeight: '100vh',
-      }}
-      gap={3}
-    >
+    <div className='flex flex-col gap-3 p-8 min-h-screen'>
       <Stack gap={2}>
         <Stack direction='row'>
           <Stack flexGrow={1} gap={1} mr={2}>
@@ -253,7 +214,7 @@ const HrAdminPayrollOverviewPage = () => {
                   margin: '0 auto -100px auto',
                 }}
               >
-                <Doughnut data={data} options={options} />
+                <BonusAndIncentivesChart />
               </div>
               <Box
                 style={{
@@ -288,7 +249,7 @@ const HrAdminPayrollOverviewPage = () => {
       <Box sx={{ overflowX: 'auto' }}>
         <PayrollTable />
       </Box>
-    </Stack>
+    </div>
   );
 };
 

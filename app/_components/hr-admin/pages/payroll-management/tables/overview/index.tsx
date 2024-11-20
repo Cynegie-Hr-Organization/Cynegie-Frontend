@@ -33,10 +33,6 @@ const PayrollTable = () => {
     });
   };
 
-  useEffect(() => {
-    console.log(selectedRows);
-  }, [selectedRows]);
-
   return (
     <Stack gap={2} className='common-card'>
       <Stack
@@ -104,12 +100,12 @@ const PayrollTable = () => {
                 <Checkbox
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setSelectedRows([0, 1, 2, 3]); // Select all rows
+                      setSelectedRows([0, 1, 2, 3]);
                     } else {
-                      setSelectedRows([]); // Deselect all rows
+                      setSelectedRows([]);
                     }
                   }}
-                  checked={selectedRows.length === 4} // Adjust based on the number of rows
+                  checked={selectedRows.length === 4}
                   indeterminate={
                     selectedRows.length > 0 && selectedRows.length < 4
                   }
