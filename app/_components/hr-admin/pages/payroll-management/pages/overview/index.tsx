@@ -10,7 +10,7 @@ import BonusAndIncentivesChart from '../../charts/bonuses-and-incentives-chart';
 
 const HrAdminPayrollOverviewPage = () => {
   return (
-    <div className='flex flex-col gap-3 p-8 min-h-screen'>
+    <div className='flex flex-col gap-5 p-8 min-h-screen'>
       <Stack gap={2}>
         <Stack direction='row'>
           <Stack flexGrow={1} gap={1} mr={2}>
@@ -37,43 +37,66 @@ const HrAdminPayrollOverviewPage = () => {
           </Stack>
         </Stack>
         <Grid2 columnSpacing={2} rowSpacing={2} container>
-          {Array(4)
-            .fill(undefined)
-            .map((_, index) => (
-              <Grid2
-                key={index}
-                size={{ xs: 12, sm: 6, md: 3 }}
-                className='common-card'
-              >
-                <Stack gap={3}>
+          {[
+            {
+              title: 'Total Payroll Cost',
+              value: '₦34,886,000',
+              additionalInfo: { value: '+20%', description: 'Last Month' },
+            },
+            {
+              title: 'Completed Payments',
+              value: '40',
+              additionalInfo: { value: '₦90,251,000', description: 'Paid' },
+            },
+            {
+              title: 'Pending Payments',
+              value: '12',
+              additionalInfo: { value: '₦7,251,000', description: 'Pending' },
+            },
+            {
+              title: 'Total Payrolls',
+              value: '124',
+              additionalInfo: { value: '', description: '' },
+            },
+          ].map((item, index) => (
+            <Grid2
+              key={index}
+              size={{ xs: 12, sm: 6, md: 3 }}
+              className='common-card'
+            >
+              <Stack gap={3}>
+                <Box
+                  sx={{
+                    fontWeight: 600,
+                    fontSize: '16px',
+                    color: '#1B1B1B',
+                  }}
+                >
+                  {item.title}
+                </Box>
+                <Stack direction='row' alignItems='center'>
                   <Box
+                    flexGrow={1}
                     sx={{
-                      fontWeight: 600,
-                      fontSize: '16px',
+                      fontSize: '20px',
+                      fontWeight: 700,
                       color: '#1B1B1B',
                     }}
                   >
-                    Total Open Positions
+                    {item.value}
                   </Box>
-                  <Stack direction='row' alignItems='center'>
-                    <Box
-                      flexGrow={1}
-                      sx={{
-                        fontSize: '20px',
-                        fontWeight: 700,
-                        color: '#1B1B1B',
-                      }}
-                    >
-                      15
-                    </Box>
-                    <Box sx={{ fontWeight: 400, fontSize: '12px' }}>
-                      <span style={{ color: '#2B9943' }}>+20%</span>{' '}
-                      <span style={{ color: '#9094A1' }}>Last Month</span>
-                    </Box>
-                  </Stack>
+                  <Box sx={{ fontWeight: 400, fontSize: '12px' }}>
+                    <span style={{ color: index == 2 ? '#B56D00' : '#2B9943' }}>
+                      {item.additionalInfo.value}
+                    </span>{' '}
+                    <span style={{ color: '#9094A1' }}>
+                      {item.additionalInfo.description}
+                    </span>
+                  </Box>
                 </Stack>
-              </Grid2>
-            ))}
+              </Stack>
+            </Grid2>
+          ))}
         </Grid2>
       </Stack>
       <Grid2 columnSpacing={3} rowSpacing={3} container>
@@ -206,7 +229,13 @@ const HrAdminPayrollOverviewPage = () => {
                   </Grid2>
                 ))}
             </Grid2>
-            <div style={{ position: 'relative', marginBottom: '-20px' }}>
+            <Box
+              sx={{
+                position: 'relative',
+                marginBottom: '-20px',
+                marginTop: { xs: 0, md: '-25px', lg: 0 },
+              }}
+            >
               <div
                 style={{
                   width: '200px',
@@ -242,7 +271,7 @@ const HrAdminPayrollOverviewPage = () => {
                   ₦32,764,000
                 </Box>
               </Box>
-            </div>
+            </Box>
           </Stack>
         </Grid2>
       </Grid2>

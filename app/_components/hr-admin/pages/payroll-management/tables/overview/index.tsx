@@ -1,5 +1,10 @@
 import StatusPill from '@/app/_components/shared/pills/status';
-import { ChevronLeft, ChevronRight, MoreVert, Sort } from '@mui/icons-material';
+import {
+  ChevronLeft,
+  ChevronRight,
+  MoreVert,
+  FilterList,
+} from '@mui/icons-material';
 import {
   Box,
   Checkbox,
@@ -16,6 +21,7 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import { useState, ChangeEvent } from 'react';
+import { payrollOverviewTableData } from './data';
 
 const PayrollTable = () => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
@@ -80,7 +86,7 @@ const PayrollTable = () => {
             alignItems: 'center',
           }}
         >
-          <Sort />
+          <FilterList />
           <div
             style={{
               fontWeight: 600,
@@ -100,14 +106,14 @@ const PayrollTable = () => {
                 <Checkbox
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setSelectedRows([0, 1, 2, 3]);
+                      setSelectedRows([0, 1, 2, 3, 4]);
                     } else {
                       setSelectedRows([]);
                     }
                   }}
-                  checked={selectedRows.length === 4}
+                  checked={selectedRows.length === 5}
                   indeterminate={
-                    selectedRows.length > 0 && selectedRows.length < 4
+                    selectedRows.length > 0 && selectedRows.length < 5
                   }
                 />
               </TableCell>
@@ -127,47 +133,54 @@ const PayrollTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Array(4)
-              .fill(undefined)
-              .map((_, rowIndex) => (
-                <TableRow key={rowIndex}>
-                  <TableCell>
-                    <Checkbox
-                      checked={selectedRows.includes(rowIndex)}
-                      onChange={(e) => handleCheckboxChange(e, rowIndex)}
-                    />
-                  </TableCell>
-                  {[
-                    'Finance Sept 2024 Payroll',
-                    '1st Sept - 31st Sept',
-                    '31st Sept 2024',
-                    '22',
-                    'N4,886,000',
-                    'N3,886,000',
-                    '---',
-                    'Approved',
-                    '',
-                  ].map((field, columnIndex) =>
-                    columnIndex === 7 ? (
-                      <TableCell key={columnIndex}>
-                        <StatusPill variant='success' text={field} />
-                      </TableCell>
-                    ) : columnIndex === 8 ? (
-                      <TableCell key={columnIndex}>
-                        <MoreVert
-                          sx={{
-                            borderWidth: '0.5px',
-                            borderRadius: '4px',
-                            padding: '2px',
-                          }}
-                        />
-                      </TableCell>
-                    ) : (
-                      <TableCell key={columnIndex}>{field}</TableCell>
-                    )
-                  )}
-                </TableRow>
-              ))}
+            {payrollOverviewTableData.map((row, rowIndex) => (
+              <TableRow key={rowIndex}>
+                <TableCell>
+                  <Checkbox
+                    checked={selectedRows.includes(rowIndex)}
+                    onChange={(e) => handleCheckboxChange(e, rowIndex)}
+                  />
+                </TableCell>
+                {[
+                  row.name,
+                  row.period,
+                  row.date,
+                  row.totalEmployees,
+                  row.grossPay,
+                  row.netPay,
+                  row.approvalDate,
+                  row.status,
+                ].map((field, columnIndex) =>
+                  columnIndex === 7 ? (
+                    <TableCell key={columnIndex}>
+                      <StatusPill
+                        variant={
+                          row.status === 'Approved'
+                            ? 'success'
+                            : row.status === 'Pending'
+                            ? 'warning'
+                            : row.status === 'Rejected'
+                            ? 'error'
+                            : 'success'
+                        }
+                        text={field}
+                      />
+                    </TableCell>
+                  ) : (
+                    <TableCell key={columnIndex}>{field}</TableCell>
+                  )
+                )}
+                <TableCell>
+                  <MoreVert
+                    sx={{
+                      borderWidth: '0.5px',
+                      borderRadius: '4px',
+                      padding: '2px',
+                    }}
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -191,7 +204,7 @@ const PayrollTable = () => {
           </Select>
         </Stack>
         <Stack direction='row' alignItems='center' gap={2}>
-          <div>1-5 of 3</div>
+          <div>1-5 of 1</div>
           <Stack direction='row' gap={2}>
             <ChevronLeft />
             <ChevronRight />
