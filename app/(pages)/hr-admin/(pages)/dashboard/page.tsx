@@ -1,8 +1,8 @@
-import HrAdminDashboardPage from '@/app/_components/hr-admin/pages/dashboard';
-// import HrAdminPayrollOverviewPage from '@/app/_components/hr-admin/pages/payroll-management/pages/overview';
+// import HrAdminDashboardPage from '@/app/_components/hr-admin/pages/dashboard';
+import HrAdminPayrollOverviewPage from '@/app/_components/hr-admin/pages/payroll-management/pages/overview';
 
 const DashboardPage = () => {
-  return <HrAdminDashboardPage />;
+  return <HrAdminPayrollOverviewPage />;
 };
 
 export default DashboardPage;

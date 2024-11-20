@@ -102,7 +102,7 @@ const PayrollTable = () => {
         <Table>
           <TableHead sx={{ backgroundColor: '#F7F9FC' }}>
             <TableRow>
-              <TableCell>
+              <TableCell sx={{ whiteSpace: 'nowrap' }}>
                 <Checkbox
                   onChange={(e) => {
                     if (e.target.checked) {
@@ -128,14 +128,16 @@ const PayrollTable = () => {
                 'Status',
                 'Actions',
               ].map((field) => (
-                <TableCell key={field}>{field}</TableCell>
+                <TableCell key={field} sx={{ whiteSpace: 'nowrap' }}>
+                  {field}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
             {payrollOverviewTableData.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
-                <TableCell>
+                <TableCell sx={{ whiteSpace: 'nowrap' }}>
                   <Checkbox
                     checked={selectedRows.includes(rowIndex)}
                     onChange={(e) => handleCheckboxChange(e, rowIndex)}
@@ -152,7 +154,7 @@ const PayrollTable = () => {
                   row.status,
                 ].map((field, columnIndex) =>
                   columnIndex === 7 ? (
-                    <TableCell key={columnIndex}>
+                    <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>
                       <StatusPill
                         variant={
                           row.status === 'Approved'
@@ -167,10 +169,12 @@ const PayrollTable = () => {
                       />
                     </TableCell>
                   ) : (
-                    <TableCell key={columnIndex}>{field}</TableCell>
+                    <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>
+                      {field}
+                    </TableCell>
                   )
                 )}
-                <TableCell>
+                <TableCell sx={{ whiteSpace: 'nowrap' }}>
                   <MoreVert
                     sx={{
                       borderWidth: '0.5px',
