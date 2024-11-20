@@ -15,7 +15,7 @@ import {
   TextField,
 } from '@mui/material';
 import Image from 'next/image';
-import { useState, ChangeEvent, useEffect } from 'react';
+import { useState, ChangeEvent } from 'react';
 
 const PayrollTable = () => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
