@@ -54,9 +54,9 @@ export default {
 				}
 			},
 			fontFamily: {
-				sans: ["var(--font-open-sans)", "sans-serif"],
+        sans: ['"Open Sans Condensed"', 'sans-serif'],
 				heading: ["var(--font-roboto)", "sans-serif"]
-			},
+      },
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',

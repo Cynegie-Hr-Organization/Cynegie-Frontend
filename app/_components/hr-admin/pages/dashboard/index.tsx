@@ -41,7 +41,6 @@ const HrAdminDashboardPage = () => {
   return (
     <Stack
       style={{
-        padding: '30px',
         minHeight: '100vh',
       }}
       gap={3}
@@ -51,9 +50,9 @@ const HrAdminDashboardPage = () => {
         <Grid2 columnSpacing={2} rowSpacing={2} container>
           {Array(4)
             .fill(undefined)
-            .map((_, index) => (
+            .map((item) => (
               <Grid2
-                key={index}
+                key={item}
                 size={{ xs: 12, sm: 6, md: 3 }}
                 className='common-card'
               >

@@ -6,13 +6,12 @@ import NavLinks from "./nav-links"
 import { useState } from "react"
 
 const Sidebar = () => {
-    const [openMobileMenu, setOpenMobileMenu] = useState<boolean>(false);
+    const [openMobileMenu] = useState<boolean>(false);
 
     return (
         <div
             className={`${openMobileMenu ? 'flex animate-slideIn' : 'hidden animate-slideOut'} 
-        xl:flex shadow-xl bg-white h-dvh z-50 fixed w-[272px] px-4 pt-7 flex-col gap-5`}
-        >
+        xl:flex shadow-xl bg-white h-dvh z-50 fixed w-[272px] px-4 pt-7 flex-col gap-5`}>
 
             <Image src={Logo} width={122} height={38} alt="logo" className="w-[122px] h-[38px]" />
 
@@ -26,10 +25,7 @@ const Sidebar = () => {
             </div>
 
             <div>
-                <NavLinks
-                    openMobileMenu={openMobileMenu}
-                    setOpenMobileMenu={setOpenMobileMenu}
-                />
+                <NavLinks />
             </div>
 
             <div className="absolute bottom-0 mb-20 overflow-hidden">
