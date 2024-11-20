@@ -304,7 +304,7 @@ const CandidatesTable = () => {
                     'On-going',
                   ].map((field, columnIndex) =>
                     columnIndex == 0 ? (
-                      <TableCell key={columnIndex}>
+                      <TableCell key={field}>
                         <Stack direction='row' alignItems='center' gap={2}>
                           <Avatar />
                           <Box>{field}</Box>
