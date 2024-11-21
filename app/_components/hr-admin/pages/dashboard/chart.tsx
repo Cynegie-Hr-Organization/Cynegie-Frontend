@@ -1,5 +1,5 @@
 "use client"
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts"
 
 import {
   ChartConfig,
@@ -26,8 +26,8 @@ const chartData = [
 
 
 const chartConfig = {
-  pay: {
-    label: "Pay",
+  total: {
+    label: "Total",
     color: "linear-gradient(90deg, #0035C380 0%, #0035C300 100%)",
   },
 } satisfies ChartConfig
@@ -55,55 +55,66 @@ const formatLargeNumber = (value: number) => {
 
 export function GradientLineChart() {
   return (
-    <ChartContainer className="h-[264px] w-full" config={chartConfig}>
-      <AreaChart
-        accessibilityLayer
-        data={chartData}
-        margin={{
-          top: 5,
-          right: 5,
-          bottom: 25,
-          left: 15,
-        }}
-      >
-        <defs>
-          <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#0035C3" stopOpacity={0.4} />
-            <stop offset="100%" stopColor="#ffffff" stopOpacity={0} />
-          </linearGradient>
-        </defs>
+    <ChartContainer className="h-[300px] w-full mt-6 -ml-6" config={chartConfig}>
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart
+          accessibilityLayer
+          data={chartData}
+          margin={{
+            top: 0,
+            right: 5,
+            bottom: 0,
+            left: 0,
+          }}
+        >
+          <defs>
+            <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%" className="bg-amber-600">
+              <stop offset="0%" stopColor="#0035C3" stopOpacity={0.4} />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity={0} />
+            </linearGradient>
+          </defs>
 
-        <CartesianGrid vertical={false} />
-        <XAxis
-          dataKey="month"
-          tickLine={false}
-          axisLine={false}
-          tickMargin={8}
-          tickFormatter={(value) => value.slice(0, 3)}
-        />
-        <YAxis
-          dataKey="pay"
-          type="number"
-          domain={['auto', 'auto']}
-          tickLine={false}
-          axisLine={false}
-          tickFormatter={formatLargeNumber}
-          interval="preserveStartEnd"
-        />
+          <CartesianGrid
+            vertical={false}
+            stroke="#E0E0E0"
+            strokeDasharray="3 3"
+          />
+          <XAxis
+            dataKey="month"
+            tickLine={false}
+            axisLine={false}
+            tickMargin={8}
+            tickFormatter={(value) => value.slice(0, 3)}
+          />
+          <YAxis
+            dataKey="pay"
+            type="number"
+            domain={['auto', 'auto']}
+            tickLine={false}
+            axisLine={false}
+            tickFormatter={formatLargeNumber}
+            interval="preserveStartEnd"
+          />
 
-        <ChartTooltip
-          cursor={false}
-          content={<ChartTooltipContent indicator="dot" />}
-        />
-        <Area
-          dataKey="pay"
-          type="natural"
-          fill="url(#chartGradient)"
-          fillOpacity={0.4}
-          stroke="#0035C3"
-          stackId="a"
-        />
-      </AreaChart>
+          <ChartTooltip
+            cursor={false}
+            content={
+              <ChartTooltipContent
+                indicator="dot"
+                className="bg-white border-none outline-none shadow-primary shadow-2xl p-2 rounded-lg"
+              />
+            }
+          />
+          <Area
+            dataKey="pay"
+            type="natural"
+            fill="url(#chartGradient)"
+            fillOpacity={0.4}
+            stroke="#0035C3"
+            stackId="a"
+          />
+        </AreaChart>
+      </ResponsiveContainer>
     </ChartContainer>
   )
 }
