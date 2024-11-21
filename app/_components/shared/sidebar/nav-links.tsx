@@ -87,7 +87,7 @@ const NavLinks = () => {
                                 </div>
                                 {item.subMenu && (
                                     <FaChevronDown
-                                        className={`transition-transform duration-300 ${openDropDown === item.path ? 'rotate-180' : ''
+                                        className={`transition-transform duration-300 ${(openDropDown === item.path) && isActive ? 'rotate-180' : ''
                                             }`}
                                     />
                                 )}

@@ -20,7 +20,8 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				card: {
 					DEFAULT: 'hsl(var(--card))',
-					foreground: 'hsl(var(--card-foreground))'
+					foreground: 'hsl(var(--card-foreground))',
+					border: '#E4E7EC'
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
@@ -54,14 +55,14 @@ export default {
 				}
 			},
 			fontFamily: {
-        sans: ['"Open Sans Condensed"', 'sans-serif'],
+				sans: ['"Open Sans Condensed"', 'sans-serif'],
 				heading: ["var(--font-roboto)", "sans-serif"]
-      },
-			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
-			}
+			},
+			// borderRadius: {
+			// 	lg: 'var(--radius)',
+			// 	md: 'calc(var(--radius) - 2px)',
+			// 	sm: 'calc(var(--radius) - 4px)'
+			// }
 		}
 	},
 	plugins: [tailwindanimate],

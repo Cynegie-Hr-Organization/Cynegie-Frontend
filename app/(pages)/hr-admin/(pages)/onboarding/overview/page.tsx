@@ -3,7 +3,7 @@ import NewHireList from "./newHireList";
 const OnBoarding = () => {
   return (
     <div>
-    <NewHireList />
+      <NewHireList />
     </div>
   )
 }

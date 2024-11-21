@@ -32,9 +32,9 @@ const donutChartData = [
 
 const HrAdminHiringOverview: React.FC = () => {
   return (
-    <div className="space-y-4 p-[30px]"> 
+    <div className="space-y-4 p-[30px]">
       <HiringOverviewHeader />
-      
+
       {/* Cards Section */}
       <div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-2 xl:grid-cols-4 2xl:gap-4">
         <OverviewCards
@@ -43,7 +43,7 @@ const HrAdminHiringOverview: React.FC = () => {
           value="15"
         />
         <OverviewCards
-          icon={<Image src="/total-application.svg" alt="Total Application Icon" width={30} height={30}/>}
+          icon={<Image src="/total-application.svg" alt="Total Application Icon" width={30} height={30} />}
           title="Active Candidates"
           value="900"
         />
@@ -53,7 +53,7 @@ const HrAdminHiringOverview: React.FC = () => {
           value="15"
         />
         <OverviewCards
-          icon={<Image src="/total-candiate.svg" alt="Interview Scheduled Icon" width={30} height={30}/>}
+          icon={<Image src="/total-candiate.svg" alt="Interview Scheduled Icon" width={30} height={30} />}
           title="Offers extended "
           value="15"
         />
@@ -71,10 +71,9 @@ const HrAdminHiringOverview: React.FC = () => {
       </div>
 
       {/* Tabs Section*/}
-            <div className="w-full">
-
+      <div className="w-full">
         <OverviewTabs />
-            </div>
+      </div>
 
     </div>
   );
