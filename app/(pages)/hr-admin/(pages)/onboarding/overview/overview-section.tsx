@@ -1,3 +1,5 @@
+
+import Appbutton from "@/app/_components/shared/buttons";
 import { Stack, Box, Grid2 } from "@mui/material";
 import Image from "next/image";
 
@@ -31,7 +33,11 @@ const overviewContents = [
 const OverViewSection = () => {
   return (
     <Stack gap={2}>
-      <Box className='section-heading'>Overview</Box>
+      <Box className=' flex items-center justify-between'>
+        <h3 className="section-heading">Overview</h3>
+        <Appbutton buttonText="Onboarding Templates" />
+      </Box>
+
       <Grid2 columnSpacing={2} rowSpacing={2} container>
         {overviewContents.map((content) => (
           <Grid2
