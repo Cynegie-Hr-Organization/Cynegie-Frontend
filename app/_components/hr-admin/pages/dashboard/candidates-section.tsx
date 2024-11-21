@@ -1,7 +1,7 @@
 import StatusPill from "@/app/_components/shared/pills/status";
 import { newIndex } from "@/lib/utils";
 import { Avatar, Box, MenuItem, Select, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
-import Image from "next/image";
+import { RiSearchLine } from "react-icons/ri";
 
 const CandidatesSection = () => {
   return (
@@ -15,7 +15,7 @@ const CandidatesSection = () => {
           }}
         >
           <Box sx={{ width: '100%' }} flexGrow={1}>
-            <TextField
+            <TextField className="max-w-[476px]"
               sx={{
                 width: { xs: '90%', sm: '70%', md: '70%' },
                 mb: { xs: '15px', md: '0px' },
@@ -28,13 +28,7 @@ const CandidatesSection = () => {
                   fontWeight: 400,
                 },
                 startAdornment: (
-                  <Image
-                    src='/icons/search.svg'
-                    alt=''
-                    width={24}
-                    height={24}
-                    style={{ marginRight: '5px' }}
-                  />
+                  <RiSearchLine className="mr-2 text-2xl" />
                 ),
               }}
               placeholder='Search'

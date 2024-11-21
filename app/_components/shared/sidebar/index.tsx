@@ -17,7 +17,7 @@ const Sidebar = () => {
 				<Image src={Logo} width={122} height={38} alt="logo" className="w-[122px] h-[38px]" />
 
 				<div className="border border-[#D0D5DD] w-[240px] flex items-center gap-3 p-2 rounded-[6px] focus-within:border-primary hover:border-primary duration-300 transition">
-					<RiSearchLine />
+					<RiSearchLine className="text-2xl" />
 					<input
 						className="outline-none border-none w-full group-hover:ring ring-primary"
 						type="text"
@@ -25,9 +25,7 @@ const Sidebar = () => {
 					/>
 				</div>
 
-				<div>
-					<NavLinks />
-				</div>
+				<NavLinks />
 			</div>
 
 			<div className="flex items-center justify-between my-6 overflow-hidden">
