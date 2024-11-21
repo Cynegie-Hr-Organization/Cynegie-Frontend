@@ -16,10 +16,10 @@ const Sidebar = () => {
 			<div className="space-y-5">
 				<Image src={Logo} width={122} height={38} alt="logo" className="w-[122px] h-[38px]" />
 
-				<div className="border border-[#D0D5DD] w-[240px] flex items-center gap-3 p-2 rounded-[6px]">
+				<div className="border border-[#D0D5DD] w-[240px] flex items-center gap-3 p-2 rounded-[6px] focus-within:border-primary hover:border-primary duration-300 transition">
 					<RiSearchLine />
 					<input
-						className="outline-none"
+						className="outline-none border-none w-full group-hover:ring ring-primary"
 						type="text"
 						placeholder="Search Apps"
 					/>
@@ -48,11 +48,10 @@ const Sidebar = () => {
 							alison.e@rayna.ui
 						</p>
 					</div>
-
-					<button onClick={() => { }}>
-						<FiLogOut />
-					</button>
 				</div>
+				<button onClick={() => { }}>
+					<FiLogOut />
+				</button>
 			</div>
 		</div>
 	)
