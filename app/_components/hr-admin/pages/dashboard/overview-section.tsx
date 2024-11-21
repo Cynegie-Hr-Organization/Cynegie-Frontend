@@ -80,7 +80,7 @@ const OverViewCards = () => {
                   />
                 </Box>
                 <Box className="font-semibold text-[#1B1B1B]">
-                  Total Open Positions
+                  {content.title}
                 </Box>
               </Stack>
 
