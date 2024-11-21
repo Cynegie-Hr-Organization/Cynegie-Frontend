@@ -39,7 +39,7 @@ export default function CreateJobForm() {
   ];
 
   return (
-    <div className="p-[15px] md:p-[30px]">
+    <div className="">
       <div className="flex mb-4 justify-start items-center gap-2">
         <Image
           src="/button-icon.svg"

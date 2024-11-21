@@ -29,7 +29,7 @@ export default function EditJobPreview() {
   ];
 
   return (
-    <div className="w-full p-[15px] md:p-[30px]">
+    <div className="w-full ">
       <div className="flex flex-col mb-4 justify-start  gap-2">
         <div className="flex items-center gap-2">
           <Image
