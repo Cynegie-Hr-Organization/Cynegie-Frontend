@@ -1,7 +1,9 @@
+import NewHireList from "./newHireList";
+
 const TemplatePage = () => {
   return (
     <div>
-      <h1>Onboarding Template Page</h1>
+      <NewHireList />
     </div>
   );
 }

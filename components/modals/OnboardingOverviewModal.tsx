@@ -24,7 +24,7 @@ import { FC, useState } from "react";
 import { OnboardingOverViewEnum } from "@/lib/enums";
 
 import { Template } from "../table/overview.column";
-import SuccessSvg from "@/app/(pages)/hr-admin/(pages)/onboarding/overview/newHireList/SuccessSvg";
+import SuccessSvg from "@/app/(pages)/hr-admin/(pages)/onboarding/template/newHireList/SuccessSvg";
 import { useRouter } from "next/navigation";
 
 interface IProps {

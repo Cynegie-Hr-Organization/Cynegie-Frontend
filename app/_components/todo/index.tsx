@@ -1,64 +1,53 @@
 import { Avatar, Stack } from '@mui/material';
-import Image from 'next/image';
+import { TbMessage } from 'react-icons/tb';
 
 const Todo = () => {
   return (
     <Stack
       gap={1}
+      className='h-max'
       style={{
         border: '1px solid #E4E7EC',
         borderRadius: '12px',
         padding: '15px',
       }}
+    // style={{
+    //   borderLeftWidth: '3px',
+    //   borderColor: '#D7A601',
+    //   paddingLeft: '10px',
+    // }}
     >
-      <div
-        style={{
-          display: 'flex',
-          borderLeftWidth: '3px',
-          borderColor: '#D7A601',
-          paddingLeft: '10px',
-        }}
-      >
-        <div
-          style={{
-            flexGrow: 1,
-            fontWeight: 600,
-            fontSize: '12px',
-            color: '#1B1B1B',
-          }}
-        >
+      <div className="flex relative h-max">
+        <div className='w-1 bg-red-500 rounded-full mr-2'></div>
+        <div className='flex-grow font-semibold text-xs text-[#1B1B1B]'>
           <div>App usability testing with Maze</div>
-          <div style={{ fontWeight: 400, fontSize: '10px', color: '#909090' }}>
-            On Slack
-          </div>
+          <div className='text-[10px] text-[#909090]'>On Slack</div>
         </div>
-        <div></div>
+
       </div>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div
-          style={{
-            flexGrow: 1,
-            fontWeight: 400,
-            fontSize: '10px',
-            color: '#909090',
-          }}
-        >
-          Not started yet
-        </div>
-        <div>
-          <div style={{ display: 'flex' }}>
-            {[
-              '/image/persons/person-1.png',
-              '/image/persons/person-2.png',
-              '/image/persons/person-1.png',
-            ].map((imageSrc, index) => (
-              <Avatar
-                key={index}
-                src={imageSrc}
-                sx={{ ml: '-4px', width: '24.71px', height: '24.71px' }}
-              />
-            ))}
+      <div className='space-y-2'>
+        <div className="flex justify-between w-full items-end">
+          <div className='flex-grow text-[10px] text-[#909090]' >
+            Not started yet
           </div>
+          <div>
+            <div className='flex'>
+              {[
+                '/image/persons/person-1.png',
+                '/image/persons/person-2.png',
+                '/image/persons/person-1.png',
+              ].map((imageSrc, index) => (
+                <Avatar
+                  key={index}
+                  src={imageSrc}
+                  sx={{ ml: '-4px', width: '24.71px', height: '24.71px' }}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className='h-1 w-full bg-gray-200 rounded-full overflow-hidden'>
+          <span className='bg-green-500 h-full block rounded-full' style={{ width: '40%' }}></span>
         </div>
       </div>
       <div style={{ display: 'flex' }}>
@@ -71,14 +60,9 @@ const Todo = () => {
           </span>
         </div>
         <Stack direction='row' alignItems='center' gap={1}>
-          <div>
-            <Image
-              src='/icons/message.svg'
-              alt='Message'
-              width={16}
-              height={16}
-            />
-          </div>
+
+          <TbMessage className='text-gray-400' />
+
           <div>2</div>
         </Stack>
       </div>

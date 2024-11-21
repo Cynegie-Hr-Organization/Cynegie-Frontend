@@ -1,4 +1,4 @@
-import NewHireList from "./overview/newHireList";
+import NewHireList from "./template/newHireList";
 
 const OnBoarding = () => {
   return (
