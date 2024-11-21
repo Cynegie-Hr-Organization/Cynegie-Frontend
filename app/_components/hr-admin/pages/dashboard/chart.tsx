@@ -55,7 +55,7 @@ const formatLargeNumber = (value: number) => {
 
 export function GradientLineChart() {
   return (
-    <ChartContainer className="max-h-[344px] w-full" config={chartConfig}>
+    <ChartContainer className="h-[264px] w-full" config={chartConfig}>
       <AreaChart
         accessibilityLayer
         data={chartData}

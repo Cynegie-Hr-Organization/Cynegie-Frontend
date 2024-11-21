@@ -48,9 +48,9 @@ const Todo = () => {
         <div>
           <div style={{ display: 'flex' }}>
             {[
-              '/people/person-1.png',
-              '/people/person-2.png',
-              '/people/person-1.png',
+              '/image/persons/person-1.png',
+              '/image/persons/person-2.png',
+              '/image/persons/person-1.png',
             ].map((imageSrc, index) => (
               <Avatar
                 key={index}
