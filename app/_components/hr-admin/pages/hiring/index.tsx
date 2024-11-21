@@ -32,7 +32,7 @@ const donutChartData = [
 
 const HrAdminHiringOverview: React.FC = () => {
   return (
-    <div className="space-y-4 p-[30px]">
+    <div className="space-y-4 p-[15px] md:p-[30px]"> 
       <HiringOverviewHeader />
 
       {/* Cards Section */}
