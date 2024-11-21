@@ -5,17 +5,7 @@ const Todo = () => {
   return (
     <Stack
       gap={1}
-      className='h-max'
-      style={{
-        border: '1px solid #E4E7EC',
-        borderRadius: '12px',
-        padding: '15px',
-      }}
-    // style={{
-    //   borderLeftWidth: '3px',
-    //   borderColor: '#D7A601',
-    //   paddingLeft: '10px',
-    // }}
+      className='flex border border-[#E4E7EC] rounded-xl p-[15px]'
     >
       <div className="flex relative h-max">
         <div className='w-1 bg-red-500 rounded-full mr-2'></div>
