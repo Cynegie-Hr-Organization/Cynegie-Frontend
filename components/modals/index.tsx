@@ -1,3 +1,3 @@
-import { OnboardingOverviewModal } from "@/components/modals/OnboardingOverviewModal.tsx";
+import { OnboardingOverviewModal } from "@/components/modals/OnboardingOverviewModal";
 
 export { OnboardingOverviewModal };

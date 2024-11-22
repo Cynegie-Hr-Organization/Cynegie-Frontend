@@ -726,7 +726,7 @@
   dependencies:
     "@radix-ui/react-visually-hidden" "1.1.0"
 
-"@radix-ui/react-accordion@latest":
+"@radix-ui/react-accordion@^1.2.1", "@radix-ui/react-accordion@latest":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-accordion/-/react-accordion-1.2.1.tgz#5c942c42c24267376b26204ec6847b17d15659b3"
   integrity sha512-bg/l7l5QzUjgsh8kjwDFommzAshnUsuVMV5NM56QVCm+7ZckYdd9P/ExR8xG/Oup0OajVxNLaHJ1tb8mXk+nzQ==
@@ -741,7 +741,7 @@
     "@radix-ui/react-primitive" "2.0.0"
     "@radix-ui/react-use-controllable-state" "1.1.0"
 
-"@radix-ui/react-alert-dialog@latest":
+"@radix-ui/react-alert-dialog@^1.1.2", "@radix-ui/react-alert-dialog@latest":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-alert-dialog/-/react-alert-dialog-1.1.2.tgz#ac3bb7f71f5cbb595d3d0949bb12b598c2a99981"
   integrity sha512-eGSlLzPhKO+TErxkiGcCZGuvbVMnLA1MTnyBksGOeGRGkxHiiJUujsjmNTdWTm4iHVSRaUao9/4Ur671auMghQ==
@@ -1092,7 +1092,7 @@
     "@radix-ui/react-use-callback-ref" "1.1.0"
     "@radix-ui/react-use-layout-effect" "1.1.0"
 
-"@radix-ui/react-select@latest":
+"@radix-ui/react-select@^2.1.2", "@radix-ui/react-select@latest":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-select/-/react-select-2.1.2.tgz#2346e118966db793940f6a866fd4cc5db2cc275e"
   integrity sha512-rZJtWmorC7dFRi0owDmoijm6nSJH1tVw64QGiNIZ9PNLyBDtG+iAq+XGsya052At4BfarzY/Dhv9wrrUr6IMZA==
@@ -1143,7 +1143,7 @@
     "@radix-ui/react-use-previous" "1.1.0"
     "@radix-ui/react-use-size" "1.1.0"
 
-"@radix-ui/react-slot@1.1.0", "@radix-ui/react-slot@latest":
+"@radix-ui/react-slot@1.1.0", "@radix-ui/react-slot@^1.1.0", "@radix-ui/react-slot@latest":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-slot/-/react-slot-1.1.0.tgz#7c5e48c36ef5496d97b08f1357bb26ed7c714b84"
   integrity sha512-FUCf5XMfmW4dtYl69pdS4DbxKy8nj4M7SafBgPllysxmdachynNflAdp/gCsnYWNDnge6tI9onzMp5ARYc1KNw==

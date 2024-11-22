@@ -3,8 +3,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu.tsx";
-import { Button } from "@/components/ui/button.tsx";
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import { MoreVertical } from "lucide-react";
 import {
   Dialog,
@@ -16,12 +16,12 @@ import {
   DialogPortal,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog.tsx";
-import { TaskListData } from "@/components/modals/employeetasklist/TaskListData.tsx";
+} from "@/components/ui/dialog";
+import { TaskListData } from "@/components/modals/employeetasklist/TaskListData";
 import { IoMdAdd } from "react-icons/io";
 import { LuListFilter } from "react-icons/lu";
 
-// import { Textarea } from "@/components/ui/textarea.tsx";
+// import { Textarea } from "@/components/ui/textarea";
 
 const EmployeeTaskListModal = () => {
   return (

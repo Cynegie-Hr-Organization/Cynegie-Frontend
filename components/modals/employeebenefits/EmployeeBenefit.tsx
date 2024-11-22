@@ -3,8 +3,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu.tsx";
-import { Button } from "@/components/ui/button.tsx";
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import { MoreVertical } from "lucide-react";
 import {
   Dialog,
@@ -16,11 +16,11 @@ import {
   DialogPortal,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog.tsx";
+} from "@/components/ui/dialog";
 
-import { BenefitData } from "@/components/modals/employeebenefits/BenefitData.tsx";
+import { BenefitData } from "@/components/modals/employeebenefits/BenefitData";
 
-// import { Textarea } from "@/components/ui/textarea.tsx";
+// import { Textarea } from "@/components/ui/textarea";
 
 const EmployeeBenefit = () => {
   return (

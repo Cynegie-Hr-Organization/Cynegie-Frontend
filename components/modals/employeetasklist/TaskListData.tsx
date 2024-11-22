@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import Image from 'next/image';
 import {
   Select,
   SelectContent,
@@ -6,16 +7,15 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select.tsx';
+} from '@/components/ui/select';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion.tsx';
+} from '@/components/ui/accordion';
 import { CiCalendarDate } from 'react-icons/ci';
-import { Andre, Linda } from '@/assets/image';
-import { Input } from '@/components/ui/input.tsx';
+import { Input } from '@/components/ui/input';
 import { IoMdTime } from 'react-icons/io';
 
 interface Data {
@@ -52,7 +52,8 @@ const detailsAccordion: Detials[] = [
     id: 2,
     heading: 'ASSIGNED TO',
     title: (
-      <img
+      <Image
+        fill
         src=''
         alt={'Group of people'}
         className={'object-fit'}
@@ -133,11 +134,12 @@ export const TaskListData: Data[] = [
       'Analytics delivers actionable, industry-ready initiatives each time a business complete their full account. Phasellus vitae amet amet, mauris faucibus at sit. Pellentesque rhoncus adipiscing a enim, quis tortor, non etiam. Eget faucibus mattis consequat dui imperdiet scelerisque. Lorem placerat blandit ut lobortis volutpat convallis libero. Sed imperdiet dignissim ipsum quam.',
     activities: {
       image: (
-        <img
-          src={Linda}
+        <Image
+          width={40}
+          height={40}
+          src='/image/persons/person-2.png'
           alt={'Linda'}
           className={'object-cover'}
-          width={'40px'}
         />
       ),
       textarea: (
@@ -154,11 +156,12 @@ export const TaskListData: Data[] = [
     },
     activity: {
       image: (
-        <img
-          src={Andre}
-          alt={'Andre'}
+        <Image
+          width={40}
+          height={40}
+          src='/image/persons/person-2.png'
+          alt={'Linda'}
           className={'object-cover'}
-          width={'40px'}
         />
       ),
       name: (
