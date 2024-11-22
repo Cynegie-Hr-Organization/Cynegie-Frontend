@@ -1,14 +1,21 @@
 import React from 'react';
-import Select, { StylesConfig } from 'react-select';
+import Select, { StylesConfig, ActionMeta } from 'react-select';
+import { SingleValue, MultiValue } from "react-select";
 
 interface DropdownWithSearchAndMultiSelectProps<OptionType> {
   id: string;
-  options: OptionType[];
+  options?: OptionType[];
   isMulti?: boolean;
   placeholder?: string;
   fontSize?: string;
-  isDisabled?: boolean; // Add isDisabled prop
+  isDisabled?: boolean;
+  value?: MultiValue<OptionType> | SingleValue<OptionType>; // Update the value type
+  onChange?: (
+    newValue: MultiValue<OptionType> | SingleValue<OptionType>, // Update the parameter type
+    actionMeta: ActionMeta<OptionType>
+  ) => void;
 }
+
 
 const DropdownWithSearchAndMultiSelect = <OptionType,>({
   id,
@@ -17,6 +24,8 @@ const DropdownWithSearchAndMultiSelect = <OptionType,>({
   placeholder = 'Select an option',
   fontSize = '14px',
   isDisabled = false, // Default to false
+  value,
+  onChange, // Destructure onChange prop
 }: DropdownWithSearchAndMultiSelectProps<OptionType>) => {
   const customStyles: StylesConfig<OptionType, boolean> = {
     control: (base) => ({
@@ -61,6 +70,8 @@ const DropdownWithSearchAndMultiSelect = <OptionType,>({
         placeholder={placeholder}
         styles={customStyles}
         isDisabled={isDisabled} // Pass the isDisabled prop to react-select
+        value={value} // Pass value to the Select component
+        onChange={onChange} // Pass onChange to the Select component
       />
     </div>
   );

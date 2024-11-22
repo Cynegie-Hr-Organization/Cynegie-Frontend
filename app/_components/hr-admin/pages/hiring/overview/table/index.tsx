@@ -15,6 +15,7 @@ interface TableProps<T> {
   currentPage: number;
   onPageChange: (page: number) => void;
   onItemsPerPageChange: (items: number) => void;
+  showActions?: boolean;
 }
 
 const Table = <T extends Record<string, any>>({
@@ -25,17 +26,18 @@ const Table = <T extends Record<string, any>>({
   currentPage,
   onPageChange,
   onItemsPerPageChange,
+  showActions = true,
 }: TableProps<T>) => {
   return (
     <div className="bg-white w-full h-full flex flex-col">
       {/* Header */}
       <div className="p-4 flex justify-between items-center">
         {/* Search Input */}
-        <div className="relative">
+        <div className="relative w-56">
           <input
             type="text"
             placeholder="Search..."
-            className="border border-gray-300 rounded-md px-3 py-2 text-sm pl-10"
+            className="border border-gray-300 rounded-md w-[500px] px-3 py-2 text-sm pl-10"
           />
           {/* Search SVG Icon inside the input */}
           <svg
@@ -84,16 +86,18 @@ const Table = <T extends Record<string, any>>({
       </div>
 
       {/* Table */}
-      <div className="flex-grow px-4 overflow-x-auto">
-        <table className="w-full text-left">
+      <div className="flex-grow px-2 overflow-x-auto">
+        <table className="w-full text-left table-fixed">
           <thead>
             <tr className="border-b bg-gray-50">
               {columns.map((column, index) => (
-                <th key={index} className="p-2">
-                  {column.header}
-                </th>
+                <th key={index} className="p-2">{column.header}</th>
               ))}
-              <th className="p-2">Actions</th>
+              {showActions && (
+                <th className="p-2 justify-end">
+                  <div className="flex justify-center">Actions</div>
+                </th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -104,46 +108,50 @@ const Table = <T extends Record<string, any>>({
                     {column.accessor(row)}
                   </td>
                 ))}
-                <td className="p-2">
-                  <button>
-                    <svg
-                      width="32"
-                      height="33"
-                      viewBox="0 0 32 33"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <rect
-                        x="0.5"
-                        y="1.10938"
-                        width="31"
-                        height="31"
-                        rx="7.5"
-                        fill="white"
-                      />
-                      <rect
-                        x="0.5"
-                        y="1.10938"
-                        width="31"
-                        height="31"
-                        rx="7.5"
-                        stroke="#E4E7EC"
-                      />
-                      <path
-                        d="M17 11.2761C17 11.8284 16.5523 12.2761 16 12.2761C15.4477 12.2761 15 11.8284 15 11.2761C15 10.7238 15.4477 10.2761 16 10.2761C16.5523 10.2761 17 10.7238 17 11.2761Z"
-                        fill="black"
-                      />
-                      <path
-                        d="M17 16.6095C17 17.1617 16.5523 17.6095 16 17.6095C15.4477 17.6095 15 17.1617 15 16.6095C15 16.0572 15.4477 15.6095 16 15.6095C16.5523 15.6095 17 16.0572 17 16.6095Z"
-                        fill="black"
-                      />
-                      <path
-                        d="M16 22.9428C16.5523 22.9428 17 22.4951 17 21.9428C17 21.3905 16.5523 20.9428 16 20.9428C15.4477 20.9428 15 21.3905 15 21.9428C15 22.4951 15.4477 22.9428 16 22.9428Z"
-                        fill="black"
-                      />
-                    </svg>
-                  </button>
-                </td>
+                {showActions && (
+                  <td className="p-2 pr-2 items-end">
+                    <div className="flex items-end justify-center">
+                      <button>
+                        <svg
+                          width="32"
+                          height="33"
+                          viewBox="0 0 32 33"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <rect
+                            x="0.5"
+                            y="1.10938"
+                            width="31"
+                            height="31"
+                            rx="7.5"
+                            fill="white"
+                          />
+                          <rect
+                            x="0.5"
+                            y="1.10938"
+                            width="31"
+                            height="31"
+                            rx="7.5"
+                            stroke="#E4E7EC"
+                          />
+                          <path
+                            d="M17 11.2761C17 11.8284 16.5523 12.2761 16 12.2761C15.4477 12.2761 15 11.8284 15 11.2761C15 10.7238 15.4477 10.2761 16 10.2761C16.5523 10.2761 17 10.7238 17 11.2761Z"
+                            fill="black"
+                          />
+                          <path
+                            d="M17 16.6095C17 17.1617 16.5523 17.6095 16 17.6095C15.4477 17.6095 15 17.1617 15 16.6095C15 16.0572 15.4477 15.6095 16 15.6095C16.5523 15.6095 17 16.0572 17 16.6095Z"
+                            fill="black"
+                          />
+                          <path
+                            d="M16 22.9428C16.5523 22.9428 17 22.4951 17 21.9428C17 21.3905 16.5523 20.9428 16 20.9428C15.4477 20.9428 15 21.3905 15 21.9428C15 22.4951 15.4477 22.9428 16 22.9428Z"
+                            fill="black"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
