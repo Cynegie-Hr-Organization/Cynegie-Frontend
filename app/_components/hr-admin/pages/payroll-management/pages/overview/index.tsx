@@ -7,8 +7,10 @@ import { CalendarTodayOutlined } from '@mui/icons-material';
 import PayrollOverviewChartLarge from '../../charts/payroll-overview/large';
 import PayrollOverviewChartMobile from '../../charts/payroll-overview/mobile';
 import BonusAndIncentivesChart from '../../charts/bonuses-and-incentives-chart';
+import { useRouter } from 'next/navigation';
 
 const HrAdminPayrollOverviewPage = () => {
+  const router = useRouter();
   return (
     <div className='flex flex-col gap-5 p-8 min-h-screen'>
       <Stack gap={2}>
@@ -31,6 +33,7 @@ const HrAdminPayrollOverviewPage = () => {
               sx={{ display: { xs: 'none', md: 'block' } }}
               variant='contained'
               className='common-button'
+              onClick={() => router.push('/hr-admin/payroll/create-payroll')}
             >
               Create Payroll
             </Button>

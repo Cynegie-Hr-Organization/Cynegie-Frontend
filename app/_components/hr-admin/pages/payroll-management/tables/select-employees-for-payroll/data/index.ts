@@ -1,0 +1,42 @@
+export const selectEmployeesForPayrollTableData = [
+  {
+    image: '',
+    name: 'Ashime Lile',
+    department: 'Product',
+    grossPay: 'N3,787.00',
+    deduction: 'N3,787.00',
+    netPay: '18,205,000',
+  },
+  {
+    image: '',
+    name: 'Ashime Lile',
+    department: 'Product',
+    grossPay: 'N3,787.00',
+    deduction: 'N3,787.00',
+    netPay: '18,205,000',
+  },
+  {
+    image: '',
+    name: 'Ashime Lile',
+    department: 'Engineering',
+    grossPay: 'N3,787.00',
+    deduction: 'N3,787.00',
+    netPay: '18,205,000',
+  },
+  {
+    image: '',
+    name: 'Ashime Lile',
+    department: 'Design',
+    grossPay: 'N3,787.00',
+    deduction: 'N3,787.00',
+    netPay: '18,205,000',
+  },
+  {
+    image: '',
+    name: 'Ashime Lile',
+    department: 'Admin',
+    grossPay: 'N3,787.00',
+    deduction: 'N3,787.00',
+    netPay: '18,205,000',
+  },
+];

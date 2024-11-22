@@ -3,6 +3,7 @@ import { Box } from '@mui/material';
 const StatusPill: React.FC<{
   variant: 'success' | 'error' | 'warning';
   text: string;
+  large?: boolean;
 }> = ({ variant, text }) => {
   return (
     <Box
