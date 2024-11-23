@@ -1,11 +1,12 @@
 'use client'
-import { Avatar, Stack, TextField } from "@mui/material"
+
+import { MenuItem, Select, Avatar, Stack, TextField } from "@mui/material"
 import OverViewSection from "./overview-section";
 import { ReactNode, Suspense } from "react";
 import { RiSearchLine } from "react-icons/ri";
 import { GoDotFill, GoPlus } from "react-icons/go";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import { LuClock } from "react-icons/lu";
+import { LuClock, LuListFilter } from "react-icons/lu";
 
 
 const OnBoardingPage = () => {
@@ -40,13 +41,19 @@ const OnBoardingPage = () => {
               }}
               placeholder='Search here...'
             />
-
-            {/* <button className="rounded-lg flex h-max border border-gray-300 bg-transparent">
-            <LuListFilter />  Filter
-            </button> */}
+            <Select
+              defaultValue='Filter'
+              className="flex items-center justify-center gap-x-2"
+              sx={{ height: '30px', borderRadius: '4.62px', pr: '15px' }}
+            >
+              <MenuItem value='Filter'>
+                <span>Filter</span>
+              </MenuItem>
+              <LuListFilter />
+            </Select>
           </div>
-          <div className="grid grid-cols-4 gap-8 p-1 mb-6">
-            <div>
+          <div className="grid grid-cols-4 gap-8 p-1 mb-6 overflow-scroll">
+            <div >
               <Taskhead title="to do" count="03" />
 
               <TaskItem taskTitle="implement" />
@@ -72,7 +79,7 @@ const OnBoardingPage = () => {
             </div>
           </div>
         </CardLayout>
-      </div>
+      </div >
     </Suspense >
   )
 }
@@ -80,7 +87,10 @@ const OnBoardingPage = () => {
 const Taskhead = ({ title, titleColor, count }: { title: string, titleColor?: string, count: string }) => {
   return (
     <div className="flex justify-between items-center">
-      <h3 className={`capitalize font-bold text-sm ${titleColor}`}>{title} <span className="font-normal text-gray-500">({count})</span></h3>
+      <h3 className={`capitalize font-bold text-sm ${titleColor}`}>
+        {title}
+        <span className="font-normal text-gray-500">({count})</span>
+      </h3>
       <div className="flex gap-x-2 text-gray-400">
         <GoPlus />
         <HiOutlineDotsHorizontal />
@@ -89,14 +99,22 @@ const Taskhead = ({ title, titleColor, count }: { title: string, titleColor?: st
   )
 }
 
-const TaskItem = ({ taskTitle }: { taskTitle: string }) => {
+const TaskItem = ({ taskTitle, draggable = true }: {
+  taskTitle?: string,
+  draggable?: boolean,
+  onDragStart?: () => void
+}) => {
+
+
   return (
-    <div className="text-xs mt-11 space-y-[14.67px]">
+    <div className="text-xs mt-11 space-y-[14.67px] p-2 rounded-xl"
+    draggable={draggable}
+    >
       <div className="space-y-2">
         <p className="capitalize text-sm font-semibold">{taskTitle}</p>
 
         <p className="flex items-center text-[11px] text-primary font-medium">
-          <GoDotFill /> <span>Design</span>
+          <GoDotFill /><span>Design</span>
         </p>
       </div>
       <p className="text-[#64748B]">It’s just needs to adapt the UI from what you did before</p>

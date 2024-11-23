@@ -1,9 +1,12 @@
 import { IoChevronBackOutline } from "react-icons/io5";
 import Image from "next/image";
+import { useRouter } from 'next/navigation';
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { GiHamburgerMenu } from "react-icons/gi";
 
-const Header = () => {
+const Header = ({ onMenuClick, onNotificationClick }: { onNotificationClick?: () => void, onMenuClick: () => void }) => {
+  const route = useRouter();
+
   return (
     <div className="flex items-center justify-between p-5 md:border-b md:border-DreamyCloud md:bg-white">
       <div className="items-center hidden gap-3 xl:flex">
@@ -30,11 +33,11 @@ const Header = () => {
         <IoIosNotificationsOutline />
       </div>
 
-      <IoChevronBackOutline className="xl:hidden" />
+      <IoChevronBackOutline className="xl:hidden" onClick={() => route.back()} />
 
-      <div className="z-50 flex items-center justify-between gap-5 xl:hidden">
-        <IoIosNotificationsOutline />
-        <GiHamburgerMenu />
+      <div className="z-50 flex items-center gap-5 xl:hidden">
+        <IoIosNotificationsOutline onClick={onNotificationClick} />
+        <GiHamburgerMenu onClick={onMenuClick} />
       </div>
 
     </div>

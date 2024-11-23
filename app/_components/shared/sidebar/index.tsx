@@ -1,20 +1,20 @@
-import { Logo } from "@/public/image"
 import { FiLogOut } from "react-icons/fi"
 import Image from "next/image"
 import { RiSearchLine } from "react-icons/ri"
 import NavLinks from "./nav-links"
-import { useState } from "react"
+import { IoClose } from "react-icons/io5";
 
-const Sidebar = () => {
-	const [openMobileMenu] = useState<boolean>(false);
+const Sidebar = ({ openMobileMenu, setOpenMobileMenu }: { openMobileMenu: boolean, setOpenMobileMenu: () => void }) => {
+	// const [openMobileMenu] = useState<boolean>(false);
 
 	return (
 		<div
-			className={`${openMobileMenu ? 'flex animate-slideIn' : 'hidden animate-slideOut'} 
-        xl:flex bg-white h-dvh z-50 fixed w-[272px] px-4 pt-7 flex-col justify-between`}>
+			className={`${openMobileMenu ? 'flex animate-in' : 'hidden animate-out'} 
+        xl:flex bg-white h-dvh z-50 fixed w-[272px] px-4 pt-7 flex-col justify-between transition duration-500`}>
 
 			<div className="space-y-5">
-				<Image src={Logo} width={122} height={38} alt="logo" className="w-[122px] h-[38px]" />
+				<IoClose onClick={setOpenMobileMenu} className="block xl:hidden place-self-end" />
+				<Image src='/image/logo.png' width={122} height={38} alt="logo" className="hidden  w-[122px] h-[38px]" />
 
 				<div className="border border-[#D0D5DD] w-[240px] flex items-center gap-3 p-2 rounded-[6px] focus-within:border-primary hover:border-primary duration-300 transition">
 					<RiSearchLine className="text-2xl" />
