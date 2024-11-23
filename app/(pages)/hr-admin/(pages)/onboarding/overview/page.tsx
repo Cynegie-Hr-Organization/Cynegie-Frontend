@@ -1,21 +1,71 @@
 'use client'
-
-import { MenuItem, Select, Avatar, Stack, TextField } from "@mui/material"
+import { MenuItem, Select, Avatar, Stack, TextField } from "@mui/material";
 import OverViewSection from "./overview-section";
-import { ReactNode, Suspense } from "react";
+import { ReactNode, Suspense, useState, useCallback } from "react";
 import { RiSearchLine } from "react-icons/ri";
 import { GoDotFill, GoPlus } from "react-icons/go";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { LuClock, LuListFilter } from "react-icons/lu";
-
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const OnBoardingPage = () => {
+  const [tasks, setTasks] = useState({
+    todo: [
+      { id: 1, text: "Write a cool JS library" },
+      { id: 2, text: "Make it generic enough" },
+    ],
+    inProgress: [
+      { id: 3, text: "Write README" },
+      { id: 4, text: "Create some examples" },
+    ],
+    inReview: [
+      { id: 5, text: "Spam in Twitter and IRC to promote it" },
+    ],
+    completed: [],
+  });
+
+  const moveCard = useCallback((draggedTaskId: number, targetColumn: string, targetIndex: number) => {
+    setTasks((prevTasks) => {
+      const sourceColumn = Object.keys(prevTasks).find((column) =>
+        prevTasks[column].some((task) => task.id === draggedTaskId)
+      );
+
+      if (!sourceColumn) return prevTasks;
+
+      const draggedTask = prevTasks[sourceColumn].find(
+        (task) => task.id === draggedTaskId
+      );
+
+      const sourceColumnTasks = prevTasks[sourceColumn].filter(
+        (task) => task.id !== draggedTaskId
+      );
+
+      // Reorder tasks if in the same column
+      if (sourceColumn === targetColumn) {
+        const updatedTasks = [...sourceColumnTasks];
+        updatedTasks.splice(targetIndex, 0, draggedTask); // Insert the task at the target index
+        return {
+          ...prevTasks,
+          [sourceColumn]: updatedTasks,
+        };
+      }
+
+      // Move task to another column
+      const targetColumnTasks = [...prevTasks[targetColumn], draggedTask];
+      return {
+        ...prevTasks,
+        [sourceColumn]: sourceColumnTasks,
+        [targetColumn]: targetColumnTasks,
+      };
+    });
+  }, []);
+
   return (
-    <Suspense fallback={'Loading...'}>
-      <Stack className="" gap={3}>
+    <Suspense fallback="Loading...">
+      <Stack gap={3}>
         <OverViewSection />
       </Stack>
-
       <div className="my-12">
         <div className="flex gap-4 text-sm mb-4 pl-4">
           <button className="p-4 text-primary border-b border-primary"> Task List </button>
@@ -23,71 +73,99 @@ const OnBoardingPage = () => {
         </div>
         <CardLayout>
           <div className="w-full flex items-center justify-between flex-grow mb-4">
-            <TextField className="max-w-[476px]"
+            <TextField
+              className="max-w-[476px]"
               sx={{
-                width: { xs: '90%', sm: '70%', md: '70%' },
-                mb: { xs: '15px', md: '0px' },
+                width: { xs: "90%", sm: "70%", md: "70%" },
+                mb: { xs: "15px", md: "0px" },
               }}
               InputProps={{
                 sx: {
-                  height: '35px',
-                  borderRadius: '6px',
-                  fontSize: '14px',
+                  height: "35px",
+                  borderRadius: "6px",
+                  fontSize: "14px",
                   fontWeight: 400,
                 },
-                startAdornment: (
-                  <RiSearchLine className="mr-2 text-2xl" />
-                ),
+                startAdornment: <RiSearchLine className="mr-2 text-2xl" />,
               }}
-              placeholder='Search here...'
+              placeholder="Search here..."
             />
             <Select
-              defaultValue='Filter'
+              defaultValue="Filter"
               className="flex items-center justify-center gap-x-2"
-              sx={{ height: '30px', borderRadius: '4.62px', pr: '15px' }}
+              sx={{ height: "30px", borderRadius: "4.62px", pr: "15px" }}
             >
-              <MenuItem value='Filter'>
+              <MenuItem value="Filter">
                 <span>Filter</span>
               </MenuItem>
               <LuListFilter />
             </Select>
           </div>
-          <div className="grid grid-cols-4 gap-8 p-1 mb-6 overflow-scroll">
-            <div >
-              <Taskhead title="to do" count="03" />
-
-              <TaskItem taskTitle="implement" />
-              <TaskItem taskTitle="design review" />
+          
+          <DndProvider backend={HTML5Backend}>
+            <div className="grid grid-cols-4 gap-8 p-1 mb-6 overflow-scroll h-[463.33px]">
+              {["todo", "inProgress", "inReview", "completed"].map((column) => (
+                <Column
+                  key={column}
+                  title={column}
+                  tasks={tasks[column]}
+                  moveCard={moveCard}
+                />
+              ))}
             </div>
-            <div>
-              <Taskhead title="in progress" titleColor="text-blue-500" count="02" />
-
-              <TaskItem taskTitle="UI adjustments" />
-              <TaskItem taskTitle="UI adjustments" />
-            </div>
-            <div>
-              <Taskhead title="in review" titleColor="text-amber-500" count="10" />
-
-              <TaskItem taskTitle="UI adjustments" />
-              <TaskItem taskTitle="UI adjustments" />
-            </div>
-            <div>
-              <Taskhead title="completed" titleColor="text-green-500" count="10" />
-
-              <TaskItem taskTitle="UI adjustments" />
-              {/* <TaskItem taskTitle="UI adjustments" /> */}
-            </div>
-          </div>
+          </DndProvider>
         </CardLayout>
-      </div >
-    </Suspense >
-  )
-}
+      </div>
+    </Suspense>
+  );
+};
 
-const Taskhead = ({ title, titleColor, count }: { title: string, titleColor?: string, count: string }) => {
+const Column = ({
+  title,
+  tasks,
+  moveCard,
+}: {
+  title: string;
+  tasks: { id: number; text: string }[];
+  moveCard: (draggedTaskId: number, targetColumn: string, targetIndex: number) => void;
+}) => {
+  const [, drop] = useDrop({
+    accept: "TASK",
+    drop: (item: { id: number; column: string; index: number }) => {
+      if (item.column !== title) {
+        moveCard(item.id, title, tasks.length);
+      }
+    },
+  });
+
+  return (
+    <div ref={drop} className="space-y-4 overflow-y-scroll">
+      <Taskhead title={title} count={tasks.length.toString()} />
+      <div className="space-y-4">
+        {tasks.map((task, index) => (
+          <TaskItem
+            key={task.id}
+            task={task}
+            moveCard={moveCard}
+            currentColumn={title}
+            index={index}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const Taskhead = ({
+  title,
+  count,
+}: {
+  title: string;
+  count: string;
+}) => {
   return (
     <div className="flex justify-between items-center">
-      <h3 className={`capitalize font-bold text-sm ${titleColor}`}>
+      <h3 className="capitalize font-bold text-sm">
         {title}
         <span className="font-normal text-gray-500">({count})</span>
       </h3>
@@ -96,58 +174,78 @@ const Taskhead = ({ title, titleColor, count }: { title: string, titleColor?: st
         <HiOutlineDotsHorizontal />
       </div>
     </div>
-  )
-}
+  );
+};
 
-const TaskItem = ({ taskTitle, draggable = true }: {
-  taskTitle?: string,
-  draggable?: boolean,
-  onDragStart?: () => void
+const TaskItem = ({
+  task,
+  moveCard,
+  currentColumn,
+  index,
+}: {
+  task: { id: number; text: string };
+  moveCard: (draggedTaskId: number, targetColumn: string, targetIndex: number) => void;
+  currentColumn: string;
+  index: number;
 }) => {
+  const [{ isDragging }, drag] = useDrag({
+    type: "TASK",
+    item: { id: task.id, column: currentColumn, index },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
 
+  const [{ isOver }, drop] = useDrop({
+    accept: "TASK",
+    drop: (item: { id: number; column: string; index: number }) => {
+      if (item.column === currentColumn && item.index !== index) {
+        moveCard(item.id, currentColumn, index); // Swap within the same column
+      }
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  });
 
   return (
-    <div className="text-xs mt-11 space-y-[14.67px] p-2 rounded-xl"
-    draggable={draggable}
+    <div
+      ref={(node) => drag(drop(node))}
+      className="text-xs mt-11 space-y-[14.67px] p-2 rounded-xl"
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+        background: isOver ? "lightgray" : "transparent",
+      }}
     >
       <div className="space-y-2">
-        <p className="capitalize text-sm font-semibold">{taskTitle}</p>
-
+        <p className="capitalize text-sm font-semibold">{task.text}</p>
         <p className="flex items-center text-[11px] text-primary font-medium">
-          <GoDotFill /><span>Design</span>
+          <GoDotFill />
+          <span>Design</span>
         </p>
       </div>
       <p className="text-[#64748B]">It’s just needs to adapt the UI from what you did before</p>
       <hr className="border-t w-full" />
-
       <div className="flex items-center justify-between">
         <div className="w-max h-max flex items-center gap-x-2 p-[7.33px] rounded-lg bg-[#FDF2F8] text-[#ED4F9D] font-medium">
           <LuClock />
-          <span className="">3 days left</span>
+          <span>3 days left</span>
         </div>
-        <div className='flex'>
+        <div className="flex">
           {[
-            '/image/persons/person-1.png',
-            '/image/persons/person-2.png',
+            "/image/persons/person-1.png",
+            "/image/persons/person-2.png",
           ].map((imageSrc, index) => (
-            <Avatar
-              key={index}
-              src={imageSrc}
-              className="h-6 w-6 first:ml-auto -ml-4"
-            />
+            <Avatar key={index} src={imageSrc} sx={{ width: "20px", height: "20px" }} />
           ))}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-const CardLayout = ({ children, className }: { children: ReactNode, className?: string }) => {
-  return (
-    <div className={`bg-white border border-1 border-gray-200 p-4 ${className}`}>
-      {children}
-    </div>
-  )
-}
+const CardLayout = ({ children }: { children: ReactNode }) => {
+  return <div className="border-[#E5E7EB] p-6 rounded-xl">{children}</div>;
+};
 
 export default OnBoardingPage;
