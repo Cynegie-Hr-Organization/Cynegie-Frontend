@@ -4,8 +4,8 @@ import { Box, Grid2, Stack, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import React from 'react';
-import SelectEmployeesForPayrollTable from '../../../tables/select-employees-for-payroll';
 import { useRouter } from 'next/navigation';
+import ReviewPayrollTable from '../../../tables/review-payroll';
 
 const HrAdminReviewPayrollPage = () => {
   const router = useRouter();
@@ -156,7 +156,7 @@ const HrAdminReviewPayrollPage = () => {
             Add New Employee
           </div>
         </Stack>
-        <SelectEmployeesForPayrollTable />
+        <ReviewPayrollTable />
         <Stack
           direction='row'
           alignItems='center'

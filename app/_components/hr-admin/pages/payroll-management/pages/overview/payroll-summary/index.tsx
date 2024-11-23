@@ -1,14 +1,13 @@
 'use client';
 import { ChevronLeft } from '@mui/icons-material';
-import { Box, Divider, Grid2, Stack, TextField } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Dialog, DialogContent, Divider, Stack } from '@mui/material';
 import React from 'react';
-import SelectEmployeesForPayrollTable from '../../../tables/select-employees-for-payroll';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const HrAdminPayrollSummaryPage = () => {
   const router = useRouter();
+  const [showSuccessDialog, setShowSuccessDialog] = React.useState(false);
   return (
     <Stack mx={5} gap={3} mb={10}>
       <Stack
@@ -118,7 +117,9 @@ const HrAdminPayrollSummaryPage = () => {
           Save & Continue Later
         </button>
         <button
-          onClick={() => router.push('/hr-admin/payroll/overview')}
+          onClick={() => {
+            setShowSuccessDialog(true);
+          }}
           style={{
             borderRadius: '8px',
             border: '1.5px solid #98A2B3',
@@ -133,6 +134,50 @@ const HrAdminPayrollSummaryPage = () => {
           Finalize Payroll
         </button>
       </Stack>
+      {showSuccessDialog && (
+        <Dialog open={showSuccessDialog}>
+          <DialogContent>
+            <Stack gap={3} alignItems='center' padding={3}>
+              <Image
+                src='/icons/success-tick.svg'
+                alt=''
+                height={100}
+                width={100}
+              />
+              <div
+                style={{ color: '#303030', fontWeight: 600, fontSize: '20px' }}
+              >
+                You're all set
+              </div>
+              <div>
+                Payroll{' '}
+                <span style={{ color: '#303030', fontWeight: 700 }}>
+                  1st Sept - 31st September
+                </span>{' '}
+                has been sent for approval
+              </div>
+              <button
+                onClick={() => {
+                  router.push('/hr-admin/payroll/overview');
+                }}
+                style={{
+                  borderRadius: '8px',
+                  border: '1.5px solid #98A2B3',
+                  color: '#FFFFFF',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  padding: '10px 0px',
+                  width: '250px',
+                  backgroundColor: '#0035C3',
+                  marginTop: '10px',
+                }}
+              >
+                Back to Payroll
+              </button>
+            </Stack>
+          </DialogContent>
+        </Dialog>
+      )}
     </Stack>
   );
 };

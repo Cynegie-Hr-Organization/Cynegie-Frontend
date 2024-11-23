@@ -8,8 +8,10 @@ import {
 import {
   Avatar,
   Box,
+  Button,
   Checkbox,
   MenuItem,
+  Popover,
   Select,
   Stack,
   Table,
@@ -39,6 +41,23 @@ const SelectEmployeesForPayrollTable = () => {
       }
     });
   };
+
+  const [filterAnchorEl, setFilterAnchorEl] =
+    useState<HTMLButtonElement | null>(null);
+
+  const handleFilterClick: React.MouseEventHandler<HTMLButtonElement> = (
+    event
+  ) => {
+    const buttonElement = event.currentTarget;
+    setFilterAnchorEl(buttonElement);
+  };
+
+  const handleFilterClose = () => {
+    setFilterAnchorEl(null);
+  };
+
+  const openFilter = Boolean(filterAnchorEl);
+  const filterId = openFilter ? 'filter-popover' : undefined;
 
   return (
     <Stack gap={2} className='common-card'>
@@ -86,6 +105,7 @@ const SelectEmployeesForPayrollTable = () => {
             gap: 5,
             alignItems: 'center',
           }}
+          onClick={handleFilterClick}
         >
           <FilterList />
           <div
@@ -197,6 +217,62 @@ const SelectEmployeesForPayrollTable = () => {
           </Stack>
         </Stack>
       </Stack>
+      <Popover
+        id={filterId}
+        open={openFilter}
+        anchorEl={filterAnchorEl}
+        onClose={handleFilterClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+      >
+        <Stack padding={5} gap={5}>
+          <Stack gap={3}>
+            <Stack gap={1}>
+              <div
+                style={{ fontWeight: 400, fontSize: '12px', color: '#303030' }}
+              >
+                Department
+              </div>
+              <Select
+                sx={{ height: '40px', borderRadius: '5px', width: '200px' }}
+              >
+                <MenuItem></MenuItem>
+              </Select>
+            </Stack>
+          </Stack>
+          <Stack direction='row' justifyContent='space-between'>
+            <Button
+              sx={{
+                display: { xs: 'none', md: 'block' },
+                textTransform: 'none',
+                fontSize: '14px',
+                border: '0px',
+                color: '#9CA3AF',
+              }}
+              variant='outlined'
+            >
+              Reset
+            </Button>
+            <Button
+              sx={{
+                display: { xs: 'none', md: 'block' },
+                fontSize: '14px',
+                boxShadow: 'none',
+              }}
+              variant='contained'
+              className='common-button'
+            >
+              Filter
+            </Button>
+          </Stack>
+        </Stack>
+      </Popover>
     </Stack>
   );
 };

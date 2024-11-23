@@ -1,9 +1,20 @@
 'use client';
-import { Box, Button, Grid2, MenuItem, Select, Stack } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid2,
+  List,
+  ListItem,
+  ListItemText,
+  MenuItem,
+  Popover,
+  Select,
+  Stack,
+} from '@mui/material';
 import React from 'react';
 import './style.css';
 import PayrollTable from '../../tables/overview';
-import { CalendarTodayOutlined } from '@mui/icons-material';
+import { CalendarTodayOutlined, ChevronLeft } from '@mui/icons-material';
 import PayrollOverviewChartLarge from '../../charts/payroll-overview/large';
 import PayrollOverviewChartMobile from '../../charts/payroll-overview/mobile';
 import BonusAndIncentivesChart from '../../charts/bonuses-and-incentives-chart';
@@ -11,6 +22,21 @@ import { useRouter } from 'next/navigation';
 
 const HrAdminPayrollOverviewPage = () => {
   const router = useRouter();
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    const buttonElement = event.currentTarget;
+    setAnchorEl(buttonElement);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'actions-popover' : undefined;
   return (
     <div className='flex flex-col gap-5 p-8 min-h-screen'>
       <Stack gap={2}>
@@ -22,13 +48,24 @@ const HrAdminPayrollOverviewPage = () => {
             </Box>
           </Stack>
           <Stack direction='row' alignItems='center' gap={2}>
-            <Select
-              defaultValue='Actions'
-              sx={{ height: '38px', borderRadius: '4.62px', pr: '15px' }}
-              disabled
+            <button
+              style={{
+                display: 'flex',
+                height: '38px',
+                borderRadius: '4.62px',
+                padding: '0px 15px',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                border: '1px solid #98A2B3',
+                color: '#98A2B3',
+                fontSize: '16px',
+                fontWeight: 700,
+              }}
+              onClick={handleClick}
             >
-              <MenuItem value='Actions'>Actions</MenuItem>
-            </Select>
+              <div style={{ flexGrow: 1 }}>Actions</div>{' '}
+              <ChevronLeft sx={{ transform: 'rotate(270deg)' }} />
+            </button>
             <Button
               sx={{ display: { xs: 'none', md: 'block' } }}
               variant='contained'
@@ -281,6 +318,36 @@ const HrAdminPayrollOverviewPage = () => {
       <Box sx={{ overflowX: 'auto' }}>
         <PayrollTable />
       </Box>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+      >
+        <List sx={{ color: '#475367', fontWeight: 400, fontSize: '14px' }}>
+          {[
+            { name: 'Payroll Reports', route: '/hr-admin/payroll/reports' },
+            { name: 'Payroll Settings', route: '/hr-admin/payroll/settings' },
+          ].map((item, index) => (
+            <ListItem
+              key={index}
+              component='button'
+              sx={{ '&:hover': { color: '#0035C3' } }}
+              onClick={() => router.push(item.route)}
+            >
+              <ListItemText primary={item.name} />
+            </ListItem>
+          ))}
+        </List>
+      </Popover>
     </div>
   );
 };

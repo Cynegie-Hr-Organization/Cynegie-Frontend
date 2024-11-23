@@ -6,11 +6,10 @@ import {
   FilterList,
 } from '@mui/icons-material';
 import {
+  Avatar,
   Box,
   Button,
   Checkbox,
-  Dialog,
-  DialogContent,
   List,
   ListItem,
   ListItemText,
@@ -28,36 +27,15 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import { useState, ChangeEvent } from 'react';
-import { payrollOverviewTableData } from './data';
+import { selectEmployeesForPayrollTableData } from '../select-employees-for-payroll/data';
 import { useRouter } from 'next/navigation';
 
-const PayrollTable = () => {
+const ReviewPayrollTable = () => {
   const router = useRouter();
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
-  const handleCheckboxChange = (
-    event: ChangeEvent<HTMLInputElement>,
-    rowIndex: number
-  ) => {
-    setSelectedRows((prevSelectedRows) => {
-      if (event.target.checked) {
-        return [...prevSelectedRows, rowIndex];
-      } else {
-        return prevSelectedRows.filter((index) => index !== rowIndex);
-      }
-    });
-  };
   const [filterAnchorEl, setFilterAnchorEl] =
     useState<HTMLButtonElement | null>(null);
   const [tableActionAnchorEl, setTableActionAnchorEl] =
     useState<HTMLButtonElement | null>(null);
-
-  const [tableActionPopoverContent, setTableActionPopoverContent] = useState([
-    {
-      name: '',
-      route: '',
-    },
-  ]);
 
   const handleFilterClick: React.MouseEventHandler<HTMLButtonElement> = (
     event
@@ -121,7 +99,7 @@ const PayrollTable = () => {
             placeholder='Search here...'
           />
         </Box>
-        <Button
+        <button
           style={{
             height: '30px',
             borderRadius: '4.62px',
@@ -132,8 +110,6 @@ const PayrollTable = () => {
             flexDirection: 'row',
             gap: 5,
             alignItems: 'center',
-            color: '#344054',
-            textTransform: 'none',
           }}
           onClick={handleFilterClick}
         >
@@ -147,36 +123,18 @@ const PayrollTable = () => {
           >
             Filter
           </div>
-        </Button>
+        </button>
       </Stack>
       <TableContainer>
         <Table>
           <TableHead sx={{ backgroundColor: '#F7F9FC' }}>
             <TableRow>
-              <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                <Checkbox
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setSelectedRows([0, 1, 2, 3, 4]);
-                    } else {
-                      setSelectedRows([]);
-                    }
-                  }}
-                  checked={selectedRows.length === 5}
-                  indeterminate={
-                    selectedRows.length > 0 && selectedRows.length < 5
-                  }
-                />
-              </TableCell>
               {[
-                'Payroll Name',
-                'Payroll Period',
-                'Payment Date',
-                'Total Employees',
+                'Employee Name',
+                'Department',
                 'Gross Pay',
+                'Deduction',
                 'Net Pay',
-                'Approval Date',
-                'Status',
                 'Actions',
               ].map((field) => (
                 <TableCell key={field} sx={{ whiteSpace: 'nowrap' }}>
@@ -186,38 +144,35 @@ const PayrollTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {payrollOverviewTableData.map((row, rowIndex) => (
+            {selectEmployeesForPayrollTableData.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
-                <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                  <Checkbox
-                    checked={selectedRows.includes(rowIndex)}
-                    onChange={(e) => handleCheckboxChange(e, rowIndex)}
-                  />
-                </TableCell>
                 {[
                   row.name,
-                  row.period,
-                  row.date,
-                  row.totalEmployees,
+                  row.department,
                   row.grossPay,
+                  row.deduction,
                   row.netPay,
-                  row.approvalDate,
-                  row.status,
+                  '',
                 ].map((field, columnIndex) =>
-                  columnIndex === 7 ? (
+                  columnIndex == 0 ? (
                     <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>
-                      <StatusPill
-                        variant={
-                          row.status === 'Approved'
-                            ? 'success'
-                            : row.status === 'Pending'
-                            ? 'warning'
-                            : row.status === 'Rejected'
-                            ? 'error'
-                            : 'success'
-                        }
-                        text={field}
-                      />
+                      <Stack direction='row' gap={1.5} alignItems='center'>
+                        <Avatar src={row.image} />
+                        <div>{field}</div>
+                      </Stack>
+                    </TableCell>
+                  ) : columnIndex == 5 ? (
+                    <TableCell key={columnIndex} sx={{ whiteSpace: 'nowrap' }}>
+                      <Button onClick={handleTableActionClick}>
+                        <MoreVert
+                          sx={{
+                            borderWidth: '0.5px',
+                            borderRadius: '4px',
+                            padding: '2px',
+                            fill: '#000',
+                          }}
+                        />
+                      </Button>
                     </TableCell>
                   ) : (
                     <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>
@@ -225,39 +180,6 @@ const PayrollTable = () => {
                     </TableCell>
                   )
                 )}
-                <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                  <Button
-                    onClick={(e) => {
-                      handleTableActionClick(e);
-                      if (row.status == 'Approved') {
-                        setTableActionPopoverContent([
-                          { name: 'View Details', route: '' },
-                          { name: 'View Payroll Report', route: '' },
-                        ]);
-                      }
-                      if (row.status == 'Pending') {
-                        setTableActionPopoverContent([
-                          { name: 'Edit Payroll', route: '' },
-                          { name: 'Delete', route: '' },
-                        ]);
-                      }
-                      if (row.status == 'Rejected') {
-                        setTableActionPopoverContent([
-                          { name: 'Resolve Issue', route: '' },
-                        ]);
-                      }
-                    }}
-                  >
-                    <MoreVert
-                      sx={{
-                        borderWidth: '0.5px',
-                        borderRadius: '4px',
-                        padding: '2px',
-                        fill: '#000',
-                      }}
-                    />
-                  </Button>
-                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -318,18 +240,6 @@ const PayrollTable = () => {
                 <MenuItem></MenuItem>
               </Select>
             </Stack>
-            <Stack gap={1}>
-              <div
-                style={{ fontWeight: 400, fontSize: '12px', color: '#303030' }}
-              >
-                Status
-              </div>
-              <Select
-                sx={{ height: '40px', borderRadius: '5px', width: '200px' }}
-              >
-                <MenuItem></MenuItem>
-              </Select>
-            </Stack>
           </Stack>
           <Stack direction='row' justifyContent='space-between'>
             <Button
@@ -373,85 +283,24 @@ const PayrollTable = () => {
         }}
       >
         <List sx={{ color: '#475367', fontWeight: 400, fontSize: '14px' }}>
-          {tableActionPopoverContent.map((item) => (
+          {[
+            { name: 'Adjust Compensation', route: '#' },
+            { name: 'Remove Employee', route: '#' },
+          ].map((item) => (
             <ListItem
               component='button'
               sx={{
                 '&:hover': { color: '#0035C3' },
-                color: item.name == 'Delete' ? 'red' : '',
               }}
-              onClick={() =>
-                item.name === 'Delete'
-                  ? setShowDeleteDialog(true)
-                  : router.push(item.route)
-              }
+              onClick={() => router.push(item.route)}
             >
               <ListItemText primary={item.name} />
             </ListItem>
           ))}
         </List>
       </Popover>
-      {showDeleteDialog && (
-        <Dialog open={showDeleteDialog}>
-          <DialogContent>
-            <Stack gap={3} alignItems='center' padding={3}>
-              <Image
-                src='/icons/delete-x.svg'
-                alt=''
-                height={100}
-                width={100}
-              />
-              <div
-                style={{ color: '#303030', fontWeight: 600, fontSize: '20px' }}
-              >
-                Delete Payroll?
-              </div>
-              <div style={{ textAlign: 'center' }}>
-                If you delete this payroll, it will be removed from the payroll
-                Management and it will be inaccessible
-              </div>
-              <Stack direction='row' gap={5}>
-                <button
-                  onClick={() => setShowDeleteDialog(false)}
-                  style={{
-                    borderRadius: '8px',
-                    border: '1.5px solid #D0D5DD',
-                    color: '#667185',
-                    fontSize: '16px',
-                    fontWeight: 700,
-                    padding: '10px 40px',
-                    // width: '250px',
-                    backgroundColor: '#FFF',
-                    marginTop: '10px',
-                  }}
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => {
-                    router.push('/hr-admin/payroll/overview');
-                  }}
-                  style={{
-                    borderRadius: '8px',
-                    border: '1.5px solid #98A2B3',
-                    color: '#FFFFFF',
-                    fontSize: '16px',
-                    fontWeight: 600,
-                    padding: '10px 30px',
-                    // width: '250px',
-                    backgroundColor: '#CB1A14',
-                    marginTop: '10px',
-                  }}
-                >
-                  Delete Payroll
-                </button>
-              </Stack>
-            </Stack>
-          </DialogContent>
-        </Dialog>
-      )}
     </Stack>
   );
 };
 
-export default PayrollTable;
+export default ReviewPayrollTable;
