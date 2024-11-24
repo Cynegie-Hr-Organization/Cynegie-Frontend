@@ -23,10 +23,12 @@ import {
   TextField,
 } from '@mui/material';
 import Image from 'next/image';
-import { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { selectEmployeesForPayrollTableData } from './data';
 
-const SelectEmployeesForPayrollTable = () => {
+const SelectEmployeesForPayrollTable: React.FC<{
+  getSelectedRows: (selectedRows: number[]) => void;
+}> = ({ getSelectedRows }) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
   const handleCheckboxChange = (
@@ -35,8 +37,10 @@ const SelectEmployeesForPayrollTable = () => {
   ) => {
     setSelectedRows((prevSelectedRows) => {
       if (event.target.checked) {
+        getSelectedRows([...prevSelectedRows, rowIndex]);
         return [...prevSelectedRows, rowIndex];
       } else {
+        getSelectedRows(prevSelectedRows.filter((index) => index !== rowIndex));
         return prevSelectedRows.filter((index) => index !== rowIndex);
       }
     });
@@ -133,7 +137,9 @@ const SelectEmployeesForPayrollTable = () => {
                   onChange={(e) => {
                     if (e.target.checked) {
                       setSelectedRows([0, 1, 2, 3, 4]);
+                      getSelectedRows([0, 1, 2, 3, 4]);
                     } else {
+                      getSelectedRows([]);
                       setSelectedRows([]);
                     }
                   }}
@@ -240,9 +246,13 @@ const SelectEmployeesForPayrollTable = () => {
                 Department
               </div>
               <Select
+                defaultValue='All'
                 sx={{ height: '40px', borderRadius: '5px', width: '200px' }}
               >
-                <MenuItem></MenuItem>
+                <MenuItem value='All'>All</MenuItem>
+                <MenuItem value='Sales'>Sales</MenuItem>
+                <MenuItem value='IT'>IT</MenuItem>
+                <MenuItem value='Finance'>Finance</MenuItem>
               </Select>
             </Stack>
           </Stack>

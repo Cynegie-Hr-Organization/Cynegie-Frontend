@@ -14,14 +14,24 @@ import {
 import React from 'react';
 import './style.css';
 import PayrollTable from '../../tables/overview';
-import { CalendarTodayOutlined, ChevronLeft } from '@mui/icons-material';
+import { ChevronLeft } from '@mui/icons-material';
 import PayrollOverviewChartLarge from '../../charts/payroll-overview/large';
 import PayrollOverviewChartMobile from '../../charts/payroll-overview/mobile';
 import BonusAndIncentivesChart from '../../charts/bonuses-and-incentives-chart';
 import { useRouter } from 'next/navigation';
+import { DateRangePicker } from 'rsuite';
+import 'rsuite/dist/rsuite.min.css';
+import dayjs from 'dayjs';
 
 const HrAdminPayrollOverviewPage = () => {
   const router = useRouter();
+  const [dateRange, setDateRange] = React.useState<{
+    startDate: Date;
+    endDate: Date;
+  }>({
+    startDate: dayjs().startOf('month').toDate(),
+    endDate: dayjs().endOf('month').toDate(),
+  });
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -37,10 +47,11 @@ const HrAdminPayrollOverviewPage = () => {
 
   const open = Boolean(anchorEl);
   const id = open ? 'actions-popover' : undefined;
+
   return (
     <div className='flex flex-col gap-5 p-8 min-h-screen'>
       <Stack gap={2}>
-        <Stack direction='row'>
+        <Stack direction='row' mb={3}>
           <Stack flexGrow={1} gap={1} mr={2}>
             <Box className='section-heading'>Payroll</Box>
             <Box className='section-subtitle'>
@@ -168,16 +179,18 @@ const HrAdminPayrollOverviewPage = () => {
                 <Select
                   defaultValue='Monthly'
                   sx={{ height: '30px', borderRadius: '4.62px', pr: '15px' }}
-                  disabled
                 >
                   <MenuItem value='Monthly'>Monthly</MenuItem>
+                  <MenuItem value='Yearly'>Yearly</MenuItem>
                 </Select>
                 <Select
-                  defaultValue='Department'
+                  defaultValue='All Departments'
                   sx={{ height: '30px', borderRadius: '4.62px', pr: '15px' }}
-                  disabled
                 >
-                  <MenuItem value='Department'>Department</MenuItem>
+                  <MenuItem value='All Departments'>All Departments</MenuItem>
+                  <MenuItem value='Sales'>Sales</MenuItem>
+                  <MenuItem value='IT'>IT</MenuItem>
+                  <MenuItem value='Finance'>Finance</MenuItem>
                 </Select>
               </Stack>
               <Select
@@ -223,13 +236,29 @@ const HrAdminPayrollOverviewPage = () => {
               <Stack flexGrow={1} gap={0.5} mr={2}>
                 <Box className='card-title-small'>Bonuses and Incentives</Box>
                 <Box className='card-subtitle-small'>
-                  From 1 - 31 March, 2022
+                  From{' '}
+                  {dayjs(dateRange.startDate).format('DD MMM YYYY') +
+                    ' - ' +
+                    dayjs(dateRange.endDate).format('DD MMM YYYY')}
                 </Box>
               </Stack>
-              <CalendarTodayOutlined
-                sx={{ width: 20, height: 20, color: '#667185' }}
-              />
+              <Button>
+                <DateRangePicker
+                  style={{ width: '40px', padding: '0px' }}
+                  preventOverflow
+                  showOneCalendar
+                  cleanable={false}
+                  placement='auto'
+                  ranges={[]}
+                  format='dd MMM yyyy'
+                  onChange={(e) => {
+                    e && setDateRange({ startDate: e[0], endDate: e[1] });
+                    console.log(e);
+                  }}
+                />
+              </Button>
             </Stack>
+
             <Grid2 rowSpacing={2} mb={-3} container>
               {Array(2)
                 .fill(undefined)
@@ -269,6 +298,7 @@ const HrAdminPayrollOverviewPage = () => {
                   </Grid2>
                 ))}
             </Grid2>
+
             <Box
               sx={{
                 position: 'relative',

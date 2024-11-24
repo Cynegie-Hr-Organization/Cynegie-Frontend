@@ -313,9 +313,13 @@ const PayrollTable = () => {
                 Department
               </div>
               <Select
+                defaultValue='All'
                 sx={{ height: '40px', borderRadius: '5px', width: '200px' }}
               >
-                <MenuItem></MenuItem>
+                <MenuItem value='All'>All</MenuItem>
+                <MenuItem value='Sales'>Sales</MenuItem>
+                <MenuItem value='IT'>IT</MenuItem>
+                <MenuItem value='Finance'>Finance</MenuItem>
               </Select>
             </Stack>
             <Stack gap={1}>
@@ -325,9 +329,13 @@ const PayrollTable = () => {
                 Status
               </div>
               <Select
+                defaultValue='All'
                 sx={{ height: '40px', borderRadius: '5px', width: '200px' }}
               >
-                <MenuItem></MenuItem>
+                <MenuItem value='All'>All</MenuItem>
+                <MenuItem value='Approved'>Approved</MenuItem>
+                <MenuItem value='Pending'>Pending</MenuItem>
+                <MenuItem value='Rejected'>Rejected</MenuItem>
               </Select>
             </Stack>
           </Stack>
@@ -375,6 +383,7 @@ const PayrollTable = () => {
         <List sx={{ color: '#475367', fontWeight: 400, fontSize: '14px' }}>
           {tableActionPopoverContent.map((item) => (
             <ListItem
+              key={item.name}
               component='button'
               sx={{
                 '&:hover': { color: '#0035C3' },
@@ -392,7 +401,14 @@ const PayrollTable = () => {
         </List>
       </Popover>
       {showDeleteDialog && (
-        <Dialog open={showDeleteDialog}>
+        <Dialog
+          open={showDeleteDialog}
+          sx={{
+            '& .MuiDialog-paper': {
+              borderRadius: '24px',
+            },
+          }}
+        >
           <DialogContent>
             <Stack gap={3} alignItems='center' padding={3}>
               <Image

@@ -3,12 +3,13 @@ import { ChevronLeft } from '@mui/icons-material';
 import { Grid2, Stack, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import React from 'react';
+import React, { useState } from 'react';
 import SelectEmployeesForPayrollTable from '../../../tables/select-employees-for-payroll';
 import { useRouter } from 'next/navigation';
 
 const HrAdminCreatePayrollPage = () => {
   const router = useRouter();
+  const [selectedRows, setSelectedRows] = useState<number[]>([0]);
   return (
     <>
       <Stack marginX={5} gap={3} mb={10}>
@@ -37,7 +38,11 @@ const HrAdminCreatePayrollPage = () => {
               ].map((item, index) => (
                 <Grid2 key={index} size={{ xs: 12, md: 4 }}>
                   <div
-                    style={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 5,
+                    }}
                   >
                     <div
                       style={{
@@ -50,6 +55,7 @@ const HrAdminCreatePayrollPage = () => {
                     </div>
                     {index == 0 ? (
                       <TextField
+                        key={index}
                         sx={{
                           border: '1px solid #D0D5DD',
                           borderRadius: '6px',
@@ -64,7 +70,10 @@ const HrAdminCreatePayrollPage = () => {
                         placeholder={item.placeholder}
                       />
                     ) : (
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <LocalizationProvider
+                        key={index}
+                        dateAdapter={AdapterDayjs}
+                      >
                         <DatePicker
                           sx={{
                             fontSize: '14px',
@@ -89,7 +98,9 @@ const HrAdminCreatePayrollPage = () => {
           <div className='card-title-small'>
             Select Employees for Payroll Cycle
           </div>
-          <SelectEmployeesForPayrollTable />
+          <SelectEmployeesForPayrollTable
+            getSelectedRows={(rows) => setSelectedRows(rows)}
+          />
         </Stack>
         <Stack
           direction='row'
@@ -116,12 +127,12 @@ const HrAdminCreatePayrollPage = () => {
             style={{
               borderRadius: '8px',
               border: '1.5px solid #98A2B3',
-              color: '#344054',
+              color: selectedRows.length > 1 ? '#FFF' : '#344054',
               fontSize: '16px',
               fontWeight: 600,
               padding: '10px 0px',
               width: '250px',
-              backgroundColor: '#98A2B3',
+              backgroundColor: selectedRows.length > 1 ? '#0035C3' : '#98A2B3',
             }}
           >
             Continue

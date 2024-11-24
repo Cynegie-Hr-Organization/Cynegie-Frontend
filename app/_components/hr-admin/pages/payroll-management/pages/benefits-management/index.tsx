@@ -2,9 +2,12 @@
 import { Box, Button, Grid2, Stack } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import PayrollBenefitsManagementTable from '../../tables/benefits-management';
+import { useState } from 'react';
+import AddBenefitModal from '../../modals/add-benefit';
 
 const HrAdminPayrollBenefitsManagementPage = () => {
   const router = useRouter();
+  const [showAddBenefitsModal, setShowAddBenefitsModal] = useState(false);
   return (
     <Stack gap={3} mx={5} mb={10} mt={6}>
       <Stack direction='row' alignItems='center'>
@@ -30,9 +33,7 @@ const HrAdminPayrollBenefitsManagementPage = () => {
             Salary Advance
           </Button>
           <button
-            onClick={() =>
-              router.push('/hr-admin/payroll/generate-payroll-report')
-            }
+            onClick={() => setShowAddBenefitsModal(true)}
             style={{
               borderRadius: '8px',
               border: '1.5px solid #98A2B3',
@@ -97,6 +98,10 @@ const HrAdminPayrollBenefitsManagementPage = () => {
         ))}
       </Grid2>
       <PayrollBenefitsManagementTable />
+      <AddBenefitModal
+        open={showAddBenefitsModal}
+        onCloseFn={() => setShowAddBenefitsModal(false)}
+      />
     </Stack>
   );
 };

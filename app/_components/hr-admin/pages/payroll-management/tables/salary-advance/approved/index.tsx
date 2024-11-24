@@ -30,10 +30,12 @@ import { useState, ChangeEvent } from 'react';
 // import { payrollOverviewTableData } from '../overview/data';
 import { useRouter } from 'next/navigation';
 import { payrollOverviewTableData } from '../../overview/data';
+import AdjustRepaymentDetailsModal from '../../../modals/adjust-repayment-details';
 
 const ApprovedSalaryAdvanceTable = () => {
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
+  const [showAdjustRepaymentModal, setShowAdjustRepaymentModal] =
+    useState(false);
 
   const router = useRouter();
 
@@ -222,16 +224,16 @@ const ApprovedSalaryAdvanceTable = () => {
           <ListItem
             component='button'
             sx={{ '&:hover': { color: '#0035C3' } }}
-            onClick={() =>
-              selectedRowIndex == 0
-                ? router.push('/hr-admin/payroll/view-payroll-report')
-                : router.push('/hr-admin/payroll/view-custom-payroll-report')
-            }
+            onClick={() => setShowAdjustRepaymentModal(true)}
           >
             <ListItemText primary='Adjust Repayment Details' />
           </ListItem>
         </List>
       </Popover>
+      <AdjustRepaymentDetailsModal
+        open={showAdjustRepaymentModal}
+        onCloseFn={() => setShowAdjustRepaymentModal(false)}
+      />
     </Stack>
   );
 };
