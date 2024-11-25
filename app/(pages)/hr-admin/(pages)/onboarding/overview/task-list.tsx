@@ -133,7 +133,7 @@ const Column = ({
   return (
     <div
       ref={dropRef as unknown as LegacyRef<HTMLDivElement>}
-      className='space-y-4 h-full overflow-y-scroll  w-[242px]'>
+      className='space-y-4 h-full overflow-y-scroll w-[242px]'>
       <Taskhead title={title} count={tasks.length.toString()} titleColor={getTitleColor(title)} />
       <div className='space-y-4'>
         {tasks.map((task, index) => (
@@ -206,7 +206,7 @@ const TaskItem = ({
   return (
     <div
       ref={ref}
-      className='text-xs mt-11 space-y-[14.67px] p-2 rounded-xl'
+      className='text-xs mt-11 space-y-[14.67px] p-2 rounded-xl shadow-md m-[2px]'
       style={{
         opacity: isDragging ? 0.5 : 1,
         background: isOver ? "lightgray" : "transparent",
