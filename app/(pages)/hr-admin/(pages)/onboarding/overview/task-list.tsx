@@ -1,12 +1,13 @@
 "use client";
-import { MenuItem, Select, Avatar, TextField } from "@mui/material";
+import { Avatar, TextField } from "@mui/material";
 import { RiSearchLine } from "react-icons/ri";
 import { GoDotFill, GoPlus } from "react-icons/go";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { LuClock, LuListFilter } from "react-icons/lu";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { ReactNode, useState, useCallback, LegacyRef } from "react";
+import { useState, useCallback, LegacyRef } from "react";
+import CardLayout from "@/app/_components/shared/cards";
 
 type Task = { id: number; text: string };
 type TaskState = {
@@ -15,11 +16,6 @@ type TaskState = {
   inReview: Task[];
   completed: Task[];
 };
-
-
-
-
-
 
 const TaskList = () => {
   const [tasks, setTasks] = useState<TaskState>({
@@ -66,7 +62,7 @@ const TaskList = () => {
   }, []);
 
   return (
-    <CardLayout className='bg-white'>
+    <CardLayout className='bg-white overflow-x-scroll'>
       <div className='w-full flex items-center justify-between flex-grow mb-4'>
         <TextField
           className='max-w-[476px]'
@@ -85,19 +81,15 @@ const TaskList = () => {
           }}
           placeholder='Search here...'
         />
-        <Select
-          defaultValue='Filter'
-          className='flex items-center justify-center gap-x-2'
-          sx={{ height: "30px", borderRadius: "4.62px", pr: "15px" }}>
-          <MenuItem value='Filter'>
-            <span>Filter</span>
-          </MenuItem>
+
+        <button className='flex items-center border border-gray-300 rounded-md px-4 py-2 text-sm hover:bg-gray-100 gap-x-3'>
           <LuListFilter />
-        </Select>
+          Filter
+        </button>
       </div>
 
       <DndProvider backend={HTML5Backend}>
-        <div className='grid grid-cols-4 gap-8 p-1 mb-6 overflow-y-auto h-[463.33px]'>
+        <div className='grid grid-cols-4 gap-8 p-1 mb-6 h-[463.33px]'>
           {(Object.keys(tasks) as Array<keyof TaskState>).map((column) => (
             <Column key={column} title={column} tasks={tasks[column]} moveCard={moveCard} />
           ))}
@@ -116,6 +108,19 @@ const Column = ({
   tasks: Task[];
   moveCard: (draggedTaskId: number, targetColumn: keyof TaskState, targetIndex: number) => void;
 }) => {
+  const getTitleColor = (columnTitle: keyof TaskState): string => {
+    switch (columnTitle) {
+      case "inProgress":
+        return "text-blue-500";
+      case "inReview":
+        return "text-yellow-500";
+      case "completed":
+        return "text-green-500";
+      default:
+        return "text-[#0F172A]";
+    }
+  };
+
   const [, dropRef] = useDrop({
     accept: "TASK",
     drop: (item: { id: number; column: keyof TaskState; index: number }) => {
@@ -126,8 +131,10 @@ const Column = ({
   });
 
   return (
-    <div ref={dropRef as unknown as LegacyRef<HTMLDivElement>} className='space-y-4 h-full overflow-y-scroll'>
-      <Taskhead title={title} count={tasks.length.toString()} />
+    <div
+      ref={dropRef as unknown as LegacyRef<HTMLDivElement>}
+      className='space-y-4 h-full overflow-y-scroll  w-[242px]'>
+      <Taskhead title={title} count={tasks.length.toString()} titleColor={getTitleColor(title)} />
       <div className='space-y-4'>
         {tasks.map((task, index) => (
           <TaskItem key={task.id} task={task} moveCard={moveCard} currentColumn={title} index={index} />
@@ -137,10 +144,18 @@ const Column = ({
   );
 };
 
-const Taskhead = ({ title, count }: { title: string; count: string }) => {
+const Taskhead = ({
+  title,
+  count,
+  titleColor = "text-gray-500",
+}: {
+  title: string;
+  count: string;
+  titleColor?: string;
+}) => {
   return (
     <div className='flex justify-between items-center'>
-      <h3 className='capitalize font-bold text-sm'>
+      <h3 className={`capitalize font-bold text-sm ${titleColor}`}>
         {title}
         <span className='font-normal text-gray-500'>({count})</span>
       </h3>
@@ -218,10 +233,6 @@ const TaskItem = ({
       </div>
     </div>
   );
-};
-
-const CardLayout = ({ children, className }: { children: ReactNode; className?: string }) => {
-  return <div className={`border border-[#E5E7EB] p-6 rounded-xl?? ${className}`}>{children}</div>;
 };
 
 export default TaskList;

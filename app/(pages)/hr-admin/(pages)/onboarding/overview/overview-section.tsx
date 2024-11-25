@@ -35,7 +35,7 @@ const OverViewSection = () => {
       <Stack gap={2}>
         <Box className=' flex items-center justify-between'>
           <h3 className='section-heading'>Overview</h3>
-          <Appbutton buttonText='Onboarding Templates' />
+          <Appbutton buttonText='Onboarding Templates' className='bg-primary hidden md:block' />
         </Box>
 
         <Grid2 columnSpacing={2} rowSpacing={2} container>

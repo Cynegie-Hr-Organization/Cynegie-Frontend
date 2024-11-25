@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import TaskList from "./task-list";
+import NewHireList from "./new-hire-list";
 
 const TaskSection = () => {
   const [list, setList] = useState<ListType>("task");
@@ -24,7 +25,7 @@ const TaskSection = () => {
         </button>
       </div>
 
-      {list === "task" ? <TaskList /> : <div></div>}
+      {list === "task" ? <TaskList /> : <NewHireList />}
     </div>
   );
 };
