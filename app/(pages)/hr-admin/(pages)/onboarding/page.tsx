@@ -1,9 +1,7 @@
-import NewHireList from "./template/newHireList";
+import NewHireList from "./template/new-hire-list";
 
 const OnBoarding = () => {
-  return (
-    <NewHireList />
-  )
-}
+  return <NewHireList />;
+};
 
 export default OnBoarding;
