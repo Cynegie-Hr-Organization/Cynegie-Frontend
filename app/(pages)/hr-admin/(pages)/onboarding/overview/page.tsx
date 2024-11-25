@@ -1,7 +1,7 @@
 'use client'
 import { MenuItem, Select, Avatar, Stack, TextField } from "@mui/material";
 import OverViewSection from "./overview-section";
-import { ReactNode, Suspense, useState, useCallback } from "react";
+import { ReactNode, Suspense, useState, useCallback, LegacyRef } from "react";
 import { RiSearchLine } from "react-icons/ri";
 import { GoDotFill, GoPlus } from "react-icons/go";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
@@ -9,8 +9,16 @@ import { LuClock, LuListFilter } from "react-icons/lu";
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+type Task = { id: number; text: string };
+type TaskState = {
+  todo: Task[];
+  inProgress: Task[];
+  inReview: Task[];
+  completed: Task[];
+};
+
 const OnBoardingPage = () => {
-  const [tasks, setTasks] = useState({
+  const [tasks, setTasks] = useState<TaskState>({
     todo: [
       { id: 1, text: "Write a cool JS library" },
       { id: 2, text: "Make it generic enough" },
@@ -25,41 +33,43 @@ const OnBoardingPage = () => {
     completed: [],
   });
 
-  const moveCard = useCallback((draggedTaskId: number, targetColumn: string, targetIndex: number) => {
-    setTasks((prevTasks) => {
-      const sourceColumn = Object.keys(prevTasks).find((column) =>
-        prevTasks[column].some((task) => task.id === draggedTaskId)
-      );
+  const moveCard = useCallback(
+    (draggedTaskId: number, targetColumn: keyof TaskState, targetIndex: number) => {
+      setTasks((prevTasks) => {
+        const sourceColumn = (Object.keys(prevTasks) as Array<keyof TaskState>).find((column) =>
+          prevTasks[column].some((task) => task.id === draggedTaskId)
+        );
 
-      if (!sourceColumn) return prevTasks;
+        if (!sourceColumn) return prevTasks;
 
-      const draggedTask = prevTasks[sourceColumn].find(
-        (task) => task.id === draggedTaskId
-      );
+        const draggedTask = prevTasks[sourceColumn].find(
+          (task) => task.id === draggedTaskId
+        );
+        if (!draggedTask) return prevTasks;
 
-      const sourceColumnTasks = prevTasks[sourceColumn].filter(
-        (task) => task.id !== draggedTaskId
-      );
+        const sourceColumnTasks = prevTasks[sourceColumn].filter(
+          (task) => task.id !== draggedTaskId
+        );
 
-      // Reorder tasks if in the same column
-      if (sourceColumn === targetColumn) {
-        const updatedTasks = [...sourceColumnTasks];
-        updatedTasks.splice(targetIndex, 0, draggedTask); // Insert the task at the target index
+        if (sourceColumn === targetColumn) {
+          const updatedTasks = [...sourceColumnTasks];
+          updatedTasks.splice(targetIndex, 0, draggedTask);
+          return {
+            ...prevTasks,
+            [sourceColumn]: updatedTasks,
+          };
+        }
+
+        const targetColumnTasks = [...prevTasks[targetColumn], draggedTask];
         return {
           ...prevTasks,
-          [sourceColumn]: updatedTasks,
+          [sourceColumn]: sourceColumnTasks,
+          [targetColumn]: targetColumnTasks,
         };
-      }
-
-      // Move task to another column
-      const targetColumnTasks = [...prevTasks[targetColumn], draggedTask];
-      return {
-        ...prevTasks,
-        [sourceColumn]: sourceColumnTasks,
-        [targetColumn]: targetColumnTasks,
-      };
-    });
-  }, []);
+      });
+    },
+    []
+  );
 
   return (
     <Suspense fallback="Loading...">
@@ -68,10 +78,10 @@ const OnBoardingPage = () => {
       </Stack>
       <div className="my-12">
         <div className="flex gap-4 text-sm mb-4 pl-4">
-          <button className="p-4 text-primary border-b border-primary"> Task List </button>
+          <button className="p-4 text-primary border-b border-primary">Task List</button>
           <button>New Hire List</button>
         </div>
-        <CardLayout>
+        <CardLayout className="bg-white">
           <div className="w-full flex items-center justify-between flex-grow mb-4">
             <TextField
               className="max-w-[476px]"
@@ -101,10 +111,10 @@ const OnBoardingPage = () => {
               <LuListFilter />
             </Select>
           </div>
-          
+
           <DndProvider backend={HTML5Backend}>
-            <div className="grid grid-cols-4 gap-8 p-1 mb-6 overflow-scroll h-[463.33px]">
-              {["todo", "inProgress", "inReview", "completed"].map((column) => (
+            <div className="grid grid-cols-4 gap-8 p-1 mb-6 overflow-y-auto h-[463.33px]">
+              {(Object.keys(tasks) as Array<keyof TaskState>).map((column) => (
                 <Column
                   key={column}
                   title={column}
@@ -125,13 +135,13 @@ const Column = ({
   tasks,
   moveCard,
 }: {
-  title: string;
-  tasks: { id: number; text: string }[];
-  moveCard: (draggedTaskId: number, targetColumn: string, targetIndex: number) => void;
+  title: keyof TaskState;
+  tasks: Task[];
+  moveCard: (draggedTaskId: number, targetColumn: keyof TaskState, targetIndex: number) => void;
 }) => {
-  const [, drop] = useDrop({
+  const [, dropRef] = useDrop({
     accept: "TASK",
-    drop: (item: { id: number; column: string; index: number }) => {
+    drop: (item: { id: number; column: keyof TaskState; index: number }) => {
       if (item.column !== title) {
         moveCard(item.id, title, tasks.length);
       }
@@ -139,7 +149,7 @@ const Column = ({
   });
 
   return (
-    <div ref={drop} className="space-y-4 overflow-y-scroll">
+    <div ref={dropRef as unknown as LegacyRef<HTMLDivElement>} className="space-y-4 h-full overflow-y-scroll">
       <Taskhead title={title} count={tasks.length.toString()} />
       <div className="space-y-4">
         {tasks.map((task, index) => (
@@ -183,12 +193,12 @@ const TaskItem = ({
   currentColumn,
   index,
 }: {
-  task: { id: number; text: string };
-  moveCard: (draggedTaskId: number, targetColumn: string, targetIndex: number) => void;
-  currentColumn: string;
+  task: Task;
+  moveCard: (draggedTaskId: number, targetColumn: keyof TaskState, targetIndex: number) => void;
+  currentColumn: keyof TaskState;
   index: number;
 }) => {
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging }, dragRef] = useDrag({
     type: "TASK",
     item: { id: task.id, column: currentColumn, index },
     collect: (monitor) => ({
@@ -196,11 +206,11 @@ const TaskItem = ({
     }),
   });
 
-  const [{ isOver }, drop] = useDrop({
+  const [{ isOver }, dropRef] = useDrop({
     accept: "TASK",
-    drop: (item: { id: number; column: string; index: number }) => {
+    drop: (item: { id: number; column: keyof TaskState; index: number }) => {
       if (item.column === currentColumn && item.index !== index) {
-        moveCard(item.id, currentColumn, index); // Swap within the same column
+        moveCard(item.id, currentColumn, index);
       }
     },
     collect: (monitor) => ({
@@ -208,9 +218,14 @@ const TaskItem = ({
     }),
   });
 
+  const ref = (node: HTMLDivElement | null) => {
+    dragRef(node);
+    dropRef(node);
+  };
+
   return (
     <div
-      ref={(node) => drag(drop(node))}
+      ref={ref}
       className="text-xs mt-11 space-y-[14.67px] p-2 rounded-xl"
       style={{
         opacity: isDragging ? 0.5 : 1,
@@ -224,7 +239,7 @@ const TaskItem = ({
           <span>Design</span>
         </p>
       </div>
-      <p className="text-[#64748B]">It’s just needs to adapt the UI from what you did before</p>
+      <p className="text-[#64748B]">Its just needs to adapt the UI from what you did before</p>
       <hr className="border-t w-full" />
       <div className="flex items-center justify-between">
         <div className="w-max h-max flex items-center gap-x-2 p-[7.33px] rounded-lg bg-[#FDF2F8] text-[#ED4F9D] font-medium">
@@ -244,8 +259,8 @@ const TaskItem = ({
   );
 };
 
-const CardLayout = ({ children }: { children: ReactNode }) => {
-  return <div className="border-[#E5E7EB] p-6 rounded-xl">{children}</div>;
+const CardLayout = ({ children, className }: { children: ReactNode, className?: string }) => {
+  return <div className={`border border-[#E5E7EB] p-6 rounded-xl?? ${className}`}>{children}</div>;
 };
 
 export default OnBoardingPage;
