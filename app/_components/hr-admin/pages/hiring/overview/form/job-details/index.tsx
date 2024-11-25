@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation"; 
-import JobsDetailsTable from "./table";
+import JobsDetailsTable from "./table-container";
 import JobCardHeader from "./card-header";
 import JobDescriptionHeader from "./header";
 import JobCardContent from "./card-content";

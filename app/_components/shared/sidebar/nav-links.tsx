@@ -51,21 +51,13 @@ const NavLinks = ({ openMobileMenu, setOpenMobileMenu: setOpenMobileMenu }: Prop
                     icon: 'fa-solid fa-house',
                     path: '/hr-admin/hiring/overview',
                 },
-                {
-                    name: 'Jobs',
-                    icon: 'fa-solid fa-house',
-                    path: '/hr-admin/hiring/jobs',
-                },
+                
                 {
                     name: 'Candiate Manage...',
                     icon: 'fa-solid fa-house',
-                    path: '/hr-admin/hiring/candiate-management',
+                    path: '/hr-admin/hiring/candidate-management',
                 },
-                {
-                    name: 'Interviews Schedu...',
-                    icon: 'fa-solid fa-house',
-                    path: '/hr-admin/hiring/interviews-schedule',
-                },
+                
                 {
                     name: 'Offer Management',
                     icon: 'fa-solid fa-house',

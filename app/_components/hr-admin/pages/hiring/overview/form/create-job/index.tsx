@@ -3,7 +3,7 @@
 
 import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
 import Image from "next/image";
-import DropdownWithSearchAndMultiSelect from "@/app/_components/ui/dropdown";
+import DropdownWithSearchAndMultiSelect from "@/app/_components/ui/multi-select-dropdown";
 import { useRouter } from "next/navigation";
 import {
   BtnBold,
@@ -66,6 +66,7 @@ export default function CreateJobForm({ setScreenInView }: CreateJobFormProps) {
     { value: "Part-Time", label: "Part-Time" },
     { value: "Contract", label: "Contract" },
   ];
+  
 
   // Load form data from localStorage on mount
   useEffect(() => {

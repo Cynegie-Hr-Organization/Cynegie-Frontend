@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // JobsDetailsTable.tsx
 import React, { useState } from 'react';
-import Table from "../../../table";
-import { jobDetailsData } from "../../../table/data"; // Adjust import to your file location
+import JobDetailsTable from './table'
+import { jobDetailsData } from "./table/data";
 
 const JobsDetailsTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -41,7 +41,7 @@ const JobsDetailsTable = () => {
   return (
     <div className="rounded-xl border bg-white shadow-sm w-full h-full py-4">
       <div className="h-full w-full">
-        <Table
+        <JobDetailsTable
           data={currentItems}
           columns={columns} // Pass updated columns to the Table component
           totalItems={totalItems}

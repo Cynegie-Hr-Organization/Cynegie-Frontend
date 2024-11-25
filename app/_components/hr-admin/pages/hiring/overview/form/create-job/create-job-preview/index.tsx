@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import DropdownWithSearchAndMultiSelect from "@/app/_components/ui/dropdown";
-
+import DropdownWithSearchAndMultiSelect from "@/app/_components/ui/multi-select-dropdown";
+import CreateJobSuccessModal from "../modal";
 interface JobPreviewProps {
   setScreenInView: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -21,20 +21,34 @@ export default function JobPreview({ setScreenInView }: JobPreviewProps) {
     qualification: string;
   } | null>(null);
 
-
-  
-  // Fetch jobData from localStorage on component mount
-  useEffect(() => {
-    const storedData = localStorage.getItem("jobData");
-    if (storedData) {
-      setJobData(JSON.parse(storedData));
-    }
-  }, []);
-
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+    
   const handleBackScreenSlideClick = () => {
     setScreenInView((prev) => prev - 1);
   };
 
+  const handlePublishClick = () => {
+    // Simulate publish logic here
+    setIsModalOpen(true); // Open the modal
+  };
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); 
+  };
+
+
+   const closeModal = () => {
+  setIsModalOpen(false); 
+ };
+
+    useEffect(() => {
+  const storedData = localStorage.getItem("jobData");
+  if (storedData) {
+    setJobData(JSON.parse(storedData));
+  }
+}, []); // Ensure this runs only on mount and doesn't affect modal state
+
+  
   // Handle loading state
   if (!jobData) {
     return (
@@ -43,8 +57,6 @@ export default function JobPreview({ setScreenInView }: JobPreviewProps) {
       </div>
     );
   }
-
-   
 
   return (
     <div className="p-[15px] md:p-[30px]">
@@ -59,7 +71,7 @@ export default function JobPreview({ setScreenInView }: JobPreviewProps) {
         />
         <h1 className="text-lg text-black font-semibold">Job Preview</h1>
       </div>
-      <form className="space-y-6 bg-white p-4 md:p-10 rounded-md shadow-md">
+      <form className="space-y-6 bg-white p-4 md:p-10 rounded-md shadow-md" onSubmit={handleFormSubmit}>
         <div>
           <label
             htmlFor="requisitorName"
@@ -99,14 +111,12 @@ export default function JobPreview({ setScreenInView }: JobPreviewProps) {
           >
             Department
           </label>
-         <DropdownWithSearchAndMultiSelect
-              id="department"
-                          isMulti={true}
-                          isDisabled={true}
-                           placeholder={jobData.department.join(", ")}
-
-              // Disable the dropdown for preview
-            />
+          <DropdownWithSearchAndMultiSelect
+            id="department"
+            isMulti={true}
+            isDisabled={true}
+            placeholder={jobData.department.join(", ")}
+          />
         </div>
 
         <div>
@@ -117,12 +127,11 @@ export default function JobPreview({ setScreenInView }: JobPreviewProps) {
             Location
           </label>
           <DropdownWithSearchAndMultiSelect
-              id="location"
-              isMulti={true}
-                          isDisabled={true}
-                           placeholder={jobData.location.join(", ")}
-
-            />
+            id="location"
+            isMulti={true}
+            isDisabled={true}
+            placeholder={jobData.location.join(", ")}
+          />
         </div>
 
         <div>
@@ -133,14 +142,12 @@ export default function JobPreview({ setScreenInView }: JobPreviewProps) {
             Job Type
           </label>
           <DropdownWithSearchAndMultiSelect
-              id="jobType"
-              isMulti={false} // Single select
-                          isDisabled={true}
-                           placeholder={jobData.jobType}
-            />
+            id="jobType"
+            isMulti={false} // Single select
+            isDisabled={true}
+            placeholder={jobData.jobType}
+          />
         </div>
-
-      
 
         {/* Add other fields similarly */}
         {/* Job Description */}
@@ -148,27 +155,25 @@ export default function JobPreview({ setScreenInView }: JobPreviewProps) {
           <p className="mb-1 font-sans text-sm font-semibold">Job Description</p>
           <div
             dangerouslySetInnerHTML={{ __html: jobData.jobDescription }}
-            className="mt-1 text-xs block  py-2"
+            className="mt-1 text-xs block py-2"
           />
         </div>
-
-        
 
         {/* Benefits */}
         <div>
           <p className="mb-1 font-sans text-sm font-semibold">Benefits</p>
           <div
             dangerouslySetInnerHTML={{ __html: jobData.benefits }}
-            className="mt-1 text-xs block  py-2"
+            className="mt-1 text-xs block py-2"
           />
         </div>
 
-        {/* Required Skilss */}
+        {/* Required Skills */}
         <div>
           <p className="mb-1 font-sans text-sm font-semibold">Required Skills</p>
           <div
             dangerouslySetInnerHTML={{ __html: jobData.requiredSkill }}
-            className="mt-1 text-xs block  py-2"
+            className="mt-1 text-xs block py-2"
           />
         </div>
 
@@ -177,24 +182,27 @@ export default function JobPreview({ setScreenInView }: JobPreviewProps) {
           <p className="mb-1 font-sans text-sm font-semibold">Qualification</p>
           <div
             dangerouslySetInnerHTML={{ __html: jobData.qualification }}
-            className="mt-1 text-xs block  py-2"
+            className="mt-1 text-xs block py-2"
           />
         </div>
 
         <div className="flex w-full flex-col md:flex-row mt-4 justify-end items-center gap-2">
-        <button
-          className="w-full md:w-auto px-4 md:px-20 py-2 border-gray-300 border-2 text-base font-semibold bg-white text-gray-700 rounded-lg hover:border-blue-600"
-        >
-          Save & Continue Later
-        </button>
-        <button
-          className="w-full md:w-auto px-4 md:px-20 py-2 text-base font-semibold bg-[#0035C3] text-white rounded-lg hover:bg-blue-600 focus:outline-none"
+          <button
+            className="w-full md:w-auto px-4 md:px-20 py-2 border-gray-300 border-2 text-base font-semibold bg-white text-gray-700 rounded-lg hover:border-blue-600"
           >
-          Publish
-        </button>
-      </div>
+            Save & Continue Later
+          </button>
+          <button
+            onClick={handlePublishClick} // Open modal on click
+            className="w-full md:w-auto px-4 md:px-20 py-2 text-base font-semibold bg-[#0035C3] text-white rounded-lg hover:bg-blue-600 focus:outline-none"
+          >
+            Publish
+          </button>
+        </div>
       </form>
-      
+
+      {/* Success Modal */}
+      <CreateJobSuccessModal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   );
 }

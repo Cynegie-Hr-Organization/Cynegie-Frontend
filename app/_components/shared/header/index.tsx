@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <div className="flex items-center justify-between p-5 md:border-b md:border-DreamyCloud md:bg-white">
       <div className="items-center hidden gap-3 xl:flex">
-        <Image className="w-[40px] h-[40px]" width={40} height={40} src="/avatar.svg" alt="avatar" />
+        <Image className="w-[40px] h-[40px]" width={40} height={40} src="/image/avatar.png" alt="avatar" />
         <div>
           <p className="font-sans text-lg font-bold text-Sambucus">
             Welcome, name 👋

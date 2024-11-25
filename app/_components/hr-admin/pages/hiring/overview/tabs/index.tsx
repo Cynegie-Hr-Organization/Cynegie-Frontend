@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import JobsTab from "./first";
-import InterviewTab from "./second";
+import JobsTab from "./jobs";
+import InterviewTab from "./interviews";
 
 const OverviewTabs = () => {
   const [selectedTab, setSelectedTab] = useState<"jobs" | "interview">("jobs");

@@ -1,7 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import DropdownWithSearchAndMultiSelect from "@/app/_components/ui/dropdown";
+import DropdownWithSearchAndMultiSelect from "@/app/_components/ui/multi-select-dropdown";
+import EditJobSuccessModal from "../modal";
+
 
 interface EditJobPreviewProps {
   setScreenInView: React.Dispatch<React.SetStateAction<number>>;
@@ -20,6 +22,24 @@ export default function EditJobPreview({ setScreenInView }: EditJobPreviewProps)
     experience: string;
     qualification: string;
   } | null>(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+  const handlePublishClick = () => {
+    // Simulate publish logic here
+    setIsModalOpen(true); // Open the modal
+  };
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); 
+  };
+
+
+   const closeModal = () => {
+  setIsModalOpen(false); 
+ };
+
 
   // Fetch jobData from localStorage on component mount
   useEffect(() => {
@@ -60,7 +80,7 @@ export default function EditJobPreview({ setScreenInView }: EditJobPreviewProps)
         </div>
         <h1 className="text-lg mx-2 text-black font-semibold">Job Preview</h1>
       </div>
-      <form className="space-y-6 bg-white p-4 md:p-10 rounded-md shadow-md">
+      <form className="space-y-6 bg-white p-4 md:p-10 rounded-md shadow-md" onSubmit={handleFormSubmit}>
         <div>
           <label
             htmlFor="requisitorName"
@@ -188,13 +208,17 @@ export default function EditJobPreview({ setScreenInView }: EditJobPreviewProps)
           Save & Continue Later
         </button>
         <button
-          className="w-full md:w-auto px-4 md:px-20 py-2 text-base font-semibold bg-[#0035C3] text-white rounded-lg hover:bg-blue-600 focus:outline-none"
+            className="w-full md:w-auto px-4 md:px-20 py-2 text-base font-semibold bg-[#0035C3] text-white rounded-lg hover:bg-blue-600 focus:outline-none"
+            onClick={handlePublishClick}
                   >
           Save Changes
         </button>
       </div>
 
       </form>
+
+            <EditJobSuccessModal isOpen={isModalOpen} onClose={closeModal} />
+
     </div>
   );
 }

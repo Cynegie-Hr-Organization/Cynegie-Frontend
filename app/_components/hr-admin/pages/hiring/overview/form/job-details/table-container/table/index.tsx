@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
+import React, { useState } from 'react';
 import Pagination from './pagination';
+import { useRouter } from 'next/navigation';
 
 interface Column<T> {
   header: string;
@@ -18,7 +19,7 @@ interface TableProps<T> {
   showActions?: boolean;
 }
 
-const Table = <T extends Record<string, any>>({
+const JobDetailsTable = <T extends Record<string, any>>({
   data,
   columns,
   totalItems,
@@ -28,18 +29,24 @@ const Table = <T extends Record<string, any>>({
   onItemsPerPageChange,
   showActions = true,
 }: TableProps<T>) => {
+  const router = useRouter();
+
+  const [openRowIndex, setOpenRowIndex] = useState<number | null>(null);
+
+  const toggleDropdown = (index: number) => {
+    setOpenRowIndex((prev) => (prev === index ? null : index));
+  };
+
   return (
     <div className="bg-white w-full h-full flex flex-col">
       {/* Header */}
       <div className="p-4 flex justify-between items-center">
-        {/* Search Input */}
         <div className="relative w-56">
           <input
             type="text"
             placeholder="Search..."
-            className="border border-gray-300 rounded-md w-[500px] px-3 py-2 text-sm pl-10"
+            className="border border-gray-300 rounded-md w-[200px] md:w-[300px] lg:w-[500px] py-1 md:py-2 text-sm pl-10"
           />
-          {/* Search SVG Icon inside the input */}
           <svg
             width="20"
             height="21"
@@ -57,37 +64,41 @@ const Table = <T extends Record<string, any>>({
             />
           </svg>
         </div>
-
-        {/* Filter Button */}
-        <button className="flex items-center border border-gray-300 rounded-md px-4 py-2 text-sm hover:bg-gray-100">
-          <svg
-            width="20"
-            height="21"
-            viewBox="0 0 20 21"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="mr-2"
+        <div className="relative" >
+          <button
+            className="flex items-center border border-gray-300 rounded-md px-2 md:px-4 py-1 md:py-2 text-sm hover:bg-gray-100"
           >
-            <path
-              d="M3.33301 5.60946C3.33301 5.14922 3.7061 4.77612 4.16634 4.77612H15.833C16.2932 4.77612 16.6663 5.14922 16.6663 5.60946C16.6663 6.06969 16.2932 6.44279 15.833 6.44279H4.16634C3.7061 6.44279 3.33301 6.06969 3.33301 5.60946Z"
-              fill="#344054"
-            />
-            <path
-              d="M4.99967 10.6095C4.99967 10.1492 5.37277 9.77612 5.83301 9.77612H14.1663C14.6266 9.77612 14.9997 10.1492 14.9997 10.6095C14.9997 11.0697 14.6266 11.4428 14.1663 11.4428H5.83301C5.37277 11.4428 4.99967 11.0697 4.99967 10.6095Z"
-              fill="#344054"
-            />
-            <path
-              d="M7.49967 14.7761C7.03944 14.7761 6.66634 15.1492 6.66634 15.6095C6.66634 16.0697 7.03944 16.4428 7.49967 16.4428H12.4997C12.9599 16.4428 13.333 16.0697 13.333 15.6095C13.333 15.1492 12.9599 14.7761 12.4997 14.7761H7.49967Z"
-              fill="#344054"
-            />
-          </svg>
-          Filter
-        </button>
+            <svg
+              width="20"
+              height="21"
+              viewBox="0 0 20 21"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="mr-2"
+            >
+              <path
+                d="M3.33301 5.60946C3.33301 5.14922 3.7061 4.77612 4.16634 4.77612H15.833C16.2932 4.77612 16.6663 5.14922 16.6663 5.60946C16.6663 6.06969 16.2932 6.44279 15.833 6.44279H4.16634C3.7061 6.44279 3.33301 6.06969 3.33301 5.60946Z"
+                fill="#344054"
+              />
+              <path
+                d="M4.99967 10.6095C4.99967 10.1492 5.37277 9.77612 5.83301 9.77612H14.1663C14.6266 9.77612 14.9997 10.1492 14.9997 10.6095C14.9997 11.0697 14.6266 11.4428 14.1663 11.4428H5.83301C5.37277 11.4428 4.99967 11.0697 4.99967 10.6095Z"
+                fill="#344054"
+              />
+              <path
+                d="M7.49967 14.7761C7.03944 14.7761 6.66634 15.1492 6.66634 15.6095C6.66634 16.0697 7.03944 16.4428 7.49967 16.4428H12.4997C12.9599 16.4428 13.333 16.0697 13.333 15.6095C13.333 15.1492 12.9599 14.7761 12.4997 14.7761H7.49967Z"
+                fill="#344054"
+              />
+            </svg>
+            Filter
+          </button>
+
+         
+        </div>
       </div>
 
       {/* Table */}
       <div className="flex-grow px-2 overflow-x-auto">
-        <table className="w-full text-left table-fixed">
+        <table className="w-full text-sm  text-left ">
           <thead>
             <tr className="border-b bg-gray-50">
               {columns.map((column, index) => (
@@ -109,9 +120,12 @@ const Table = <T extends Record<string, any>>({
                   </td>
                 ))}
                 {showActions && (
-                  <td className="p-2 pr-2 items-end">
-                    <div className="flex items-end justify-center">
-                      <button>
+                  <td className="p-2 pr-2 justify-center">
+    <div className="relative flex justify-center">
+                      <button
+                        onClick={() => toggleDropdown(rowIndex)}
+                        className="p-2 bg-gray-100 rounded-md hover:bg-gray-200"
+                      >
                         <svg
                           width="32"
                           height="33"
@@ -149,6 +163,28 @@ const Table = <T extends Record<string, any>>({
                           />
                         </svg>
                       </button>
+
+                      {openRowIndex === rowIndex && (
+                        <div className="absolute top-0 right-24 bg-white shadow-lg border flex flex-col border-gray-300 w-44 rounded-md mt-1 p-2 z-10">
+                          <button
+                            className="text-sm p-1 text-gray-900 hover:bg-gray-100"
+                            onClick={() => router.push('/hr-admin/hiring/job-details')}
+                          >
+                            View Details
+                          </button>
+                          <button
+                            className="text-sm p-1 text-gray-900 hover:bg-gray-100"
+                            onClick={() => router.push('/hr-admin/hiring/edit-job')}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="text-sm p-1 text-red-500 hover:bg-gray-100"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </td>
                 )}
@@ -158,8 +194,7 @@ const Table = <T extends Record<string, any>>({
         </table>
       </div>
 
-      {/* Footer (Pagination) */}
-      <div className="p-1 md:p-4">
+      <div className="px-4 py-4">
         <Pagination
           totalItems={totalItems}
           itemsPerPage={itemsPerPage}
@@ -172,4 +207,4 @@ const Table = <T extends Record<string, any>>({
   );
 };
 
-export default Table;
+export default JobDetailsTable;

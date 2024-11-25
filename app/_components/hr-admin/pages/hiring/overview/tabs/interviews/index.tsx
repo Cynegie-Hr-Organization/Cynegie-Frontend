@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import Table from '../../table';
-import { hiringTabTwoData } from '../../table/data';
+import InterviewTabTable from './table';
+import { interviewTabData } from './table/data';
 
 const InterviewTab = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
-  const totalItems = hiringTabTwoData.length;
+  const totalItems = interviewTabData.length;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = hiringTabTwoData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = interviewTabData.slice(indexOfFirstItem, indexOfLastItem);
 
   // Define columns
   const columns = [
@@ -53,7 +53,7 @@ const InterviewTab = () => {
 
   return (
     <div className="container rounded-xl border bg-white w-full  shadow-sm  py-4">
-      <Table
+      <InterviewTabTable
         data={currentItems}
         columns={columns} // Pass columns to the Table component
         totalItems={totalItems}

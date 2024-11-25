@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState, Dispatch, SetStateAction } from "react";
+import React, { useState, useEffect ,  Dispatch, SetStateAction } from "react";
 import Image from "next/image";
-import DropdownWithSearchAndMultiSelect from "@/app/_components/ui/dropdown";
+import DropdownWithSearchAndMultiSelect from "@/app/_components/ui/multi-select-dropdown";
 import { useRouter } from "next/navigation"; 
 import {
   BtnBold,
@@ -51,7 +51,17 @@ export default function EditJobForm({ setScreenInView }: EditJobFormProps) {
 
   const router = useRouter();
 
+  const [isClient, setIsClient] = useState(false);
+
+
   
+  useEffect(() => {
+  setIsClient(true);
+}, []);
+
+if (!isClient) {
+  return <div>Loading...</div>;
+}
 
   // Dropdown options for departments, locations, and job types
   const departmentOptions = [
@@ -110,7 +120,9 @@ export default function EditJobForm({ setScreenInView }: EditJobFormProps) {
   localStorage.setItem("editFormData", JSON.stringify(formData));
 
   setScreenInView(2); 
-};
+   };
+  
+  
 
 
   return (
