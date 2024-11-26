@@ -28,23 +28,10 @@ import Image from 'next/image';
 import { useState, ChangeEvent } from 'react';
 import { payrollOverviewTableData } from '../overview/data';
 import { useRouter } from 'next/navigation';
+import { payrollReportsTableData } from './data';
 
 const PayrollReportsTable = () => {
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
-
-  const handleCheckboxChange = (
-    event: ChangeEvent<HTMLInputElement>,
-    rowIndex: number
-  ) => {
-    setSelectedRows((prevSelectedRows) => {
-      if (event.target.checked) {
-        return [...prevSelectedRows, rowIndex];
-      } else {
-        return prevSelectedRows.filter((index) => index !== rowIndex);
-      }
-    });
-  };
 
   const router = useRouter();
 
@@ -128,29 +115,11 @@ const PayrollReportsTable = () => {
         <Table>
           <TableHead sx={{ backgroundColor: '#F7F9FC' }}>
             <TableRow>
-              <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                <Checkbox
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setSelectedRows([0, 1, 2, 3, 4]);
-                    } else {
-                      setSelectedRows([]);
-                    }
-                  }}
-                  checked={selectedRows.length === 5}
-                  indeterminate={
-                    selectedRows.length > 0 && selectedRows.length < 5
-                  }
-                />
-              </TableCell>
               {[
-                'Payroll Name',
+                'Report Name',
+                'Date Generated',
                 'Payroll Period',
-                'Payment Date',
-                'Total Employees',
-                'Gross Pay',
-                'Net Pay',
-                'Approval Date',
+                'No of Employees',
                 'Status',
                 'Actions',
               ].map((field) => (
@@ -161,35 +130,20 @@ const PayrollReportsTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {payrollOverviewTableData.map((row, rowIndex) => (
+            {payrollReportsTableData.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
-                <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                  <Checkbox
-                    checked={selectedRows.includes(rowIndex)}
-                    onChange={(e) => handleCheckboxChange(e, rowIndex)}
-                  />
-                </TableCell>
                 {[
                   row.name,
-                  row.period,
-                  row.date,
-                  row.totalEmployees,
-                  row.grossPay,
-                  row.netPay,
-                  row.approvalDate,
+                  row.dateGenerated,
+                  row.payrollPeriod,
+                  row.noOfEmployees,
                   row.status,
                 ].map((field, columnIndex) =>
-                  columnIndex === 7 ? (
+                  columnIndex === 4 ? (
                     <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>
                       <StatusPill
                         variant={
-                          row.status === 'Approved'
-                            ? 'success'
-                            : row.status === 'Pending'
-                            ? 'warning'
-                            : row.status === 'Rejected'
-                            ? 'error'
-                            : 'success'
+                          row.status === 'Available' ? 'success' : 'warning'
                         }
                         text={field}
                       />

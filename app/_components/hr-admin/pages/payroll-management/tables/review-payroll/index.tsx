@@ -29,6 +29,7 @@ import Image from 'next/image';
 import { useState, ChangeEvent } from 'react';
 import { selectEmployeesForPayrollTableData } from '../select-employees-for-payroll/data';
 import { useRouter } from 'next/navigation';
+import { reviewPayrollTableData } from './data';
 
 const ReviewPayrollTable = () => {
   const router = useRouter();
@@ -133,8 +134,13 @@ const ReviewPayrollTable = () => {
                 'Employee Name',
                 'Department',
                 'Gross Pay',
-                'Deduction',
                 'Net Pay',
+                'Bonus',
+                'Untaxed Bonus',
+                'Deductions',
+                'Prorate Deduction',
+                'Tax',
+                'Overtime Hours',
                 'Actions',
               ].map((field) => (
                 <TableCell key={field} sx={{ whiteSpace: 'nowrap' }}>
@@ -144,14 +150,19 @@ const ReviewPayrollTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {selectEmployeesForPayrollTableData.map((row, rowIndex) => (
+            {reviewPayrollTableData.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
                 {[
                   row.name,
                   row.department,
                   row.grossPay,
-                  row.deduction,
                   row.netPay,
+                  row.bonus,
+                  row.untaxedBonus,
+                  row.deductions,
+                  row.prorateDeduction,
+                  row.tax,
+                  row.overTimeHours,
                   '',
                 ].map((field, columnIndex) =>
                   columnIndex == 0 ? (
@@ -161,7 +172,7 @@ const ReviewPayrollTable = () => {
                         <div>{field}</div>
                       </Stack>
                     </TableCell>
-                  ) : columnIndex == 5 ? (
+                  ) : columnIndex == 10 ? (
                     <TableCell key={columnIndex} sx={{ whiteSpace: 'nowrap' }}>
                       <Button onClick={handleTableActionClick}>
                         <MoreVert
@@ -284,15 +295,15 @@ const ReviewPayrollTable = () => {
       >
         <List sx={{ color: '#475367', fontWeight: 400, fontSize: '14px' }}>
           {[
-            { name: 'Adjust Compensation', route: '#' },
-            { name: 'Remove Employee', route: '#' },
+            { name: 'Adjust Compensation', route: '' },
+            { name: 'Remove Employee', route: '' },
           ].map((item) => (
             <ListItem
               component='button'
               sx={{
                 '&:hover': { color: '#0035C3' },
               }}
-              onClick={() => router.push(item.route)}
+              // onClick={() => router.push(item.route)}
             >
               <ListItemText primary={item.name} />
             </ListItem>

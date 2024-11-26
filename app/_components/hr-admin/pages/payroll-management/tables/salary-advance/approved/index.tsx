@@ -120,13 +120,11 @@ const ApprovedSalaryAdvanceTable = () => {
           <TableHead sx={{ backgroundColor: '#F7F9FC' }}>
             <TableRow>
               {[
-                'Payroll Name',
-                'Payroll Period',
-                'Payment Date',
-                'Total Employees',
-                'Gross Pay',
-                'Net Pay',
-                'Approval Date',
+                'Employee Name',
+                'Advance Taken',
+                'Repayment Status',
+                'Amount Repaid',
+                'Next Payment Date',
                 'Actions',
               ].map((field) => (
                 <TableCell key={field} sx={{ whiteSpace: 'nowrap' }}>

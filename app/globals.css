@@ -37,20 +37,15 @@
     color: #525866;
 }
 
-.rs-input-group {
-    border: 0 !important;
-}
-
-.rs-input-group.rs-input-group-inside .rs-input {
-    display: none !important;
-    border: 0px !important;
+ .rs-input, .rs-input-group {
+    border-width: 2px !important;
 }
 
 /* Disable hover effect for date range selection */
-.rs-picker-calendar-cell:hover {
+/* .rs-picker-calendar-cell:hover {
     background-color: transparent !important;
     color: inherit !important;
-  }
+  } */
 
 .common-button {
     border-radius: 8px !important;

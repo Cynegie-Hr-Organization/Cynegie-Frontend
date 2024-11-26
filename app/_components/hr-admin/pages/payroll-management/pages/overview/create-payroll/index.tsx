@@ -1,15 +1,31 @@
 'use client';
 import { ChevronLeft } from '@mui/icons-material';
-import { Grid2, Stack, TextField } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Button, Grid2, Stack, TextField } from '@mui/material';
+import { /*DatePicker,*/ LocalizationProvider } from '@mui/x-date-pickers';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import React, { useState } from 'react';
 import SelectEmployeesForPayrollTable from '../../../tables/select-employees-for-payroll';
 import { useRouter } from 'next/navigation';
+import { DatePicker, DateRangePicker, Input } from 'rsuite';
+import 'rsuite/dist/rsuite.min.css';
+import dayjs from 'dayjs';
+import { FaCalendar } from 'react-icons/fa6';
+import CalendarIcon from '@/app/_components/icons/calendar';
 
 const HrAdminCreatePayrollPage = () => {
   const router = useRouter();
   const [selectedRows, setSelectedRows] = useState<number[]>([0]);
+  const [dateRange, setDateRange] = React.useState<{
+    startDate: Date;
+    endDate: Date;
+  }>({
+    startDate: dayjs().startOf('month').toDate(),
+    endDate: dayjs().endOf('month').toDate(),
+  });
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+
   return (
     <>
       <Stack marginX={5} gap={3} mb={10}>
@@ -54,39 +70,58 @@ const HrAdminCreatePayrollPage = () => {
                       {item.label}
                     </div>
                     {index == 0 ? (
-                      <TextField
-                        key={index}
-                        sx={{
-                          border: '1px solid #D0D5DD',
-                          borderRadius: '6px',
-                        }}
-                        inputProps={{
-                          style: {
-                            height: '1px',
-                            fontSize: '14px',
-                            fontWeight: 400,
-                          },
-                        }}
+                      // <TextField
+                      //   key={index}
+                      //   sx={{
+                      //     borderRadius: '6px',
+                      //     '&:hover': {
+                      //       border: '0.5px solid #3498FF',
+                      //     },
+                      //   }}
+                      //   inputProps={{
+                      //     style: {
+                      //       height: '3px',
+                      //       fontSize: '14px',
+                      //       fontWeight: 400,
+                      //     },
+                      //   }}
+                      //   placeholder={item.placeholder}
+                      // />
+                      <Input
                         placeholder={item.placeholder}
+                        key={index}
+                        style={{ borderRadius: '6px' }}
+                      />
+                    ) : index == 1 ? (
+                      <DateRangePicker
+                        style={{
+                          borderRadius: '6px',
+                          // width: '40px',
+                          // padding: '0px'
+                        }}
+                        preventOverflow
+                        showOneCalendar
+                        cleanable={false}
+                        ranges={[]}
+                        format='dd MMM yyyy'
+                        placeholder={item.placeholder}
+                        onChange={(e) => {
+                          e && setDateRange({ startDate: e[0], endDate: e[1] });
+                        }}
+                        character=' – '
+                        caretAs={CalendarIcon}
                       />
                     ) : (
-                      <LocalizationProvider
+                      <DatePicker
                         key={index}
-                        dateAdapter={AdapterDayjs}
-                      >
-                        <DatePicker
-                          sx={{
-                            fontSize: '14px',
-                            '& .MuiInputBase-root': {
-                              height: '35px',
-                              border: '1px solid #D0D5DD',
-                            },
-                          }}
-                          slotProps={{
-                            textField: { placeholder: item.placeholder },
-                          }}
-                        />
-                      </LocalizationProvider>
+                        placeholder={item.placeholder}
+                        style={{
+                          borderRadius: '6px',
+                        }}
+                        format='dd MMM yyyy'
+                        cleanable={false}
+                        caretAs={CalendarIcon}
+                      />
                     )}
                   </div>
                 </Grid2>

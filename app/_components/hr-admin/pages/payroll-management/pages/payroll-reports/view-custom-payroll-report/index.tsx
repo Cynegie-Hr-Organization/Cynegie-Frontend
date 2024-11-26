@@ -4,6 +4,7 @@ import { Box, Grid2, Stack } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import ViewCustomPayrollReport from '../../../tables/view-custom-payroll-report';
 import PayrollSummaryChart from '../../../charts/payroll-summary';
+import Image from 'next/image';
 
 const HrAdminViewCustomPayrollReportPage = () => {
   const router = useRouter();
@@ -55,20 +56,24 @@ const HrAdminViewCustomPayrollReportPage = () => {
         <Grid2 columnSpacing={2} rowSpacing={2} container>
           {[
             {
-              title: 'Total Payroll Cost',
-              value: '₦34,886,000',
+              title: 'Payroll Period',
+              value: 'Sept 1st - 30th, 2024',
+              icon: '/icons/calendar.svg',
             },
             {
-              title: 'Completed Payments',
-              value: '40',
+              title: 'Reported Generated On',
+              value: 'Jul 31st, 2024',
+              icon: '/icons/calendar.svg',
             },
             {
-              title: 'Pending Payments',
-              value: '12',
+              title: 'Report Type',
+              value: 'Payroll Summary',
+              icon: '/icons/doc.svg',
             },
             {
-              title: 'Total Payrolls',
-              value: '124',
+              title: 'Departments Included',
+              value: '3',
+              icon: '/icons/group-2.svg',
             },
           ].map((item, index) => (
             <Grid2
@@ -77,16 +82,28 @@ const HrAdminViewCustomPayrollReportPage = () => {
               className='common-card'
             >
               <Stack gap={3}>
+                <Stack direction='row' alignItems='center' gap={1}>
+                  <div
+                    style={{
+                      padding: '6px',
+                      borderRadius: '50%',
+                      backgroundColor: '#EADAFF',
+                    }}
+                  >
+                    <Image src={item.icon} width={16} height={16} alt='' />
+                  </div>
+                  <Box
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: '16px',
+                      color: '#1B1B1B',
+                    }}
+                  >
+                    {item.title}
+                  </Box>
+                </Stack>
                 <Box
-                  sx={{
-                    fontWeight: 600,
-                    fontSize: '16px',
-                    color: '#1B1B1B',
-                  }}
-                >
-                  {item.title}
-                </Box>
-                <Box
+                  flexGrow={1}
                   sx={{
                     fontSize: '20px',
                     fontWeight: 700,

@@ -1,11 +1,51 @@
 'use client';
+import CalendarIcon from '@/app/_components/icons/calendar';
+import {
+  MultiSelect,
+  Option,
+} from '@/app/_components/shared/multi-select-dropdown';
 import { Grid2, MenuItem, Select, Stack } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { DateRangePicker } from 'rsuite';
+import 'rsuite/dist/rsuite.min.css';
 
 const HrAdminGeneratePayrollReport = () => {
   const router = useRouter();
+
+  const [departmentOptionSelected, setDepartmentOptionSelected] = useState<
+    Option[] | null
+  >();
+  const departmentHandleChange = (selected: Option[]) => {
+    setDepartmentOptionSelected(selected);
+  };
+
+  const [employmentOptionSelected, setEmploymentOptionSelected] = useState<
+    Option[] | null
+  >();
+  const employmentHandleChange = (selected: Option[]) => {
+    setEmploymentOptionSelected(selected);
+  };
+
+  const [locationOptionSelected, setLocationOptionSelected] = useState<
+    Option[] | null
+  >();
+  const locationHandleChange = (selected: Option[]) => {
+    setLocationOptionSelected(selected);
+  };
+
+  const [dateRange, setDateRange] = useState<{
+    startDate: Date;
+    endDate: Date;
+  }>({
+    startDate: dayjs().startOf('month').toDate(),
+    endDate: dayjs().endOf('month').toDate(),
+  });
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
   return (
     <Stack gap={3} mx={5} mb={10} mt={6}>
       <div className='section-heading'>Payroll Report Generator</div>
@@ -16,7 +56,18 @@ const HrAdminGeneratePayrollReport = () => {
         <Stack gap={4}>
           <Grid2 spacing={2} container>
             {[
-              { label: 'Select Report Type', placeholder: 'Select Date' },
+              {
+                label: 'Select Report Type',
+                placeholder: 'Select Type',
+                options: [
+                  'Payroll Summary',
+                  'Employee Payroll Details',
+                  'Tax Reports',
+                  'Benefit Report',
+                  'Deduction Reports',
+                  'Compliance Reports',
+                ],
+              },
               { label: 'Select Payroll Period', placeholder: 'Select Type' },
             ].map((item, index) => (
               <Grid2 key={index} size={{ xs: 12, md: 6 }}>
@@ -40,27 +91,36 @@ const HrAdminGeneratePayrollReport = () => {
                         borderRadius: '4.62px',
                         pr: '15px',
                       }}
-                      disabled
                     >
-                      <MenuItem value={item.placeholder}>
+                      <MenuItem
+                        style={{ display: 'none' }}
+                        value={item.placeholder}
+                      >
                         {item.placeholder}
                       </MenuItem>
+                      {item.options?.map((option) => (
+                        <MenuItem value={option}>{option}</MenuItem>
+                      ))}
                     </Select>
                   ) : (
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        sx={{
-                          fontSize: '14px',
-                          '& .MuiInputBase-root': {
-                            height: '35px',
-                            // border: '1px solid #D0D5DD',
-                          },
-                        }}
-                        slotProps={{
-                          textField: { placeholder: item.placeholder },
-                        }}
-                      />
-                    </LocalizationProvider>
+                    <DateRangePicker
+                      style={{
+                        borderRadius: '6px',
+                        // width: '40px',
+                        // padding: '0px'
+                      }}
+                      preventOverflow
+                      showOneCalendar
+                      cleanable={false}
+                      ranges={[]}
+                      format='dd MMM yyyy'
+                      placeholder={item.placeholder}
+                      onChange={(e) => {
+                        e && setDateRange({ startDate: e[0], endDate: e[1] });
+                      }}
+                      character=' – '
+                      caretAs={CalendarIcon}
+                    />
                   )}
                 </div>
               </Grid2>
@@ -73,14 +133,38 @@ const HrAdminGeneratePayrollReport = () => {
                 {
                   label: 'Filter by Department',
                   placeholder: 'Select Department',
+                  options: [
+                    { value: 0, label: 'Goranboy' },
+                    { value: 1, label: 'Safikurd' },
+                    { value: 2, label: 'Baku' },
+                  ],
+                  onChange: departmentHandleChange,
+                  value: departmentOptionSelected,
                 },
                 {
                   label: 'Filter by Employment Type',
                   placeholder: 'Filter by Employment Type',
+                  options: [
+                    { value: 'Full Time', label: 'Full Time' },
+                    { value: 'Part Time', label: 'Part Time' },
+                    {
+                      value: 'Contract Employment',
+                      label: 'Contract Employment',
+                    },
+                  ],
+                  onChange: employmentHandleChange,
+                  value: employmentOptionSelected,
                 },
                 {
                   label: 'Filter by Location',
                   placeholder: 'Filter by Location',
+                  options: [
+                    { value: 0, label: 'Goranboy' },
+                    { value: 1, label: 'Safikurd' },
+                    { value: 2, label: 'Baku' },
+                  ],
+                  onChange: locationHandleChange,
+                  value: locationOptionSelected,
                 },
               ].map((item, index) => (
                 <Grid2 key={index} size={{ xs: 12, md: 4 }}>
@@ -96,19 +180,39 @@ const HrAdminGeneratePayrollReport = () => {
                     >
                       {item.label}
                     </div>
-                    <Select
-                      defaultValue={item.placeholder}
-                      sx={{
-                        height: '35px',
-                        borderRadius: '4.62px',
-                        pr: '15px',
-                      }}
-                      disabled
-                    >
-                      <MenuItem value={item.placeholder}>
-                        {item.placeholder}
-                      </MenuItem>
-                    </Select>
+                    {index == 1 ? (
+                      <Select
+                        defaultValue={item.placeholder}
+                        sx={{
+                          height: '35px',
+                          borderRadius: '4.62px',
+                          pr: '15px',
+                        }}
+                      >
+                        <MenuItem
+                          style={{ display: 'none' }}
+                          value={item.placeholder}
+                        >
+                          {item.placeholder}
+                        </MenuItem>
+                        {item.options?.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    ) : (
+                      <div className='App'>
+                        <MultiSelect
+                          key='example_id'
+                          options={item.options}
+                          onChange={item.onChange}
+                          value={item.value}
+                          isSelectAll={true}
+                          menuPlacement={'bottom'}
+                        />
+                      </div>
+                    )}
                   </div>
                 </Grid2>
               ))}
@@ -121,10 +225,12 @@ const HrAdminGeneratePayrollReport = () => {
                 {
                   label: 'Choose Specific Data Points',
                   placeholder: 'Select Data Points',
+                  options: ['Salary', 'Deductions', 'Taxes', 'Bonuses'],
                 },
                 {
                   label: 'Select Visual Representation',
                   placeholder: 'Select',
+                  options: ['Bar Chart', 'Pie Chart'],
                 },
               ].map((item, index) => (
                 <Grid2 key={index} size={{ xs: 12, md: 6 }}>
@@ -147,11 +253,16 @@ const HrAdminGeneratePayrollReport = () => {
                         borderRadius: '4.62px',
                         pr: '15px',
                       }}
-                      disabled
                     >
-                      <MenuItem value={item.placeholder}>
+                      <MenuItem
+                        style={{ display: 'none' }}
+                        value={item.placeholder}
+                      >
                         {item.placeholder}
                       </MenuItem>
+                      {item.options?.map((option) => (
+                        <MenuItem value={option}>{option}</MenuItem>
+                      ))}
                     </Select>
                   </div>
                 </Grid2>

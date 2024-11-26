@@ -9,3 +9,11 @@
         margin-right: 40px;
     }
 }
+
+button.overview-calendar .rs-input-group {
+    border-width: 0 !important;
+}
+
+button.overview-calendar .rs-input {
+    display: none !important;
+}

@@ -23,6 +23,7 @@ import {
 import Image from 'next/image';
 import { useState, ChangeEvent } from 'react';
 import { selectEmployeesForPayrollTableData } from '../select-employees-for-payroll/data';
+import { viewPayrollReportTable } from './data';
 
 const ViewPayrollReportTable = () => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
@@ -127,8 +128,13 @@ const ViewPayrollReportTable = () => {
                 'Employee Name',
                 'Department',
                 'Gross Pay',
-                'Deduction',
                 'Net Pay',
+                'Bonus',
+                'Untaxed Bonus',
+                'Deductions',
+                'Prorate Deduction',
+                'Tax',
+                'Overtime Hours',
               ].map((field) => (
                 <TableCell key={field} sx={{ whiteSpace: 'nowrap' }}>
                   {field}
@@ -137,7 +143,7 @@ const ViewPayrollReportTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {selectEmployeesForPayrollTableData.map((row, rowIndex) => (
+            {viewPayrollReportTable.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
                 <TableCell sx={{ whiteSpace: 'nowrap' }}>
                   <Checkbox
@@ -149,8 +155,13 @@ const ViewPayrollReportTable = () => {
                   row.name,
                   row.department,
                   row.grossPay,
-                  row.deduction,
                   row.netPay,
+                  row.bonus,
+                  row.untaxedBonus,
+                  row.deductions,
+                  row.prorateDeduction,
+                  row.tax,
+                  row.overTimeHours,
                 ].map((field, columnIndex) =>
                   columnIndex == 0 ? (
                     <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>

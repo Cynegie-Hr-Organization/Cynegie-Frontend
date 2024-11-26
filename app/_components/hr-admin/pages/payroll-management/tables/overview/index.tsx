@@ -30,6 +30,7 @@ import Image from 'next/image';
 import { useState, ChangeEvent } from 'react';
 import { payrollOverviewTableData } from './data';
 import { useRouter } from 'next/navigation';
+import { Input, InputGroup } from 'rsuite';
 
 const PayrollTable = () => {
   const router = useRouter();
@@ -96,58 +97,59 @@ const PayrollTable = () => {
         }}
       >
         <Box sx={{ width: '100%' }} flexGrow={1}>
-          <TextField
+          <Box
             sx={{
               width: { xs: '90%', sm: '70%', md: '70%' },
               mb: { xs: '15px', md: '0px' },
             }}
-            InputProps={{
-              sx: {
-                height: '35px',
-                borderRadius: '6px',
-                fontSize: '14px',
-                fontWeight: 400,
-              },
-              startAdornment: (
-                <Image
-                  src='/icons/search.svg'
-                  alt=''
-                  width={24}
-                  height={24}
-                  style={{ marginRight: '5px' }}
-                />
-              ),
-            }}
-            placeholder='Search here...'
-          />
-        </Box>
-        <Button
-          style={{
-            height: '30px',
-            borderRadius: '4.62px',
-            border: '1px solid #D0D5DD',
-            padding: '15px 15px',
-            boxShadow: '0px 0px 1px 0px #888888',
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 5,
-            alignItems: 'center',
-            color: '#344054',
-            textTransform: 'none',
-          }}
-          onClick={handleFilterClick}
-        >
-          <FilterList />
-          <div
-            style={{
-              fontWeight: 600,
-              color: '#344054',
-              fontSize: '14px',
-            }}
           >
-            Filter
-          </div>
-        </Button>
+            <InputGroup>
+              <InputGroup.Addon style={{ backgroundColor: 'transparent' }}>
+                <Image
+                  src='/icons/search-2.svg'
+                  alt=''
+                  width={18}
+                  height={18}
+                  style={{ margin: '-15px 0px -15px 0px' }}
+                />
+              </InputGroup.Addon>
+              <Input
+                style={{ paddingLeft: '0px', height: '30px' }}
+                placeholder='Search here...'
+              />
+            </InputGroup>
+          </Box>
+        </Box>
+        <Box>
+          <Button
+            style={{
+              height: '30px',
+              borderRadius: '4.62px',
+              border: '1px solid #D0D5DD',
+              padding: '15px 15px',
+              boxShadow: '0px 0px 1px 0px #888888',
+              display: 'flex',
+              flexDirection: 'row',
+              gap: 5,
+              alignItems: 'center',
+              textTransform: 'none',
+              color: 'inherit',
+            }}
+            sx={{ '&:hover': { backgroundColor: '#F0F0F0' } }}
+            onClick={handleFilterClick}
+          >
+            <FilterList />
+            <div
+              style={{
+                fontWeight: 500,
+                color: '#344054',
+                fontSize: '14px',
+              }}
+            >
+              Filter
+            </div>
+          </Button>
+        </Box>
       </Stack>
       <TableContainer>
         <Table>

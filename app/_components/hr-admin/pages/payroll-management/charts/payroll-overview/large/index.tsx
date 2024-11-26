@@ -48,6 +48,17 @@ const CustomLegend = (props: any) => {
   );
 };
 
+const toolTipItemLabelStyle = {
+  color: '#70707A',
+  fontSize: '11px',
+  fontWeight: 500,
+};
+const toolTipItemContentStyle = {
+  color: '#101928',
+  fontSize: '12px',
+  fontWeight: 500,
+};
+
 const CustomTooltip = ({
   active,
   payload,
@@ -61,13 +72,26 @@ const CustomTooltip = ({
         style={{
           background: '#ffffff',
           border: '1px solid #ccc',
-          padding: '10px',
-          borderRadius: '5px',
+          padding: '6px',
+          borderRadius: '6px',
         }}
       >
-        <p>{`Gross Salary: ₦${payload[0].value.toLocaleString()}`}</p>
-        <p>{`Deductions: ₦${payload[1].value.toLocaleString()}`}</p>
-        <p>{`Benefits: ₦${payload[2].value.toLocaleString()}`}</p>
+        <div
+          style={{
+            backgroundColor: '#F9FAFB',
+            padding: '10px',
+            borderRadius: '6px',
+          }}
+        >
+          {['Gross Salary', 'Deductions', 'Benefits'].map((item, index) => (
+            <p key={index}>
+              <span style={toolTipItemLabelStyle}>{`${item}: `}</span>
+              <span style={toolTipItemContentStyle}>{`₦${payload[
+                index
+              ].value.toLocaleString()}`}</span>
+            </p>
+          ))}
+        </div>
       </div>
     );
   }
