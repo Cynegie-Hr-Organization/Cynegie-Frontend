@@ -1,5 +1,6 @@
+'use client'
+
 import { FiLogOut } from "react-icons/fi"
-import Image from "next/image"
 import { RiSearchLine } from "react-icons/ri"
 import NavLinks from "./nav-links"
 import { IoClose } from "react-icons/io5";
@@ -14,7 +15,7 @@ const Sidebar = ({ openMobileMenu, setOpenMobileMenu }: { openMobileMenu: boolea
 
 			<div className="space-y-5">
 				<IoClose onClick={setOpenMobileMenu} className="block xl:hidden place-self-end" />
-				<Image src='/image/logo.png' width={122} height={38} alt="logo" className="hidden xl:block w-[122px] h-[38px]" />
+				<img src='/image/logo.png' alt="logo" className="hidden xl:block w-[122px] h-[38px]" />
 
 				<div className="border border-[#D0D5DD] w-[240px] flex items-center gap-3 p-2 rounded-[6px] focus-within:border-primary hover:border-primary duration-300 transition">
 					<RiSearchLine className="text-2xl" />
@@ -30,10 +31,8 @@ const Sidebar = ({ openMobileMenu, setOpenMobileMenu }: { openMobileMenu: boolea
 
 			<div className="flex items-center justify-between my-6 overflow-hidden">
 				<div className="flex items-center gap-3">
-					<Image
-						width={40}
-						height={40}
-						className="w-[40px] h-[40px]"
+					<img
+						className="w-10 h-10"
 						src="/image/avatar.png"
 						alt="avatar"
 					/>

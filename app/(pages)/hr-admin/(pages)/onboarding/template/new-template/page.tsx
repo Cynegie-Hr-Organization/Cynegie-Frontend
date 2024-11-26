@@ -211,7 +211,7 @@ function EditModal() {
           </div>
         </AlertDialogHeader>
 
-        <form action='mt-8 w-max'>
+        <form>
           <div className="flex items-center justify-between gap-x-10">
             <input type='text' placeholder='write a task name' className='font-bold text-xl outline-none border-none' />
             <Select>
