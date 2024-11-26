@@ -1,3 +1,5 @@
+'use client'
+
 import Image from "next/image";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -12,7 +14,7 @@ const Header = ({
   return (
     <div className='flex items-center justify-between p-5 md:border-b md:border-DreamyCloud md:bg-white'>
       <div className='items-center hidden gap-3 xl:flex'>
-        <Image className='w-[40px] h-[40px]' width={40} height={40} src='/image/avatar.png' alt='avatar' />
+        <img className='w-[40px] h-[40px]' src='/image/avatar.png' alt='avatar' />
         <div>
           <p className='font-sans text-lg font-bold text-Sambucus'>Welcome, Wumi 👋</p>
           <p className='font-sans text-xs font-normal text-Charcoal'>It’s Monday, 14th July 2024</p>
