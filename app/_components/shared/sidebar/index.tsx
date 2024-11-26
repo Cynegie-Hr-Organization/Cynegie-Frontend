@@ -14,7 +14,7 @@ const Sidebar = ({ openMobileMenu, setOpenMobileMenu }: { openMobileMenu: boolea
 
 			<div className="space-y-5">
 				<IoClose onClick={setOpenMobileMenu} className="block xl:hidden place-self-end" />
-				<Image src='/image/logo.png' width={122} height={38} alt="logo" className="hidden  w-[122px] h-[38px]" />
+				<Image src='/image/logo.png' width={122} height={38} alt="logo" className="hidden xl:block w-[122px] h-[38px]" />
 
 				<div className="border border-[#D0D5DD] w-[240px] flex items-center gap-3 p-2 rounded-[6px] focus-within:border-primary hover:border-primary duration-300 transition">
 					<RiSearchLine className="text-2xl" />

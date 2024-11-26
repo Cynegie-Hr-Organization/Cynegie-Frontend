@@ -8,6 +8,8 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useState, useCallback, LegacyRef } from "react";
 import CardLayout from "@/app/_components/shared/cards";
+import { PiDotsThreeVerticalBold } from "react-icons/pi";
+import { PopoverContent, Popover, PopoverTrigger } from "@/components/ui/popover";
 
 type Task = { id: number; text: string };
 type TaskState = {
@@ -131,9 +133,7 @@ const Column = ({
   });
 
   return (
-    <div
-      ref={dropRef as unknown as LegacyRef<HTMLDivElement>}
-      className='space-y-4 h-full overflow-y-scroll w-[242px]'>
+    <div ref={dropRef as unknown as LegacyRef<HTMLDivElement>} className='space-y-4 h-full overflow-y-scroll w-[242px]'>
       <Taskhead title={title} count={tasks.length.toString()} titleColor={getTitleColor(title)} />
       <div className='space-y-4'>
         {tasks.map((task, index) => (
@@ -230,9 +230,28 @@ const TaskItem = ({
             <Avatar key={index} src={imageSrc} sx={{ width: "20px", height: "20px" }} />
           ))}
         </div>
+        <PopoverMenu />
       </div>
     </div>
   );
 };
+
+function PopoverMenu() {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <button className='cursor-pointer border rounded-lg outline-none w-max p-1'>
+          <PiDotsThreeVerticalBold />
+        </button>
+      </PopoverTrigger>
+
+      <PopoverContent className='w-40 bg-white space-y-2 cursor-pointer rounded-lg flex flex-col items-start text-[#475367]'>
+        <button className=''>Edit Template</button>
+        <button className=' w-full'>Preview Template</button>
+        <button className='text-red-500'>Delete Task</button>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 export default TaskList;

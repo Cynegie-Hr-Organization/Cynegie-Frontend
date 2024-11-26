@@ -6,6 +6,7 @@ import { PiDotsThreeVerticalBold } from "react-icons/pi";
 import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 import { TextField } from "@mui/material";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const NewHireList = () => {
   return (
@@ -64,9 +65,7 @@ const NewHireList = () => {
                     <p className='text-sm'>21st June, 2024</p>
                   </td>
                   <td className='p-4'>
-                    <div className='cursor-pointer border rounded-lg w-max p-1'>
-                      <PiDotsThreeVerticalBold />
-                    </div>
+                    <PopoverMenu />
                   </td>
                 </tr>
               );
@@ -77,5 +76,23 @@ const NewHireList = () => {
     </CardLayout>
   );
 };
+
+function PopoverMenu() {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <button className='cursor-pointer border rounded-lg outline-none w-max p-1'>
+          <PiDotsThreeVerticalBold />
+        </button>
+      </PopoverTrigger>
+
+      <PopoverContent className='w-40 bg-white space-y-2 cursor-pointer rounded-lg flex flex-col items-start text-[#475367]'>
+        <button className=''>Edit Template</button>
+        <button className=' w-full'>Preview Template</button>
+        <button className='text-red-500'>Delete Task</button>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 export default NewHireList;

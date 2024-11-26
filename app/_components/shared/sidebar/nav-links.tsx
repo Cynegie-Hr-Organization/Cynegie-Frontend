@@ -46,6 +46,15 @@ const NavLinks = () => {
                 { name: 'Goals', path: '/hr-admin/performance-magnt/goals' },
             ],
         },
+        {
+            name: 'Payroll',
+            icon: <HiOutlineChartBar size={17.5} />,
+            path: '/hr-admin/payroll/overview',
+            subMenu: [
+                { name: 'Overview', path: '/hr-admin/performance-magnt/overview' },
+                { name: 'Goals', path: '/hr-admin/performance-magnt/goals' },
+            ],
+        },
     ];
 
     const isPathActive = (path: string) => path === '/hr-admin'

@@ -15,7 +15,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
         <div className={`bg-black bg-opacity-30 fixed inset-0 z-20 ${toggleMenu ? 'block' : 'hidden'}`}></div>
         <Header onMenuClick={handleToggleMenu} />
 
-        <main className="max-w-[1080px] 2xl:max-w-[1340px] 3xl:max-w-[1440px] mx-auto mt-6 px-4 xl:px-0">
+        <main className="max-w-[1080px] 2xl:max-w-[1340px] 3xl:max-w-[1440px] mx-auto mt-6 px-4">
           {children}
         </main>
       </div>
