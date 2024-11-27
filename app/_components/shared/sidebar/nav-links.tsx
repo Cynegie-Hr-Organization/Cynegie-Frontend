@@ -34,6 +34,7 @@ const NavLinks = () => {
             subMenu: [
                 { name: 'Overview', path: '/hr-admin/hiring/overview' },
                 { name: 'Jobs', path: '/hr-admin/hiring/jobs' },
+                { name: 'Offer Management', path: '/hr-admin/hiring/offer-management' },
                 { name: 'Candidate Management', path: '/hr-admin/hiring/candidate-management' },
             ],
         },
