@@ -1,15 +1,12 @@
 'use client';
 import { ChevronLeft } from '@mui/icons-material';
-import { Button, Grid2, Stack, TextField } from '@mui/material';
-import { /*DatePicker,*/ LocalizationProvider } from '@mui/x-date-pickers';
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Grid2, Stack } from '@mui/material';
 import React, { useState } from 'react';
 import SelectEmployeesForPayrollTable from '../../../tables/select-employees-for-payroll';
 import { useRouter } from 'next/navigation';
 import { DatePicker, DateRangePicker, Input } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import dayjs from 'dayjs';
-import { FaCalendar } from 'react-icons/fa6';
 import CalendarIcon from '@/app/_components/icons/calendar';
 
 const HrAdminCreatePayrollPage = () => {
