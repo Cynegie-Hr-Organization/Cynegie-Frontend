@@ -71,10 +71,6 @@ const TouchPreview = () => {
   );
 };
 
-const dndOptions = {
-  preview: false
-};
-
 const TaskList = () => {
   const [tasks, setTasks] = useState<TaskState>({
     todo: [
@@ -309,7 +305,6 @@ const TaskItem = ({
   );
 };
 
-// Keep the dynamic import
 const TaskListClient = dynamic(() => Promise.resolve(TaskList), {
   ssr: false
 });
