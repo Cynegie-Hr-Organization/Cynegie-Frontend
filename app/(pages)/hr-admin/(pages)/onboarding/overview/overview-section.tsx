@@ -35,7 +35,7 @@ const OverViewSection = () => {
     <Stack gap={3}>
       <Stack gap={2}>
         <Box className=' flex items-center justify-between'>
-          <h3 className='section-heading'>Overview</h3>
+          <h3 className='section-heading xl:block hidden'>Overview</h3>
           <Appbutton buttonText='Onboarding Templates' className='bg-primary hidden md:block' onClick={() => { }} />
         </Box>
 

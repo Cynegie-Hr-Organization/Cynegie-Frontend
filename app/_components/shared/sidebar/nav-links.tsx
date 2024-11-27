@@ -38,7 +38,7 @@ const NavLinks = () => {
             ],
         },
         {
-            name: 'Performance Management',
+            name: 'Performance',
             icon: <HiOutlineChartBar size={17.5} />,
             path: '/hr-admin/performance-magnt/overview',
             subMenu: [
@@ -60,10 +60,6 @@ const NavLinks = () => {
     const isPathActive = (path: string) => path === '/hr-admin'
         ? /^\/hr-admin$/.test(pathname)
         : new RegExp(`^${path}.*$`).test(pathname);
-
-    // const handleToggle = () => {
-    //     setOpenMobileMenu(!openMobileMenu)
-    // };
 
 
 

@@ -1,8 +1,7 @@
 'use client'
 
-import Image from "next/image";
 import { IoIosNotificationsOutline } from "react-icons/io";
-import { GiHamburgerMenu } from "react-icons/gi";
+import { IoMenu } from "react-icons/io5";
 
 const Header = ({
   onMenuClick,
@@ -29,15 +28,16 @@ const Header = ({
           <option>Tolu</option>
         </select>
 
-        <IoIosNotificationsOutline />
+        <IoIosNotificationsOutline size={25} />
       </div>
 
-      <h3 className='xl:hidden'>Overview</h3>
+      <h3 className='xl:hidden font-semibold text-lg'>Overview</h3>
 
       <div className='z-50 flex items-center gap-5 xl:hidden'>
-        <IoIosNotificationsOutline onClick={onNotificationClick} />
-        <GiHamburgerMenu onClick={onMenuClick} />
+        <IoIosNotificationsOutline size={25} onClick={onNotificationClick} />
+        <IoMenu size={28} onClick={onMenuClick} />
       </div>
+
     </div>
   );
 };

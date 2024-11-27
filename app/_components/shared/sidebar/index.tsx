@@ -6,16 +6,16 @@ import NavLinks from "./nav-links"
 import { IoClose } from "react-icons/io5";
 
 const Sidebar = ({ openMobileMenu, setOpenMobileMenu }: { openMobileMenu: boolean, setOpenMobileMenu: () => void }) => {
-	// const [openMobileMenu] = useState<boolean>(false);
-
 	return (
 		<div
 			className={`${openMobileMenu ? 'flex animate-in' : 'hidden animate-out'} 
         xl:flex bg-white h-dvh z-50 fixed w-[272px] px-4 pt-7 flex-col justify-between transition duration-500`}>
 
 			<div className="space-y-5">
-				<IoClose onClick={setOpenMobileMenu} className="block xl:hidden place-self-end" />
-				<img src='/image/logo.png' alt="logo" className="hidden xl:block w-[122px] h-[38px]" />
+				<div className="flex items-center justify-between">
+					<img src='/image/logo.png' alt="logo" className="w-[122px] h-[38px]" />
+					<IoClose size={30} onClick={setOpenMobileMenu} className="block xl:hidden place-self-end" />
+				</div>
 
 				<div className="border border-[#D0D5DD] w-[240px] flex items-center gap-3 p-2 rounded-[6px] focus-within:border-primary hover:border-primary duration-300 transition">
 					<RiSearchLine className="text-2xl" />

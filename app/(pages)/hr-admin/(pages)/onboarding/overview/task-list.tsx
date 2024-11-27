@@ -1,15 +1,18 @@
 "use client";
+
+
 import { Avatar, TextField } from "@mui/material";
 import { RiSearchLine } from "react-icons/ri";
 import { GoDotFill, GoPlus } from "react-icons/go";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { LuClock, LuListFilter } from "react-icons/lu";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { useState, useCallback, LegacyRef } from "react";
+import { TouchBackend } from "react-dnd-touch-backend";
+import { HTML5Backend  } from "react-dnd-html5-backend";
+import { usePreview } from 'react-dnd-preview';
+import { useState, useCallback, LegacyRef, useEffect } from "react";
 import CardLayout from "@/app/_components/shared/cards";
-import { PiDotsThreeVerticalBold } from "react-icons/pi";
-import { PopoverContent, Popover, PopoverTrigger } from "@/components/ui/popover";
+import dynamic from 'next/dynamic';
 
 type Task = { id: number; text: string };
 type TaskState = {
@@ -18,6 +21,38 @@ type TaskState = {
   inReview: Task[];
   completed: Task[];
 };
+
+interface DragItem {
+  id: number;
+  text: string;
+  column: keyof TaskState;
+  index: number;
+}
+
+const TouchPreview = () => {
+  const preview = usePreview<DragItem>();
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    setIsTouchDevice(('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
+  }, []);
+
+  if (!preview.display || !isTouchDevice) return null;
+
+  return (
+    <div className="fixed top-0 left-0 z-50" style={preview.display ? preview.style : undefined}>
+      <div className="bg-white shadow-lg rounded-xl p-2 opacity-90 w-[242px]">
+        {preview.item?.text}
+      </div>
+    </div>
+  );
+};
+
+const TaskListClient = dynamic(() => Promise.resolve(TaskList), {
+  ssr: false
+});
+
+export default TaskListClient;
 
 const TaskList = () => {
   const [tasks, setTasks] = useState<TaskState>({
@@ -32,6 +67,18 @@ const TaskList = () => {
     inReview: [{ id: 5, text: "Spam in Twitter and IRC to promote it" }],
     completed: [],
   });
+
+  const [dndBackend, setDndBackend] = useState(() => HTML5Backend);
+
+  useEffect(() => {
+    const isTouchDevice = () => {
+      return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    };
+
+    if (isTouchDevice()) {
+      setDndBackend(() => TouchBackend);
+    }
+  }, []);
 
   const findSourceColumn = (prevTasks: TaskState, draggedTaskId: number): keyof TaskState | undefined => {
     return (Object.keys(prevTasks) as Array<keyof TaskState>).find((column) =>
@@ -64,7 +111,7 @@ const TaskList = () => {
   }, []);
 
   return (
-    <CardLayout className='bg-white overflow-x-scroll'>
+    <CardLayout className='bg-white'>
       <div className='w-full flex items-center justify-between flex-grow mb-4'>
         <TextField
           className='max-w-[476px]'
@@ -90,12 +137,13 @@ const TaskList = () => {
         </button>
       </div>
 
-      <DndProvider backend={HTML5Backend}>
-        <div className='grid grid-cols-4 gap-8 p-1 mb-6 h-[463.33px]'>
+      <DndProvider backend={dndBackend} options={{ enableMouseEvents: true }}>
+        <div className='flex gap-8 p-1 mb-6 h-[463.33px] overflow-x-auto min-w-full'>
           {(Object.keys(tasks) as Array<keyof TaskState>).map((column) => (
             <Column key={column} title={column} tasks={tasks[column]} moveCard={moveCard} />
           ))}
         </div>
+        <TouchPreview />
       </DndProvider>
     </CardLayout>
   );
@@ -133,7 +181,7 @@ const Column = ({
   });
 
   return (
-    <div ref={dropRef as unknown as LegacyRef<HTMLDivElement>} className='space-y-4 h-full overflow-y-scroll w-[242px]'>
+    <div ref={dropRef as unknown as LegacyRef<HTMLDivElement>} className='space-y-4 h-full overflow-y-scroll min-w-[242px]'>
       <Taskhead title={title} count={tasks.length.toString()} titleColor={getTitleColor(title)} />
       <div className='space-y-4'>
         {tasks.map((task, index) => (
@@ -180,7 +228,7 @@ const TaskItem = ({
 }) => {
   const [{ isDragging }, dragRef] = useDrag({
     type: "TASK",
-    item: { id: task.id, column: currentColumn, index },
+    item: { id: task.id, column: currentColumn, index, text: task.text },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -206,11 +254,9 @@ const TaskItem = ({
   return (
     <div
       ref={ref}
-      className='text-xs mt-11 space-y-[14.67px] p-2 rounded-xl shadow-md m-[2px]'
-      style={{
-        opacity: isDragging ? 0.5 : 1,
-        background: isOver ? "lightgray" : "transparent",
-      }}>
+      className={`text-xs mt-11 space-y-[14.67px] p-2 rounded-xl shadow-md m-[2px] touch-none
+        ${isDragging ? 'opacity-30 cursor-grabbing -rotate-6' : 'opacity-100 cursor-grab rotate-0'} ${isOver ? 'bg-gray-100' : 'bg-transparent'}`}>
+
       <div className='space-y-2'>
         <p className='capitalize text-sm font-semibold'>{task.text}</p>
         <p className='flex items-center text-[11px] text-primary font-medium'>
@@ -218,6 +264,7 @@ const TaskItem = ({
           <span>Design</span>
         </p>
       </div>
+
       <p className='text-[#64748B]'>Its just needs to adapt the UI from what you did before</p>
       <hr className='border-t w-full' />
       <div className='flex items-center justify-between'>
@@ -227,31 +274,10 @@ const TaskItem = ({
         </div>
         <div className='flex'>
           {["/image/persons/person-1.png", "/image/persons/person-2.png"].map((imageSrc, index) => (
-            <Avatar key={index} src={imageSrc} sx={{ width: "20px", height: "20px" }} />
+            <Avatar key={index} src={imageSrc} className="w-5 h-5 first:ml-auto -ml-2" />
           ))}
         </div>
-        <PopoverMenu />
       </div>
     </div>
   );
 };
-
-function PopoverMenu() {
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <button className='cursor-pointer border rounded-lg outline-none w-max p-1'>
-          <PiDotsThreeVerticalBold />
-        </button>
-      </PopoverTrigger>
-
-      <PopoverContent className='w-40 bg-white space-y-2 cursor-pointer rounded-lg flex flex-col items-start text-[#475367]'>
-        <button className=''>Edit Template</button>
-        <button className=' w-full'>Preview Template</button>
-        <button className='text-red-500'>Delete Task</button>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
-export default TaskList;
