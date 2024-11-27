@@ -7,9 +7,7 @@ import { useState } from 'react';
 
 const HiringOverviewJobDetailsPage = () => {
   return (
-      <>
-      <JobDetails/>
-      </>
+    <JobDetails />
   );
 };
 

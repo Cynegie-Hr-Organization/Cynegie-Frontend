@@ -69,8 +69,41 @@
     color: #000000
 }
 
-.section-heading {
-    font-weight: 700;
-    font-size: 24px;
+.card-title-small {
+    font-size: 16px;
+    font-weight: 600;
     color: #000000
+}
+
+.card-subtitle-small {
+    font-size: 14px;
+    font-weight: 400;
+    color: #70707A
+}
+
+.section-heading {
+    font-weight: 700; font-size: 24px; color: #000000
+}
+
+.section-subtitle {
+    font-weight: 400;
+    font-size: 14px;
+    color: #525866;
+}
+
+ .rs-input, .rs-input-group {
+    border-width: 2px !important;
+}
+
+/* Disable hover effect for date range selection */
+/* .rs-picker-calendar-cell:hover {
+    background-color: transparent !important;
+    color: inherit !important;
+  } */
+
+.common-button {
+    border-radius: 8px !important;
+                background-color: #0035C3 !important;
+                padding: 6px 20px !important;
+                text-transform: none !important;
 }

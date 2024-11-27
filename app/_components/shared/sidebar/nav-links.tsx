@@ -33,7 +33,6 @@ const NavLinks = () => {
             path: '/hr-admin/hiring/overview',
             subMenu: [
                 { name: 'Overview', path: '/hr-admin/hiring/overview' },
-                { name: 'Jobs', path: '/hr-admin/hiring/jobs' },
                 { name: 'Offer Management', path: '/hr-admin/hiring/offer-management' },
                 { name: 'Candidate Management', path: '/hr-admin/hiring/candidate-management' },
             ],
@@ -52,8 +51,8 @@ const NavLinks = () => {
             icon: <HiOutlineChartBar size={17.5} />,
             path: '/hr-admin/payroll/overview',
             subMenu: [
-                { name: 'Overview', path: '/hr-admin/performance-magnt/overview' },
-                { name: 'Goals', path: '/hr-admin/performance-magnt/goals' },
+                { name: 'Overview', path: '/hr-admin/payroll/overview' },
+                { name: 'Goals', path: '/hr-admin/payroll/goals' },
             ],
         },
     ];

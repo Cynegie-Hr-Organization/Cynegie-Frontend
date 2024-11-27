@@ -2,7 +2,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import JobsDetailsTable from "./table-container";
 import JobCardHeader from "./card-header";
 import JobDescriptionHeader from "./header";
@@ -10,14 +10,10 @@ import JobCardContent from "./card-content";
 
 
 export default function JobDetails() {
-
-
- 
-    const router = useRouter();
-   
+  const router = useRouter();
 
   return (
-    <div className="p-[15px] flex gap-4 flex-col md:p-[30px]">
+    <div className="flex gap-4 flex-col">
       <div className="flex  justify-start items-center gap-2">
         <Image
           src="/button-icon.svg"
@@ -29,20 +25,19 @@ export default function JobDetails() {
         />
         <h1 className="text-lg text-black font-semibold">Back to Jobs</h1>
       </div>
-      <JobDescriptionHeader/>
+      <JobDescriptionHeader />
       <div className="space-y-6 bg-white p-4 md:p-6 rounded-md ">
-        <JobCardHeader/>
+        <JobCardHeader />
       </div>
       <div className="space-y-6 bg-white p-4 md:p-6 rounded-md ">
-        <JobCardContent/>
+        <JobCardContent />
       </div>
 
       <div className="flex mb-4 justify-start items-center ">
-        
         <h1 className="text-lg text-black font-semibold">Activity Log</h1>
       </div>
-             <JobsDetailsTable/>
 
+      <JobsDetailsTable />
     </div>
   );
 }
