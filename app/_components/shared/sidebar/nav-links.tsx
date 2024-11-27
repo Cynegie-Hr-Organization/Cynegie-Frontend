@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-// import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation'; // For pathname and router
+
+import { usePathname, useRouter } from 'next/navigation';
 import { FaChevronDown } from 'react-icons/fa6';
 import { RxDashboard } from 'react-icons/rx';
 import { HiOutlineChartBar, HiOutlineUserPlus } from 'react-icons/hi2';
 import { TbFileUpload } from 'react-icons/tb';
-
+import { LiaMoneyBillWaveSolid } from 'react-icons/lia';
 
 const NavLinks = () => {
     const pathname = usePathname();
@@ -48,7 +48,7 @@ const NavLinks = () => {
         },
         {
             name: 'Payroll',
-            icon: <HiOutlineChartBar size={17.5} />,
+            icon: <LiaMoneyBillWaveSolid size={17.5} />,
             path: '/hr-admin/payroll/overview',
             subMenu: [
                 { name: 'Overview', path: '/hr-admin/payroll/overview' },

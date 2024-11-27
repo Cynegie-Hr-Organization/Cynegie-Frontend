@@ -25,7 +25,8 @@ import {
 } from "@/components/ui/select";
 import { CiCalendarDate } from "react-icons/ci";
 import { ReactNode } from "react";
-
+import { DrawerDialog } from "@/components/drawer/modal";
+import { IoCloseOutline } from "react-icons/io5";
 
 
 
@@ -72,12 +73,9 @@ const CreateNewTemplate = () => {
                 To Do&lsquo;s <span className='text-gray-400'>(0)</span>
               </p>
 
-              <EditModal triggers={
-                <button className='capitalize flex items-center justify-center gap-x-2 outline-none border-none bg-primary text-white rounded-lg px-[12.33px] py-[9px] font-bold'>
-                  <span> Add Task</span>
-                  <LuPlusCircle />
-                </button>
-              } />
+
+              {/* add task */}
+              <AddTask triggers={undefined} />
             </div>
             <div className='space-y-4'>
               <div className='bg-white h-8 rounded-lg flex items-center justify-center'>
@@ -207,6 +205,138 @@ function PopoverMenu() {
   );
 }
 
+function AddTask({ triggers }: { triggers: ReactNode }) {
+  return (
+    <DrawerDialog
+
+      trigger={
+        <button className='capitalize flex items-center justify-center gap-x-2 outline-none border-none bg-primary text-white rounded-lg px-[12.33px] py-[9px] font-bold'>
+          <span> Add Task</span>
+          <LuPlusCircle />
+        </button>
+      }
+
+      header={
+        <DialogTitle className=''>
+          <p className='font-semibold'>Add Task</p>
+          <p className='font-normal text-sm'>Add and create task</p>
+        </DialogTitle>
+      }
+
+
+      footer={
+        <button className='capitalize w-full mt-5 gap-x-2 outline-none border border-gray-400 bg-gray-300 rounded-lg px-[12.33px] py-[9px] font-bold'>
+          Next
+        </button>
+      }
+    >
+      <form className="h-max overflow-y-scroll">
+        <div className="flex items-center justify-between gap-x-10">
+          <input type='text' placeholder='write a task name' className='font-bold text-xl outline-none border-none' />
+          <Select>
+            <SelectTrigger className='w-max gap-x-2 border-none bg-black text-white'>
+              <SelectValue placeholder='To Do' />
+            </SelectTrigger>
+            <SelectContent className="bg-white">
+              <SelectGroup>
+                <SelectItem value='apple' className="hover:bg-primary hover:text-white">To do</SelectItem>
+                <SelectItem value='banana' className="hover:bg-primary hover:text-white">In progress</SelectItem>
+                <SelectItem value='blueberry' className="hover:bg-primary hover:text-white">Completed</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="border border-[#F1F5F9] rounded-xl mt-8">
+          <p className="px-4 py-2 font-bold">Details</p>
+          <hr className="border-t border-[#F1F5F9]" />
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-between px-4 py-6 text-xs text-[#94A3B8]">
+            <div className="space-y-3">
+              <p className="text-xs">ASSIGNEED TO</p>
+              <div className="flex items-center justify-center gap-x-3 py-1">
+                <span className="border border-dashed rounded-full p-1 text-[#64748B] border-[#64748B]"> <BsPerson /></span>No assignee
+              </div>
+            </div>
+            <div className="space-y-3">
+              <p>CREATED</p>
+              <div className="flex text-nowrap items-center justify-center gap-x-2 bg-[#F8FAFC] text-[#0F172A] p-2 rounded-lg text-xs">
+                <CiCalendarDate className="font-bold" />
+                Nov 29, 2021
+              </div>
+            </div>
+            <div className="space-y-3">
+              <p>LABELS</p>
+              <Select>
+                <SelectTrigger className='border-none p-0 text-cyan-400 flex items-center justify-start gap-x-2 w-max'>
+                  <SelectValue placeholder='IT Support' />
+                </SelectTrigger>
+                <SelectContent className="bg-white">
+                  <SelectGroup>
+                    <SelectItem value='apple' className="hover:bg-primary hover:text-white">IT Support</SelectItem>
+                    <SelectItem value='banana' className="hover:bg-primary hover:text-white">IT Support</SelectItem>
+                    <SelectItem value='blueberry' className="hover:bg-primary hover:text-white">IT Support</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-3 text-xs">
+              <p>DUE DATE</p>
+              <div className="flex items-center justify-center gap-x-2 py-1">
+                <span className="border border-dashed rounded-full p-1 text-[#64748B] border-[#64748B]">
+                  <BsPerson />
+                </span>
+                No due date
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-sm mt-8">
+          <div className='flex flex-col'>
+            <label htmlFor='template-desc' className='text-sm font-semibold mb-1'>
+              <span className="block font-semibold">
+                Description
+              </span>
+            </label>
+            <textarea
+              name='template-desc'
+              className='border-none focus:border outline-none rounded-lg p-2 resize-none placeholder:text-[#94A3B8]'
+              placeholder='Add more details to this task...'
+            />
+          </div>
+        </div>
+
+        <div className="flex itemcenter text-sm mt-8 gap-x-4">
+          <p className="font-semibold">Subtask</p>
+          <button className="border-none outline-none text-primary"> + Add</button>
+        </div>
+
+        <div className="space-y-3 text-sm">
+          <div className="flex itemcenter justify-between text-sm mt-8 gap-x-4">
+            <p className="font-semibold">Activity</p>
+            <button className="border-none outline-none text-primary flex items-center justify-center gap-x-2"> <LuListFilter /> Newest first</button>
+          </div>
+          <div className="flex gap-x-4">
+            <Avatar src="/image/persons/person-1.png" />
+            <label htmlFor="comment" className="hidden"></label>
+            <div className="w-full space-y-2">
+              <input
+                name='comment'
+                type='text'
+                className='border outline-none rounded-lg p-2 w-full'
+                placeholder='Add a comment...'
+              />
+              <p className="font-normal"><span className="font-semibold">Pro tip:</span> press <span className="font-semibold">M</span> to comment</p>
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+    </DrawerDialog>
+  );
+}
 function EditModal({ triggers }: { triggers: ReactNode }) {
   return (
     <Dialog>
@@ -351,8 +481,8 @@ function ViewModal({ children }: { children: ReactNode }) {
               <p className='font-normal text-sm'>view task details</p>
             </DialogTitle>
             {/* <DialogCancel className='border-none rounded-full h-10 w-10 bg-gray-200'>
-            <IoCloseOutline />
-          </DialogCancel> */}
+              <IoCloseOutline />
+            </DialogCancel> */}
           </div>
         </DialogHeader>
 
@@ -445,7 +575,8 @@ function ViewModal({ children }: { children: ReactNode }) {
           <div className="space-y-3 text-sm">
             <div className="flex itemcenter justify-between text-sm mt-8 gap-x-4">
               <p className="font-semibold">Activity</p>
-              <button className="border-none outline-none text-primary flex items-center justify-center gap-x-2"> <LuListFilter /> Newest first</button>
+              <button className="border-none outline-none text-primary flex items-center justify-center gap-x-2">
+                <LuListFilter /> Newest first</button>
             </div>
             <div className="flex gap-x-4">
               <Avatar src="/image/persons/person-1.png" />
