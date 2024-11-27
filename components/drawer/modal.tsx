@@ -37,14 +37,14 @@ export function DrawerDialog({
         </DialogTrigger>
 
         <DialogContent className="sm:max-w-[600px] bg-white max-h-[600px] px-4 overflow-y-scroll">
-          <DialogHeader>
+          <DialogHeader className="px-0 mx-0">
             {header}
           </DialogHeader>
 
           {children}
 
           {footer && (
-            <DrawerFooter className="">
+            <DrawerFooter className="py-4 px-0">
               {footer}
             </DrawerFooter>
           )}
@@ -66,7 +66,7 @@ export function DrawerDialog({
         {children}
 
         {footer &&
-          <DrawerFooter className="pt-2">
+          <DrawerFooter className="pt-2 w-full py-4 px-0">
             {footer}
           </DrawerFooter>}
       </DrawerContent>

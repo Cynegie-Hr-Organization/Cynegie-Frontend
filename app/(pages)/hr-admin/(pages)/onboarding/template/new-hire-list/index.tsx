@@ -7,8 +7,11 @@ import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 import { TextField } from "@mui/material";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useRouter } from "next/dist/client/components/navigation";
+import { useParams } from "next/navigation";
 
 const NewHireList = () => {
+
   return (
     <CardLayout className='bg-white overflow-x-scroll'>
       <div className='w-full flex items-center justify-between flex-grow mb-4'>
@@ -78,6 +81,9 @@ const NewHireList = () => {
 };
 
 function PopoverMenu() {
+  const router = useRouter();
+  const params = useParams();
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -88,7 +94,9 @@ function PopoverMenu() {
 
       <PopoverContent className='w-40 bg-white space-y-2 cursor-pointer rounded-lg flex flex-col items-start text-[#475367]'>
         <button className=''>Edit Template</button>
-        <button className=' w-full'>Preview Template</button>
+        <button
+          onClick={() => router.push(`/hr-admin/onboarding/template/new-template/${params.templateId}`)}
+          className='w-full'>Preview Template</button>
         <button className='text-red-500'>Delete Task</button>
       </PopoverContent>
     </Popover>

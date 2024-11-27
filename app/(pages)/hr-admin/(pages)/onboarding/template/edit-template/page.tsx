@@ -1,9 +1,9 @@
 "use client";
 
 import CardLayout from "@/app/_components/shared/cards";
-import NewTask from "./new-task";
-import NewDocument from "./new-document";
-import NewTrainingModule from "./new-training-module";
+import NewTask from "./edit-task";
+import NewDocument from "./edit-document";
+import NewTrainingModule from "./edit-training-module";
 import { useState, useRef, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 
