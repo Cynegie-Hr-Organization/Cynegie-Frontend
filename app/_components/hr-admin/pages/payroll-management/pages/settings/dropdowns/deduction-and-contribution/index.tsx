@@ -4,10 +4,10 @@ const DeductionAndContributionSettingsDropdown = () => {
   return (
     <Grid2 spacing={2} container>
       {[
-        { label: 'Pay Period Setup', placeholder: 'Select Date' },
-        { label: 'Pay Date', placeholder: 'Select Type' },
-        { label: 'Pay Period Setup', placeholder: 'Select Date' },
-        { label: 'Pay Date', placeholder: 'Select Type' },
+        { label: 'Tax Deductions', placeholder: 'Enter' },
+        { label: 'Pension Contributions', placeholder: 'Enter' },
+        { label: 'Health Insurance', placeholder: 'Enter' },
+        { label: 'Transportation Allowance', placeholder: 'Enter' },
       ].map((item, index) => (
         <Grid2 key={index} size={{ xs: 12, md: 6 }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

@@ -8,6 +8,7 @@ import {
 import {
   Avatar,
   Box,
+  Button,
   Checkbox,
   MenuItem,
   Select,
@@ -23,6 +24,7 @@ import {
 import Image from 'next/image';
 import { useState, ChangeEvent } from 'react';
 import { selectEmployeesForPayrollTableData } from '../select-employees-for-payroll/data';
+import enrolledEmployeesTableData from './data';
 // import { selectEmployeesForPayrollTableData } from './data';
 
 const EnrolledEmployeesTable = () => {
@@ -104,7 +106,9 @@ const EnrolledEmployeesTable = () => {
         <Table>
           <TableHead sx={{ backgroundColor: '#F7F9FC' }}>
             <TableRow>
-              <TableCell sx={{ whiteSpace: 'nowrap', width: '50px' }}>
+              <TableCell
+                sx={{ whiteSpace: 'nowrap', width: '50px', paddingY: 0 }}
+              >
                 <Checkbox
                   sx={{
                     '& .MuiSvgIcon-root': {
@@ -126,10 +130,10 @@ const EnrolledEmployeesTable = () => {
               </TableCell>
               {[
                 'Employee Name',
-                'Department',
-                'Gross Pay',
-                'Deduction',
-                'Net Pay',
+                'Utilization',
+                'Start Date',
+                'End Date',
+                'Actions',
               ].map((field) => (
                 <TableCell key={field} sx={{ whiteSpace: 'nowrap' }}>
                   {field}
@@ -138,7 +142,7 @@ const EnrolledEmployeesTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {selectEmployeesForPayrollTableData.map((row, rowIndex) => (
+            {enrolledEmployeesTableData.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
                 <TableCell sx={{ whiteSpace: 'nowrap' }}>
                   <Checkbox
@@ -146,26 +150,39 @@ const EnrolledEmployeesTable = () => {
                     onChange={(e) => handleCheckboxChange(e, rowIndex)}
                   />
                 </TableCell>
-                {[
-                  row.name,
-                  row.department,
-                  row.grossPay,
-                  row.deduction,
-                  row.netPay,
-                ].map((field, columnIndex) =>
-                  columnIndex == 0 ? (
-                    <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>
-                      <Stack direction='row' gap={1.5} alignItems='center'>
-                        <Avatar src={row.image} />
-                        <div>{field}</div>
-                      </Stack>
-                    </TableCell>
-                  ) : (
-                    <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>
-                      {field}
-                    </TableCell>
-                  )
+                {[row.name, row.utlization, row.startDate, row.endDate].map(
+                  (field, columnIndex) =>
+                    columnIndex == 0 ? (
+                      <TableCell
+                        sx={{ whiteSpace: 'nowrap' }}
+                        key={columnIndex}
+                      >
+                        <Stack direction='row' gap={1.5} alignItems='center'>
+                          <Avatar src={row.image} />
+                          <div>{field}</div>
+                        </Stack>
+                      </TableCell>
+                    ) : (
+                      <TableCell
+                        sx={{ whiteSpace: 'nowrap' }}
+                        key={columnIndex}
+                      >
+                        {field}
+                      </TableCell>
+                    )
                 )}
+                <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                  <Button>
+                    <MoreVert
+                      sx={{
+                        borderWidth: '0.5px',
+                        borderRadius: '4px',
+                        padding: '2px',
+                        fill: '#000',
+                      }}
+                    />
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

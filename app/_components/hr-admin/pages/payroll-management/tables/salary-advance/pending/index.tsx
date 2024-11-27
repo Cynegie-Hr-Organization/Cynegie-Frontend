@@ -30,10 +30,23 @@ import { useState, ChangeEvent } from 'react';
 // import { payrollOverviewTableData } from '../overview/data';
 import { useRouter } from 'next/navigation';
 import { payrollOverviewTableData } from '../../overview/data';
+import { pendingSalaryAdvanceTableData } from './data';
 
 const PendingSalaryAdvanceTable = () => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
+  const handleCheckboxChange = (
+    event: ChangeEvent<HTMLInputElement>,
+    rowIndex: number
+  ) => {
+    setSelectedRows((prevSelectedRows) => {
+      if (event.target.checked) {
+        return [...prevSelectedRows, rowIndex];
+      } else {
+        return prevSelectedRows.filter((index) => index !== rowIndex);
+      }
+    });
+  };
 
   const router = useRouter();
 
@@ -117,14 +130,26 @@ const PendingSalaryAdvanceTable = () => {
         <Table>
           <TableHead sx={{ backgroundColor: '#F7F9FC' }}>
             <TableRow>
+              <TableCell sx={{ whiteSpace: 'nowrap', paddingY: 0 }}>
+                <Checkbox
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedRows([0, 1, 2, 3, 4]);
+                    } else {
+                      setSelectedRows([]);
+                    }
+                  }}
+                  checked={selectedRows.length === 5}
+                  indeterminate={
+                    selectedRows.length > 0 && selectedRows.length < 5
+                  }
+                />
+              </TableCell>
               {[
-                'Payroll Name',
-                'Payroll Period',
-                'Payment Date',
-                'Total Employees',
-                'Gross Pay',
-                'Net Pay',
-                'Approval Date',
+                'Employee Name',
+                'Requested Amount',
+                'Requested Date',
+                'Repayment Terms Status',
                 'Actions',
               ].map((field) => (
                 <TableCell key={field} sx={{ whiteSpace: 'nowrap' }}>
@@ -134,16 +159,19 @@ const PendingSalaryAdvanceTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {payrollOverviewTableData.map((row, rowIndex) => (
+            {pendingSalaryAdvanceTableData.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
+                <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                  <Checkbox
+                    checked={selectedRows.includes(rowIndex)}
+                    onChange={(e) => handleCheckboxChange(e, rowIndex)}
+                  />
+                </TableCell>
                 {[
                   row.name,
-                  row.period,
-                  row.date,
-                  row.totalEmployees,
-                  row.grossPay,
-                  row.netPay,
-                  row.approvalDate,
+                  row.requestedAmount,
+                  row.requestedDate,
+                  row.repaymentTermsStatus,
                 ].map((field, columnIndex) =>
                   columnIndex === 0 ? (
                     <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>

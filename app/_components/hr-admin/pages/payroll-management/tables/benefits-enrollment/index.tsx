@@ -23,6 +23,7 @@ import {
 import Image from 'next/image';
 import { useState, ChangeEvent } from 'react';
 import { selectEmployeesForPayrollTableData } from '../select-employees-for-payroll/data';
+import { benefitsEnrollmentTableData } from './data';
 // import { selectEmployeesForPayrollTableData } from './data';
 
 const PayrollBenefitsEnrollmentTable = () => {
@@ -124,21 +125,17 @@ const PayrollBenefitsEnrollmentTable = () => {
                   }
                 />
               </TableCell>
-              {[
-                'Employee Name',
-                'Department',
-                'Gross Pay',
-                'Deduction',
-                'Net Pay',
-              ].map((field) => (
-                <TableCell key={field} sx={{ whiteSpace: 'nowrap' }}>
-                  {field}
-                </TableCell>
-              ))}
+              {['Employee Name', 'Department', 'Role', 'Employment Status'].map(
+                (field) => (
+                  <TableCell key={field} sx={{ whiteSpace: 'nowrap' }}>
+                    {field}
+                  </TableCell>
+                )
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
-            {selectEmployeesForPayrollTableData.map((row, rowIndex) => (
+            {benefitsEnrollmentTableData.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
                 <TableCell sx={{ whiteSpace: 'nowrap' }}>
                   <Checkbox
@@ -146,25 +143,26 @@ const PayrollBenefitsEnrollmentTable = () => {
                     onChange={(e) => handleCheckboxChange(e, rowIndex)}
                   />
                 </TableCell>
-                {[
-                  row.name,
-                  row.department,
-                  row.grossPay,
-                  row.deduction,
-                  row.netPay,
-                ].map((field, columnIndex) =>
-                  columnIndex == 0 ? (
-                    <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>
-                      <Stack direction='row' gap={1.5} alignItems='center'>
-                        <Avatar src={row.image} />
-                        <div>{field}</div>
-                      </Stack>
-                    </TableCell>
-                  ) : (
-                    <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>
-                      {field}
-                    </TableCell>
-                  )
+                {[row.name, row.department, row.role, row.enrollmentStatus].map(
+                  (field, columnIndex) =>
+                    columnIndex == 0 ? (
+                      <TableCell
+                        sx={{ whiteSpace: 'nowrap' }}
+                        key={columnIndex}
+                      >
+                        <Stack direction='row' gap={1.5} alignItems='center'>
+                          <Avatar src={row.image} />
+                          <div>{field}</div>
+                        </Stack>
+                      </TableCell>
+                    ) : (
+                      <TableCell
+                        sx={{ whiteSpace: 'nowrap' }}
+                        key={columnIndex}
+                      >
+                        {field}
+                      </TableCell>
+                    )
                 )}
               </TableRow>
             ))}

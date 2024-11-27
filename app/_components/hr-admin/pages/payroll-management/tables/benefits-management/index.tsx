@@ -28,6 +28,7 @@ import Image from 'next/image';
 import { useState, ChangeEvent } from 'react';
 import { payrollOverviewTableData } from '../overview/data';
 import { useRouter } from 'next/navigation';
+import benefitsManagementTableData from './data';
 
 const PayrollBenefitsManagementTable = () => {
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
@@ -115,14 +116,10 @@ const PayrollBenefitsManagementTable = () => {
           <TableHead sx={{ backgroundColor: '#F7F9FC' }}>
             <TableRow>
               {[
-                'Payroll Name',
-                'Payroll Period',
-                'Payment Date',
-                'Total Employees',
-                'Gross Pay',
-                'Net Pay',
-                'Approval Date',
-                'Status',
+                'Benefit Name',
+                'Benefit Type',
+                'Employees Enrolled',
+                'Pending Approvals',
                 'Actions',
               ].map((field) => (
                 <TableCell key={field} sx={{ whiteSpace: 'nowrap' }}>
@@ -132,39 +129,18 @@ const PayrollBenefitsManagementTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {payrollOverviewTableData.map((row, rowIndex) => (
+            {benefitsManagementTableData.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
                 {[
                   row.name,
-                  row.period,
-                  row.date,
-                  row.totalEmployees,
-                  row.grossPay,
-                  row.netPay,
-                  row.approvalDate,
-                  row.status,
-                ].map((field, columnIndex) =>
-                  columnIndex === 7 ? (
-                    <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>
-                      <StatusPill
-                        variant={
-                          row.status === 'Approved'
-                            ? 'success'
-                            : row.status === 'Pending'
-                            ? 'warning'
-                            : row.status === 'Rejected'
-                            ? 'error'
-                            : 'success'
-                        }
-                        text={field}
-                      />
-                    </TableCell>
-                  ) : (
-                    <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>
-                      {field}
-                    </TableCell>
-                  )
-                )}
+                  row.type,
+                  row.noOfEmployees,
+                  row.pendingApprovals,
+                ].map((field, columnIndex) => (
+                  <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>
+                    {field}
+                  </TableCell>
+                ))}
                 <TableCell sx={{ whiteSpace: 'nowrap' }}>
                   <IconButton>
                     <MoreVert

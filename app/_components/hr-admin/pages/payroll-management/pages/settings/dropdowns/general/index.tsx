@@ -6,8 +6,18 @@ const GeneralDropdownSettings = () => {
   return (
     <Grid2 spacing={2} container>
       {[
-        { label: 'Pay Period Setup', placeholder: 'Select Date' },
-        { label: 'Pay Date', placeholder: 'Select Type' },
+        {
+          label: 'Pay Period Setup',
+          // placeholder: 'Select Date',
+          options: [
+            'Select Date',
+            'Monthly',
+            'Biweekly',
+            'Weekly',
+            'Semi Monthly',
+          ],
+        },
+        { label: 'Pay Date', placeholder: 'Select Date' },
       ].map((item, index) => (
         <Grid2 key={index} size={{ xs: 12, md: 6 }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -20,16 +30,21 @@ const GeneralDropdownSettings = () => {
             >
               {item.label}
             </div>
-            {index == 0 ? (
+            {index == 0 && item.options ? (
               <Select
-                defaultValue={item.placeholder}
+                defaultValue={item.options[0]}
                 sx={{
                   height: '35px',
                   borderRadius: '4.62px',
                   pr: '15px',
                 }}
               >
-                <MenuItem value={item.placeholder}>{item.placeholder}</MenuItem>
+                <MenuItem sx={{ display: 'none' }} value={item.options[0]}>
+                  {item.options[0]}
+                </MenuItem>
+                {item.options?.slice(1)?.map((option) => (
+                  <MenuItem value={option}>{option}</MenuItem>
+                ))}
               </Select>
             ) : (
               <LocalizationProvider dateAdapter={AdapterDayjs}>

@@ -127,8 +127,9 @@ export const MultiSelect = (props: any) => {
     }),
     valueContainer: (base: any) => ({
       ...base,
-      maxHeight: '65px',
+      maxHeight: '30px',
       overflow: 'auto',
+      paddingTop: 0,
     }),
     option: (styles: any, { isSelected, isFocused }: any) => {
       return {

@@ -31,6 +31,7 @@ import { useState, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { payrollOverviewTableData } from '../../overview/data';
 import AdjustRepaymentDetailsModal from '../../../modals/adjust-repayment-details';
+import { approvedSalaryAdvanceTableData } from './data';
 
 const ApprovedSalaryAdvanceTable = () => {
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
@@ -134,16 +135,14 @@ const ApprovedSalaryAdvanceTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {payrollOverviewTableData.map((row, rowIndex) => (
+            {approvedSalaryAdvanceTableData.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
                 {[
                   row.name,
-                  row.period,
-                  row.date,
-                  row.totalEmployees,
-                  row.grossPay,
-                  row.netPay,
-                  row.approvalDate,
+                  row.advanceTaken,
+                  row.repaymentStatus,
+                  row.amountRepaid,
+                  row.nextPaymentDate,
                 ].map((field, columnIndex) =>
                   columnIndex === 0 ? (
                     <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>

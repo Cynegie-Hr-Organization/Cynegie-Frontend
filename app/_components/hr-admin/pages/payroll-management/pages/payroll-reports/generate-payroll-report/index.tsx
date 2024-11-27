@@ -134,9 +134,14 @@ const HrAdminGeneratePayrollReport = () => {
                   label: 'Filter by Department',
                   placeholder: 'Select Department',
                   options: [
-                    { value: 0, label: 'Goranboy' },
-                    { value: 1, label: 'Safikurd' },
-                    { value: 2, label: 'Baku' },
+                    { value: 0, label: 'Engineering' },
+                    { value: 1, label: 'Product' },
+                    { value: 2, label: 'Marketing' },
+                    { value: 3, label: 'Admin' },
+                    { value: 4, label: 'Human Resource' },
+                    { value: 5, label: 'Brand' },
+                    { value: 6, label: 'Sales' },
+                    { value: 7, label: 'Finance' },
                   ],
                   onChange: departmentHandleChange,
                   value: departmentOptionSelected,
@@ -159,9 +164,14 @@ const HrAdminGeneratePayrollReport = () => {
                   label: 'Filter by Location',
                   placeholder: 'Filter by Location',
                   options: [
-                    { value: 0, label: 'Goranboy' },
-                    { value: 1, label: 'Safikurd' },
-                    { value: 2, label: 'Baku' },
+                    { value: 0, label: 'Abuja Branch' },
+                    { value: 1, label: 'Lagos Branch' },
+                    { value: 2, label: 'Ikota' },
+                    { value: 3, label: 'Lekki Branch' },
+                    { value: 4, label: 'Ajah Branch' },
+                    { value: 5, label: 'Ikeja Branch' },
+                    { value: 6, label: 'Maitama Branch' },
+                    { value: 7, label: 'Delta Branch' },
                   ],
                   onChange: locationHandleChange,
                   value: locationOptionSelected,
@@ -184,7 +194,7 @@ const HrAdminGeneratePayrollReport = () => {
                       <Select
                         defaultValue={item.placeholder}
                         sx={{
-                          height: '35px',
+                          height: '37.8px',
                           borderRadius: '4.62px',
                           pr: '15px',
                         }}

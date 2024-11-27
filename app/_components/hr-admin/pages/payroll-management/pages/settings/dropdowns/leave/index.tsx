@@ -4,8 +4,8 @@ const LeaveDropdownSettings = () => {
   return (
     <Grid2 spacing={2} container>
       {[
-        { label: 'Pay Period Setup', placeholder: 'Select Date' },
-        { label: 'Pay Date', placeholder: 'Select Type' },
+        { label: 'Unpaid Leave Deduction', placeholder: 'Enter' },
+        { label: 'Sick Leave Policies', placeholder: 'Enter' },
       ].map((item, index) => (
         <Grid2 key={index} size={{ xs: 12, md: 6 }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

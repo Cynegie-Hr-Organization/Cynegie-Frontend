@@ -6,8 +6,17 @@ const OvertimeDropdownSettings = () => {
   return (
     <Grid2 spacing={2} container>
       {[
-        { label: 'Pay Period Setup', placeholder: 'Select Date' },
-        { label: 'Pay Date', placeholder: 'Select Type' },
+        { label: 'Overtime Rate', placeholder: 'Enter' },
+        {
+          label: 'Maximum Overtime Allowed',
+          placeholder: 'Select Type',
+          options: [
+            '10 hours/week',
+            '15 hours/week',
+            '20 hours/week',
+            'Custom',
+          ],
+        },
       ].map((item, index) => (
         <Grid2 key={index} size={{ xs: 12, md: 6 }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -30,6 +39,9 @@ const OvertimeDropdownSettings = () => {
                 }}
               >
                 <MenuItem value={item.placeholder}>{item.placeholder}</MenuItem>
+                {item.options?.map((option) => (
+                  <MenuItem value={option}>{option}</MenuItem>
+                ))}
               </Select>
             ) : (
               <TextField

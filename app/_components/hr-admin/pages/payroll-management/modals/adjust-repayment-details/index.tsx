@@ -1,6 +1,8 @@
 import { Close } from '@mui/icons-material';
 import { Dialog, DialogContent, MenuItem, Select, Stack } from '@mui/material';
 import React from 'react';
+import { Input } from 'rsuite';
+import 'rsuite/dist/rsuite.min.css';
 
 const AdjustRepaymentDetailsModal: React.FC<{
   open: boolean;
@@ -31,32 +33,31 @@ const AdjustRepaymentDetailsModal: React.FC<{
           <Stack gap={4}>
             {[
               {
-                label: 'Filter by Department',
-                placeholder: 'Select Department',
+                label: 'Employee Name',
+                placeholder: 'John Emmanuel',
               },
               {
-                label: 'Filter by Employment Type',
-                placeholder: 'Filter by Employment Type',
+                label: 'Advance Taken',
+                placeholder: '200,000',
               },
               {
-                label: 'Filter by Location',
-                placeholder: 'Filter by Location',
+                label: 'Total Repaid',
+                placeholder: '50,000',
               },
               {
-                label: 'Filter by Employment Type',
-                placeholder: 'Filter by Employment Type',
+                label: 'Remaining Balance',
+                placeholder: '150,000',
+              },
+              { label: 'New Installment Amount', placeholder: '40,000' },
+              {
+                label: 'Repayment Frequency',
+                placeholder: 'Select',
+                options: ['Monthly', 'Biweekly', 'Weekly', 'Semi Monthly'],
               },
               {
-                label: 'Filter by Location',
-                placeholder: 'Filter by Location',
-              },
-              {
-                label: 'Filter by Location',
-                placeholder: 'Filter by Location',
-              },
-              {
-                label: 'Filter by Location',
-                placeholder: 'Filter by Location',
+                label: 'Repayment Period',
+                placeholder: 'Select',
+                options: ['1 Month', '2 Months', '3 Months', '4 Months'],
               },
             ].map((item, index) => (
               <div key={index}>
@@ -77,19 +78,30 @@ const AdjustRepaymentDetailsModal: React.FC<{
                   >
                     {item.label}
                   </div>
-                  <Select
-                    defaultValue={item.placeholder}
-                    sx={{
-                      height: '35px',
-                      borderRadius: '4.62px',
-                      pr: '15px',
-                    }}
-                    disabled
-                  >
-                    <MenuItem value={item.placeholder}>
-                      {item.placeholder}
-                    </MenuItem>
-                  </Select>
+                  {index > 4 ? (
+                    <Select
+                      defaultValue={item.placeholder}
+                      sx={{
+                        height: '35px',
+                        borderRadius: '4.62px',
+                        pr: '15px',
+                      }}
+                    >
+                      <MenuItem value={item.placeholder}>
+                        {item.placeholder}
+                      </MenuItem>
+                      {item.options?.map((option) => (
+                        <MenuItem value={option}>{option}</MenuItem>
+                      ))}
+                    </Select>
+                  ) : (
+                    <Input
+                      placeholder={item.placeholder}
+                      key={index}
+                      style={{ borderRadius: '6px' }}
+                      {...(index < 5 && { disabled: true })}
+                    />
+                  )}
                 </div>
               </div>
             ))}

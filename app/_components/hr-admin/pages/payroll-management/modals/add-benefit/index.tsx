@@ -1,3 +1,4 @@
+import CalendarIcon from '@/app/_components/icons/calendar';
 import { Close } from '@mui/icons-material';
 import {
   Checkbox,
@@ -12,6 +13,8 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Image from 'next/image';
 import React from 'react';
+import { Input } from 'rsuite';
+import 'rsuite/dist/rsuite.min.css';
 
 const AddBenefitModal: React.FC<{
   open: boolean;
@@ -40,10 +43,23 @@ const AddBenefitModal: React.FC<{
           <Stack gap={4}>
             <Grid2 spacing={2} container>
               {[
-                { label: 'Select Report Type', placeholder: 'Select Date' },
-                { label: 'Select Payroll Period', placeholder: 'Select Type' },
+                { label: 'Benefit Name', placeholder: 'Enter Title' },
+                {
+                  label: 'Benefit Type',
+                  placeholder: 'Select Method',
+                  options: [
+                    'Health',
+                    'Financial',
+                    'Leave',
+                    'Transportation',
+                    'Education',
+                    'Pension',
+                    'Other',
+                  ],
+                },
+                { label: 'Benefit Provider', placeholder: 'Enter' },
               ].map((item, index) => (
-                <Grid2 key={index} size={{ xs: 12, md: 6 }}>
+                <Grid2 key={index} size={{ xs: 12, md: 4 }}>
                   <div
                     style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
                   >
@@ -57,7 +73,7 @@ const AddBenefitModal: React.FC<{
                     >
                       {item.label}
                     </div>
-                    {index == 0 ? (
+                    {index == 1 ? (
                       <Select
                         defaultValue={item.placeholder}
                         sx={{
@@ -65,55 +81,77 @@ const AddBenefitModal: React.FC<{
                           borderRadius: '4.62px',
                           pr: '15px',
                         }}
-                        disabled
                       >
-                        <MenuItem value={item.placeholder}>
+                        <MenuItem
+                          sx={{ display: 'none' }}
+                          value={item.placeholder}
+                        >
                           {item.placeholder}
                         </MenuItem>
+                        {item.options?.map((option) => (
+                          <MenuItem value={option}>{option}</MenuItem>
+                        ))}
                       </Select>
                     ) : (
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          sx={{
-                            fontSize: '14px',
-                            '& .MuiInputBase-root': {
-                              height: '35px',
-                              // border: '1px solid #D0D5DD',
-                            },
-                          }}
-                          slotProps={{
-                            textField: { placeholder: item.placeholder },
-                          }}
-                        />
-                      </LocalizationProvider>
+                      // <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      //   <DatePicker
+                      //     sx={{
+                      //       fontSize: '14px',
+                      //       '& .MuiInputBase-root': {
+                      //         height: '35px',
+                      //         // border: '1px solid #D0D5DD',
+                      //       },
+                      //     }}
+                      //     slotProps={{
+                      //       textField: { placeholder: item.placeholder },
+                      //     }}
+                      //   />
+                      // </LocalizationProvider>
+                      <Input
+                        placeholder={item.placeholder}
+                        key={index}
+                        style={{ borderRadius: '6px' }}
+                      />
                     )}
                   </div>
                 </Grid2>
               ))}
             </Grid2>
             <Stack gap={2}>
-              <div className='card-title-small'>Employee Filters</div>
+              <div className='card-title-small'>Eligibility Criteria</div>
               <Grid2 spacing={3} container>
                 {[
                   {
-                    label: 'Filter by Department',
+                    label: 'Department',
                     placeholder: 'Select Department',
+                    options: [
+                      'Engineering',
+                      'Product',
+                      'Marketing',
+                      'Admin',
+                      'Human Resource',
+                      'Brand',
+                      'Sales',
+                      'Finance',
+                    ],
                   },
                   {
-                    label: 'Filter by Employment Type',
-                    placeholder: 'Filter by Employment Type',
+                    label: 'Employment Type',
+                    placeholder: 'Select Type',
+                    options: ['Full-Time', 'Part-Time', 'Contract Workers'],
                   },
                   {
-                    label: 'Filter by Location',
-                    placeholder: 'Filter by Location',
+                    label: 'Job Level',
+                    placeholder: 'Select Level',
+                    options: ['Junior', 'Mid Level', 'Senior'],
                   },
                   {
-                    label: 'Filter by Employment Type',
-                    placeholder: 'Filter by Employment Type',
+                    label: 'Start Date',
+                    placeholder: 'Select Date',
                   },
                   {
-                    label: 'Filter by Location',
-                    placeholder: 'Filter by Location',
+                    label: 'End Date',
+                    placeholder: 'Select Date',
                   },
                 ].map((item, index) => (
                   <Grid2
@@ -137,35 +175,54 @@ const AddBenefitModal: React.FC<{
                       >
                         {item.label}
                       </div>
-                      <Select
-                        defaultValue={item.placeholder}
-                        sx={{
-                          height: '35px',
-                          borderRadius: '4.62px',
-                          pr: '15px',
-                        }}
-                        disabled
-                      >
-                        <MenuItem value={item.placeholder}>
-                          {item.placeholder}
-                        </MenuItem>
-                      </Select>
+                      {index < 3 ? (
+                        <Select
+                          defaultValue={item.placeholder}
+                          sx={{
+                            height: '35px',
+                            borderRadius: '4.62px',
+                            pr: '15px',
+                          }}
+                        >
+                          <MenuItem value={item.placeholder}>
+                            {item.placeholder}
+                          </MenuItem>
+                          {item.options?.map((option) => (
+                            <MenuItem value={option}>{option}</MenuItem>
+                          ))}
+                        </Select>
+                      ) : (
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            sx={{
+                              fontSize: '14px',
+                              '& .MuiInputBase-root': {
+                                height: '35px',
+                                // border: '1px solid #D0D5DD',
+                              },
+                            }}
+                            slotProps={{
+                              textField: { placeholder: item.placeholder },
+                            }}
+                          />
+                        </LocalizationProvider>
+                      )}
                     </div>
                   </Grid2>
                 ))}
               </Grid2>
             </Stack>
             <Stack gap={2}>
-              <div className='card-title-small'>Report Customization</div>
+              <div className='card-title-small'>Contribution Details</div>
               <Grid2 spacing={2} container>
                 {[
                   {
-                    label: 'Choose Specific Data Points',
-                    placeholder: 'Select Data Points',
+                    label: 'Employer Contribution',
+                    placeholder: 'Enter',
                   },
                   {
-                    label: 'Select Visual Representation',
-                    placeholder: 'Select',
+                    label: 'Employee Contribution',
+                    placeholder: 'Enter',
                   },
                 ].map((item, index) => (
                   <Grid2 key={index} size={{ xs: 12, md: 6 }}>
@@ -186,19 +243,11 @@ const AddBenefitModal: React.FC<{
                       >
                         {item.label}
                       </div>
-                      <Select
-                        defaultValue={item.placeholder}
-                        sx={{
-                          height: '35px',
-                          borderRadius: '4.62px',
-                          pr: '15px',
-                        }}
-                        disabled
-                      >
-                        <MenuItem value={item.placeholder}>
-                          {item.placeholder}
-                        </MenuItem>
-                      </Select>
+                      <Input
+                        placeholder={item.placeholder}
+                        key={index}
+                        style={{ borderRadius: '6px' }}
+                      />
                     </div>
                   </Grid2>
                 ))}
