@@ -8,7 +8,7 @@ import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { LuClock, LuListFilter } from "react-icons/lu";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { TouchBackend } from "react-dnd-touch-backend";
-import { HTML5Backend  } from "react-dnd-html5-backend";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { usePreview } from 'react-dnd-preview';
 import { useState, useCallback, LegacyRef, useEffect } from "react";
 import CardLayout from "@/app/_components/shared/cards";
@@ -40,19 +40,40 @@ const TouchPreview = () => {
   if (!preview.display || !isTouchDevice) return null;
 
   return (
-    <div className="fixed top-0 left-0 z-50" style={preview.display ? preview.style : undefined}>
-      <div className="bg-white shadow-lg rounded-xl p-2 opacity-90 w-[242px]">
-        {preview.item?.text}
+    <div 
+      className="fixed top-0 left-0 z-50 w-[242px] pointer-events-none" 
+      style={preview.display ? preview.style : undefined}
+    >
+      <div className="text-xs space-y-[14.67px] p-2 rounded-xl shadow-md bg-white opacity-90 -rotate-6">
+        <div className='space-y-2'>
+          <p className='capitalize text-sm font-semibold'>{preview.item?.text}</p>
+          <p className='flex items-center text-[11px] text-primary font-medium'>
+            <GoDotFill />
+            <span>Design</span>
+          </p>
+        </div>
+
+        <p className='text-[#64748B]'>Its just needs to adapt the UI from what you did before</p>
+        <hr className='border-t w-full' />
+        <div className='flex items-center justify-between'>
+          <div className='w-max h-max flex items-center gap-x-2 p-[7.33px] rounded-lg bg-[#FDF2F8] text-[#ED4F9D] font-medium'>
+            <LuClock />
+            <span>3 days left</span>
+          </div>
+          <div className='flex'>
+            {["/image/persons/person-1.png", "/image/persons/person-2.png"].map((imageSrc, index) => (
+              <Avatar key={index} src={imageSrc} className="w-5 h-5 first:ml-auto -ml-2" />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-const TaskListClient = dynamic(() => Promise.resolve(TaskList), {
-  ssr: false
-});
-
-export default TaskListClient;
+const dndOptions = {
+  preview: false
+};
 
 const TaskList = () => {
   const [tasks, setTasks] = useState<TaskState>({
@@ -137,7 +158,13 @@ const TaskList = () => {
         </button>
       </div>
 
-      <DndProvider backend={dndBackend} options={{ enableMouseEvents: true }}>
+      <DndProvider
+        backend={dndBackend}
+        options={{
+          enableMouseEvents: true,
+          preview: false
+        }}
+      >
         <div className='flex gap-8 p-1 mb-6 h-[463.33px] overflow-x-auto min-w-full'>
           {(Object.keys(tasks) as Array<keyof TaskState>).map((column) => (
             <Column key={column} title={column} tasks={tasks[column]} moveCard={moveCard} />
@@ -254,8 +281,8 @@ const TaskItem = ({
   return (
     <div
       ref={ref}
-      className={`text-xs mt-11 space-y-[14.67px] p-2 rounded-xl shadow-md m-[2px] touch-none
-        ${isDragging ? 'opacity-30 cursor-grabbing -rotate-6' : 'opacity-100 cursor-grab rotate-0'} ${isOver ? 'bg-gray-100' : 'bg-transparent'}`}>
+      className={`text-xs mt-11 space-y-[14.67px] p-2 rounded-xl shadow-md m-[2px] touch-none select-none
+        ${isDragging ? 'opacity-30 cursor-grabbing' : 'opacity-100 cursor-grab'} ${isOver ? 'bg-gray-100' : 'bg-transparent'}`}>
 
       <div className='space-y-2'>
         <p className='capitalize text-sm font-semibold'>{task.text}</p>
@@ -281,3 +308,10 @@ const TaskItem = ({
     </div>
   );
 };
+
+// Keep the dynamic import
+const TaskListClient = dynamic(() => Promise.resolve(TaskList), {
+  ssr: false
+});
+
+export default TaskListClient;
