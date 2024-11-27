@@ -1,7 +1,6 @@
 'use client';
 import { Box, Grid2, Stack, Tab } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import EnrolledEmployeesTable from '../../../tables/enrolled-employees';
 import { ChevronLeft } from '@mui/icons-material';
 import { useState } from 'react';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
