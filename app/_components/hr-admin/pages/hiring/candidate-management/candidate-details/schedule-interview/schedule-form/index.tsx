@@ -133,7 +133,7 @@ const ScheduleForm: React.FC = () => {
           </button>
         </div>
     </form>
-          <    ScheduleSuccessModal isOpen={isModalOpen} onClose={handleModalClose} />
+          <ScheduleSuccessModal isOpen={isModalOpen} onClose={handleModalClose} />
 
 
     </>

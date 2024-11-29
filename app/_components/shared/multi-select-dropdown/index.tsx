@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef } from 'react';
 import { default as ReactSelect, components, InputAction } from 'react-select';
 
@@ -20,8 +21,8 @@ export const MultiSelect = (props: any) => {
   const comparator = (v1: Option, v2: Option) =>
     (v1.value as number) - (v2.value as number);
 
-  let filteredOptions = filterOptions(props.options, selectInput);
-  let filteredSelectedOptions = filterOptions(props.value, selectInput);
+  const filteredOptions = filterOptions(props.options, selectInput);
+  const filteredSelectedOptions = filterOptions(props.value, selectInput);
 
   const Option = (props: any) => (
     <components.Option {...props}>

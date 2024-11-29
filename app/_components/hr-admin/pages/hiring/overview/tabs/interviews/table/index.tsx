@@ -320,7 +320,8 @@ ref={(el) => {
           >
             View Details
           </li>
-          <li className="p-2 hover:bg-gray-100">Reschedule</li>
+          <li className="p-2 hover:bg-gray-100"              onClick={() => router.push('/hr-admin/hiring/candidate-management/interviews-schedule')}
+>Reschedule</li>
         </>
       ) : null}
     </ul>

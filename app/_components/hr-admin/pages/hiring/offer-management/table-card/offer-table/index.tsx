@@ -2,7 +2,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Pagination from './pagination';
 import {Dropdown} from '../../../../../../../_components/ui/dropdown'
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import WithdrawModal from "../../withdraw-offer-modal";
+import ResendModal from "../../resend-modal";
+
 
 interface Column<T> {
   header: string;
@@ -41,9 +44,30 @@ const OffersTable = <T extends Record<string, any>>({
   const filterDropdownRef = useRef<HTMLDivElement>(null);
   const actionDropdownRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
 
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+  const [isResendModalOpen, setIsResendModalOpen] = useState(false); // State for modal visibility
+
+
+  const closeModal = () => {
+  setIsModalOpen(false); 
+  };
+  
+  const closeResendModal = () => {
+  setIsResendModalOpen(false); 
+ };
+
   // Toggle filter dropdown
   const toggleFilterDropdown = () => {
     setFilterDropdownOpen((prev) => !prev);
+  };
+
+
+  const handleWithdrawClick = () => {
+    setIsModalOpen(true); 
+  };
+
+  const handleResendClick = () => {
+    setIsResendModalOpen(true); 
   };
 
   // Toggle action dropdown for a specific row
@@ -242,7 +266,7 @@ const OffersTable = <T extends Record<string, any>>({
               ))}
               {showActions && (
                 <th className="p-2 justify-center">
-                  <div className="flex justify-center">Actions</div>
+                  <div className="flex justify-start">Actions</div>
                 </th>
               )}
             </tr>
@@ -308,23 +332,26 @@ ref={(el) => {
     {row.status === 'Pending' ? (
       <>
         <li
-          className="p-2 hover:bg-gray-100"
-          // onClick={() => router.push('/hr-admin/hiring/interview-details')}
+          className="p-2 hover:bg-gray-100 cursor-pointer"
+                                  onClick={handleResendClick}
         >
           Resend offer
         </li>
         <li
-          className="p-2 hover:bg-gray-100"
+                                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                                                                              onClick={() => router.push('/hr-admin/hiring/offer-management/edit-job-offer')}
+
         >
           Edit offer
                                 </li>
                                 <li
-          className="p-2 hover:bg-gray-100"
+                                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                                  onClick={handleWithdrawClick}
         >
           Withdraw an offer
                                 </li>
                                                      <li
-                                  className="p-2 hover:bg-gray-100"
+                                  className="p-2 hover:bg-gray-100 cursor-pointer"
                                             onClick={() => router.push('/hr-admin/hiring/offer-management/job-offer-details')}
 
         >
@@ -344,13 +371,13 @@ ref={(el) => {
     ) : row.status === 'Rejected' ? (
       <>
         <li
-          className="p-2 hover:bg-gray-100"
+          className="p-2 hover:bg-gray-100 cursor-pointer"
           onClick={() => router.push('/hr-admin/hiring/rejected-details')}
         >
           Resend offer
         </li>
         <li
-          className="p-2 hover:bg-gray-100"
+          className="p-2 hover:bg-gray-100 cursor-pointer"
           onClick={() => router.push("/hiring/offer-management/job-offer-details")}
         >
           View offer details
@@ -380,6 +407,9 @@ ref={(el) => {
           onItemsPerPageChange={onItemsPerPageChange}
         />
       </div>
+                <WithdrawModal isOpen={isModalOpen} onClose={closeModal} />
+                <ResendModal isOpen={isResendModalOpen} onClose={closeResendModal} />
+
     </div>
   );
 };

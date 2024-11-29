@@ -49,7 +49,9 @@ const HrAdminHiringCandidateManagement: React.FC = () => {
             <div className="w-full">
 
         <CandidateManagementTable/>
-            </div>
+      </div>
+      
+
 
     </div>
   );

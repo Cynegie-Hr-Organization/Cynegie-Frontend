@@ -4,8 +4,67 @@ import { FiLogOut } from "react-icons/fi"
 import { RiSearchLine } from "react-icons/ri"
 import NavLinks from "./nav-links"
 import { IoClose } from "react-icons/io5";
+import { getSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { baseUrl } from "@/constants/config";
+import { useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { getUserDetails } from "@/utils/getUserDetails";
 
 const Sidebar = ({ openMobileMenu, setOpenMobileMenu }: { openMobileMenu: boolean, setOpenMobileMenu: () => void }) => {
+
+	const router = useRouter();
+	  const [userDetails, setUserDetails] = useState<{ name: string; email: string } | null>(null);
+
+	
+useEffect(() => {
+    const fetchDetails = async () => {
+      const details = await getUserDetails();
+      if (details) {
+        setUserDetails(details);
+      }
+    };
+    fetchDetails();
+  }, []);
+
+
+	
+  const handleLogout = async () => {
+    try {
+      // Retrieve the session to get the access token
+		const session = await getSession();
+		console.log(session);
+
+      if (!session || !session.token) {
+        console.error("No active session or token found");
+        return;
+      }
+
+      const response = await fetch(`${baseUrl}/v1/auth/logout`, {
+        method: "POST",
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${session.token}`, 
+        },
+        body: JSON.stringify({}), 
+      });
+
+      if (!response.ok) {
+        console.error("Logout failed:", response.statusText);
+        return;
+      }
+
+      console.log("Successfully logged out");
+
+      // Redirect to the sign-in page
+      router.push("/signin");
+    } catch (error) {
+      console.error("An error occurred during logout:", error);
+    }
+  };
+	
+	
 	return (
 		<div
 			className={`${openMobileMenu ? 'flex animate-in' : 'hidden animate-out'} 
@@ -30,24 +89,29 @@ const Sidebar = ({ openMobileMenu, setOpenMobileMenu }: { openMobileMenu: boolea
 			</div>
 
 			<div className="flex items-center justify-between my-6 overflow-hidden">
-				<div className="flex items-center gap-3">
+				<div className="flex items-center gap-4">
 					<img
-						className="w-10 h-10"
+						className="w-14 h-14"
 						src="/image/avatar.png"
 						alt="avatar"
 					/>
 
-					<div className='truncate'>
-						<p className="font-sans text-sm font-bold text-Sambucus">
-							Alison Eyo
-						</p>
-						<p className="font-sans text-xs font-normal text-Charcoal">
-							alison.e@rayna.ui
-						</p>
-					</div>
+					 <div className="truncate">
+            {userDetails ? (
+              <>
+                <p className="font-sans text-sm font-bold text-Sambucus">{userDetails.name}</p>
+                <p className="font-sans text-xs font-normal text-Charcoal">{userDetails.email}</p>
+              </>
+            ) : (
+              <>
+                <Skeleton width={80} height={16} />
+                <Skeleton width={120} height={12} />
+              </>
+            )}
+          </div>
 				</div>
-				<button onClick={() => { }}>
-					<FiLogOut />
+				<button onClick={handleLogout}>
+					<FiLogOut size={24} />
 				</button>
 			</div>
 		</div>

@@ -2,7 +2,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Pagination from './pagination';
 import {Dropdown} from '../../../../../../../_components/ui/dropdown'
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import RejectCandidateModal from "../../reject-candidate-modal";
+import MoveStageModal from "../../candidate-details/move-stage-modal";
 
 interface Column<T> {
   header: string;
@@ -41,6 +43,9 @@ const CandidateTable = <T extends Record<string, any>>({
   const filterDropdownRef = useRef<HTMLDivElement>(null);
   const actionDropdownRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
 
+    const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+    const [isMoveModalOpen, setIsMoveModalOpen] = useState(false); // State for modal visibility
+
   // Toggle filter dropdown
   const toggleFilterDropdown = () => {
     setFilterDropdownOpen((prev) => !prev);
@@ -53,6 +58,23 @@ const CandidateTable = <T extends Record<string, any>>({
       [rowIndex]: !prev[rowIndex],
     }));
   };
+
+  const closeModal = () => {
+  setIsModalOpen(false); 
+  };
+
+  const closeMoveModal = () => {
+  setIsMoveModalOpen(false); 
+  };
+
+  const handleRejectClick = () => {
+    setIsModalOpen(true); 
+  };
+
+   const handleMoveStageClick = () => {
+    setIsMoveModalOpen(true); 
+  };
+
 
   // Close all dropdowns when clicking outside
   useEffect(() => {
@@ -301,12 +323,12 @@ ref={(el) => {
                         </svg>
                       </button>
                       {actionDropdowns[rowIndex] && (
-                        <div className="absolute items-center text-sm bg-white  shadow-lg border border-gray-300 w-[7.5rem] rounded-md  z-10"
-                          onClick={() => router.push('/hr-admin/hiring/candidate-management/candidate-details')}>
+                        <div className="absolute right-0 items-center text-sm bg-white  shadow-lg border border-gray-300 w-[7.5rem] rounded-md  z-10"
+                        >
                           <ul>
-                            <li className="p-2 hover:bg-gray-100">View Profile </li>
-                            <li className="p-2 hover:bg-gray-100">Move Stage</li>
-                                                        <li className="p-2 hover:bg-gray-100 text-red-500">Reject</li>
+                            <li className="p-2 hover:bg-gray-100"                           onClick={() => router.push('/hr-admin/hiring/candidate-management/candidate-details')} >View Profile </li>
+                            <li className="p-2 hover:bg-gray-100" onClick={handleMoveStageClick}>Move Stage</li>
+                                                        <li className="p-2 hover:bg-gray-100 text-red-500" onClick={handleRejectClick}>Reject</li>
 
                           </ul>
                         </div>
@@ -330,6 +352,9 @@ ref={(el) => {
           onItemsPerPageChange={onItemsPerPageChange}
         />
       </div>
+    <RejectCandidateModal isOpen={isModalOpen} onClose={closeModal} />
+      <MoveStageModal isOpen={isMoveModalOpen} onClose={closeMoveModal} />
+
     </div>
   );
 };

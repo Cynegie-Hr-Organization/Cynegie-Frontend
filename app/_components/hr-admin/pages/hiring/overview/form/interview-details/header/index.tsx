@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import RejectCandidateModal from "../reject-candidate-modal";
+import RejectCandidateModal from "../../../../candidate-management/reject-candidate-modal";
 
 
 const InterviewDetailsTopHeader = () => {
