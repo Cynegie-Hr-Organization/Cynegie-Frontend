@@ -7,7 +7,7 @@ import { HiOutlineChartBar, HiOutlineUserPlus } from 'react-icons/hi2';
 import { TbFileUpload } from 'react-icons/tb';
 import { LiaMoneyBillWaveSolid } from 'react-icons/lia';
 
-const NavLinks = () => {
+const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, isMobile: boolean }) => {
     const pathname = usePathname();
     const router = useRouter();
     const [openDropDown, setOpenDropDown] = useState<string | null>(null);
@@ -57,11 +57,22 @@ const NavLinks = () => {
         },
     ];
 
-    const isPathActive = (path: string) => path === '/hr-admin'
-        ? /^\/hr-admin$/.test(pathname)
-        : new RegExp(`^${path}.*$`).test(pathname);
+    const isPathActive = (path: string) => {
+        if (path === '/hr-admin') {
+            return /^\/hr-admin$/.test(pathname);
+        }
 
+        const pathParts = path.split('/').filter(Boolean);
+        const currentPathParts = pathname.split('/').filter(Boolean);
 
+        return currentPathParts.length >= pathParts.length &&
+            pathParts.every((part, index) => currentPathParts[index] === part);
+    };
+
+    const handleNavLinkClick = (link: string) => {
+        router.push(link)
+        isMobile && onNavLinkClick();
+    }
 
     return (
         <div className="w-64 transition-all duration-300 ease-in-out">
@@ -76,7 +87,7 @@ const NavLinks = () => {
                                     ${isActive ? 'bg-primary text-white' : 'text-black'
                                     } transition duration-100`}
                                 onClick={() => {
-                                    router.push(item.path);
+                                    handleNavLinkClick(item.path);
                                     if (item.subMenu) {
                                         setOpenDropDown(isActive && openDropDown === item.path ? null : item.path);
                                     } else {
@@ -92,8 +103,7 @@ const NavLinks = () => {
                                 </div>
                                 {item.subMenu && (
                                     <FaChevronDown
-                                        className={`transition-transform duration-300 ${(openDropDown === item.path) && isActive ? 'rotate-180' : ''
-                                            }`}
+                                        className={`transition-transform duration-300 ${((openDropDown === item.path) && isActive) && 'rotate-180'}`}
                                     />
                                 )}
                             </button>
@@ -105,10 +115,10 @@ const NavLinks = () => {
                                         return (
                                             <li key={subItem.path}>
                                                 <button
-                                                    onClick={() => router.push(subItem.path)}
-                                                    className={`flex items-center p-2 text-[14px] font-sans pl-5 ${isSubActive ? 'text-primary font-semibold' : 'text-gray-700 font-normal'
-                                                        }`}
-                                                >
+                                                    onClick={() => handleNavLinkClick(subItem.path)}
+                                                    className={`flex items-center p-2 text-[14px] font-sans pl-5 ${isSubActive ?
+                                                        'text-primary font-semibold' : 'text-gray-700 font-normal'
+                                                        }`}>
                                                     {subItem.name}
                                                 </button>
                                             </li>

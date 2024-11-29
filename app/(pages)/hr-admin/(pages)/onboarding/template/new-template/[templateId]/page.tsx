@@ -196,7 +196,7 @@ const TemplateDetailsPage = () => {
 
 const ViewTask = () => {
   return (
-    <div className="py-12 px-8 space-y-8">
+    <div className="p-0 md:py-12 md:px-8 space-y-8">
       <div className="flex items-center justify-between">
         <p className="font-semibold">Set Up Workstation</p>
         <ReusableSelect
@@ -213,15 +213,15 @@ const ViewTask = () => {
           <div className='flex'>
             {["/image/persons/person-1.png", "/image/persons/person-2.png", "/image/persons/person-1.png"].map(
               (imageSrc, index) => (
-                <Avatar key={index} src={imageSrc} sx={{ ml: "-4px", width: "24.71px", height: "24.71px" }} />
+                <Avatar key={index} src={imageSrc} className="first:ml-0 -ml-1 w-[24.71px] h-[24.71px]" />
               ),
             )}
           </div>
         </div>
         <div className="space-y-3">
           <p>CREATED</p>
-          <div className="flex text-nowrap items-center justify-center gap-x-2 bg-[#F8FAFC] text-[#0F172A] p-2 rounded-lg text-sm">
-            <CiCalendarDate className="font-bold" />
+          <div className="flex w-max items-center gap-x-2 bg-gray-300 text-[#0F172A] p-2 rounded-lg text-xs">
+            <CiCalendarDate size={15} className="font-bold" />
             Nov 29, 2021
           </div>
         </div>
@@ -236,7 +236,7 @@ const ViewTask = () => {
         </div>
         <div className="space-y-3 text-sm">
           <p>DUE DATE</p>
-          <div className="flex items-center justify-center gap-x-2 py-1 text-nowrap">
+          <div className="flex items-center gap-x-2 py-1 text-nowrap">
             <span className="border border-dashed rounded-full p-1 text-[#64748B] border-[#64748B]">
               <BsPerson />
             </span>
@@ -328,9 +328,9 @@ const ViewTrainingModule = () => {
             )}
           </div>
         </div>
-        <div className="space-y-3">
+        <div className="space-y-3 flex">
           <p>CREATED</p>
-          <div className="flex text-nowrap items-center justify-center gap-x-2 bg-[#F8FAFC] text-[#0F172A] p-2 rounded-lg text-sm">
+          <div className="flex text-nowrap items-center gap-x-2 bg-[#F8FAFC] text-[#0F172A] p-2 rounded-lg text-sm">
             <CiCalendarDate className="font-bold" />
             Nov 29, 2021
           </div>
