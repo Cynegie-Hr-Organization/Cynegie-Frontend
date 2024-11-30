@@ -1,8 +1,7 @@
 'use client'
 
 import { LuListFilter, LuPlusCircle } from "react-icons/lu";
-import { GoDotFill, GoPlus } from "react-icons/go";
-import { PiCalendar } from "react-icons/pi";
+import { GoPlus } from "react-icons/go";
 import { Avatar } from "@mui/material";
 import { PopoverTrigger } from "@/components/ui/popover";
 import { PopoverContent } from "@/components/ui/popover";

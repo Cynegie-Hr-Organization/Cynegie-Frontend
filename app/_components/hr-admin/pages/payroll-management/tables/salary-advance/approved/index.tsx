@@ -1,4 +1,3 @@
-import StatusPill from '@/app/_components/shared/pills/status';
 import {
   ChevronLeft,
   ChevronRight,
@@ -8,7 +7,6 @@ import {
 import {
   Avatar,
   Box,
-  Checkbox,
   IconButton,
   List,
   ListItem,
@@ -26,19 +24,15 @@ import {
   TextField,
 } from '@mui/material';
 import Image from 'next/image';
-import { useState, ChangeEvent } from 'react';
+import { useState } from 'react';
 // import { payrollOverviewTableData } from '../overview/data';
-import { useRouter } from 'next/navigation';
-import { payrollOverviewTableData } from '../../overview/data';
 import AdjustRepaymentDetailsModal from '../../../modals/adjust-repayment-details';
 import { approvedSalaryAdvanceTableData } from './data';
 
 const ApprovedSalaryAdvanceTable = () => {
-  const [selectedRowIndex, setSelectedRowIndex] = useState(0);
+  const [, setSelectedRowIndex] = useState(0);
   const [showAdjustRepaymentModal, setShowAdjustRepaymentModal] =
     useState(false);
-
-  const router = useRouter();
 
   const [anchorEl, setAnchorEl] = useState<SVGSVGElement | null>(null);
 

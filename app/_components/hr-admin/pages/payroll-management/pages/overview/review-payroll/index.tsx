@@ -1,15 +1,13 @@
 'use client';
+
 import { ChevronLeft } from '@mui/icons-material';
-import { Box, Grid2, Stack, TextField } from '@mui/material';
+import { Box, Grid2, Stack } from '@mui/material';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import ReviewPayrollTable from '../../../tables/review-payroll';
 import { DatePicker, DateRangePicker, Input } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import dayjs from 'dayjs';
-import {
-  Option,
-} from '@/app/_components/shared/multi-select-dropdown';
 import Image from 'next/image';
 
 const HrAdminReviewPayrollPage = () => {
@@ -49,19 +47,19 @@ const HrAdminReviewPayrollPage = () => {
     );
   };
 
-  const options = [
-    { value: 0, label: 'Goranboy' },
-    { value: 1, label: 'Safikurd' },
-    { value: 2, label: 'Baku' },
-    { value: 3, label: 'Ganja' },
-    { value: 4, label: 'Shusha' },
-    { value: 5, label: 'Agdam' },
-  ];
+  // const options = [
+  //   { value: 0, label: 'Goranboy' },
+  //   { value: 1, label: 'Safikurd' },
+  //   { value: 2, label: 'Baku' },
+  //   { value: 3, label: 'Ganja' },
+  //   { value: 4, label: 'Shusha' },
+  //   { value: 5, label: 'Agdam' },
+  // ];
 
-  const [optionSelected, setSelected] = React.useState<Option[] | null>();
-  const handleChange = (selected: Option[]) => {
-    setSelected(selected);
-  };
+  // const [, setSelected] = React.useState<Option[] | null>();
+  // const handleChange = (selected: Option[]) => {
+  //   setSelected(selected);
+  // };
   return (
     <>
       <Stack marginX={5} gap={3} mb={10}>
@@ -159,7 +157,7 @@ const HrAdminReviewPayrollPage = () => {
                         format='dd MMM yyyy'
                         placeholder={item.placeholder}
                         onChange={(e) => {
-                          e && setDateRange({ startDate: e[0], endDate: e[1] });
+                          if (e) setDateRange({ startDate: e[0], endDate: e[1] });
                         }}
                         character=' – '
                         caretAs={CalendarIcon}

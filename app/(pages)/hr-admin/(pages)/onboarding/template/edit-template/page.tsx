@@ -3,7 +3,7 @@
 import CardLayout from "@/app/_components/shared/cards";
 import NewTask from "./edit-task";
 import NewDocument from "./edit-document";
-import NewTrainingModule from "./edit-training-module";
+import EditTrainingModule from "./edit-training-module";
 import { useState, useRef, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 
@@ -43,7 +43,7 @@ const CreateNewTemplate = () => {
       case "document":
         return <NewDocument />;
       case "training-module":
-        return <NewTrainingModule />;
+        return <EditTrainingModule />;
       default:
         return <NewTask />;
     }

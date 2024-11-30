@@ -1,5 +1,5 @@
-import { LuListFilter, LuPlusCircle } from "react-icons/lu";
-import { GoDotFill, GoPlus } from "react-icons/go";
+import { LuListFilter } from "react-icons/lu";
+import { GoDotFill } from "react-icons/go";
 import { PiCalendar } from "react-icons/pi";
 import { Avatar } from "@mui/material";
 import { PopoverTrigger } from "@/components/ui/popover";
@@ -138,117 +138,8 @@ function PopoverMenu() {
   );
 }
 
-function AddTaskModal({ children }: { children: ReactNode }) {
-  return (
-    <DrawerDialog
-      trigger={children}
-      header={
-        <DialogTitle className=''>
-          <p className='font-semibold'>Add Task</p>
-          <p className='font-normal text-sm'>Add and create task</p>
-        </DialogTitle>
-      }
 
-      footer={
-        <button className='capitalize w-full mt-5 gap-x-2 outline-none border border-gray-400 bg-gray-300 rounded-lg px-[12.33px] py-[9px] font-bold'>
-          Add Task
-        </button>
-      }
-    >
-      <form className="h-max overflow-y-scroll">
-        <div className="flex items-center justify-between gap-x-10">
-          <input type='text' placeholder='write a task name' className='font-bold text-xl outline-none border-none' />
-          <ReusableSelect
-            placeholder='To Do'
-            items={['To do', 'In progress', 'Completed']}
-            triggerClassName='w-max gap-x-2 border-none bg-black text-white'
-          />
-        </div>
 
-        <div className="border border-[#F1F5F9] rounded-xl mt-8">
-          <p className="px-4 py-2 font-bold">Details</p>
-          <hr className="border-t border-[#F1F5F9]" />
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-between px-4 py-6 text-xs text-[#94A3B8]">
-            <div className="space-y-3">
-              <p className="text-xs">ASSIGNEED TO</p>
-              <div className="flex items-center justify-center gap-x-3 py-1">
-                <span className="border border-dashed rounded-full p-1 text-[#64748B] border-[#64748B]"> <BsPerson /></span>No assignee
-              </div>
-            </div>
-            <div className="space-y-3">
-              <p>CREATED</p>
-              <div className="flex text-nowrap items-center justify-center gap-x-2 bg-[#F8FAFC] text-[#0F172A] p-2 rounded-lg text-xs">
-                <CiCalendarDate className="font-bold" />
-                Nov 29, 2021
-              </div>
-            </div>
-            <div className="space-y-3">
-              <p>LABELS</p>
-              <ReusableSelect
-                plainSelect
-                placeholder='IT Support'
-                items={['IT Support', 'HR Support', 'Finance Support']}
-                triggerClassName='border-none p-0 text-cyan-400 flex items-center justify-start gap-x-2 w-max'
-              />
-            </div>
-            <div className="space-y-3 text-xs">
-              <p>DUE DATE</p>
-              <div className="flex items-center justify-center gap-x-2 py-1">
-                <span className="border border-dashed rounded-full p-1 text-[#64748B] border-[#64748B]">
-                  <BsPerson />
-                </span>
-                No due date
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="text-sm mt-8">
-          <div className='flex flex-col'>
-            <label htmlFor='template-desc' className='text-sm font-semibold mb-1'>
-              <span className="block font-semibold">
-                Description
-              </span>
-            </label>
-            <textarea
-              name='template-desc'
-              className='border-none focus:border outline-none rounded-lg p-2 resize-none placeholder:text-[#94A3B8]'
-              placeholder='Add more details to this task...'
-            />
-          </div>
-        </div>
-
-        <div className="flex itemcenter text-sm mt-8 gap-x-4">
-          <p className="font-semibold">Subtask</p>
-          <button className="border-none outline-none text-primary"> + Add</button>
-        </div>
-
-        <div className="space-y-3 text-sm">
-          <div className="flex itemcenter justify-between text-sm mt-8 gap-x-4">
-            <p className="font-semibold">Activity</p>
-            <button className="border-none outline-none text-primary flex items-center justify-center gap-x-2"> <LuListFilter /> Newest first</button>
-          </div>
-          <div className="flex gap-x-4">
-            <Avatar src="/image/persons/person-1.png" />
-            <label htmlFor="comment" className="hidden"></label>
-            <div className="w-full space-y-2">
-              <input
-                name='comment'
-                type='text'
-                className='border outline-none rounded-lg p-2 w-full'
-                placeholder='Add a comment...'
-              />
-              <p className="font-normal"><span className="font-semibold">Pro tip:</span> press <span className="font-semibold">M</span> to comment</p>
-            </div>
-          </div>
-
-        </div>
-      </form>
-
-    </DrawerDialog>
-  );
-}
 
 function EditTaskModal({ triggers }: { triggers: ReactNode }) {
   return (

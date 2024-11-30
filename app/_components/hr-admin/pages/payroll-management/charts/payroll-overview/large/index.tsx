@@ -24,11 +24,19 @@ const data = [
   { month: 'Dec', salary: 2200000, deductions: 880000, benefits: 320000 },
 ];
 
-const CustomLegend = (props: any) => {
+const CustomLegend = (props: {
+  payload: {
+    value: string;
+    color: string;
+  }[]
+}) => {
   const { payload } = props;
   return (
     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px' }}>
-      {payload.map((entry: any, index: number) => (
+      {payload.map((entry: {
+        value: string;
+        color: string;
+      }, index: number) => (
         <div
           key={`item-${index}`}
           style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
@@ -59,12 +67,12 @@ const toolTipItemContentStyle = {
   fontWeight: 500,
 };
 
-const CustomTooltip = ({
+const CustomTooltip = <T extends { salary: number, deductions: number, benefits: number, value: number }>({
   active,
   payload,
 }: {
   active?: boolean;
-  payload?: any[];
+  payload?: T[];
 }) => {
   if (active && payload && payload.length) {
     return (
@@ -86,9 +94,7 @@ const CustomTooltip = ({
           {['Gross Salary', 'Deductions', 'Benefits'].map((item, index) => (
             <p key={index}>
               <span style={toolTipItemLabelStyle}>{`${item}: `}</span>
-              <span style={toolTipItemContentStyle}>{`₦${payload[
-                index
-              ].value.toLocaleString()}`}</span>
+              <span style={toolTipItemContentStyle}>{`₦${payload[index].value.toLocaleString()}`}</span>
             </p>
           ))}
         </div>

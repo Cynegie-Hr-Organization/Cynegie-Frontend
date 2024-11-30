@@ -4,9 +4,8 @@ import {
   MultiSelect,
   Option,
 } from '@/app/_components/shared/multi-select-dropdown';
+import { newIndex } from '@/lib/utils';
 import { Grid2, MenuItem, Select, Stack } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -44,7 +43,8 @@ const HrAdminGeneratePayrollReport = () => {
     startDate: dayjs().startOf('month').toDate(),
     endDate: dayjs().endOf('month').toDate(),
   });
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  console.log(dateRange);
 
   return (
     <Stack gap={3} mx={5} mb={10} mt={6}>
@@ -98,8 +98,8 @@ const HrAdminGeneratePayrollReport = () => {
                       >
                         {item.placeholder}
                       </MenuItem>
-                      {item.options?.map((option) => (
-                        <MenuItem value={option}>{option}</MenuItem>
+                      {item.options?.map((option, index) => (
+                        <MenuItem key={newIndex(index)} value={option}>{option}</MenuItem>
                       ))}
                     </Select>
                   ) : (
@@ -116,7 +116,7 @@ const HrAdminGeneratePayrollReport = () => {
                       format='dd MMM yyyy'
                       placeholder={item.placeholder}
                       onChange={(e) => {
-                        e && setDateRange({ startDate: e[0], endDate: e[1] });
+                        if (e) setDateRange({ startDate: e[0], endDate: e[1] });
                       }}
                       character=' – '
                       caretAs={CalendarIcon}
@@ -214,10 +214,10 @@ const HrAdminGeneratePayrollReport = () => {
                     ) : (
                       <div className='App'>
                         <MultiSelect
-                          key='example_id'
+                          key={newIndex(index)}
                           options={item.options}
                           onChange={item.onChange}
-                          value={item.value}
+                          value={item.value ?? []}
                           isSelectAll={true}
                           menuPlacement={'bottom'}
                         />
@@ -270,8 +270,8 @@ const HrAdminGeneratePayrollReport = () => {
                       >
                         {item.placeholder}
                       </MenuItem>
-                      {item.options?.map((option) => (
-                        <MenuItem value={option}>{option}</MenuItem>
+                      {item.options?.map((option, index) => (
+                        <MenuItem key={newIndex(index)} value={option}>{option}</MenuItem>
                       ))}
                     </Select>
                   </div>

@@ -1,5 +1,5 @@
 "use client"
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import {
   ChartConfig,
@@ -30,7 +30,7 @@ const formatLargeNumber = (value: number) => {
   }
 };
 
-export function GradientLineChart({
+export function GradientLineChart<T extends { completed: number }>({
   chartConfig,
   chartData,
   gradient = {
@@ -48,7 +48,7 @@ export function GradientLineChart({
   ]
 }: {
   chartConfig: ChartConfig,
-  chartData: any[],
+  chartData: T[],
   gradient?: { id: string, stops: { offset: string, stopColor: string, stopOpacity: number }[] },
   areas?: { dataKey: string, stroke: string }[]
 }) {

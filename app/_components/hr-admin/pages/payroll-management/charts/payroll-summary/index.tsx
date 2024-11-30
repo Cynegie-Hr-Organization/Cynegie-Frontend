@@ -18,12 +18,12 @@ const data = [
   { item: 'Benefits', value: 250000 },
 ];
 
-const CustomTooltip = ({
+const CustomTooltip = <T extends { value: number, payload: { item: string } }>({
   active,
   payload,
 }: {
   active?: boolean;
-  payload?: any[];
+  payload?: T[];
 }) => {
   if (active && payload && payload.length) {
     return (

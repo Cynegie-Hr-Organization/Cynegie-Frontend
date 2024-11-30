@@ -1,4 +1,3 @@
-import StatusPill from '@/app/_components/shared/pills/status';
 import {
   ChevronLeft,
   ChevronRight,
@@ -23,7 +22,6 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import { useState, ChangeEvent } from 'react';
-import { selectEmployeesForPayrollTableData } from '../select-employees-for-payroll/data';
 import enrolledEmployeesTableData from './data';
 // import { selectEmployeesForPayrollTableData } from './data';
 

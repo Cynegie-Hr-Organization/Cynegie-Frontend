@@ -1,5 +1,3 @@
-import { LuListFilter, LuPlusCircle } from "react-icons/lu";
-import { GoDotFill, GoPlus } from "react-icons/go";
 import { PiCalendar } from "react-icons/pi";
 import { Avatar } from "@mui/material";
 import { PopoverTrigger } from "@/components/ui/popover";
@@ -13,11 +11,11 @@ import { ReactNode } from "react";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 
-const NewTrainingModule = () => {
+const EditTrainingModule = () => {
   return (
     <div className='flex flex-col bg-gray-50 p-3'>
       <p className='text-sm font-semibold mb-1'>
-        To Do&lsquo;s <span className='text-gray-400'>(0)</span>
+        Training Module&lsquo;s <span className='text-gray-400'>(0)</span>
       </p>
 
       <div className='space-y-4'>
@@ -130,67 +128,6 @@ function PopoverMenu() {
   );
 }
 
-function AddTrainingModuleModal({ children }: { children: ReactNode }) {
-  return (
-    <DrawerDialog
-      trigger={children}
-      header={
-        <DialogTitle className=''>
-          <p className='font-semibold'>Add Training Module</p>
-          <p className='font-normal text-sm'>Add and create training module</p>
-        </DialogTitle>
-      }
-
-      footer={
-        <button className='capitalize w-full mt-5 gap-x-2 outline-none border border-gray-400 bg-gray-300 rounded-lg px-[12.33px] py-[9px] font-bold'>
-          Add Training Module
-        </button>
-      }
-    >
-      <form className="h-max overflow-y-scroll space-y-6 mt-6">
-        <div className='flex flex-col'>
-          <label htmlFor='template-name' className='text-sm font-semibold mb-1'>
-            <span className="after:content-['*'] after:ml-0.5 after:text-base after:text-red-500 block">
-              Module Name
-            </span>
-          </label>
-          <input
-            name='template-name'
-            type='text'
-            className='border outline-none rounded-lg p-2'
-            placeholder='Template Name'
-          />
-        </div>
-        <div className='flex flex-col'>
-          <label htmlFor='template-name' className='text-sm font-semibold mb-1'>
-            <span className="after:content-['*'] after:ml-0.5 after:text-base after:text-red-500 block">
-              Description
-            </span>
-          </label>
-          <textarea
-            name='template-name'
-            className='border outline-none rounded-lg p-2 resize-none'
-            placeholder='Description'
-          />
-        </div>
-
-        <div className='flex flex-col'>
-          <label htmlFor='template-name' className='text-sm font-semibold mb-1'>
-            <span className="">
-              Link URL
-            </span>
-          </label>
-          <input
-            name='template-name'
-            type='text'
-            className='border outline-none rounded-lg p-2'
-            placeholder='URL Input'
-          />
-        </div>
-      </form>
-    </DrawerDialog>
-  );
-}
 
 function EditTrainingModuleModal({ children }: { children: ReactNode }) {
   return (
@@ -325,4 +262,4 @@ function ViewTaskModal({ children }: { children: ReactNode }) {
 }
 
 
-export default NewTrainingModule;
+export default EditTrainingModule;

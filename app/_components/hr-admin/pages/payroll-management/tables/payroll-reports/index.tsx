@@ -7,7 +7,6 @@ import {
 } from '@mui/icons-material';
 import {
   Box,
-  Checkbox,
   IconButton,
   List,
   ListItem,
@@ -25,8 +24,7 @@ import {
   TextField,
 } from '@mui/material';
 import Image from 'next/image';
-import { useState, ChangeEvent } from 'react';
-import { payrollOverviewTableData } from '../overview/data';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { payrollReportsTableData } from './data';
 

@@ -1,4 +1,3 @@
-import StatusPill from '@/app/_components/shared/pills/status';
 import {
   ChevronLeft,
   ChevronRight,
@@ -29,7 +28,6 @@ import Image from 'next/image';
 import { useState, ChangeEvent } from 'react';
 // import { payrollOverviewTableData } from '../overview/data';
 import { useRouter } from 'next/navigation';
-import { payrollOverviewTableData } from '../../overview/data';
 import { pendingSalaryAdvanceTableData } from './data';
 
 const PendingSalaryAdvanceTable = () => {

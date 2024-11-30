@@ -1,7 +1,6 @@
-import CalendarIcon from '@/app/_components/icons/calendar';
+import { newIndex } from '@/lib/utils';
 import { Close } from '@mui/icons-material';
 import {
-  Checkbox,
   Dialog,
   DialogContent,
   Grid2,
@@ -11,7 +10,6 @@ import {
 } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import Image from 'next/image';
 import React from 'react';
 import { Input } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
@@ -88,8 +86,8 @@ const AddBenefitModal: React.FC<{
                         >
                           {item.placeholder}
                         </MenuItem>
-                        {item.options?.map((option) => (
-                          <MenuItem value={option}>{option}</MenuItem>
+                        {item.options?.map((option, index) => (
+                          <MenuItem key={newIndex(index)} value={option}>{option}</MenuItem>
                         ))}
                       </Select>
                     ) : (
@@ -155,7 +153,7 @@ const AddBenefitModal: React.FC<{
                   },
                 ].map((item, index) => (
                   <Grid2
-                    key={index}
+                    key={newIndex(index)}
                     size={{ xs: 12, md: index == 3 || index == 4 ? 6 : 4 }}
                   >
                     <div
@@ -187,8 +185,8 @@ const AddBenefitModal: React.FC<{
                           <MenuItem value={item.placeholder}>
                             {item.placeholder}
                           </MenuItem>
-                          {item.options?.map((option) => (
-                            <MenuItem value={option}>{option}</MenuItem>
+                          {item.options?.map((option, index) => (
+                            <MenuItem key={newIndex(index)} value={option}>{option}</MenuItem>
                           ))}
                         </Select>
                       ) : (
@@ -225,7 +223,7 @@ const AddBenefitModal: React.FC<{
                     placeholder: 'Enter',
                   },
                 ].map((item, index) => (
-                  <Grid2 key={index} size={{ xs: 12, md: 6 }}>
+                  <Grid2 key={newIndex(index)} size={{ xs: 12, md: 6 }}>
                     <div
                       style={{
                         display: 'flex',
@@ -245,7 +243,7 @@ const AddBenefitModal: React.FC<{
                       </div>
                       <Input
                         placeholder={item.placeholder}
-                        key={index}
+                        key={newIndex(index)}
                         style={{ borderRadius: '6px' }}
                       />
                     </div>

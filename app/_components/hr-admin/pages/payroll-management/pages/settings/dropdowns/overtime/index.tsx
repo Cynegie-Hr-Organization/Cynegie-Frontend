@@ -1,6 +1,5 @@
+import { newIndex } from '@/lib/utils';
 import { Grid2, MenuItem, Select, TextField } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const OvertimeDropdownSettings = () => {
   return (
@@ -18,7 +17,7 @@ const OvertimeDropdownSettings = () => {
           ],
         },
       ].map((item, index) => (
-        <Grid2 key={index} size={{ xs: 12, md: 6 }}>
+        <Grid2 key={newIndex(index)} size={{ xs: 12, md: 6 }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             <div
               style={{
@@ -39,8 +38,8 @@ const OvertimeDropdownSettings = () => {
                 }}
               >
                 <MenuItem value={item.placeholder}>{item.placeholder}</MenuItem>
-                {item.options?.map((option) => (
-                  <MenuItem value={option}>{option}</MenuItem>
+                {item.options?.map((option, index) => (
+                  <MenuItem key={newIndex(index)} value={option}>{option}</MenuItem>
                 ))}
               </Select>
             ) : (

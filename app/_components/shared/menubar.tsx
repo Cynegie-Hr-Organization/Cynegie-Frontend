@@ -1,4 +1,4 @@
-import { Menubar, MenubarContent, MenubarMenu, MenubarTrigger, MenubarItem, MenubarShortcut, MenubarSeparator } from "@/components/ui/menubar"
+import { Menubar, MenubarContent, MenubarMenu, MenubarTrigger, MenubarItem } from "@/components/ui/menubar"
 
 const AppMenubar = ({ children, menuItems }: { children: React.ReactNode, menuItems: React.ReactNode }) => {
   return (

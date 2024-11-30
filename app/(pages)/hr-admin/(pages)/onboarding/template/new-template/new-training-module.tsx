@@ -1,5 +1,5 @@
-import { LuListFilter, LuPlusCircle } from "react-icons/lu";
-import { GoDotFill, GoPlus } from "react-icons/go";
+import { LuPlusCircle } from "react-icons/lu";
+import { GoPlus } from "react-icons/go";
 import { PiCalendar } from "react-icons/pi";
 import { Avatar } from "@mui/material";
 import { PopoverTrigger } from "@/components/ui/popover";

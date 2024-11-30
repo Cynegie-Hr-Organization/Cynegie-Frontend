@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/chart"
 
 
-export function AppPieChart({ chartData, chartConfig }: { chartData: any[], chartConfig: ChartConfig }) {
+export function AppPieChart<T extends { value: number }>({ chartData, chartConfig }: { chartData: T[], chartConfig: ChartConfig }) {
   const total = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.value, 0)
-  }, [])
+  }, [chartData])
 
   return (
     <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">

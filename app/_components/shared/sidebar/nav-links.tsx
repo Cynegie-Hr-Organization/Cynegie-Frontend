@@ -70,8 +70,10 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
     };
 
     const handleNavLinkClick = (link: string) => {
-        router.push(link)
-        isMobile && onNavLinkClick();
+        router.push(link);
+        if (isMobile) {
+            onNavLinkClick();
+        }
     }
 
     return (
@@ -84,15 +86,14 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
                         <li key={item.path}>
                             <button
                                 className={`flex items-center justify-between cursor-pointer p-3 w-full px-3 rounded-[4px] 
-                                    ${isActive ? 'bg-primary text-white' : 'text-black'
-                                    } transition duration-100`}
+                                    ${isActive ? 'bg-primary text-white' : 'text-black'} transition duration-100`}
                                 onClick={() => {
-                                    handleNavLinkClick(item.path);
                                     if (item.subMenu) {
-                                        setOpenDropDown(isActive && openDropDown === item.path ? null : item.path);
+                                        setOpenDropDown(isActive && (openDropDown === item.path) ? null : item.path);
                                     } else {
                                         setOpenDropDown(null);
                                     }
+                                    handleNavLinkClick(item.path);
                                 }}
                             >
                                 <div className="flex items-center gap-x-2">
@@ -103,11 +104,11 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
                                 </div>
                                 {item.subMenu && (
                                     <FaChevronDown
-                                        className={`transition-transform duration-300 ${((openDropDown === item.path) && isActive) && 'rotate-180'}`}
+                                        className={`transition-transform duration-300 ${((openDropDown === item.path) && isActive) ? 'rotate-180' : ''}`}
                                     />
                                 )}
                             </button>
-                            {item.subMenu && openDropDown === item.path && (
+                            {(item.subMenu && (openDropDown === item.path)) && (
                                 <ul className="ml-4">
                                     {item.subMenu.map((subItem) => {
                                         const isSubActive = isPathActive(subItem.path);

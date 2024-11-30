@@ -2,11 +2,11 @@
 
 import Appbutton from "@/app/_components/shared/buttons";
 import CardLayout from "@/app/_components/shared/cards";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 
 type TemplateDetailsStep = "task" | "document" | "training-module";
-const TEMPLATE_STEPS: TemplateDetailsStep[] = ["task", "document", "training-module"];
+// const TEMPLATE_STEPS: TemplateDetailsStep[] = ["task", "document", "training-module"];
 
 const MOCK_TEMPLATE = {
   name: "New Employee Onboarding Template",
@@ -51,7 +51,6 @@ const MOCK_TEMPLATE = {
 
 const TemplateDetailsPage = () => {
   const router = useRouter();
-  const params = useParams();
 
   const [activeStep, setActiveStep] = useState<TemplateDetailsStep>("task");
 

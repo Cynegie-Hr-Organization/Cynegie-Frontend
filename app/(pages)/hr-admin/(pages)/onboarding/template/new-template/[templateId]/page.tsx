@@ -3,18 +3,13 @@
 import Appbutton from "@/app/_components/shared/buttons";
 import CardLayout from "@/app/_components/shared/cards";
 import { Avatar } from "@mui/material";
-import { useRouter, useParams } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { ReusableSelect } from "../components/ReusableSelect";
 import { BsPerson } from "react-icons/bs";
 import { CiCalendarDate } from "react-icons/ci";
 import { LuClock } from "react-icons/lu";
-import { EditTaskModal } from "../new-task";
-import { EditDocumentModal } from "../new-document";
-import { EditTrainingModuleModal } from "../new-training-module";
 
 type TemplateDetailsStep = "task" | "document" | "training-module";
-const TEMPLATE_STEPS: TemplateDetailsStep[] = ["task", "document", "training-module"];
 
 const MOCK_TEMPLATE = {
   name: "New Employee Onboarding Template",
@@ -58,8 +53,6 @@ const MOCK_TEMPLATE = {
 };
 
 const TemplateDetailsPage = () => {
-  const router = useRouter();
-
   const [activeStep, setActiveStep] = useState<TemplateDetailsStep>("task");
 
   const taskRef = useRef<HTMLButtonElement>(null);
