@@ -40,10 +40,10 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
         {
             name: 'Performance',
             icon: <HiOutlineChartBar size={17.5} />,
-            path: '/hr-admin/performance-magnt/overview',
+            path: '/hr-admin/performance/overview',
             subMenu: [
-                { name: 'Overview', path: '/hr-admin/performance-magnt/overview' },
-                { name: 'Goals', path: '/hr-admin/performance-magnt/goals' },
+                { name: 'Overview', path: '/hr-admin/performance/overview' },
+                { name: 'Goals', path: '/hr-admin/performance/goals' },
             ],
         },
         {
