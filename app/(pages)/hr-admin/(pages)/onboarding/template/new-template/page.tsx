@@ -5,7 +5,7 @@ import NewTask from "./new-task";
 import NewDocument from "./new-document";
 import NewTrainingModule from "./new-training-module";
 import { useState, useRef, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type CreateTemplateStep = "task" | "document" | "training-module";
 
@@ -14,7 +14,6 @@ const TEMPLATE_STEPS: CreateTemplateStep[] = ["task", "document", "training-modu
 const CreateNewTemplate = () => {
   const router = useRouter();
   const [activeStep, setActiveStep] = useState<CreateTemplateStep>("task");
-  const params = useParams();
 
 
   const taskRef = useRef<HTMLButtonElement>(null);
@@ -54,7 +53,7 @@ const CreateNewTemplate = () => {
     if (currentIndex < TEMPLATE_STEPS.length - 1) {
       setActiveStep(TEMPLATE_STEPS[currentIndex + 1]);
     } else {
-      router.push(`/hr-admin/onboarding/template/new-template/${params.templateId}`);
+      router.push(`/hr-admin/onboarding/template/new-template/templateId`);
     }
   };
 
