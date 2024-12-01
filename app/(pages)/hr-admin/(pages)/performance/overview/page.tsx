@@ -16,21 +16,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 
 const colors = { grey: '#E6EBF9', yellow: '#FFAD33', green: '#0F973D', blue: '#335DCF' };
-const overviewContents = [{
-  color: '#EADAFF',
-  title: 'Total Open Positions',
-  count: 15,
-},
-{
-  color: '#D2F1DE',
-  title: 'Total Applications',
-  count: 900,
-},
-{
-  color: '#DEE3FF',
-  title: 'Pending Offer',
-  count: 5,
-}]
+
 
 
 
@@ -62,11 +48,11 @@ const getRandomNumber = (number: number) => {
 }
 
 interface GradientChart {
-    month: string;
-    completed: number;
-    inProgress: number;
-    due: number;
-    notStarted: number;
+  month: string;
+  completed: number;
+  inProgress: number;
+  due: number;
+  notStarted: number;
 }
 
 const gradientChartData: GradientChart[] = [
@@ -162,6 +148,21 @@ const PerformanceOverviewPage = () => {
 
 
 const OverviewCards = ({ className }: { className?: string }) => {
+  const overviewContents = [{
+    color: '#EADAFF',
+    title: 'Total Open Positions',
+    count: 15,
+  },
+  {
+    color: '#D2F1DE',
+    title: 'Total Applications',
+    count: 900,
+  },
+  {
+    color: '#DEE3FF',
+    title: 'Pending Offer',
+    count: 5,
+  }]
   return (
 
     <div className={cn("grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 items-center ", className)}>
@@ -246,8 +247,8 @@ const PerformanceReviewTable = () => {
   return (
     <div className="space-y-4">
       <h3 className="text-xl font-bold text-black"> Performance Review Cycle </h3>
-      <div className="common-card">
-        <div className="flex items-center justify-between">
+      <div className="common-card overflow-x-scroll">
+        <div className="flex items-center justify-between w-full">
           <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
             <RiSearchLine className="text-gray-400" />
             <input type="text" placeholder="Search here..." className="w-full h-9 px-2 outline-none" />
@@ -293,7 +294,7 @@ const PerformanceReviewTable = () => {
                       <p className='text-sm'>21st June, 2024</p>
                     </td>
                     <td className='px-4 py-4'>
-                      <p className='text-sm font-semibold text-amber-600 bg-amber-50 rounded-full px-2 py-1 w-fit'>In Progress</p>
+                      <p className='text-sm font-semibold text-amber-600 bg-amber-50 rounded-full px-2 py-1 w-fit text-nowrap'>In Progress</p>
                     </td>
                     <td className='p-4'>
                       <AppMenubar menuItems={
