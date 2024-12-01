@@ -130,6 +130,28 @@ const DesktopTask = () => {
   );
 };
 
+// const ActionMenu = ({ trigger }: { trigger: ReactNode }) => {
+//   const router = useRouter();
+//   return (
+//     <AppMenubar
+//       menuItems={
+//         <ul className='flex flex-col items-start w-full'>
+//           <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
+//             <button className=''>Edit Template</button>
+//           </li>
+//           <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
+//             <button onClick={() => router.push(`/hr-admin/onboarding/template/new-template/templateId`)}>Preview Template</button>
+//           </li>
+//           <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
+//             <button className='text-red-500'>Delete Task</button>
+//           </li>
+//         </ul>
+//       }>
+//       {trigger}
+//     </AppMenubar>
+//   )
+// };
+
 function PopoverMenu() {
   return (
     <Popover>
@@ -167,7 +189,7 @@ function AddTaskModal({ children }: { children: ReactNode }) {
       }
     >
       <form className="h-max overflow-y-scroll">
-        <div className="flex items-center justify-between gap-x-10">
+        <div className="flex items-center justify-between">
           <input type='text' placeholder='write a task name' className='font-bold text-xl outline-none border-none' />
           <ReusableSelect
             placeholder='To Do'
@@ -183,7 +205,7 @@ function AddTaskModal({ children }: { children: ReactNode }) {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-between px-4 py-6 text-xs text-[#94A3B8]">
             <div className="space-y-3">
               <p className="text-xs">ASSIGNEED TO</p>
-              <div className="flex items-center justify-center gap-x-3 py-1">
+              <div className="flex items-center gap-x-3 py-1">
                 <span className="border border-dashed rounded-full p-1 text-[#64748B] border-[#64748B]"> <BsPerson /></span>No assignee
               </div>
             </div>
@@ -205,7 +227,7 @@ function AddTaskModal({ children }: { children: ReactNode }) {
             </div>
             <div className="space-y-3 text-xs">
               <p>DUE DATE</p>
-              <div className="flex items-center justify-center gap-x-2 py-1">
+              <div className="flex items-center gap-x-2 py-1">
                 <span className="border border-dashed rounded-full p-1 text-[#64748B] border-[#64748B]">
                   <BsPerson />
                 </span>
@@ -281,7 +303,7 @@ export function EditTaskModal({ triggers }: { triggers: ReactNode }) {
       }
     >
       <form className="">
-        <div className="flex items-center justify-between gap-x-10">
+        <div className="flex items-center justify-between">
           <input type='text' placeholder='write a task name' className='font-bold text-xl outline-none border-none' />
           <ReusableSelect
             placeholder='To Do'
@@ -297,7 +319,7 @@ export function EditTaskModal({ triggers }: { triggers: ReactNode }) {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-between px-4 py-6 text-xs text-[#94A3B8]">
             <div className="space-y-3">
               <p className="text-xs">ASSIGNEED TO</p>
-              <div className="flex items-center justify-center gap-x-3 py-1">
+              <div className="flex items-center gap-x-3 py-1">
                 <span className="border border-dashed rounded-full p-1 text-[#64748B] border-[#64748B]"> <BsPerson /></span>No assignee
               </div>
             </div>
@@ -308,7 +330,7 @@ export function EditTaskModal({ triggers }: { triggers: ReactNode }) {
                 Nov 29, 2021
               </div>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2">
               <p>LABELS</p>
               <ReusableSelect
                 plainSelect
@@ -319,7 +341,7 @@ export function EditTaskModal({ triggers }: { triggers: ReactNode }) {
             </div>
             <div className="space-y-3 text-xs">
               <p>DUE DATE</p>
-              <div className="flex items-center justify-center gap-x-2 py-1">
+              <div className="flex items-center gap-x-2 py-1">
                 <span className="border border-dashed rounded-full p-1 text-[#64748B] border-[#64748B]">
                   <BsPerson />
                 </span>
@@ -388,7 +410,7 @@ function ViewTaskModal({ children }: { children: ReactNode }) {
       }
     >
       <>
-        <div className="flex items-center justify-between gap-x-10">
+        <div className="flex items-center justify-between">
           <p className="font-semibold">Set Up Workstation</p>
           <ReusableSelect
             plainSelect

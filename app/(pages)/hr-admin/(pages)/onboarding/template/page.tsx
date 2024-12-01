@@ -22,6 +22,12 @@ const TemplatePage = () => {
           className='bg-primary hidden md:block'
           onClick={() => route.push("/hr-admin/onboarding/template/new-template")}
         />
+        
+        <Appbutton
+          buttonText='New Template'
+          className='bg-primary block md:hidden'
+          onClick={() => route.push("/hr-admin/onboarding/template/new-template")}
+        />
       </div>
 
       <Suspense fallback={<Spinner />}>

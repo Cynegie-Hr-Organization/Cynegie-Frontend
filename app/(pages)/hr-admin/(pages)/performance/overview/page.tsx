@@ -127,12 +127,12 @@ const PerformanceOverviewPage = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4">
-        <div className="col-span-1 md:col-span-2 lg:col-span-9 space-y-4 flex flex-col">
+        <div className="col-span-1 md:col-span-2 lg:col-span-8 xl:col-span-9 space-y-4 flex flex-col">
           <OverviewCards />
           <BarChartCard chartData={chartData} />
         </div>
 
-        <PieChartCard className="col-span-1 md:col-span-2 lg:col-span-3 h-auto" chartData={chartData} />
+        <PieChartCard className="col-span-1 md:col-span-2 lg:col-span-4 xl:col-span-3 h-auto" chartData={chartData} />
       </div>
 
       <PerformanceReviewTable />
@@ -214,16 +214,16 @@ const PieChartCard = ({ className, chartData }: { className?: string, chartData:
   }
 
   return (
-    <div className={cn('', className)}>
+    <div className={cn('flex flex-col justify-between', className)}>
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-bold text-black"> Priority Todos </h3>
         <button type="button" className="text-primary font-bold"> See all </button>
       </div>
 
-      <div className="common-card mt-3">
+      <div className="common-card w-full xl:w-[290px] mt-4 h-full">
         <AppPieChart chartData={piechartData} chartConfig={piechartConfig} />
 
-        <div className="space-y-2">
+        <div className="space-y-2 mt-8">
           {[
             { color: colors.grey, label: 'Completed goals', percentage: getPercentage(chartData[0]?.completed ?? 0) },
             { color: colors.blue, label: 'Due Goals', percentage: getPercentage(chartData[0]?.due ?? 0) },
@@ -247,13 +247,14 @@ const PerformanceReviewTable = () => {
   return (
     <div className="space-y-4">
       <h3 className="text-xl font-bold text-black"> Performance Review Cycle </h3>
+
       <div className="common-card overflow-x-scroll">
-        <div className="flex items-center justify-between w-full">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
           <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
             <RiSearchLine className="text-gray-400" />
             <input type="text" placeholder="Search here..." className="w-full h-9 px-2 outline-none" />
-
           </div>
+
           <button type="button" className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
             <LuListFilter /> Filter
           </button>

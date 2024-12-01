@@ -279,7 +279,7 @@ function ViewTaskModal({ children }: { children: ReactNode }) {
       }
     >
       <>
-        <div className="flex items-center justify-between gap-x-10">
+        <div className="flex items-center justify-between">
           <p className="font-semibold">Cybersecurity Awareness Training</p>
           <ReusableSelect
             plainSelect
