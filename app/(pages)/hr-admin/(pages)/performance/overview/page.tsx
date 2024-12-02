@@ -11,6 +11,7 @@ import { LuListFilter, LuMoreVertical } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 import AppMenubar from "@/app/_components/shared/menubar";
 import { Checkbox } from "@/components/ui/checkbox"
+import Link from "next/link";
 
 
 
@@ -111,18 +112,18 @@ const PerformanceOverviewPage = () => {
         </h3>
 
         <div className="flex gap-4">
-          <button
-            type="button"
+          <Link
+            href='#'
             className="font-bold rounded-lg px-4 py-2 border-2 border-primary flex gap-2 text-primary h-12 w-[192px] items-center justify-center btn-active"
           >
             Actions <IoIosArrowDown />
-          </button>
-          <button
-            type="button"
-            className="font-bold rounded-lg px-4 py-2 text-white bg-primary h-12 w-[249px] btn-active"
+          </Link>
+          <Link
+            href="/hr-admin/performance/review-cycle/new"
+            className="font-bold rounded-lg px-4 py-2 text-white bg-primary h-12 w-[249px] btn-active flex items-center justify-center"
           >
             Create New Review Cycle
-          </button>
+          </Link>
         </div>
       </div>
 
