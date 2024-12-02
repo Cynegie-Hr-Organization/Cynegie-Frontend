@@ -5,6 +5,7 @@ import InputText from "./input-text";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
 import { AppSelect } from "@/app/_components/shared/select";
 import { useState } from "react";
+import { AppSwitch } from "@/app/_components/shared/switch";
 
 
 interface IReviewCycle {
@@ -16,6 +17,8 @@ interface IReviewCycle {
   assignedReviewer: string,
   reminderType: string,
   reminderFrequency: string,
+  notifyEmployees: boolean,
+  notifyReviewers: boolean,
 }
 const NewReviewCycle = () => {
   const [formData, setFormData] = useState<IReviewCycle>({
@@ -27,6 +30,8 @@ const NewReviewCycle = () => {
     assignedReviewer: "",
     reminderType: "",
     reminderFrequency: "",
+    notifyEmployees: false,
+    notifyReviewers: false,
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -83,7 +88,10 @@ const NewReviewCycle = () => {
             label="Assign Employees"
             requiredField
             placeholder="Select employees"
-            onChange={(value) => setFormData({ ...formData, assignedEmployees: value })}
+            onChange={(value) => {
+              console.log(value);
+              setFormData({ ...formData, assignedEmployees: value });
+            }}
             listItems={[
               { label: "Employee 1", value: "employee-1" },
               { label: "Employee 2", value: "employee-2" },
@@ -126,13 +134,27 @@ const NewReviewCycle = () => {
             ]}
           />
         </div>
+
+        <div className="flex flex-col md:flex-row gap-y-4 md:gap-x-10 items-start md:items-center w-full mb-40">
+          <AppSwitch label="Notify Employees" id="notify-employees" onChange={(value) => setFormData({ ...formData, notifyEmployees: value })} />
+          <AppSwitch label="Notify Reviewers" id="notify-reviewers" onChange={(value) => setFormData({ ...formData, notifyReviewers: value })} />
+        </div>
       </CardLayout>
 
-      <div className="flex justify-end">
+      <div className="flex flex-col md:flex-row gap-y-4 md:gap-x-4 justify-end">
         <button type="submit"
-          disabled={!formData.reviewCycleName || !formData.startDate || !formData.endDate || !formData.daysOfGrace || formData.assignedEmployees.length === 0 || formData.assignedReviewer === ""}
-          className="bg-primary text-white px-4 py-2 rounded-md disabled:cursor-not-allowed disabled:bg-gray-300 disabled:border-gray-400 disabled:text-gray-500"
-        >Create Review Cycle</button>
+          className="transition-all duration-300 order-1 md:order-none bg-white px-4 py-2 rounded-md disabled:cursor-not-allowed border disabled:bg-gray-300 border-gray-400 disabled:text-gray-500 font-semibold"
+        >
+          Save & Continue Later
+        </button>
+
+
+        <button type="submit"
+          disabled={!formData.reviewCycleName || !formData.startDate || !formData.endDate || !formData.daysOfGrace || formData.assignedEmployees === "" || formData.assignedReviewer === "" || !formData.notifyEmployees || !formData.notifyReviewers}
+          className="transition-all duration-300 bg-primary text-white px-4 py-2 rounded-md disabled:cursor-not-allowed disabled:border disabled:bg-gray-300 disabled:border-gray-400 disabled:text-gray-500 font-semibold"
+        >
+          Create Review Cycle
+        </button>
       </div>
     </form>
   );
