@@ -4,12 +4,13 @@ import Image from "next/image";
 import DropdownWithSearchAndMultiSelect from "@/app/_components/ui/multi-select-dropdown";
 import EditJobSuccessModal from "../modal";
 
-
 interface EditJobPreviewProps {
   setScreenInView: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function EditJobPreview({ setScreenInView }: EditJobPreviewProps) {
+export default function EditJobPreview({
+  setScreenInView,
+}: EditJobPreviewProps) {
   const [jobData, setJobData] = useState<{
     requisitorName: string;
     jobTitle: string;
@@ -25,21 +26,18 @@ export default function EditJobPreview({ setScreenInView }: EditJobPreviewProps)
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-
   const handlePublishClick = () => {
     // Simulate publish logic here
     setIsModalOpen(true); // Open the modal
   };
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); 
+    e.preventDefault();
   };
 
-
-   const closeModal = () => {
-  setIsModalOpen(false); 
- };
-
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   // Fetch jobData from localStorage on component mount
   useEffect(() => {
@@ -67,20 +65,24 @@ export default function EditJobPreview({ setScreenInView }: EditJobPreviewProps)
       <div className="flex flex-col mb-4 justify-start  gap-2">
         <div className="flex items-center gap-2">
           <Image
-          src="/button-icon.svg"
-          alt="Job Preview"
-          width={24}
-          height={24}
-          className="object-contain"
-          onClick={handleBackScreenSlideClick}
-        />
-         
-                <h1 className="text-base  text-gray-500 font-normal">Back to Edit Details</h1>
+            src="/button-icon.svg"
+            alt="Job Preview"
+            width={24}
+            height={24}
+            className="object-contain"
+            onClick={handleBackScreenSlideClick}
+          />
 
+          <h1 className="text-base  text-gray-500 font-normal">
+            Back to Edit Details
+          </h1>
         </div>
         <h1 className="text-lg mx-2 text-black font-semibold">Job Preview</h1>
       </div>
-      <form className="space-y-6 bg-white p-4 md:p-10 rounded-md shadow-md" onSubmit={handleFormSubmit}>
+      <form
+        className="space-y-6 bg-white p-4 md:p-10 rounded-md shadow-md"
+        onSubmit={handleFormSubmit}
+      >
         <div>
           <label
             htmlFor="requisitorName"
@@ -120,14 +122,14 @@ export default function EditJobPreview({ setScreenInView }: EditJobPreviewProps)
           >
             Department
           </label>
-         <DropdownWithSearchAndMultiSelect
-              id="department"
-                          isMulti={true}
-                          isDisabled={true}
-                           placeholder={jobData.department.join(", ")}
+          <DropdownWithSearchAndMultiSelect
+            id="department"
+            isMulti={true}
+            isDisabled={true}
+            placeholder={jobData.department.join(", ")}
 
-              // Disable the dropdown for preview
-            />
+            // Disable the dropdown for preview
+          />
         </div>
 
         <div>
@@ -138,12 +140,11 @@ export default function EditJobPreview({ setScreenInView }: EditJobPreviewProps)
             Location
           </label>
           <DropdownWithSearchAndMultiSelect
-              id="location"
-              isMulti={true}
-                          isDisabled={true}
-                           placeholder={jobData.location.join(", ")}
-
-            />
+            id="location"
+            isMulti={true}
+            isDisabled={true}
+            placeholder={jobData.location.join(", ")}
+          />
         </div>
 
         <div>
@@ -154,26 +155,24 @@ export default function EditJobPreview({ setScreenInView }: EditJobPreviewProps)
             Job Type
           </label>
           <DropdownWithSearchAndMultiSelect
-              id="jobType"
-              isMulti={false} // Single select
-                          isDisabled={true}
-                           placeholder={jobData.jobType}
-            />
+            id="jobType"
+            isMulti={false} // Single select
+            isDisabled={true}
+            placeholder={jobData.jobType}
+          />
         </div>
-
-      
 
         {/* Add other fields similarly */}
         {/* Job Description */}
         <div>
-          <p className="mb-1 font-sans text-sm font-semibold">Job Description</p>
+          <p className="mb-1 font-sans text-sm font-semibold">
+            Job Description
+          </p>
           <div
             dangerouslySetInnerHTML={{ __html: jobData.jobDescription }}
             className="mt-1 text-xs block  py-2"
           />
         </div>
-
-        
 
         {/* Benefits */}
         <div>
@@ -186,7 +185,9 @@ export default function EditJobPreview({ setScreenInView }: EditJobPreviewProps)
 
         {/* Required Skilss */}
         <div>
-          <p className="mb-1 font-sans text-sm font-semibold">Required Skills</p>
+          <p className="mb-1 font-sans text-sm font-semibold">
+            Required Skills
+          </p>
           <div
             dangerouslySetInnerHTML={{ __html: jobData.requiredSkill }}
             className="mt-1 text-xs block  py-2"
@@ -202,23 +203,19 @@ export default function EditJobPreview({ setScreenInView }: EditJobPreviewProps)
           />
         </div>
         <div className="flex w-full flex-col md:flex-row mt-4 justify-end items-center gap-2">
-        <button
-          className="w-full md:w-auto px-4 md:px-20 py-2 border-gray-300 border-2 text-base font-semibold bg-white text-gray-700 rounded-lg hover:border-blue-600"
-        >
-          Save & Continue Later
-        </button>
-        <button
+          <button className="w-full md:w-auto px-4 md:px-20 py-2 border-gray-300 border-2 text-base font-semibold bg-white text-gray-700 rounded-lg hover:border-blue-600">
+            Save & Continue Later
+          </button>
+          <button
             className="w-full md:w-auto px-4 md:px-20 py-2 text-base font-semibold bg-[#0035C3] text-white rounded-lg hover:bg-blue-600 focus:outline-none"
             onClick={handlePublishClick}
-                  >
-          Save Changes
-        </button>
-      </div>
-
+          >
+            Save Changes
+          </button>
+        </div>
       </form>
 
-            <EditJobSuccessModal isOpen={isModalOpen} onClose={closeModal} />
-
+      <EditJobSuccessModal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   );
 }

@@ -20,9 +20,7 @@ const OverviewCards: React.FC<OverviewCardProps> = ({
     <Card className={`rounded-xl p-4 ${className} bg-white text-[#1B1B1B] `}>
       <div className="flex flex-row items-center gap-1 space-y-0 pb-2">
         {icon}
-        <div className="mx-2 font-semibold text-base  font-sans">
-          {title}
-        </div>
+        <div className="mx-2 font-semibold text-base  font-sans">{title}</div>
       </div>
       <div>
         <div className="text-[24px] md:text-[33px] font-bold  flex items-baseline">

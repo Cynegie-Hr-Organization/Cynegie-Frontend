@@ -12,7 +12,9 @@ const JobCardContent = () => {
   };
 
   return (
-<>      {/* Job Description */}
+    <>
+      {" "}
+      {/* Job Description */}
       <div>
         <p className="mb-1 font-sans text-sm font-semibold">Job Description</p>
         <div
@@ -20,7 +22,6 @@ const JobCardContent = () => {
           className="mt-1 text-xs block py-2"
         />
       </div>
-
       {/* Responsibilities */}
       <div>
         <p className="mb-1 font-sans text-sm font-semibold">Benefits</p>
@@ -29,7 +30,6 @@ const JobCardContent = () => {
           className="mt-1 text-xs block py-2"
         />
       </div>
-
       {/* Required Skills */}
       <div>
         <p className="mb-1 font-sans text-sm font-semibold">Required Skills</p>

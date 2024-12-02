@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState , useEffect , useRef } from 'react';
-import Pagination from './pagination';
-import { useRouter } from 'next/navigation';
-import {Dropdown} from '../../../../../../../../_components/ui/dropdown'
-
+import React, { useState, useEffect, useRef } from "react";
+import Pagination from "./pagination";
+import { useRouter } from "next/navigation";
+import { Dropdown } from "../../../../../../../../_components/ui/dropdown";
 
 interface Column<T> {
   header: string;
@@ -33,13 +32,16 @@ const InterviewTabTable = <T extends Record<string, any>>({
 }: TableProps<T>) => {
   const router = useRouter();
 
-   
- const [isFilterDropdownOpen, setFilterDropdownOpen] = useState(false);
-  const [filters, setFilters] = useState({ candidate: '', job: '' });
-  const [actionDropdowns, setActionDropdowns] = useState<{ [key: number]: boolean }>({}); 
+  const [isFilterDropdownOpen, setFilterDropdownOpen] = useState(false);
+  const [filters, setFilters] = useState({ candidate: "", job: "" });
+  const [actionDropdowns, setActionDropdowns] = useState<{
+    [key: number]: boolean;
+  }>({});
 
   const filterDropdownRef = useRef<HTMLDivElement>(null);
-  const actionDropdownRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
+  const actionDropdownRefs = useRef<{ [key: number]: HTMLDivElement | null }>(
+    {},
+  );
 
   // Toggle filter dropdown
   const toggleFilterDropdown = () => {
@@ -47,12 +49,11 @@ const InterviewTabTable = <T extends Record<string, any>>({
   };
 
   const toggleActionDropdown = (rowIndex: number) => {
-  setActionDropdowns((prev) => ({
-    ...prev,
-    [rowIndex]: !prev[rowIndex], // Toggle specific row dropdown
-  }));
-};
-
+    setActionDropdowns((prev) => ({
+      ...prev,
+      [rowIndex]: !prev[rowIndex], // Toggle specific row dropdown
+    }));
+  };
 
   // Close all dropdowns when clicking outside
   useEffect(() => {
@@ -79,19 +80,19 @@ const InterviewTabTable = <T extends Record<string, any>>({
       });
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   const applyFilters = () => {
-    console.log('Filters applied:', filters);
+    console.log("Filters applied:", filters);
     setFilterDropdownOpen(false);
   };
 
-  const candidates = ['Precious Henry', 'Law Luke', 'Other Candidate'];
-  const jobTitles = ['Snr. UX Designer', 'Content Creator', 'Other Title'];
+  const candidates = ["Precious Henry", "Law Luke", "Other Candidate"];
+  const jobTitles = ["Snr. UX Designer", "Content Creator", "Other Title"];
 
   return (
     <div className="bg-white w-full h-full flex flex-col">
@@ -172,7 +173,7 @@ const InterviewTabTable = <T extends Record<string, any>>({
               <div className="flex justify-between">
                 <button
                   className="text-sm text-gray-500 hover:underline"
-                  onClick={() => setFilters({ candidate: '', job: '' })}
+                  onClick={() => setFilters({ candidate: "", job: "" })}
                 >
                   Reset
                 </button>
@@ -188,49 +189,51 @@ const InterviewTabTable = <T extends Record<string, any>>({
         </div>
       </div>
 
-         {/* Selected Filters Display */}
-  {(filters.candidate || filters.job) && (
-  <div className="p-4 flex gap-2 text-sm text-gray-700">
-    {/* Candidate Filter */}
-    {filters.candidate && (
-      <div className="flex items-center border bg-white border-gray-300 p-1 px-2 rounded-md">
-        <span className="mr-2">{filters.candidate}</span>
-        <button
-          onClick={() => setFilters({ ...filters, candidate: '' })}
-          className="text-gray-500 text-base hover:text-gray-700"
-          aria-label="Remove candidate filter"
-        >
-          &times;
-        </button>
-      </div>
-    )}
+      {/* Selected Filters Display */}
+      {(filters.candidate || filters.job) && (
+        <div className="p-4 flex gap-2 text-sm text-gray-700">
+          {/* Candidate Filter */}
+          {filters.candidate && (
+            <div className="flex items-center border bg-white border-gray-300 p-1 px-2 rounded-md">
+              <span className="mr-2">{filters.candidate}</span>
+              <button
+                onClick={() => setFilters({ ...filters, candidate: "" })}
+                className="text-gray-500 text-base hover:text-gray-700"
+                aria-label="Remove candidate filter"
+              >
+                &times;
+              </button>
+            </div>
+          )}
 
-    {/* Job Filter */}
-    {filters.job && (
-      <div className="flex items-center border bg-white border-gray-300 p-1 px-2 rounded-md">
-        <span className="mr-2">{filters.job}</span>
-        <button
-          onClick={() => setFilters({ ...filters, job: '' })}
-          className="text-gray-500 text-base hover:text-gray-700"
-          aria-label="Remove job filter"
-        >
-          &times;
-        </button>
-      </div>
-    )}
-  </div>
-)}
+          {/* Job Filter */}
+          {filters.job && (
+            <div className="flex items-center border bg-white border-gray-300 p-1 px-2 rounded-md">
+              <span className="mr-2">{filters.job}</span>
+              <button
+                onClick={() => setFilters({ ...filters, job: "" })}
+                className="text-gray-500 text-base hover:text-gray-700"
+                aria-label="Remove job filter"
+              >
+                &times;
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Table */}
       <div className="flex-grow px-2 overflow-x-auto">
-        <table className="w-full text-sm  text-left ">
+        <table className="w-full text-sm p-4  text-left ">
           <thead>
-            <tr className="border-b bg-gray-50">
+            <tr className="border-b bg-gray-50 ">
               {columns.map((column, index) => (
-                <th key={index} className="p-2">{column.header}</th>
+                <th key={index} className="p-2">
+                  {column.header}
+                </th>
               ))}
               {showActions && (
-                <th className="p-2 justify-center">
+                <th className="p-2 justify-end">
                   <div className="flex ">Actions</div>
                 </th>
               )}
@@ -246,11 +249,12 @@ const InterviewTabTable = <T extends Record<string, any>>({
                 ))}
                 {showActions && (
                   <td className="p-2 pr-2 justify-center">
-     <div
+                    <div
                       className="relative"
-ref={(el) => {
-                actionDropdownRefs.current[rowIndex] = el;
-              }}                    >
+                      ref={(el) => {
+                        actionDropdownRefs.current[rowIndex] = el;
+                      }}
+                    >
                       <button onClick={() => toggleActionDropdown(rowIndex)}>
                         <svg
                           width="32"
@@ -290,44 +294,53 @@ ref={(el) => {
                         </svg>
                       </button>
                       {actionDropdowns[rowIndex] && (
-  <div
-    className="absolute bg-white shadow-lg border border-gray-300 w-[7.5rem] rounded-md z-10 right-0"
-  >
-    <ul>
-      {row.status === 'Completed' ? (
+                        <div className="absolute bg-white shadow-lg border border-gray-300 w-[7.5rem] rounded-md z-10 right-0">
+                          <ul>
+                            {row.status === "Completed" ? (
                               <>
                                 <ul>
-
-                                   <li
-            className="p-2 hover:bg-gray-100" 
-            onClick={() => router.push('/hr-admin/hiring/interview-details')}
-          >
-            View Details
-          </li>
-                                <li
-                                  className="p-2 hover:bg-gray-100 text-red-500">Cancel
-                                </li>
-
+                                  <li
+                                    className="p-2 hover:bg-gray-100"
+                                    onClick={() =>
+                                      router.push(
+                                        "/hr-admin/hiring/interview-details",
+                                      )
+                                    }
+                                  >
+                                    View Details
+                                  </li>
+                                  <li className="p-2 hover:bg-gray-100 text-red-500">
+                                    Cancel
+                                  </li>
                                 </ul>
-         
-        </>
-      ) : row.status === 'Scheduled' ? (
-        <>
-          <li
-                        className="p-2 hover:bg-gray-100" 
-
-            onClick={() => router.push('/hr-admin/hiring/interview-details')}
-          >
-            View Details
-          </li>
-          <li className="p-2 hover:bg-gray-100"              onClick={() => router.push('/hr-admin/hiring/candidate-management/interviews-schedule')}
->Reschedule</li>
-        </>
-      ) : null}
-    </ul>
-  </div>
-)}
-
+                              </>
+                            ) : row.status === "Scheduled" ? (
+                              <>
+                                <li
+                                  className="p-2 hover:bg-gray-100"
+                                  onClick={() =>
+                                    router.push(
+                                      "/hr-admin/hiring/interview-details",
+                                    )
+                                  }
+                                >
+                                  View Details
+                                </li>
+                                <li
+                                  className="p-2 hover:bg-gray-100"
+                                  onClick={() =>
+                                    router.push(
+                                      "/hr-admin/hiring/candidate-management/interviews-schedule",
+                                    )
+                                  }
+                                >
+                                  Reschedule
+                                </li>
+                              </>
+                            ) : null}
+                          </ul>
+                        </div>
+                      )}
                     </div>
                   </td>
                 )}

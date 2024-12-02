@@ -1,10 +1,6 @@
 import React from "react";
 
-
 const CreateJobHeader: React.FC = () => {
- 
- 
-
   return (
     <>
       {/* Header Section */}
@@ -12,12 +8,8 @@ const CreateJobHeader: React.FC = () => {
         <h1 className="text-xl md:text-[18px] font-bold text-gray-800 md:mb-4">
           Create Job Offer
         </h1>
-
-       
-        
       </header>
-
-       </>
+    </>
   );
 };
 

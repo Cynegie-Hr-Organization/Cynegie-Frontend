@@ -1,5 +1,5 @@
-import React from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface PaginationProps {
   totalItems: number;
@@ -21,7 +21,9 @@ const Pagination: React.FC<PaginationProps> = ({
   return (
     <div className="flex items-center justify-between mt-4">
       <div className="flex items-center">
-        <span className="mr-1 md:mr-2 text-sm text-gray-700">Show rows per page:</span>
+        <span className="mr-1 md:mr-2 text-sm text-gray-700">
+          Show rows per page:
+        </span>
         <select
           className="border border-gray-300 rounded px-[2px] md:px-2 py-1 text-sm"
           value={itemsPerPage}

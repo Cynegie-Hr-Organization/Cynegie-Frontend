@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -13,7 +13,9 @@ const RejectCandidateModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       <div className="bg-white w-[90%] max-w-md md:max-w-xl p-6 rounded-lg shadow-lg relative">
         {/* Modal Header */}
         <div className="flex justify-between items-center mb-1">
-          <h2 className="text-xl font-semibold text-gray-900">Cancel Interview</h2>
+          <h2 className="text-xl font-semibold text-gray-900">
+            Cancel Interview
+          </h2>
           <button
             onClick={onClose}
             className="text-gray-500 bg-gray-100 rounded-full p-1 hover:text-gray-800"
@@ -38,14 +40,12 @@ const RejectCandidateModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
         {/* Modal Content */}
         <p className="text-sm mt-4 md:mt-0 text-center md:text-start md:max-w-96 text-gray-600 mb-6">
-                  Are you sure you want to cancel this interview, ?this action cannot be undone
-              </p>
+          Are you sure you want to cancel this interview, ?this action cannot be
+          undone
+        </p>
 
         {/* Form Fields */}
         <div className="space-y-4">
-        
-
-
           <div>
             <label
               htmlFor="notes"
@@ -66,17 +66,15 @@ const RejectCandidateModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         <div className="mt-6 w-full md:w-[90%] md:mx-auto flex flex-col md:flex-row gap-2 items-center justify-center ">
           <button
             className="w-full flex flex-row justify-center items-center gap-2  px-4  py-2 border-gray-300 border-2 text-base font-semibold bg-white text-gray-700 rounded-lg hover:border-blue-600 cursor-pointer"
-                      onClick={onClose}
-
+            onClick={onClose}
           >
-                  
-                    Cancel
-                  </button>
+            Cancel
+          </button>
           <button
-                      onClick={onClose}
+            onClick={onClose}
             className="w-full px-4 py-2 text-white bg-[#0035C3] rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-300"
           >
-            Confirm Cancellation 
+            Confirm Cancellation
           </button>
         </div>
       </div>

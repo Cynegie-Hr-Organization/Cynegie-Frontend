@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react';
-import CandidateTable from './candidate-table';
-import { candidateData } from './candidate-table/data';
+import React, { useState } from "react";
+import CandidateTable from "./candidate-table";
+import { candidateData } from "./candidate-table/data";
 
 const CandidateManagementTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -16,38 +16,37 @@ const CandidateManagementTable = () => {
   // Define columns
   const columns = [
     {
-      header: 'Candidate Name',
+      header: "Candidate Name",
       accessor: (row: any) => row.candidateName,
     },
     {
-      header: 'Applied Position',
+      header: "Applied Position",
       accessor: (row: any) => row.appliedPosition,
     },
     {
-      header: 'Stages',
+      header: "Stages",
       accessor: (row: any) => row.stages,
     },
     {
-      header: 'Application Date',
-      accessor: (row: any) => new Date(row.applicationDate).toLocaleDateString(),
-
+      header: "Application Date",
+      accessor: (row: any) =>
+        new Date(row.applicationDate).toLocaleDateString(),
     },
-    
+
     {
-      header: 'Status',
+      header: "Status",
       accessor: (row: any) => (
         <span
-  className={`px-3 py-1 text-sm rounded-full ${
-    row.status === 'Pending'
-      ? 'bg-[#FEF6E7] text-[#865503]' // Pending
-      : row.status === 'Approved'
-      ? 'bg-[#E7F6EC] text-[#036B26]' // Approved
-      : 'bg-[#FBEAE9] text-[#9E0A05]' // Rejected
-  }`}
->
-  {row.status}
-</span>
-
+          className={`px-3 py-1 text-sm rounded-full ${
+            row.status === "Pending"
+              ? "bg-[#FEF6E7] text-[#865503]" // Pending
+              : row.status === "Approved"
+                ? "bg-[#E7F6EC] text-[#036B26]" // Approved
+                : "bg-[#FBEAE9] text-[#9E0A05]" // Rejected
+          }`}
+        >
+          {row.status}
+        </span>
       ),
     },
   ];

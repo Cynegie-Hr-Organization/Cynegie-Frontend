@@ -1,5 +1,5 @@
 import React from "react";
-import Image from 'next/image'
+import Image from "next/image";
 
 interface ModalProps {
   isOpen: boolean;
@@ -14,13 +14,12 @@ const ScheduleSuccessModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       <div className="bg-white w-[90%] max-w-md p-6 rounded-lg shadow-lg relative text-center">
         {/* Icon */}
         <div className="flex items-center justify-center mb-4">
-                  <Image
-                      src="/icons/modal-success.svg"
-                      width={100}
-                      height={100}
-        alt="success"          />
-                      
-          
+          <Image
+            src="/icons/modal-success.svg"
+            width={100}
+            height={100}
+            alt="success"
+          />
         </div>
 
         {/* Success Message */}
@@ -40,9 +39,7 @@ const ScheduleSuccessModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           Continue to Candidates
         </button>
       </div>
-      </div>
-      
-      
+    </div>
   );
 };
 

@@ -3,12 +3,10 @@ import { useState } from "react";
 
 import { IoCheckmark, IoCubeOutline } from "react-icons/io5";
 
-
 import { ContentText } from "@/utils/ElemProp";
 import Cards from "../card/Cards";
 import { HeadingComponents, PageTitleComponents } from "../common";
 import { ProductHero } from "../hero";
-
 
 const Product = () => {
   //Track the active button index
@@ -209,7 +207,10 @@ const Product = () => {
                 compensation with accuracy and compliance built-in.
               </p>
             }
-            image={{ src: "./image/integration-payroll.png", alt: "HireTalent" }}
+            image={{
+              src: "./image/integration-payroll.png",
+              alt: "HireTalent",
+            }}
             className={
               "border-2 rounded-2xl grid place-content-center bg-gradient-to-b from-[#FFFFFF] to-[#F6F7F8] lg:w-[98%] lg:h-[500px] px-5  py-8"
             }

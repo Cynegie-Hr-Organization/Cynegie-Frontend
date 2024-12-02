@@ -1,6 +1,5 @@
 "use client";
 
-
 import { Avatar, TextField } from "@mui/material";
 import { RiSearchLine } from "react-icons/ri";
 import { GoDotFill, GoPlus } from "react-icons/go";
@@ -9,10 +8,10 @@ import { LuClock, LuListFilter } from "react-icons/lu";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { TouchBackend } from "react-dnd-touch-backend";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { usePreview } from 'react-dnd-preview';
+import { usePreview } from "react-dnd-preview";
 import { useState, useCallback, LegacyRef, useEffect } from "react";
 import CardLayout from "@/app/_components/shared/cards";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 type Task = { id: number; text: string };
 type TaskState = {
@@ -34,36 +33,46 @@ const TouchPreview = () => {
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
-    setIsTouchDevice(('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
+    setIsTouchDevice("ontouchstart" in window || navigator.maxTouchPoints > 0);
   }, []);
 
   if (!preview.display || !isTouchDevice) return null;
 
   return (
-    <div 
-      className="fixed top-0 left-0 z-50 w-[242px] pointer-events-none" 
+    <div
+      className="fixed top-0 left-0 z-50 w-[242px] pointer-events-none"
       style={preview.display ? preview.style : undefined}
     >
       <div className="text-xs space-y-[14.67px] p-2 rounded-xl shadow-md bg-white opacity-90 -rotate-6">
-        <div className='space-y-2'>
-          <p className='capitalize text-sm font-semibold'>{preview.item?.text}</p>
-          <p className='flex items-center text-[11px] text-primary font-medium'>
+        <div className="space-y-2">
+          <p className="capitalize text-sm font-semibold">
+            {preview.item?.text}
+          </p>
+          <p className="flex items-center text-[11px] text-primary font-medium">
             <GoDotFill />
             <span>Design</span>
           </p>
         </div>
 
-        <p className='text-[#64748B]'>Its just needs to adapt the UI from what you did before</p>
-        <hr className='border-t w-full' />
-        <div className='flex items-center justify-between'>
-          <div className='w-max h-max flex items-center gap-x-2 p-[7.33px] rounded-lg bg-[#FDF2F8] text-[#ED4F9D] font-medium'>
+        <p className="text-[#64748B]">
+          Its just needs to adapt the UI from what you did before
+        </p>
+        <hr className="border-t w-full" />
+        <div className="flex items-center justify-between">
+          <div className="w-max h-max flex items-center gap-x-2 p-[7.33px] rounded-lg bg-[#FDF2F8] text-[#ED4F9D] font-medium">
             <LuClock />
             <span>3 days left</span>
           </div>
-          <div className='flex'>
-            {["/image/persons/person-1.png", "/image/persons/person-2.png"].map((imageSrc, index) => (
-              <Avatar key={index} src={imageSrc} className="w-5 h-5 first:ml-auto -ml-2" />
-            ))}
+          <div className="flex">
+            {["/image/persons/person-1.png", "/image/persons/person-2.png"].map(
+              (imageSrc, index) => (
+                <Avatar
+                  key={index}
+                  src={imageSrc}
+                  className="w-5 h-5 first:ml-auto -ml-2"
+                />
+              ),
+            )}
           </div>
         </div>
       </div>
@@ -89,7 +98,7 @@ const TaskList = () => {
 
   useEffect(() => {
     const isTouchDevice = () => {
-      return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+      return "ontouchstart" in window || navigator.maxTouchPoints > 0;
     };
 
     if (isTouchDevice()) {
@@ -97,41 +106,55 @@ const TaskList = () => {
     }
   }, []);
 
-  const findSourceColumn = (prevTasks: TaskState, draggedTaskId: number): keyof TaskState | undefined => {
+  const findSourceColumn = (
+    prevTasks: TaskState,
+    draggedTaskId: number,
+  ): keyof TaskState | undefined => {
     return (Object.keys(prevTasks) as Array<keyof TaskState>).find((column) =>
       prevTasks[column].some((task) => task.id === draggedTaskId),
     );
   };
 
-  const moveCard = useCallback((draggedTaskId: number, targetColumn: keyof TaskState, targetIndex: number) => {
-    setTasks((prevTasks) => {
-      const sourceColumn = findSourceColumn(prevTasks, draggedTaskId);
-      if (!sourceColumn) return prevTasks;
+  const moveCard = useCallback(
+    (
+      draggedTaskId: number,
+      targetColumn: keyof TaskState,
+      targetIndex: number,
+    ) => {
+      setTasks((prevTasks) => {
+        const sourceColumn = findSourceColumn(prevTasks, draggedTaskId);
+        if (!sourceColumn) return prevTasks;
 
-      const draggedTask = prevTasks[sourceColumn].find((task) => task.id === draggedTaskId);
-      if (!draggedTask) return prevTasks;
+        const draggedTask = prevTasks[sourceColumn].find(
+          (task) => task.id === draggedTaskId,
+        );
+        if (!draggedTask) return prevTasks;
 
-      const sourceColumnTasks = prevTasks[sourceColumn].filter((task) => task.id !== draggedTaskId);
+        const sourceColumnTasks = prevTasks[sourceColumn].filter(
+          (task) => task.id !== draggedTaskId,
+        );
 
-      if (sourceColumn === targetColumn) {
-        const updatedTasks = [...sourceColumnTasks];
-        updatedTasks.splice(targetIndex, 0, draggedTask);
-        return { ...prevTasks, [sourceColumn]: updatedTasks };
-      }
+        if (sourceColumn === targetColumn) {
+          const updatedTasks = [...sourceColumnTasks];
+          updatedTasks.splice(targetIndex, 0, draggedTask);
+          return { ...prevTasks, [sourceColumn]: updatedTasks };
+        }
 
-      return {
-        ...prevTasks,
-        [sourceColumn]: sourceColumnTasks,
-        [targetColumn]: [...prevTasks[targetColumn], draggedTask],
-      };
-    });
-  }, []);
+        return {
+          ...prevTasks,
+          [sourceColumn]: sourceColumnTasks,
+          [targetColumn]: [...prevTasks[targetColumn], draggedTask],
+        };
+      });
+    },
+    [],
+  );
 
   return (
-    <CardLayout className='bg-white'>
-      <div className='w-full flex items-center justify-between flex-grow mb-4'>
+    <CardLayout className="bg-white">
+      <div className="w-full flex items-center justify-between flex-grow mb-4">
         <TextField
-          className='max-w-[476px]'
+          className="max-w-[476px]"
           sx={{
             width: { xs: "90%", sm: "70%", md: "70%" },
             mb: { xs: "15px", md: "0px" },
@@ -143,12 +166,12 @@ const TaskList = () => {
               fontSize: "14px",
               fontWeight: 400,
             },
-            startAdornment: <RiSearchLine className='mr-2 text-2xl' />,
+            startAdornment: <RiSearchLine className="mr-2 text-2xl" />,
           }}
-          placeholder='Search here...'
+          placeholder="Search here..."
         />
 
-        <button className='flex items-center border border-gray-300 rounded-md px-4 py-2 text-sm hover:bg-gray-100 gap-x-3'>
+        <button className="flex items-center border border-gray-300 rounded-md px-4 py-2 text-sm hover:bg-gray-100 gap-x-3">
           <LuListFilter />
           Filter
         </button>
@@ -158,12 +181,17 @@ const TaskList = () => {
         backend={dndBackend}
         options={{
           enableMouseEvents: true,
-          preview: false
+          preview: false,
         }}
       >
-        <div className='flex gap-8 p-1 mb-6 h-[463.33px] overflow-x-auto min-w-full'>
+        <div className="flex gap-8 p-1 mb-6 h-[463.33px] overflow-x-auto min-w-full">
           {(Object.keys(tasks) as Array<keyof TaskState>).map((column) => (
-            <Column key={column} title={column} tasks={tasks[column]} moveCard={moveCard} />
+            <Column
+              key={column}
+              title={column}
+              tasks={tasks[column]}
+              moveCard={moveCard}
+            />
           ))}
         </div>
         <TouchPreview />
@@ -179,7 +207,11 @@ const Column = ({
 }: {
   title: keyof TaskState;
   tasks: Task[];
-  moveCard: (draggedTaskId: number, targetColumn: keyof TaskState, targetIndex: number) => void;
+  moveCard: (
+    draggedTaskId: number,
+    targetColumn: keyof TaskState,
+    targetIndex: number,
+  ) => void;
 }) => {
   const getTitleColor = (columnTitle: keyof TaskState): string => {
     switch (columnTitle) {
@@ -204,11 +236,24 @@ const Column = ({
   });
 
   return (
-    <div ref={dropRef as unknown as LegacyRef<HTMLDivElement>} className='space-y-4 h-full overflow-y-scroll min-w-[242px]'>
-      <Taskhead title={title} count={tasks.length.toString()} titleColor={getTitleColor(title)} />
-      <div className='space-y-4'>
+    <div
+      ref={dropRef as unknown as LegacyRef<HTMLDivElement>}
+      className="space-y-4 h-full overflow-y-scroll min-w-[242px]"
+    >
+      <Taskhead
+        title={title}
+        count={tasks.length.toString()}
+        titleColor={getTitleColor(title)}
+      />
+      <div className="space-y-4">
         {tasks.map((task, index) => (
-          <TaskItem key={task.id} task={task} moveCard={moveCard} currentColumn={title} index={index} />
+          <TaskItem
+            key={task.id}
+            task={task}
+            moveCard={moveCard}
+            currentColumn={title}
+            index={index}
+          />
         ))}
       </div>
     </div>
@@ -225,12 +270,12 @@ const Taskhead = ({
   titleColor?: string;
 }) => {
   return (
-    <div className='flex justify-between items-center'>
+    <div className="flex justify-between items-center">
       <h3 className={`capitalize font-bold text-sm ${titleColor}`}>
         {title}
-        <span className='font-normal text-gray-500'>({count})</span>
+        <span className="font-normal text-gray-500">({count})</span>
       </h3>
-      <div className='flex gap-x-2 text-gray-400'>
+      <div className="flex gap-x-2 text-gray-400">
         <GoPlus />
         <HiOutlineDotsHorizontal />
       </div>
@@ -245,7 +290,11 @@ const TaskItem = ({
   index,
 }: {
   task: Task;
-  moveCard: (draggedTaskId: number, targetColumn: keyof TaskState, targetIndex: number) => void;
+  moveCard: (
+    draggedTaskId: number,
+    targetColumn: keyof TaskState,
+    targetIndex: number,
+  ) => void;
   currentColumn: keyof TaskState;
   index: number;
 }) => {
@@ -278,27 +327,35 @@ const TaskItem = ({
     <div
       ref={ref}
       className={`text-xs mt-11 space-y-[14.67px] p-2 rounded-xl shadow-md m-[2px] touch-none select-none
-        ${isDragging ? 'opacity-30 cursor-grabbing' : 'opacity-100 cursor-grab'} ${isOver ? 'bg-gray-100' : 'bg-transparent'}`}>
-
-      <div className='space-y-2'>
-        <p className='capitalize text-sm font-semibold'>{task.text}</p>
-        <p className='flex items-center text-[11px] text-primary font-medium'>
+        ${isDragging ? "opacity-30 cursor-grabbing" : "opacity-100 cursor-grab"} ${isOver ? "bg-gray-100" : "bg-transparent"}`}
+    >
+      <div className="space-y-2">
+        <p className="capitalize text-sm font-semibold">{task.text}</p>
+        <p className="flex items-center text-[11px] text-primary font-medium">
           <GoDotFill />
           <span>Design</span>
         </p>
       </div>
 
-      <p className='text-[#64748B]'>Its just needs to adapt the UI from what you did before</p>
-      <hr className='border-t w-full' />
-      <div className='flex items-center justify-between'>
-        <div className='w-max h-max flex items-center gap-x-2 p-[7.33px] rounded-lg bg-[#FDF2F8] text-[#ED4F9D] font-medium'>
+      <p className="text-[#64748B]">
+        Its just needs to adapt the UI from what you did before
+      </p>
+      <hr className="border-t w-full" />
+      <div className="flex items-center justify-between">
+        <div className="w-max h-max flex items-center gap-x-2 p-[7.33px] rounded-lg bg-[#FDF2F8] text-[#ED4F9D] font-medium">
           <LuClock />
           <span>3 days left</span>
         </div>
-        <div className='flex'>
-          {["/image/persons/person-1.png", "/image/persons/person-2.png"].map((imageSrc, index) => (
-            <Avatar key={index} src={imageSrc} className="w-5 h-5 first:ml-auto -ml-2" />
-          ))}
+        <div className="flex">
+          {["/image/persons/person-1.png", "/image/persons/person-2.png"].map(
+            (imageSrc, index) => (
+              <Avatar
+                key={index}
+                src={imageSrc}
+                className="w-5 h-5 first:ml-auto -ml-2"
+              />
+            ),
+          )}
         </div>
       </div>
     </div>
@@ -306,7 +363,7 @@ const TaskItem = ({
 };
 
 const TaskListClient = dynamic(() => Promise.resolve(TaskList), {
-  ssr: false
+  ssr: false,
 });
 
 export default TaskListClient;

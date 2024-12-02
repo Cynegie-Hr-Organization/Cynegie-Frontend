@@ -18,7 +18,7 @@ const GuestNavBar = () => {
     },
     {
       name: "Integrations",
-      link: "/integration",
+      link: "/integrations",
     },
     {
       name: "About us",
@@ -34,7 +34,12 @@ const GuestNavBar = () => {
       <header className="flex justify-between px-4 py-8 mx-auto max-w-7xl lg:px-6 ">
         <div>
           <Link href={"/"}>
-            <img src={"./image/logo.png"} alt={"Cynegie Logo"} width={100} height={100} />
+            <img
+              src={"./image/logo.png"}
+              alt={"Cynegie Logo"}
+              width={100}
+              height={100}
+            />
           </Link>
         </div>
 
@@ -89,7 +94,6 @@ const GuestNavBar = () => {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           {/* over lay */}
-
         </div>
       </header>
     </>

@@ -1,10 +1,10 @@
- import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 export const metadata = {
-  title: 'Cynegie| Pricing'
+  title: "Cynegie| Pricing",
 };
 
-const Pricing = dynamic(() => import('@/app/_components/home/pricing'));
+const Pricing = dynamic(() => import("@/app/_components/home/pricing"));
 
 export default function PricingPage() {
   return (

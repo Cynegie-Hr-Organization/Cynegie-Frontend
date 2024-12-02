@@ -1,10 +1,10 @@
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 export const metadata = {
-  title: 'Sign In'
+  title: "Sign In",
 };
 
-const SignUpMain = dynamic(() => import('@/app/_components/signup'));
+const SignUpMain = dynamic(() => import("@/app/_components/signup"));
 
 export default function Signin() {
   return (

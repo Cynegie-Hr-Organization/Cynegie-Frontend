@@ -1,7 +1,5 @@
 import { PageTitleComponents } from "../common";
 import Link from "next/link";
-;
-
 const LandingHero = () => {
   return (
     <>
@@ -28,15 +26,14 @@ const LandingHero = () => {
                 "flex flex-col flex-wrap gap-2.5 lg:flex-row lg:items-center lg:gap-2  mt-5 "
               }
             >
-               <form>
-                
-                  <input
-                    type={"text"}
-                    placeholder={"Email Address"}
-                    className={"input-field border-[1px] rounded-md w-full lg:min-w-[20rem] border-gray-200 p-[10px]"}
-
-                  />
-         
+              <form>
+                <input
+                  type={"text"}
+                  placeholder={"Email Address"}
+                  className={
+                    "input-field border-[1px] rounded-md w-full lg:min-w-[20rem] border-gray-200 p-[10px]"
+                  }
+                />
               </form>
               <div className={"flex items-center justify-center"}>
                 <Link

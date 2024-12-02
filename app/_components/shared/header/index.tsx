@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { IoMenu } from "react-icons/io5";

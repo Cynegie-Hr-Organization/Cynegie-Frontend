@@ -1,10 +1,10 @@
- import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 export const metadata = {
-  title: 'Cynegie| Product'
+  title: "Cynegie| Product",
 };
 
-const Product = dynamic(() => import('@/app/_components/home/product'));
+const Product = dynamic(() => import("@/app/_components/home/product"));
 
 export default function ProductPage() {
   return (

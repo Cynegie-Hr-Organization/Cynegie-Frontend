@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState, useEffect ,  Dispatch, SetStateAction } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 import DropdownWithSearchAndMultiSelect from "@/app/_components/ui/multi-select-dropdown";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import {
   BtnBold,
   BtnBulletList,
@@ -43,25 +43,29 @@ export default function EditJobForm({ setScreenInView }: EditJobFormProps) {
   };
 
   // State for form data
-  const [jobDescription, setJobDescription] = useState<string>(existingJob.jobDescription);
+  const [jobDescription, setJobDescription] = useState<string>(
+    existingJob.jobDescription,
+  );
   const [benefits, setBenefits] = useState<string>(existingJob.benefits);
-  const [requiredSkill, setRequiredSkill] = useState<string>(existingJob.requiredSkill);
+  const [requiredSkill, setRequiredSkill] = useState<string>(
+    existingJob.requiredSkill,
+  );
   const [experience, setExperience] = useState<string>(existingJob.experience);
-  const [qualification, setQualification] = useState<string>(existingJob.qualification);
+  const [qualification, setQualification] = useState<string>(
+    existingJob.qualification,
+  );
 
   const router = useRouter();
 
   const [isClient, setIsClient] = useState(false);
 
-
-  
   useEffect(() => {
-  setIsClient(true);
-}, []);
+    setIsClient(true);
+  }, []);
 
-if (!isClient) {
-  return <div>Loading...</div>;
-}
+  if (!isClient) {
+    return <div>Loading...</div>;
+  }
 
   // Dropdown options for departments, locations, and job types
   const departmentOptions = [
@@ -102,28 +106,25 @@ if (!isClient) {
         break;
     }
   };
-    
-   const handleContinueClick = () => {
-  const formData = {
-    requisitorName: existingJob.requisitorName,  
-    jobTitle: existingJob.jobTitle,
-    department: existingJob.department,
-    location: existingJob.location,
-    jobType: existingJob.jobType,
-    jobDescription,  
-    benefits,
-    requiredSkill, 
-    experience,  
-    qualification,  
+
+  const handleContinueClick = () => {
+    const formData = {
+      requisitorName: existingJob.requisitorName,
+      jobTitle: existingJob.jobTitle,
+      department: existingJob.department,
+      location: existingJob.location,
+      jobType: existingJob.jobType,
+      jobDescription,
+      benefits,
+      requiredSkill,
+      experience,
+      qualification,
+    };
+
+    localStorage.setItem("editFormData", JSON.stringify(formData));
+
+    setScreenInView(2);
   };
-
-  localStorage.setItem("editFormData", JSON.stringify(formData));
-
-  setScreenInView(2); 
-   };
-  
-  
-
 
   return (
     <div className="">
@@ -140,7 +141,10 @@ if (!isClient) {
       </div>
       <form className="space-y-6 bg-white p-4 md:p-10 rounded-md shadow-md">
         <div>
-          <label htmlFor="requisitorName" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="requisitorName"
+            className="block text-sm font-medium text-gray-700"
+          >
             Requisitor Name
           </label>
           <input
@@ -153,7 +157,10 @@ if (!isClient) {
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div>
-            <label htmlFor="jobTitle" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="jobTitle"
+              className="block text-sm font-medium text-gray-700"
+            >
               Job Title
             </label>
             <input
@@ -165,7 +172,10 @@ if (!isClient) {
           </div>
 
           <div>
-            <label htmlFor="department" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="department"
+              className="block text-sm font-medium text-gray-700"
+            >
               Department
             </label>
             <DropdownWithSearchAndMultiSelect
@@ -177,7 +187,10 @@ if (!isClient) {
           </div>
 
           <div>
-            <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="location"
+              className="block text-sm font-medium text-gray-700"
+            >
               Location (Optional)
             </label>
             <DropdownWithSearchAndMultiSelect
@@ -189,7 +202,10 @@ if (!isClient) {
           </div>
 
           <div>
-            <label htmlFor="jobType" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="jobType"
+              className="block text-sm font-medium text-gray-700"
+            >
               Job Type
             </label>
             <DropdownWithSearchAndMultiSelect
@@ -202,13 +218,18 @@ if (!isClient) {
         </div>
 
         <div>
-          <label htmlFor="jobDescription" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="jobDescription"
+            className="block text-sm font-medium text-gray-700"
+          >
             Job Description
           </label>
           <EditorProvider>
             <Editor
               value={jobDescription}
-              onChange={(value) => handleRichTextChange("jobDescription", value)}
+              onChange={(value) =>
+                handleRichTextChange("jobDescription", value)
+              }
               style={{ height: "200px" }}
             >
               <Toolbar>
@@ -234,7 +255,10 @@ if (!isClient) {
         </div>
 
         <div>
-          <label htmlFor="benefits" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="benefits"
+            className="block text-sm font-medium text-gray-700"
+          >
             Benefits
           </label>
           <textarea
@@ -248,7 +272,10 @@ if (!isClient) {
         </div>
 
         <div>
-          <label htmlFor="requiredSkill" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="requiredSkill"
+            className="block text-sm font-medium text-gray-700"
+          >
             Required Skill
           </label>
           <EditorProvider>
@@ -280,7 +307,10 @@ if (!isClient) {
         </div>
 
         <div>
-          <label htmlFor="experience" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="experience"
+            className="block text-sm font-medium text-gray-700"
+          >
             Experience
           </label>
           <EditorProvider>
@@ -312,7 +342,10 @@ if (!isClient) {
         </div>
 
         <div>
-          <label htmlFor="qualification" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="qualification"
+            className="block text-sm font-medium text-gray-700"
+          >
             Qualification
           </label>
           <EditorProvider>
@@ -343,19 +376,17 @@ if (!isClient) {
           </EditorProvider>
         </div>
 
-         <div className="flex w-full flex-col md:flex-row mt-4 justify-end items-center gap-2">
-        <button
-          className="w-full md:w-auto px-4 md:px-20 py-2 border-gray-300 border-2 text-base font-semibold bg-white text-gray-700 rounded-lg hover:border-blue-600"
-        >
-          Save & Continue Later
-        </button>
-        <button
-          className="w-full md:w-auto px-4 md:px-20 py-2 text-base font-semibold bg-[#0035C3] text-white rounded-lg hover:bg-blue-600 focus:outline-none"
-        onClick={handleContinueClick}
-                  >
-          Continue
-        </button>
-      </div>
+        <div className="flex w-full flex-col md:flex-row mt-4 justify-end items-center gap-2">
+          <button className="w-full md:w-auto px-4 md:px-20 py-2 border-gray-300 border-2 text-base font-semibold bg-white text-gray-700 rounded-lg hover:border-blue-600">
+            Save & Continue Later
+          </button>
+          <button
+            className="w-full md:w-auto px-4 md:px-20 py-2 text-base font-semibold bg-[#0035C3] text-white rounded-lg hover:bg-blue-600 focus:outline-none"
+            onClick={handleContinueClick}
+          >
+            Continue
+          </button>
+        </div>
       </form>
     </div>
   );

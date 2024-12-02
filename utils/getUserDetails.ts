@@ -5,7 +5,8 @@ export const getUserDetails = async () => {
     const session = await getSession();
 
     if (session && session.user) {
-      const fullName = `${session.user.firstName || ""} ${session.user.lastName || ""}`.trim();
+      const fullName =
+        `${session.user.firstName || ""} ${session.user.lastName || ""}`.trim();
       return {
         name: fullName || "User",
         email: session.user.email || "Email",

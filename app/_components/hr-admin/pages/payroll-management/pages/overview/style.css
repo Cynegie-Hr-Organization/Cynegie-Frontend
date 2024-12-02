@@ -1,19 +1,19 @@
 @media screen and (min-width: 900px) and (max-width: 1510px) {
-    .grid-item-right-margin {
-        margin-right: 40px;
-    }
+  .grid-item-right-margin {
+    margin-right: 40px;
+  }
 }
 
 @media screen and (min-width: 600px) and (max-width: 700px) {
-    .grid-item-right-margin {
-        margin-right: 40px;
-    }
+  .grid-item-right-margin {
+    margin-right: 40px;
+  }
 }
 
 button.overview-calendar .rs-input-group {
-    border-width: 0 !important;
+  border-width: 0 !important;
 }
 
 button.overview-calendar .rs-input {
-    display: none !important;
+  display: none !important;
 }

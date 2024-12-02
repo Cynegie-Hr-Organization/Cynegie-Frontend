@@ -113,12 +113,20 @@ const GuestHome = () => {
             </div>
             {/*  image  */}
             <figure className={"lg:absolute lg:bottom-0 lg:right-0 lg:hidden"}>
-              <img src={"/public/image/call-to-action-2.png"} alt={"Image"} width={700} />
+              <img
+                src={"/public/image/call-to-action-2.png"}
+                alt={"Image"}
+                width={700}
+              />
             </figure>{" "}
             <figure
               className={" hidden lg:absolute lg:bottom-0 lg:right-0 lg:block"}
             >
-              <img src={"/image/call-to-action.png"} alt={"Image"} width={700} />
+              <img
+                src={"/image/call-to-action.png"}
+                alt={"Image"}
+                width={700}
+              />
             </figure>
           </div>
         </div>

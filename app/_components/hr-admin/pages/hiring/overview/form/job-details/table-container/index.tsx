@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // JobsDetailsTable.tsx
-import React, { useState } from 'react';
-import JobDetailsTable from './table'
+import React, { useState } from "react";
+import JobDetailsTable from "./table";
 import { jobDetailsData } from "./table/data";
 
 const JobsDetailsTable = () => {
@@ -17,23 +17,23 @@ const JobsDetailsTable = () => {
   // Define columns with updated headers
   const columns = [
     {
-      header: 'Date',
+      header: "Date",
       accessor: (row: any) => new Date(row.date).toLocaleDateString(),
     },
     {
-      header: 'Time',
+      header: "Time",
       accessor: (row: any) => row.time,
     },
     {
-      header: 'User',
+      header: "User",
       accessor: (row: any) => row.user,
     },
     {
-      header: 'Action',
+      header: "Action",
       accessor: (row: any) => row.action,
     },
     {
-      header: 'Details',
+      header: "Details",
       accessor: (row: any) => row.details,
     },
   ];

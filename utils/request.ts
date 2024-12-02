@@ -2,7 +2,7 @@
 
 import { DictOf } from "../types/form";
 
-type ResponseType = 'json' | 'text' | 'blob';
+type ResponseType = "json" | "text" | "blob";
 type FetchResponse = DictOf<any>;
 type PromiseRejector = (error: FetchResponse) => void;
 type PromiseResolver = (value: FetchResponse) => void;
@@ -11,7 +11,7 @@ export type FetchArgs = { url: string; options?: RequestOptions };
 export type FetchResult = Promise<FetchResponse> | PromiseLike<FetchResponse>;
 export type FetchFn = (args: FetchArgs) => FetchResult;
 
-export type Method = 'DELETE' | 'GET' | 'PATCH' | 'POST' | 'PUT';
+export type Method = "DELETE" | "GET" | "PATCH" | "POST" | "PUT";
 
 export type RequestOptions = RequestInit & {
   multipart?: boolean;
@@ -27,15 +27,16 @@ export const buildQueryString = (params: DictOf<any> = {}) =>
   Object.keys(params)
     .filter(
       (key: string) =>
-        ![undefined, null].includes(params[key]) && params[key].toString().trim() !== ''
+        ![undefined, null].includes(params[key]) &&
+        params[key].toString().trim() !== "",
     )
     .map((key: string) => [
       key,
       // encodes `value` to use it in URL addresses
-      encodeURIComponent(params[key])
+      encodeURIComponent(params[key]),
     ])
     .map(([key, value]) => `${key}=${value}`)
-    .join('&');
+    .join("&");
 
 export const buildFormData = (body: DictOf<any> = {}): FormData =>
   Object.keys(body).reduce((acc, key) => {
@@ -54,11 +55,11 @@ export default function handleResponse(
   response: Response,
   responseType: ResponseType,
   resolve: PromiseResolver,
-  reject: PromiseRejector
+  reject: PromiseRejector,
 ) {
   if (response.status < 500) {
     switch (responseType) {
-      case 'text':
+      case "text":
         return response.text().then((text: string) => resolve({ text }));
       default:
         return response.json().then((data: DictOf<any>) => resolve(data));
@@ -76,14 +77,21 @@ export default function handleResponse(
 export function request(
   method: Method,
   url: string,
-  { headers, multipart, params, data, responseType = 'json', ...rest }: RequestOptions
+  {
+    headers,
+    multipart,
+    params,
+    data,
+    responseType = "json",
+    ...rest
+  }: RequestOptions,
 ): Promise<FetchResponse> {
   return new Promise((resolve: PromiseResolver, reject: PromiseRejector) => {
     // Construct options for the fetch request
     const options: RequestInit = {
       ...rest,
       method,
-      headers: headers || {}
+      headers: headers || {},
     };
 
     // Handle data based on whether it's multipart or JSON
@@ -92,7 +100,10 @@ export function request(
         // options.headers = { ...options.headers, 'Content-Type': 'multipart/form-data' };
         options.body = buildFormData(data);
       } else {
-        options.headers = { ...options.headers, 'Content-Type': 'application/json' };
+        options.headers = {
+          ...options.headers,
+          "Content-Type": "application/json",
+        };
         options.body = JSON.stringify(data);
       }
     }
@@ -100,23 +111,25 @@ export function request(
     const path = params ? `${url}?${buildQueryString(params)}` : url;
 
     // Perform the fetch request
-   fetch(path, options)
-  .then((response) => handleResponse(response, responseType, resolve, reject))
-  .catch((error) => {
-    console.error('Fetch request failed:', error);
+    fetch(path, options)
+      .then((response) =>
+        handleResponse(response, responseType, resolve, reject),
+      )
+      .catch((error) => {
+        console.error("Fetch request failed:", error);
 
-    // Handle network errors specifically
-    if (error instanceof TypeError && error.message === 'Failed to fetch') {
-      // Customize the error message for network issues
-      reject({
-        status: 'NETWORK_ERROR',
-        message: 'Network error. Please check your internet connection and try again.',
+        // Handle network errors specifically
+        if (error instanceof TypeError && error.message === "Failed to fetch") {
+          // Customize the error message for network issues
+          reject({
+            status: "NETWORK_ERROR",
+            message:
+              "Network error. Please check your internet connection and try again.",
+          });
+        } else {
+          // Reject with the original error for other cases
+          reject(error);
+        }
       });
-    } else {
-      // Reject with the original error for other cases
-      reject(error);
-    }
-  });
-
   });
 }

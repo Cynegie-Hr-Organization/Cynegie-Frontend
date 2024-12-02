@@ -6,12 +6,20 @@ interface TextFieldProps {
   type?: string;
   placeholder: string;
   error?: string;
-  register: any; 
+  register: any;
 }
 
-const TextField: React.FC<TextFieldProps> = ({ label, type = "text", placeholder, error, register }) => (
+const TextField: React.FC<TextFieldProps> = ({
+  label,
+  type = "text",
+  placeholder,
+  error,
+  register,
+}) => (
   <div className="flex flex-col">
-    <label className="font-semibold text-sm text-gray-900 leading-[20.3px]">{label}</label>
+    <label className="font-semibold text-sm text-gray-900 leading-[20.3px]">
+      {label}
+    </label>
     <input
       type={type}
       {...register}

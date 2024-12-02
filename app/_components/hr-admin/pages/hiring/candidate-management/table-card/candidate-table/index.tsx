@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useRef, useEffect } from 'react';
-import Pagination from './pagination';
-import {Dropdown} from '../../../../../../../_components/ui/dropdown'
-import { useRouter } from 'next/navigation';
+import React, { useState, useRef, useEffect } from "react";
+import Pagination from "./pagination";
+import { Dropdown } from "../../../../../../../_components/ui/dropdown";
+import { useRouter } from "next/navigation";
 import RejectCandidateModal from "../../reject-candidate-modal";
 import MoveStageModal from "../../candidate-details/move-stage-modal";
 
@@ -32,19 +32,21 @@ const CandidateTable = <T extends Record<string, any>>({
   onItemsPerPageChange,
   showActions = true,
 }: TableProps<T>) => {
+  const router = useRouter();
 
-    const router = useRouter();
-
-  
- const [isFilterDropdownOpen, setFilterDropdownOpen] = useState(false);
-  const [filters, setFilters] = useState({ candidate: '', job: '' });
-  const [actionDropdowns, setActionDropdowns] = useState<{ [key: number]: boolean }>({}); 
+  const [isFilterDropdownOpen, setFilterDropdownOpen] = useState(false);
+  const [filters, setFilters] = useState({ candidate: "", job: "" });
+  const [actionDropdowns, setActionDropdowns] = useState<{
+    [key: number]: boolean;
+  }>({});
 
   const filterDropdownRef = useRef<HTMLDivElement>(null);
-  const actionDropdownRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
+  const actionDropdownRefs = useRef<{ [key: number]: HTMLDivElement | null }>(
+    {},
+  );
 
-    const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
-    const [isMoveModalOpen, setIsMoveModalOpen] = useState(false); // State for modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+  const [isMoveModalOpen, setIsMoveModalOpen] = useState(false); // State for modal visibility
 
   // Toggle filter dropdown
   const toggleFilterDropdown = () => {
@@ -60,21 +62,20 @@ const CandidateTable = <T extends Record<string, any>>({
   };
 
   const closeModal = () => {
-  setIsModalOpen(false); 
+    setIsModalOpen(false);
   };
 
   const closeMoveModal = () => {
-  setIsMoveModalOpen(false); 
+    setIsMoveModalOpen(false);
   };
 
   const handleRejectClick = () => {
-    setIsModalOpen(true); 
+    setIsModalOpen(true);
   };
 
-   const handleMoveStageClick = () => {
-    setIsMoveModalOpen(true); 
+  const handleMoveStageClick = () => {
+    setIsMoveModalOpen(true);
   };
-
 
   // Close all dropdowns when clicking outside
   useEffect(() => {
@@ -101,22 +102,19 @@ const CandidateTable = <T extends Record<string, any>>({
       });
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   const applyFilters = () => {
-    console.log('Filters applied:', filters);
+    console.log("Filters applied:", filters);
     setFilterDropdownOpen(false);
   };
 
-  const candidates = ['Precious Henry', 'Law Luke', 'Other Candidate'];
-  const jobTitles = ['Snr. UX Designer', 'Content Creator', 'Other Title'];
-
-
-  
+  const candidates = ["Precious Henry", "Law Luke", "Other Candidate"];
+  const jobTitles = ["Snr. UX Designer", "Content Creator", "Other Title"];
 
   return (
     <div className="bg-white w-full h-full flex flex-col">
@@ -201,7 +199,7 @@ const CandidateTable = <T extends Record<string, any>>({
               <div className="flex justify-between">
                 <button
                   className="text-sm text-gray-500 hover:underline"
-                  onClick={() => setFilters({ candidate: '', job: '' })}
+                  onClick={() => setFilters({ candidate: "", job: "" })}
                 >
                   Reset
                 </button>
@@ -215,44 +213,40 @@ const CandidateTable = <T extends Record<string, any>>({
             </div>
           )}
         </div>
-      
       </div>
-
 
       {/* Selected Filters Display */}
-  {(filters.candidate || filters.job) && (
-  <div className="p-4 flex gap-2 text-sm text-gray-700">
-    {/* Candidate Filter */}
-    {filters.candidate && (
-      <div className="flex items-center border bg-white border-gray-300 p-1 px-2 rounded-md">
-        <span className="mr-2">{filters.candidate}</span>
-        <button
-          onClick={() => setFilters({ ...filters, candidate: '' })}
-          className="text-gray-500 text-base hover:text-gray-700"
-          aria-label="Remove candidate filter"
-        >
-          &times;
-        </button>
-      </div>
-    )}
+      {(filters.candidate || filters.job) && (
+        <div className="p-4 flex gap-2 text-sm text-gray-700">
+          {/* Candidate Filter */}
+          {filters.candidate && (
+            <div className="flex items-center border bg-white border-gray-300 p-1 px-2 rounded-md">
+              <span className="mr-2">{filters.candidate}</span>
+              <button
+                onClick={() => setFilters({ ...filters, candidate: "" })}
+                className="text-gray-500 text-base hover:text-gray-700"
+                aria-label="Remove candidate filter"
+              >
+                &times;
+              </button>
+            </div>
+          )}
 
-    {/* Job Filter */}
-    {filters.job && (
-      <div className="flex items-center border bg-white border-gray-300 p-1 px-2 rounded-md">
-        <span className="mr-2">{filters.job}</span>
-        <button
-          onClick={() => setFilters({ ...filters, job: '' })}
-          className="text-gray-500 text-base hover:text-gray-700"
-          aria-label="Remove job filter"
-        >
-          &times;
-        </button>
-      </div>
-    )}
-  </div>
-)}
-
-
+          {/* Job Filter */}
+          {filters.job && (
+            <div className="flex items-center border bg-white border-gray-300 p-1 px-2 rounded-md">
+              <span className="mr-2">{filters.job}</span>
+              <button
+                onClick={() => setFilters({ ...filters, job: "" })}
+                className="text-gray-500 text-base hover:text-gray-700"
+                aria-label="Remove job filter"
+              >
+                &times;
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Table */}
       <div className="flex-grow px-2 overflow-x-auto">
@@ -260,7 +254,9 @@ const CandidateTable = <T extends Record<string, any>>({
           <thead>
             <tr className="border-b bg-gray-50">
               {columns.map((column, index) => (
-                <th key={index} className="p-2">{column.header}</th>
+                <th key={index} className="p-2">
+                  {column.header}
+                </th>
               ))}
               {showActions && (
                 <th className="p-2 justify-center">
@@ -277,13 +273,14 @@ const CandidateTable = <T extends Record<string, any>>({
                     {column.accessor(row)}
                   </td>
                 ))}
-               {showActions && (
+                {showActions && (
                   <td className="p-2 pr-2 items-end">
                     <div
                       className="relative"
-ref={(el) => {
-                actionDropdownRefs.current[rowIndex] = el;
-              }}                    >
+                      ref={(el) => {
+                        actionDropdownRefs.current[rowIndex] = el;
+                      }}
+                    >
                       <button onClick={() => toggleActionDropdown(rowIndex)}>
                         <svg
                           width="32"
@@ -323,13 +320,30 @@ ref={(el) => {
                         </svg>
                       </button>
                       {actionDropdowns[rowIndex] && (
-                        <div className="absolute right-0 items-center text-sm bg-white  shadow-lg border border-gray-300 w-[7.5rem] rounded-md  z-10"
-                        >
+                        <div className="absolute right-0 items-center text-sm bg-white  shadow-lg border border-gray-300 w-[7.5rem] rounded-md  z-10">
                           <ul>
-                            <li className="p-2 hover:bg-gray-100"                           onClick={() => router.push('/hr-admin/hiring/candidate-management/candidate-details')} >View Profile </li>
-                            <li className="p-2 hover:bg-gray-100" onClick={handleMoveStageClick}>Move Stage</li>
-                                                        <li className="p-2 hover:bg-gray-100 text-red-500" onClick={handleRejectClick}>Reject</li>
-
+                            <li
+                              className="p-2 hover:bg-gray-100"
+                              onClick={() =>
+                                router.push(
+                                  "/hr-admin/hiring/candidate-management/candidate-details",
+                                )
+                              }
+                            >
+                              View Profile{" "}
+                            </li>
+                            <li
+                              className="p-2 hover:bg-gray-100"
+                              onClick={handleMoveStageClick}
+                            >
+                              Move Stage
+                            </li>
+                            <li
+                              className="p-2 hover:bg-gray-100 text-red-500"
+                              onClick={handleRejectClick}
+                            >
+                              Reject
+                            </li>
                           </ul>
                         </div>
                       )}
@@ -352,9 +366,8 @@ ref={(el) => {
           onItemsPerPageChange={onItemsPerPageChange}
         />
       </div>
-    <RejectCandidateModal isOpen={isModalOpen} onClose={closeModal} />
+      <RejectCandidateModal isOpen={isModalOpen} onClose={closeModal} />
       <MoveStageModal isOpen={isMoveModalOpen} onClose={closeMoveModal} />
-
     </div>
   );
 };

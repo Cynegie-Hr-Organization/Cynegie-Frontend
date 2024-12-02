@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import { FiLogOut } from "react-icons/fi"
-import { RiSearchLine } from "react-icons/ri"
-import NavLinks from "./nav-links"
+import { FiLogOut } from "react-icons/fi";
+import { RiSearchLine } from "react-icons/ri";
+import NavLinks from "./nav-links";
 import { IoClose } from "react-icons/io5";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -12,13 +12,20 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { getUserDetails } from "@/utils/getUserDetails";
 
-const Sidebar = ({ openMobileMenu, setOpenMobileMenu }: { openMobileMenu: boolean, setOpenMobileMenu: () => void }) => {
+const Sidebar = ({
+  openMobileMenu,
+  setOpenMobileMenu,
+}: {
+  openMobileMenu: boolean;
+  setOpenMobileMenu: () => void;
+}) => {
+  const router = useRouter();
+  const [userDetails, setUserDetails] = useState<{
+    name: string;
+    email: string;
+  } | null>(null);
 
-	const router = useRouter();
-	  const [userDetails, setUserDetails] = useState<{ name: string; email: string } | null>(null);
-
-	
-useEffect(() => {
+  useEffect(() => {
     const fetchDetails = async () => {
       const details = await getUserDetails();
       if (details) {
@@ -28,13 +35,11 @@ useEffect(() => {
     fetchDetails();
   }, []);
 
-
-	
   const handleLogout = async () => {
     try {
       // Retrieve the session to get the access token
-		const session = await getSession();
-		console.log(session);
+      const session = await getSession();
+      console.log(session);
 
       if (!session || !session.token) {
         console.error("No active session or token found");
@@ -45,9 +50,9 @@ useEffect(() => {
         method: "POST",
         headers: {
           Accept: "*/*",
-          Authorization: `Bearer ${session.token}`, 
+          Authorization: `Bearer ${session.token}`,
         },
-        body: JSON.stringify({}), 
+        body: JSON.stringify({}),
       });
 
       if (!response.ok) {
@@ -63,44 +68,51 @@ useEffect(() => {
       console.error("An error occurred during logout:", error);
     }
   };
-	
-	
-	return (
-		<div
-			className={`${openMobileMenu ? 'flex animate-in' : 'hidden animate-out'} 
-        xl:flex bg-white h-dvh z-50 fixed w-[272px] px-4 pt-7 flex-col justify-between transition duration-500`}>
 
-			<div className="space-y-5">
-				<div className="flex items-center justify-between">
-					<img src='/image/logo.png' alt="logo" className="w-[122px] h-[38px]" />
-					<IoClose size={30} onClick={setOpenMobileMenu} className="block xl:hidden place-self-end" />
-				</div>
+  return (
+    <div
+      className={`${openMobileMenu ? "flex animate-in" : "hidden animate-out"} 
+        xl:flex bg-white h-dvh z-50 fixed w-[272px] px-4 pt-7 flex-col justify-between transition duration-500`}
+    >
+      <div className="space-y-5">
+        <div className="flex items-center justify-between">
+          <img
+            src="/image/logo.png"
+            alt="logo"
+            className="w-[122px] h-[38px]"
+          />
+          <IoClose
+            size={30}
+            onClick={setOpenMobileMenu}
+            className="block xl:hidden place-self-end"
+          />
+        </div>
 
-				<div className="border border-[#D0D5DD] w-[240px] flex items-center gap-3 p-2 rounded-[6px] focus-within:border-primary hover:border-primary duration-300 transition">
-					<RiSearchLine className="text-2xl" />
-					<input
-						className="outline-none border-none w-full group-hover:ring ring-primary"
-						type="text"
-						placeholder="Search Apps"
-					/>
-				</div>
+        <div className="border border-[#D0D5DD] w-[240px] flex items-center gap-3 p-2 rounded-[6px] focus-within:border-primary hover:border-primary duration-300 transition">
+          <RiSearchLine className="text-2xl" />
+          <input
+            className="outline-none border-none w-full group-hover:ring ring-primary"
+            type="text"
+            placeholder="Search Apps"
+          />
+        </div>
 
-				<NavLinks />
-			</div>
+        <NavLinks />
+      </div>
 
-			<div className="flex items-center justify-between my-6 overflow-hidden">
-				<div className="flex items-center gap-4">
-					<img
-						className="w-14 h-14"
-						src="/image/avatar.png"
-						alt="avatar"
-					/>
+      <div className="flex items-center justify-between my-6 overflow-hidden">
+        <div className="flex items-center gap-4">
+          <img className="w-14 h-14" src="/image/avatar.png" alt="avatar" />
 
-					 <div className="truncate">
+          <div className="truncate">
             {userDetails ? (
               <>
-                <p className="font-sans text-sm font-bold text-Sambucus">{userDetails.name}</p>
-                <p className="font-sans text-xs font-normal text-Charcoal">{userDetails.email}</p>
+                <p className="font-sans text-sm font-bold text-Sambucus">
+                  {userDetails.name}
+                </p>
+                <p className="font-sans text-xs font-normal text-Charcoal">
+                  {userDetails.email}
+                </p>
               </>
             ) : (
               <>
@@ -109,14 +121,13 @@ useEffect(() => {
               </>
             )}
           </div>
-				</div>
-				<button onClick={handleLogout}>
-					<FiLogOut size={24} />
-				</button>
-			</div>
-		</div>
-	)
-}
-
+        </div>
+        <button onClick={handleLogout}>
+          <FiLogOut size={24} />
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export default Sidebar;

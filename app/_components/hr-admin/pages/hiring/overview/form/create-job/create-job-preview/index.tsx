@@ -1,54 +1,56 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import DropdownWithSearchAndMultiSelect from "@/app/_components/ui/multi-select-dropdown";
 import CreateJobSuccessModal from "../modal";
+import { createJob } from "@/app/api/services/job";
+import useJobStore from "@/utils/zustand/jobstore";
+
 interface JobPreviewProps {
   setScreenInView: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function JobPreview({ setScreenInView }: JobPreviewProps) {
-  const [jobData, setJobData] = useState<{
-    requisitorName: string;
-    jobTitle: string;
-    department: string[];
-    location: string[];
-    jobType: string;
-    jobDescription: string;
-    benefits: string;
-    requiredSkill: string;
-    experience: string;
-    qualification: string;
-  } | null>(null);
+  const { jobData } = useJobStore();
 
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
-    
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
+
   const handleBackScreenSlideClick = () => {
     setScreenInView((prev) => prev - 1);
   };
 
-  const handlePublishClick = () => {
-    // Simulate publish logic here
-    setIsModalOpen(true); // Open the modal
+  const handlePublishClick = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!jobData) return;
+
+    console.log(jobData);
+
+    setIsPublishing(true);
+    try {
+      const response = await createJob(jobData);
+      console.log(response);
+
+      if (response?.status === 201) {
+        localStorage.removeItem("jobData");
+        setIsModalOpen(true);
+      } else {
+        console.error(
+          "Failed to create job:",
+          response?.data || "Unknown error",
+        );
+      }
+    } catch (error) {
+      console.error("Error creating job:", error);
+    } finally {
+      setIsPublishing(false);
+    }
   };
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); 
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
-
-   const closeModal = () => {
-  setIsModalOpen(false); 
- };
-
-    useEffect(() => {
-  const storedData = localStorage.getItem("jobData");
-  if (storedData) {
-    setJobData(JSON.parse(storedData));
-  }
-}, []); // Ensure this runs only on mount and doesn't affect modal state
-
-  
   // Handle loading state
   if (!jobData) {
     return (
@@ -71,7 +73,10 @@ export default function JobPreview({ setScreenInView }: JobPreviewProps) {
         />
         <h1 className="text-lg text-black font-semibold">Job Preview</h1>
       </div>
-      <form className="space-y-6 bg-white p-4 md:p-10 rounded-md shadow-md" onSubmit={handleFormSubmit}>
+      <form
+        className="space-y-6 bg-white p-4 md:p-10 rounded-md shadow-md"
+        onSubmit={handlePublishClick}
+      >
         <div>
           <label
             htmlFor="requisitorName"
@@ -98,7 +103,7 @@ export default function JobPreview({ setScreenInView }: JobPreviewProps) {
           <input
             type="text"
             id="jobTitle"
-            value={jobData.jobTitle}
+            value={jobData.title}
             disabled
             className="mt-1 block px-2 py-2 border w-full rounded-md bg-gray-200 border-gray-300 shadow-sm sm:text-sm"
           />
@@ -115,7 +120,7 @@ export default function JobPreview({ setScreenInView }: JobPreviewProps) {
             id="department"
             isMulti={true}
             isDisabled={true}
-            placeholder={jobData.department.join(", ")}
+            placeholder={jobData.department}
           />
         </div>
 
@@ -130,7 +135,7 @@ export default function JobPreview({ setScreenInView }: JobPreviewProps) {
             id="location"
             isMulti={true}
             isDisabled={true}
-            placeholder={jobData.location.join(", ")}
+            placeholder={jobData.jobLocation}
           />
         </div>
 
@@ -143,18 +148,19 @@ export default function JobPreview({ setScreenInView }: JobPreviewProps) {
           </label>
           <DropdownWithSearchAndMultiSelect
             id="jobType"
-            isMulti={false} // Single select
+            isMulti={false}
             isDisabled={true}
-            placeholder={jobData.jobType}
+            placeholder={jobData.type}
           />
         </div>
 
-        {/* Add other fields similarly */}
         {/* Job Description */}
         <div>
-          <p className="mb-1 font-sans text-sm font-semibold">Job Description</p>
+          <p className="mb-1 font-sans text-sm font-semibold">
+            Job Description
+          </p>
           <div
-            dangerouslySetInnerHTML={{ __html: jobData.jobDescription }}
+            dangerouslySetInnerHTML={{ __html: jobData.description }}
             className="mt-1 text-xs block py-2"
           />
         </div>
@@ -170,9 +176,15 @@ export default function JobPreview({ setScreenInView }: JobPreviewProps) {
 
         {/* Required Skills */}
         <div>
-          <p className="mb-1 font-sans text-sm font-semibold">Required Skills</p>
+          <p className="mb-1 font-sans text-sm font-semibold">
+            Required Skills
+          </p>
           <div
-            dangerouslySetInnerHTML={{ __html: jobData.requiredSkill }}
+            dangerouslySetInnerHTML={{
+              __html: Array.isArray(jobData.requiredSkills)
+                ? jobData.requiredSkills.join(", ")
+                : jobData.requiredSkills || "",
+            }}
             className="mt-1 text-xs block py-2"
           />
         </div>
@@ -187,16 +199,19 @@ export default function JobPreview({ setScreenInView }: JobPreviewProps) {
         </div>
 
         <div className="flex w-full flex-col md:flex-row mt-4 justify-end items-center gap-2">
-          <button
-            className="w-full md:w-auto px-4 md:px-20 py-2 border-gray-300 border-2 text-base font-semibold bg-white text-gray-700 rounded-lg hover:border-blue-600"
-          >
+          <button className="w-full md:w-auto px-4 md:px-20 py-2 border-gray-300 border-2 text-base font-semibold bg-white text-gray-700 rounded-lg hover:border-blue-600">
             Save & Continue Later
           </button>
           <button
-            onClick={handlePublishClick} // Open modal on click
-            className="w-full md:w-auto px-4 md:px-20 py-2 text-base font-semibold bg-[#0035C3] text-white rounded-lg hover:bg-blue-600 focus:outline-none"
+            type="submit"
+            className={`w-full md:w-auto px-4 md:px-20 py-2 text-base font-semibold rounded-lg ${
+              isPublishing
+                ? "bg-gray-400 text-white cursor-not-allowed"
+                : "bg-[#0035C3] text-white hover:bg-blue-600 focus:outline-none"
+            }`}
+            disabled={isPublishing}
           >
-            Publish
+            {isPublishing ? "Publishing..." : "Publish"}
           </button>
         </div>
       </form>

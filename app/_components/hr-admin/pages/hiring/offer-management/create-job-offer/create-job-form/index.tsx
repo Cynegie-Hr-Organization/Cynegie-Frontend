@@ -1,27 +1,21 @@
 import React, { useState } from "react";
 import CustomDatePicker from "../../../../../../ui/date-picker";
-import { useRouter } from "next/navigation";
 import { Dayjs } from "dayjs";
-import dynamic from 'next/dynamic';
-import { EditorState, convertToRaw } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import dynamic from "next/dynamic";
+import { EditorState, convertToRaw } from "draft-js";
+import draftToHtml from "draftjs-to-html";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import CreateJobOfferSuccessModal from "../modal";
 
-
-
 const Editor = dynamic(
-  () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
-  { ssr: false }
+  () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
+  { ssr: false },
 );
 
-
 const CreateJobOfferForm: React.FC = () => {
-
-
-  const [candidateName, setCandidateName] = useState("Precious Henry");
-  const [jobTitle, setJobTitle] = useState("Front End Developer");
-  const [department, setDepartment] = useState("Engineering");
+  const [candidateName] = useState("Precious Henry");
+  const [jobTitle] = useState("Front End Developer");
+  const [department] = useState("Engineering");
   const [offerDate, setOfferDate] = useState<Dayjs | null>(null);
   const [expirationDate, setExpirationDate] = useState<Dayjs | null>(null);
   const [jobStartDate, setJobStartDate] = useState<Dayjs | null>(null);
@@ -31,22 +25,16 @@ const CreateJobOfferForm: React.FC = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
 
-
   const [benefits, setBenefits] = useState(EditorState.createEmpty());
 
   const handleEditorChange = (editorState: EditorState) => {
     setBenefits(editorState);
   };
 
-  const router = useRouter();
-
-
   const handleSubmitClick = () => {
     // Simulate publish logic here
     setIsModalOpen(true); // Open the modal
   };
-
-
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -68,16 +56,13 @@ const CreateJobOfferForm: React.FC = () => {
       benefits: benefitsHTML,
       uploadedDocument: uploadedDocument ? uploadedDocument.name : null,
     });
-
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-
   const benefitsHTML = draftToHtml(convertToRaw(benefits.getCurrentContent()));
-
 
   return (
     <>
@@ -86,7 +71,9 @@ const CreateJobOfferForm: React.FC = () => {
           {/* Candidate Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Candidate Name</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Candidate Name
+              </label>
               <input
                 type="text"
                 value={candidateName}
@@ -95,7 +82,9 @@ const CreateJobOfferForm: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Job Title</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Job Title
+              </label>
               <input
                 type="text"
                 value={jobTitle}
@@ -108,7 +97,9 @@ const CreateJobOfferForm: React.FC = () => {
           {/* Job Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Department</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Department
+              </label>
               <input
                 type="text"
                 value={department}
@@ -117,27 +108,44 @@ const CreateJobOfferForm: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Offer Date</label>
-              <CustomDatePicker value={offerDate} onChange={(date) => setOfferDate(date)} />
+              <label className="block text-sm font-medium text-gray-700">
+                Offer Date
+              </label>
+              <CustomDatePicker
+                value={offerDate}
+                onChange={(date) => setOfferDate(date)}
+              />
             </div>
           </div>
 
           {/* Dates */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Expiration Date</label>
-              <CustomDatePicker value={expirationDate} onChange={(date) => setExpirationDate(date)} />
+              <label className="block text-sm font-medium text-gray-700">
+                Expiration Date
+              </label>
+              <CustomDatePicker
+                value={expirationDate}
+                onChange={(date) => setExpirationDate(date)}
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Job Start Date</label>
-              <CustomDatePicker value={jobStartDate} onChange={(date) => setJobStartDate(date)} />
+              <label className="block text-sm font-medium text-gray-700">
+                Job Start Date
+              </label>
+              <CustomDatePicker
+                value={jobStartDate}
+                onChange={(date) => setJobStartDate(date)}
+              />
             </div>
           </div>
 
           {/* Salary Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Base Salary</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Base Salary
+              </label>
               <input
                 type="number"
                 placeholder="Enter Salary"
@@ -147,7 +155,9 @@ const CreateJobOfferForm: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Bonus Structure</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Bonus Structure
+              </label>
               <input
                 type="number"
                 placeholder="Enter Bonus Structure"
@@ -160,11 +170,13 @@ const CreateJobOfferForm: React.FC = () => {
 
           {/* Benefits */}
           <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2" >Benefits</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Benefits
+            </label>
             <Editor
               editorState={benefits}
-              wrapperClassName="demo-wrapper border border-gray-300 rounded-lg"
-              editorClassName="demo-editor p-2 h-40 overflow-y-scroll"
+              wrapperClassName="demo-wrapper border border-gray-300 p-1 rounded-lg" // Add border radius here
+              editorClassName="demo-editor p-3 h-44 w-full overflow-y-scroll"
               onEditorStateChange={handleEditorChange}
               placeholder="Enter benefits here..."
             />
@@ -172,7 +184,9 @@ const CreateJobOfferForm: React.FC = () => {
 
           {/* Document Upload */}
           <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">Document Upload</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Document Upload
+            </label>
             <div className="border-2 border-dashed border-gray-300 rounded-lg mt-2 p-2 flex items-center">
               <input
                 type="file"
@@ -182,18 +196,25 @@ const CreateJobOfferForm: React.FC = () => {
                 id="document-upload"
               />
               {uploadedDocument ? (
-                <label htmlFor="document-upload" className="flex-grow text-gray-500 cursor-pointer">
+                <label
+                  htmlFor="document-upload"
+                  className="flex-grow text-gray-500 cursor-pointer"
+                >
                   {uploadedDocument.name}
                 </label>
               ) : (
-                <label htmlFor="document-upload" className="flex-grow text-gray-400 cursor-pointer">
+                <label
+                  htmlFor="document-upload"
+                  className="flex-grow text-gray-400 cursor-pointer"
+                >
                   Select a file to upload
                 </label>
               )}
             </div>
-            <p className="text-sm text-gray-500 mt-2">Supported file types: PDF. Max file size allowed is 3MB.</p>
+            <p className="text-sm text-gray-500 mt-2">
+              Supported file types: PDF. Max file size allowed is 3MB.
+            </p>
           </div>
-
         </div>
 
         {/* Submit Button */}

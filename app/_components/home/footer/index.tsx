@@ -1,5 +1,5 @@
 import { HeadingComponents } from "../common";
-import  Link  from "next/link";
+import Link from "next/link";
 import {
   FaFacebook,
   FaInstagram,
@@ -26,18 +26,15 @@ const GuestFooter = () => {
               Be the first to receive all the recent updates, articles, and
               valuable materials.
             </p>
-            <div
-              className={"flex lg:flex-row items-center  gap-5 mt-5"}
-            >
+            <div className={"flex lg:flex-row items-center  gap-5 mt-5"}>
               <form>
-                
-                  <input
-                    type={"text"}
-                    placeholder={"Email Address"}
-                    className={"input-field border-[1px] rounded-md w-full lg:min-w-[20rem] border-gray-200 p-2"}
-
-                  />
-         
+                <input
+                  type={"text"}
+                  placeholder={"Email Address"}
+                  className={
+                    "input-field border-[1px] rounded-md w-full lg:min-w-[20rem] border-gray-200 p-2"
+                  }
+                />
               </form>
               <div>
                 <Link
@@ -95,9 +92,7 @@ const GuestFooter = () => {
         <hr className={"border-2 mb-10"} />
         <section
           className={
-
             "flex flex-col lg:flex-row text-center gap-4 lg:text-left items-center justify-between px-10"
-
           }
         >
           <p className={"text-slate-500"}>

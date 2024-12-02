@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useInView } from "react-intersection-observer";
-import { getSession, signIn } from "next-auth/react"; 
+import { getSession, signIn } from "next-auth/react";
 import { FaRegUser } from "react-icons/fa";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
 import { rolesMap } from "@/types/form";
@@ -11,19 +11,20 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 const SigninMain = () => {
   const router = useRouter();
   const [step, setStep] = useState<"email" | "password">("email");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { ref: emailRef, inView: emailInView } = useInView({ triggerOnce: true });
-  const { ref: passwordRef, inView: passwordInView } = useInView({ triggerOnce: true });
-
-  
+  const { ref: emailRef, inView: emailInView } = useInView({
+    triggerOnce: true,
+  });
+  const { ref: passwordRef, inView: passwordInView } = useInView({
+    triggerOnce: true,
+  });
 
   const handleEmailSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,7 +37,11 @@ const SigninMain = () => {
     setIsLoading(true);
 
     try {
-      const res = await signIn("credentials", { redirect: false, email, password });
+      const res = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
       if (res && res.ok) {
         const user = await getSession();
         if (user?.user?.role) {
@@ -90,7 +95,9 @@ const SigninMain = () => {
               }`}
             >
               <div className="mb-8">
-                <label className="mb-2 block text-sm text-gray-700">Email Address</label>
+                <label className="mb-2 block text-sm text-gray-700">
+                  Email Address
+                </label>
                 <div className="flex items-center border-2 rounded-md px-2 py-2">
                   <input
                     type="email"
@@ -127,7 +134,9 @@ const SigninMain = () => {
 
               {/* Password Field */}
               <div className="mb-8">
-                <label className="mb-2 block text-sm text-gray-700">Password</label>
+                <label className="mb-2 block text-sm text-gray-700">
+                  Password
+                </label>
                 <div className="flex items-center border-2 rounded-md px-2 py-2">
                   <input
                     type={showPassword ? "text" : "password"}
@@ -141,7 +150,11 @@ const SigninMain = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     className="ml-2 focus:outline-none"
                   >
-                    {showPassword ? <VscEye size={20} /> : <VscEyeClosed size={20} />}
+                    {showPassword ? (
+                      <VscEye size={20} />
+                    ) : (
+                      <VscEyeClosed size={20} />
+                    )}
                   </button>
                 </div>
                 <div className="flex justify-end mt-2">
@@ -163,25 +176,22 @@ const SigninMain = () => {
                 {isLoading ? "Signing In..." : "Sign In"}
               </button>
 
-            
-
-               {/* Go Back Button */}
+              {/* Go Back Button */}
               <div className="flex w-full items-center justify-center">
                 <button
-                type="button"
+                  type="button"
                   onClick={() => {
                     setStep("email");
                     setPassword("");
                   }}
-                className="mt-4 text-sm text-black-600 hover:underline"
-              >
-                Go Back to Change Email
-              </button>
+                  className="mt-4 text-sm text-black-600 hover:underline"
+                >
+                  Go Back to Change Email
+                </button>
               </div>
-
             </form>
           )}
-           <p className="text-sm text-center mt-5 text-[#98A2B3] leading-relaxed">
+          <p className="text-sm text-center mt-5 text-[#98A2B3] leading-relaxed">
             By clicking &quot;Continue&quot; you agree to Cynegie&apos;s{" "}
             <Link href="/" className="text-[#0035C3] underline">
               User Terms of Service
@@ -189,10 +199,10 @@ const SigninMain = () => {
             and{" "}
             <Link href="/" className="text-[#0035C3] underline">
               Privacy Notice
-            </Link>.
+            </Link>
+            .
           </p>
         </div>
-        
       </section>
     </section>
   );

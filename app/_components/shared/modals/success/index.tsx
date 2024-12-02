@@ -1,12 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { FC } from 'react';
+import { FC } from "react";
 
-
-import { GoodIcon } from '@/public/icons';
-import { useRouter } from 'next/navigation';
-import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/app/_components/ui/alert-dialog';
-import Image from 'next/image';
+import { GoodIcon } from "@/public/icons";
+import { useRouter } from "next/navigation";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/app/_components/ui/alert-dialog";
+import Image from "next/image";
 
 type SuccessModalTypes = {
   open: boolean;
@@ -65,17 +72,17 @@ export const SuccessModal: FC<SuccessModalTypes> = ({
           <div className="w-full flex flex-col md:flex-row gap-2 justify-center px-2">
             <AlertDialogAction
               onClick={() => {
-                router.push(link ? link : '/app-permission-request');
+                router.push(link ? link : "/app-permission-request");
                 onClose();
               }}
               className={`bg-PersianBlue hover:bg-PersianBlue text-white ${btnOneclassName} w-[216px]`}
             >
-              {btnText ? btnText : 'Continue to App Dashboard'}
+              {btnText ? btnText : "Continue to App Dashboard"}
             </AlertDialogAction>
             {secondBtnText && (
               <AlertDialogAction
                 onClick={() => {
-                  router.push(secondBtnLink ? secondBtnLink : '');
+                  router.push(secondBtnLink ? secondBtnLink : "");
                   onClose();
                 }}
                 className={`bg-PersianBlue hover:bg-PersianBlue text-white w-[216px] ${btnTwoclassName}`}

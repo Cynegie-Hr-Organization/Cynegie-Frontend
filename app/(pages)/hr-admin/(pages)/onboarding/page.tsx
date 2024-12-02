@@ -1,6 +1,6 @@
 import { Spinner } from "@/app/_components/shared/buttons";
 import NewHireList from "./template/new-hire-list";
-import { Suspense } from 'react';
+import { Suspense } from "react";
 
 const OnBoarding = () => {
   return (

@@ -3,7 +3,7 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Input } from "@/components/ui/input";
-import  Link  from "next/link";
+import Link from "next/link";
 import { IoPersonOutline } from "react-icons/io5";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { FaHandHoldingHeart } from "react-icons/fa";
@@ -11,7 +11,14 @@ import { FiPhone } from "react-icons/fi";
 import { VscLocation } from "react-icons/vsc";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../../ui/form";
 
 const contactUsSchema = z.object({
   firstName: z.string().min(3),
@@ -118,7 +125,11 @@ const ContactUs = () => {
                   <FormItem>
                     <FormLabel>Phone Number</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your Phone" min={2} {...field} />
+                      <Input
+                        placeholder="Enter your Phone"
+                        min={2}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

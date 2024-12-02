@@ -10,13 +10,15 @@ import {
   Bar,
 } from "recharts";
 import { CardContent, CardHeader } from "@/app/_components/ui/card";
-import {Dropdown} from '@/app/_components/ui/dropdown'
+import { Dropdown } from "@/app/_components/ui/dropdown";
 
 interface BarChartComponentProps {
   barChartData: any[];
 }
 
-const BarChartComponent: React.FC<BarChartComponentProps> = ({ barChartData }) => {
+const BarChartComponent: React.FC<BarChartComponentProps> = ({
+  barChartData,
+}) => {
   const [selectedMonth, setSelectedMonth] = useState("Month");
   const [selectedDepartment, setSelectedDepartment] = useState("Department");
 
@@ -33,7 +35,20 @@ const BarChartComponent: React.FC<BarChartComponentProps> = ({ barChartData }) =
               <div className="flex gap-2">
                 <Dropdown
                   label="Month"
-                  options={["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]}
+                  options={[
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec",
+                  ]}
                   selected={selectedMonth}
                   onSelect={setSelectedMonth}
                 />
@@ -81,10 +96,20 @@ const BarChartComponent: React.FC<BarChartComponentProps> = ({ barChartData }) =
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
-              <Bar dataKey="Screening" stackId="a" fill="#2563EB" radius={[0, 0, 12, 12]} />
+              <Bar
+                dataKey="Screening"
+                stackId="a"
+                fill="#2563EB"
+                radius={[0, 0, 12, 12]}
+              />
               <Bar dataKey="Interviewing" stackId="a" fill="#BFDBFE" />
               <Bar dataKey="Offered" stackId="a" fill="#60A5FA" />
-              <Bar dataKey="Hired" stackId="a" fill="#2263cB" radius={[12, 12, 0, 0]} />
+              <Bar
+                dataKey="Hired"
+                stackId="a"
+                fill="#2263cB"
+                radius={[12, 12, 0, 0]}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>

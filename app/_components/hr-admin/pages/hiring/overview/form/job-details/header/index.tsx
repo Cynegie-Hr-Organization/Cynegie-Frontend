@@ -9,7 +9,10 @@ const JobDescriptionHeader = () => {
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
       setDropdownOpen(false);
     }
   };
@@ -33,7 +36,10 @@ const JobDescriptionHeader = () => {
         <h1 className="ml-2 text-xl md:text-2xl font-bold text-gray-900 md:mb-4">
           Job Detail
         </h1>
-        <div className="relative flex flex-row gap-2 items-center" ref={dropdownRef}>
+        <div
+          className="relative flex flex-row gap-2 items-center"
+          ref={dropdownRef}
+        >
           {/* Actions Button */}
           <button
             className="w-full flex flex-row items-center gap-2 md:w-auto px-4 md:px-6 py-2 border-gray-300 border-2 text-base font-semibold bg-white text-gray-700 rounded-lg hover:border-blue-600 cursor-pointer"

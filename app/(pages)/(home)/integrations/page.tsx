@@ -1,10 +1,12 @@
- import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 export const metadata = {
-  title: 'Cynegie| Integrations'
+  title: "Cynegie| Integrations",
 };
 
-const Integration = dynamic(() => import('@/app/_components/home/integrations'));
+const Integration = dynamic(
+  () => import("@/app/_components/home/integrations"),
+);
 
 export default function PricingPage() {
   return (

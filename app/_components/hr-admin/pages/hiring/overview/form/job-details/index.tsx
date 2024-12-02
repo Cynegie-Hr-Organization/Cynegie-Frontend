@@ -8,7 +8,6 @@ import JobCardHeader from "./card-header";
 import JobDescriptionHeader from "./header";
 import JobCardContent from "./card-content";
 
-
 export default function JobDetails() {
   const router = useRouter();
 
