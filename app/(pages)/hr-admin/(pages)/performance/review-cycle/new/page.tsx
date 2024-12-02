@@ -4,7 +4,7 @@ import CardLayout from "@/app/_components/shared/cards";
 import InputText from "./input-text";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
 import { AppSelect } from "@/app/_components/shared/select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AppSwitch } from "@/app/_components/shared/switch";
 
 
@@ -13,7 +13,7 @@ interface IReviewCycle {
   startDate: Date | undefined,
   endDate: Date | undefined,
   daysOfGrace: string,
-  assignedEmployees: string,
+  assignedEmployees: string[],
   assignedReviewer: string,
   reminderType: string,
   reminderFrequency: string,
@@ -26,13 +26,17 @@ const NewReviewCycle = () => {
     startDate: undefined,
     endDate: undefined,
     daysOfGrace: "",
-    assignedEmployees: '',
+    assignedEmployees: [],
     assignedReviewer: "",
     reminderType: "",
     reminderFrequency: "",
     notifyEmployees: false,
     notifyReviewers: false,
   });
+
+  useEffect(() => {
+    console.log(formData.assignedEmployees);
+  }, [formData.assignedEmployees]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -89,8 +93,7 @@ const NewReviewCycle = () => {
             requiredField
             placeholder="Select employees"
             onChange={(value) => {
-              console.log(value);
-              setFormData({ ...formData, assignedEmployees: value });
+              setFormData({ ...formData, assignedEmployees: [...new Set([...formData.assignedEmployees, value])] });
             }}
             listItems={[
               { label: "Employee 1", value: "employee-1" },
@@ -150,7 +153,7 @@ const NewReviewCycle = () => {
 
 
         <button type="submit"
-          disabled={!formData.reviewCycleName || !formData.startDate || !formData.endDate || !formData.daysOfGrace || formData.assignedEmployees === "" || formData.assignedReviewer === "" || !formData.notifyEmployees || !formData.notifyReviewers}
+          disabled={!formData.reviewCycleName || !formData.startDate || !formData.endDate || !formData.daysOfGrace || formData.assignedEmployees.length === 0 || formData.assignedReviewer === "" || (!formData.notifyEmployees && !formData.notifyReviewers)}
           className="transition-all duration-300 bg-primary text-white px-4 py-2 rounded-md disabled:cursor-not-allowed disabled:border disabled:bg-gray-300 disabled:border-gray-400 disabled:text-gray-500 font-semibold"
         >
           Create Review Cycle
