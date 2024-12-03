@@ -4,7 +4,7 @@ import CardLayout from "@/app/_components/shared/cards";
 import InputText from "../../../../../../_components/shared/input-text";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
 import { AppSelect } from "@/app/_components/shared/select";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AppSwitch } from "@/app/_components/shared/switch";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";

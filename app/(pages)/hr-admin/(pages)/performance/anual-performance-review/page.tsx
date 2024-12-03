@@ -14,7 +14,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 
 interface IPieChartData {
   task: string;
-  value: any;
+  value: number;
   fill: string;
 }
 
