@@ -12,7 +12,7 @@
 
 
 
-.btn-active{
+.btn-active {
     @apply active:scale-95 transition-all duration-300;
 }
 
@@ -42,7 +42,9 @@
 }
 
 .section-heading {
-    font-weight: 700; font-size: 24px; color: #000000
+    font-weight: 700;
+    font-size: 24px;
+    color: #000000
 }
 
 .section-subtitle {
@@ -51,7 +53,8 @@
     color: #525866;
 }
 
- .rs-input, .rs-input-group {
+.rs-input,
+.rs-input-group {
     border-width: 2px !important;
 }
 
@@ -63,17 +66,25 @@
 
 .common-button {
     border-radius: 8px !important;
-                background-color: #0035C3 !important;
-                padding: 6px 20px !important;
-                text-transform: none !important;
+    background-color: #0035C3 !important;
+    padding: 6px 20px !important;
+    text-transform: none !important;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 input[type="number"] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.btn-primary {
+    @apply bg-primary text-white;
+}
+
+.btn-secondary {
+    @apply bg-white border border-gray-400;
 }

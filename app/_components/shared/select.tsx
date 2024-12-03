@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from "react"
 
 import {
@@ -11,20 +13,22 @@ import {
 } from "@/components/ui/select"
 
 
-export function AppSelect({ listLabel, label, requiredField = false, listItems, placeholder, onChange }: {
+export function AppSelect({ listLabel, label, requiredField = false, listItems, placeholder, onChange, width = 'w-full', triggerStyle = 'border-gray-300' }: {
   listLabel?: string,
-  label: string,
+  label?: string,
   requiredField?: boolean,
   listItems: { label: string, value: string }[],
-  placeholder: string,
-  onChange: (value: string) => void
+  placeholder?: string,
+  onChange: (value: string) => void,
+  width?: string,
+  triggerStyle?: string
 }) {
   return (
     <Select>
-      <div className="flex flex-col gap-2 w-full">
+      <div className={`flex flex-col gap-2 w-full ${width}`}>
         {label && <p className={`text-sm font-semibold text-gray-700 flex justify-start w-full ${requiredField ? 'after:content-["*"] after:text-red-500 after:ml-1 after:font-bold' : ''}`}>{label}</p>}
 
-        <SelectTrigger className="w-full border-gray-300 placeholder:text-gray-400">
+        <SelectTrigger className={`${triggerStyle} placeholder:text-gray-400 ${width}`}>
           <SelectValue
             className=" placeholder:text-gray-400"
             placeholder={<p className="text-gray-400">{placeholder}</p>} />
