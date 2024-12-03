@@ -1,10 +1,4 @@
-import StatusPill from '@/app/_components/shared/pills/status';
-import {
-  ChevronLeft,
-  ChevronRight,
-  MoreVert,
-  FilterList,
-} from '@mui/icons-material';
+import { ChevronLeft, ChevronRight, FilterList } from '@mui/icons-material';
 import {
   Avatar,
   Box,
@@ -20,7 +14,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
 } from '@mui/material';
 import Image from 'next/image';
 import React, { useState, ChangeEvent } from 'react';

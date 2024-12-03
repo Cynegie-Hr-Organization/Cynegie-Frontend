@@ -1,4 +1,4 @@
-import { Grid2, MenuItem, Select, Stack, Switch } from '@mui/material';
+import { Stack, Switch } from '@mui/material';
 import { useState } from 'react';
 import {
   MultiSelect,

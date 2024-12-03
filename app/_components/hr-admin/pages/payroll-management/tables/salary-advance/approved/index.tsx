@@ -1,4 +1,3 @@
-import StatusPill from '@/app/_components/shared/pills/status';
 import {
   ChevronLeft,
   ChevronRight,
@@ -8,7 +7,6 @@ import {
 import {
   Avatar,
   Box,
-  Checkbox,
   IconButton,
   List,
   ListItem,
@@ -26,29 +24,27 @@ import {
   TextField,
 } from '@mui/material';
 import Image from 'next/image';
-import { useState, ChangeEvent } from 'react';
+import { useState } from 'react';
 // import { payrollOverviewTableData } from '../overview/data';
-import { useRouter } from 'next/navigation';
-import { payrollOverviewTableData } from '../../overview/data';
 import AdjustRepaymentDetailsModal from '../../../modals/adjust-repayment-details';
 import { approvedSalaryAdvanceTableData } from './data';
 
 const ApprovedSalaryAdvanceTable = () => {
-  const [selectedRowIndex, setSelectedRowIndex] = useState(0);
+  // const [selectedRowIndex, setSelectedRowIndex] = useState(0);
   const [showAdjustRepaymentModal, setShowAdjustRepaymentModal] =
     useState(false);
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const [anchorEl, setAnchorEl] = useState<SVGSVGElement | null>(null);
 
-  const handleClick = (
-    event: React.MouseEvent<SVGSVGElement>,
-    rowIndex: number
-  ) => {
-    setAnchorEl(event.currentTarget);
-    setSelectedRowIndex(rowIndex);
-  };
+  // const handleClick = (
+  //   event: React.MouseEvent<SVGSVGElement>,
+  //   rowIndex: number
+  // ) => {
+  //   setAnchorEl(event.currentTarget);
+  //   setSelectedRowIndex(rowIndex);
+  // };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -161,7 +157,7 @@ const ApprovedSalaryAdvanceTable = () => {
                   <IconButton>
                     <MoreVert
                       aria-describedby={id}
-                      onClick={(e) => handleClick(e, rowIndex)}
+                      // onClick={(e) => handleClick(e, rowIndex)}
                       sx={{
                         borderWidth: '0.5px',
                         borderRadius: '4px',

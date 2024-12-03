@@ -300,8 +300,9 @@ const HrAdminPayrollOverviewPage = () => {
                   >
                     <Stack
                       sx={{
-                        borderLeft: `3.26px solid ${index == 0 ? '#8AA2E3' : '#0035C3'
-                          }`,
+                        borderLeft: `3.26px solid ${
+                          index == 0 ? '#8AA2E3' : '#0035C3'
+                        }`,
                         pl: '10px',
                       }}
                     >

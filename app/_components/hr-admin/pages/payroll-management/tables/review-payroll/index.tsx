@@ -1,4 +1,3 @@
-import StatusPill from '@/app/_components/shared/pills/status';
 import {
   ChevronLeft,
   ChevronRight,
@@ -9,7 +8,6 @@ import {
   Avatar,
   Box,
   Button,
-  Checkbox,
   List,
   ListItem,
   ListItemText,
@@ -26,13 +24,11 @@ import {
   TextField,
 } from '@mui/material';
 import Image from 'next/image';
-import { useState, ChangeEvent } from 'react';
-import { selectEmployeesForPayrollTableData } from '../select-employees-for-payroll/data';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { reviewPayrollTableData } from './data';
 
 const ReviewPayrollTable = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const [filterAnchorEl, setFilterAnchorEl] =
     useState<HTMLButtonElement | null>(null);
   const [tableActionAnchorEl, setTableActionAnchorEl] =
@@ -299,6 +295,7 @@ const ReviewPayrollTable = () => {
             { name: 'Remove Employee', route: '' },
           ].map((item) => (
             <ListItem
+              key={item.name}
               component='button'
               sx={{
                 '&:hover': { color: '#0035C3' },

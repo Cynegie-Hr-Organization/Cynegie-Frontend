@@ -91,7 +91,9 @@ const AdjustRepaymentDetailsModal: React.FC<{
                         {item.placeholder}
                       </MenuItem>
                       {item.options?.map((option) => (
-                        <MenuItem value={option}>{option}</MenuItem>
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
                       ))}
                     </Select>
                   ) : (

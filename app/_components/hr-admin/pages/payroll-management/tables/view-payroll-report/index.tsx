@@ -1,10 +1,4 @@
-import StatusPill from '@/app/_components/shared/pills/status';
-import {
-  ChevronLeft,
-  ChevronRight,
-  MoreVert,
-  FilterList,
-} from '@mui/icons-material';
+import { ChevronLeft, ChevronRight, FilterList } from '@mui/icons-material';
 import {
   Avatar,
   Box,
@@ -22,7 +16,6 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import { useState, ChangeEvent } from 'react';
-import { selectEmployeesForPayrollTableData } from '../select-employees-for-payroll/data';
 import { viewPayrollReportTable } from './data';
 
 const ViewPayrollReportTable = () => {

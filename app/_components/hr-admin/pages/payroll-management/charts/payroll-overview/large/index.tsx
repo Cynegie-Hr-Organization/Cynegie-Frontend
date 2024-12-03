@@ -24,7 +24,7 @@ const data = [
   { month: 'Dec', salary: 2200000, deductions: 880000, benefits: 320000 },
 ];
 
-const CustomLegend = (props: any) => {
+const CustomLegend = (props: { payload: any }) => {
   const { payload } = props;
   return (
     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px' }}>

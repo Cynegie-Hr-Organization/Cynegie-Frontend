@@ -147,7 +147,7 @@ const HrAdminPayrollSummaryPage = () => {
               <div
                 style={{ color: '#303030', fontWeight: 600, fontSize: '20px' }}
               >
-                You're all set
+                You{"'"}re all set
               </div>
               <div>
                 Payroll{' '}

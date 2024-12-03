@@ -5,9 +5,6 @@ import {
   Option,
 } from '@/app/_components/shared/multi-select-dropdown';
 import { Grid2, MenuItem, Select, Stack } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { DateRangePicker } from 'rsuite';
@@ -37,14 +34,14 @@ const HrAdminGeneratePayrollReport = () => {
     setLocationOptionSelected(selected);
   };
 
-  const [dateRange, setDateRange] = useState<{
-    startDate: Date;
-    endDate: Date;
-  }>({
-    startDate: dayjs().startOf('month').toDate(),
-    endDate: dayjs().endOf('month').toDate(),
-  });
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  // const [dateRange, setDateRange] = useState<{
+  //   startDate: Date;
+  //   endDate: Date;
+  // }>({
+  //   startDate: dayjs().startOf('month').toDate(),
+  //   endDate: dayjs().endOf('month').toDate(),
+  // });
+  // const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   return (
     <Stack gap={3} mx={5} mb={10} mt={6}>
@@ -99,11 +96,14 @@ const HrAdminGeneratePayrollReport = () => {
                         {item.placeholder}
                       </MenuItem>
                       {item.options?.map((option) => (
-                        <MenuItem value={option}>{option}</MenuItem>
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
                       ))}
                     </Select>
                   ) : (
                     <DateRangePicker
+                      key={index}
                       style={{
                         borderRadius: '6px',
                         // width: '40px',
@@ -115,9 +115,9 @@ const HrAdminGeneratePayrollReport = () => {
                       ranges={[]}
                       format='dd MMM yyyy'
                       placeholder={item.placeholder}
-                      onChange={(e) => {
-                        e && setDateRange({ startDate: e[0], endDate: e[1] });
-                      }}
+                      // onChange={(e) => {
+                      //   e && setDateRange({ startDate: e[0], endDate: e[1] });
+                      // }}
                       character=' – '
                       caretAs={CalendarIcon}
                     />
@@ -271,7 +271,9 @@ const HrAdminGeneratePayrollReport = () => {
                         {item.placeholder}
                       </MenuItem>
                       {item.options?.map((option) => (
-                        <MenuItem value={option}>{option}</MenuItem>
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
                       ))}
                     </Select>
                   </div>

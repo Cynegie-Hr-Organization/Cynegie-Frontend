@@ -1,7 +1,5 @@
-import CalendarIcon from '@/app/_components/icons/calendar';
 import { Close } from '@mui/icons-material';
 import {
-  Checkbox,
   Dialog,
   DialogContent,
   Grid2,
@@ -11,7 +9,6 @@ import {
 } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import Image from 'next/image';
 import React from 'react';
 import { Input } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
@@ -89,7 +86,9 @@ const AddBenefitModal: React.FC<{
                           {item.placeholder}
                         </MenuItem>
                         {item.options?.map((option) => (
-                          <MenuItem value={option}>{option}</MenuItem>
+                          <MenuItem key={option} value={option}>
+                            {option}
+                          </MenuItem>
                         ))}
                       </Select>
                     ) : (
@@ -188,7 +187,9 @@ const AddBenefitModal: React.FC<{
                             {item.placeholder}
                           </MenuItem>
                           {item.options?.map((option) => (
-                            <MenuItem value={option}>{option}</MenuItem>
+                            <MenuItem key={option} value={option}>
+                              {option}
+                            </MenuItem>
                           ))}
                         </Select>
                       ) : (

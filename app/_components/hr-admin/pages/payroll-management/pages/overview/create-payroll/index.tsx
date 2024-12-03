@@ -6,22 +6,21 @@ import SelectEmployeesForPayrollTable from '../../../tables/select-employees-for
 import { useRouter } from 'next/navigation';
 import { DatePicker, DateRangePicker, Input } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
-import dayjs from 'dayjs';
 import CalendarIcon from '@/app/_components/icons/calendar';
 
 const HrAdminCreatePayrollPage = () => {
   const router = useRouter();
   const [selectedRows, setSelectedRows] = useState<number[]>([0]);
-  const [dateRange, setDateRange] = React.useState<{
-    startDate: Date;
-    endDate: Date;
-  }>({
-    startDate: dayjs().startOf('month').toDate(),
-    endDate: dayjs().endOf('month').toDate(),
-  });
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null
-  );
+  // const [dateRange, setDateRange] = React.useState<{
+  //   startDate: Date;
+  //   endDate: Date;
+  // }>({
+  //   startDate: dayjs().startOf('month').toDate(),
+  //   endDate: dayjs().endOf('month').toDate(),
+  // });
+  // const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+  //   null
+  // );
 
   return (
     <Stack gap={3} mb={10}>
@@ -32,9 +31,7 @@ const HrAdminCreatePayrollPage = () => {
         sx={{ display: { xs: 'none', sm: 'flex' }, cursor: 'pointer' }}
         onClick={() => router.push('/hr-admin/payroll/overview')}
       >
-        <ChevronLeft
-          sx={{ color: '#8D8484', height: '36px', width: '36px' }}
-        />
+        <ChevronLeft sx={{ color: '#8D8484', height: '36px', width: '36px' }} />
         <div style={{ color: '#667185', fontWeight: 400, fontSize: '16px' }}>
           Back to Payroll Management
         </div>
@@ -101,9 +98,9 @@ const HrAdminCreatePayrollPage = () => {
                       ranges={[]}
                       format='dd MMM yyyy'
                       placeholder={item.placeholder}
-                      onChange={(e) => {
-                        e && setDateRange({ startDate: e[0], endDate: e[1] });
-                      }}
+                      // onChange={(e) => {
+                      //   e && setDateRange({ startDate: e[0], endDate: e[1] });
+                      // }}
                       character=' – '
                       caretAs={CalendarIcon}
                     />

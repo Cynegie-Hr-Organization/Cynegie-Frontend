@@ -43,7 +43,9 @@ const GeneralDropdownSettings = () => {
                   {item.options[0]}
                 </MenuItem>
                 {item.options?.slice(1)?.map((option) => (
-                  <MenuItem value={option}>{option}</MenuItem>
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
                 ))}
               </Select>
             ) : (

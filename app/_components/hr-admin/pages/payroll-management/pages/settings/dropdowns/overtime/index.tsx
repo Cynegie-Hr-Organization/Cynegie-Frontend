@@ -1,6 +1,4 @@
 import { Grid2, MenuItem, Select, TextField } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const OvertimeDropdownSettings = () => {
   return (
@@ -40,11 +38,14 @@ const OvertimeDropdownSettings = () => {
               >
                 <MenuItem value={item.placeholder}>{item.placeholder}</MenuItem>
                 {item.options?.map((option) => (
-                  <MenuItem value={option}>{option}</MenuItem>
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
                 ))}
               </Select>
             ) : (
               <TextField
+                key={index}
                 sx={{
                   fontSize: '14px',
                   '& .MuiInputBase-root': {
