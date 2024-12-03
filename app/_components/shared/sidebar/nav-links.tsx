@@ -52,9 +52,9 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
             path: '/hr-admin/payroll/overview',
             subMenu: [
                 { name: 'Overview', path: '/hr-admin/payroll/overview' },
-                { name: 'Payroll Report', path: '/hr-admin/payroll/payroll-report' },
-                { name: 'Benefits', path: '/hr-admin/payroll/benefits' },
-                { name: 'Payroll Settings', path: '/hr-admin/payroll/payroll-settings' },
+                { name: 'Payroll Report', path: '/hr-admin/payroll/reports' },
+                { name: 'Benefits', path: '/hr-admin/payroll/benefits-management' },
+                { name: 'Payroll Settings', path: '/hr-admin/payroll/settings' },
             ],
         },
     ];

@@ -18,7 +18,21 @@ import Link from "next/link";
 
 const colors = { grey: '#E6EBF9', yellow: '#FFAD33', green: '#0F973D', blue: '#335DCF' };
 
-
+const overviewContents = [{
+  color: '#EADAFF',
+  title: 'Total Open Positions',
+  count: 15,
+},
+{
+  color: '#D2F1DE',
+  title: 'Total Applications',
+  count: 900,
+},
+{
+  color: '#DEE3FF',
+  title: 'Pending Offer',
+  count: 5,
+}]
 
 
 const piechartConfig = {
@@ -133,7 +147,9 @@ const PerformanceOverviewPage = () => {
           <BarChartCard chartData={chartData} />
         </div>
 
+
         <PieChartCard className="col-span-1 md:col-span-2 lg:col-span-4 xl:col-span-3 h-auto" chartData={chartData} />
+
       </div>
 
       <PerformanceReviewTable />
@@ -149,42 +165,24 @@ const PerformanceOverviewPage = () => {
 
 
 const OverviewCards = ({ className }: { className?: string }) => {
-  const overviewContents = [{
-    color: '#EADAFF',
-    title: 'Total Open Positions',
-    count: 15,
-  },
-  {
-    color: '#D2F1DE',
-    title: 'Total Applications',
-    count: 900,
-  },
-  {
-    color: '#DEE3FF',
-    title: 'Pending Offer',
-    count: 5,
-  }]
   return (
-
     <div className={cn("grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 items-center ", className)}>
-
       {overviewContents.map((content) => {
         const { color, title, count } = content;
 
         return (
-          <div className="common-card w-full h-[150px] flex flex-col" key={title}>
+          <div className="common-card w-full flex flex-col" key={title}>
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: color }}>
                 <PiListChecksFill />
               </div>
-              <h3 className=" font-semibold text-black">{title}</h3>
+              <h3 className="font-semibold text-black">{title}</h3>
             </div>
             <p className="text-3xl font-bold text-black mt-[27px]">{count}</p>
           </div>
         )
       })}
     </div>
-
   );
 };
 
@@ -221,8 +219,8 @@ const PieChartCard = ({ className, chartData }: { className?: string, chartData:
         <button type="button" className="text-primary font-bold"> See all </button>
       </div>
 
-      <div className="common-card w-full xl:w-[290px] mt-4 h-full">
-        <AppPieChart chartData={piechartData} chartConfig={piechartConfig} />
+      <div className="common-card w-full mt-4 h-full">
+        <AppPieChart chartData={piechartData} chartConfig={piechartConfig} innerRadius={70} />
 
         <div className="space-y-2 mt-8">
           {[
