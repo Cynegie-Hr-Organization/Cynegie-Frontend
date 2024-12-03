@@ -1,7 +1,7 @@
 'use client'
 
 import { IoIosArrowForward } from "react-icons/io"
-import AppButton from "../review/button"
+import AppButton from "../../../../../_components/shared/button"
 import CardLayout from "@/app/_components/shared/cards"
 import { cn } from "@/lib/utils"
 import { ReactNode } from "react"

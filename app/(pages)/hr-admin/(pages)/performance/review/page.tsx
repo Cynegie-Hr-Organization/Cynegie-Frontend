@@ -2,11 +2,11 @@
 
 import { LuDownload, LuPlusCircle, LuTrash } from "react-icons/lu"
 import { IoIosArrowDown } from "react-icons/io"
-import AppButton from "./button"
+import AppButton from "../../../../../_components/shared/button"
 import ReviewTable from "./table"
 import { DrawerDialog } from "@/components/drawer/modal"
 import { DialogTitle } from "@/components/ui/dialog"
-import { AppDropdownMenu } from "./dropdown-menu"
+import { AppDropdownMenu } from "../../../../../_components/shared/dropdown-menu"
 
 const PerformanceReview = () => {
   return (

@@ -3,8 +3,8 @@
 import { RiSearchLine } from "react-icons/ri";
 import { LuListFilter } from "react-icons/lu";
 import { Checkbox } from "@/components/ui/checkbox";
-import AppButton from "../review/button";
-import { AppDropdownMenu } from "../review/dropdown-menu";
+import AppButton from "../../../../../_components/shared/button";
+import { AppDropdownMenu } from "../../../../../_components/shared/dropdown-menu";
 import { AppSelect } from "@/app/_components/shared/select";
 
 const PerformanceTable = () => {
