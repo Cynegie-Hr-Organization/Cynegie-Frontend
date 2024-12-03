@@ -1,13 +1,15 @@
 "use client";
 
 import CardLayout from "@/app/_components/shared/cards";
-import InputText from "../../../../../../_components/shared/input-text";
+import InputText from "@/app/_components/shared/input-text";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
 import { AppSelect } from "@/app/_components/shared/select";
 import { useState, useEffect } from "react";
 import { AppSwitch } from "@/app/_components/shared/switch";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
+import { DrawerDialog } from "@/components/drawer/modal";
+import Link from "next/link";
+import { DialogTitle } from "@/components/ui/dialog";
+
 
 interface IReviewCycle {
   reviewCycleName: string,
@@ -21,12 +23,7 @@ interface IReviewCycle {
   notifyEmployees: boolean,
   notifyReviewers: boolean,
 }
-
-
-const NewReviewCycle = () => {
-  const router = useRouter();
-  const { toast } = useToast();
-
+const EditReviewCycle = () => {
   const [formData, setFormData] = useState<IReviewCycle>({
     reviewCycleName: "",
     startDate: undefined,
@@ -40,9 +37,9 @@ const NewReviewCycle = () => {
     notifyReviewers: false,
   });
 
-  // useEffect(() => {
-  //   setFormData({ ...formData });
-  // }, [formData]);
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -53,26 +50,11 @@ const NewReviewCycle = () => {
       endDate: formData.endDate?.toISOString(),
     };
     console.log(data);
-    router.push("/hr-admin/performance/overview");
-    
-    toast({
-      title: "Successful",
-      description: "Review cycle has been created successfully ",
-    })
   };
-
-
-  const isFormValid = formData.reviewCycleName.trim() !== "" &&
-    formData.startDate &&
-    formData.endDate &&
-    formData.daysOfGrace.trim() !== "" &&
-    formData.assignedEmployees.length > 0 &&
-    formData.assignedReviewer.trim() !== "" &&
-    (formData.notifyEmployees || formData.notifyReviewers);
 
   return (
     <form className="space-y-8 pt-5 pb-10" onSubmit={handleSubmit}>
-      <h3 className="text-lg font-semibold">New Review Cycle</h3>
+      <h3 className="text-lg font-semibold">Edit Review Cycle</h3>
 
       <CardLayout className="bg-white space-y-4 md:space-y-8" bg="p-4 md:p-6">
         <InputText
@@ -166,23 +148,52 @@ const NewReviewCycle = () => {
       </CardLayout>
 
       <div className="flex flex-col md:flex-row gap-y-4 md:gap-x-4 justify-end">
-        <button type="submit"
+        <button type="button"
           className="transition-all duration-300 order-1 md:order-none bg-white px-4 py-2 rounded-md disabled:cursor-not-allowed border disabled:bg-gray-300 border-gray-400 disabled:text-gray-500 font-semibold"
         >
-          Save & Continue Later
+          Cancel
         </button>
+        <ConfirmationModal trigger={
+          <button
+            type="submit"
+            disabled={
+              !formData.reviewCycleName ||
+              !formData.startDate ||
+              !formData.endDate ||
+              !formData.daysOfGrace ||
+              formData.assignedEmployees.length === 0 ||
+              formData.assignedReviewer === "" ||
+              !formData.reminderType ||
+              !formData.reminderFrequency ||
+              (!formData.notifyEmployees && !formData.notifyReviewers)
+            }
+            className="transition-all duration-300 bg-primary text-white px-4 py-2 rounded-md disabled:cursor-not-allowed disabled:border disabled:bg-gray-300 disabled:border-gray-400 disabled:text-gray-500 font-semibold"
+          >
+            Save Changes
+          </button>
+        } />
 
-
-        <button
-          type="submit"
-          disabled={!isFormValid}
-          className="transition-all duration-300 bg-primary text-white px-4 py-2 rounded-md disabled:cursor-not-allowed disabled:border disabled:bg-gray-300 disabled:border-gray-400 disabled:text-gray-500 font-semibold"
-        >
-          Create Review Cycle
-        </button>
       </div>
     </form>
   );
 };
 
-export default NewReviewCycle;
+const ConfirmationModal = ({ trigger }: { trigger: React.ReactNode }) => {
+  return <DrawerDialog trigger={trigger}
+    header={
+      <DialogTitle className="text-lg font-semibold w-full flex justify-center">
+        Close Review
+      </DialogTitle>}
+    footer={
+      <div className="flex flex-col md:flex-row gap-y-4 md:gap-x-6 justify-center">
+        <button className="bg-white px-4 py-2 rounded-md font-semibold border border-gray-400 w-full lg:w-[148px] order-1 lg:order-none">Cancel</button>
+        <Link href="/hr-admin/performance/overview" className="bg-primary text-white px-4 py-2 rounded-md font-semibold flex justify-center">Save Changes</Link>
+      </div>
+    }>
+    <div className="space-y-4 bg-white p-4 rounded-md flex justify-center">
+      <p>Are you sure you want to close this review?</p>
+    </div>
+  </DrawerDialog>;
+}
+
+export default EditReviewCycle;

@@ -59,7 +59,7 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
         },
     ];
 
-    const isPathActive = (path: string) => {
+    const isPathActive = (path: string, subMenu?: { name: string; path: string }[]) => {
         if (path === '/hr-admin') {
             return /^\/hr-admin$/.test(pathname);
         }
@@ -67,8 +67,12 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
         const pathParts = path.split('/').filter(Boolean);
         const currentPathParts = pathname.split('/').filter(Boolean);
 
-        return currentPathParts.length >= pathParts.length &&
+        const isMainPathActive = currentPathParts.length >= pathParts.length &&
             pathParts.every((part, index) => currentPathParts[index] === part);
+
+        const isSubPathActive = subMenu?.some(subItem => pathname.startsWith(subItem.path));
+
+        return isMainPathActive || isSubPathActive;
     };
 
     const handleNavLinkClick = (link: string) => {
@@ -76,13 +80,13 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
         if (isMobile) {
             onNavLinkClick();
         }
-    }
+    };
 
     return (
         <div className="w-64 transition-all duration-300 ease-in-out">
             <ul className="flex flex-col gap-2 mr-3">
                 {menuLinks.map((item: DashboardMenu) => {
-                    const isActive = isPathActive(item.path);
+                    const isActive = isPathActive(item.path, item.subMenu);
 
                     return (
                         <li key={item.path}>
@@ -90,11 +94,7 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
                                 className={`flex items-center justify-between cursor-pointer p-3 w-full px-3 rounded-[4px] 
                                     ${isActive ? 'bg-primary text-white' : 'text-black'} transition duration-100`}
                                 onClick={() => {
-                                    if (item.subMenu) {
-                                        setOpenDropDown(isActive && (openDropDown === item.path) ? null : item.path);
-                                    } else {
-                                        setOpenDropDown(null);
-                                    }
+                                    setOpenDropDown(openDropDown === item.path ? null : item.path);
                                     handleNavLinkClick(item.path);
                                 }}
                             >

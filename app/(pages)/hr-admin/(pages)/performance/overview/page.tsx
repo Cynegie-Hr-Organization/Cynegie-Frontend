@@ -302,7 +302,7 @@ const PerformanceReviewTable = () => {
                       <AppMenubar menuItems={
                         <ul className="flex flex-col w-full text-base">
                           <li className="cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md w-full">
-                            <button type="button">Edit</button>
+                            <Link href="/hr-admin/performance/review-cycle/edit">Edit</Link>
                           </li>
                           <li className="hover:text-red-600 cursor-pointer text-red-500 hover:bg-gray-100 px-2 py-1 rounded-md w-full">
                             <button type="button">Delete</button>

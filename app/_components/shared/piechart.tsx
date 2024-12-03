@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/chart"
 
 
-export function AppPieChart<T extends { value: number }>({ chartData, chartConfig }: { chartData: T[], chartConfig: ChartConfig }) {
+export function AppPieChart<T extends { value: number }>({ chartData, chartConfig, innerRadius = 75 }: { chartData: T[], chartConfig: ChartConfig, innerRadius?: number }) {
   const total = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.value, 0)
   }, [chartData])
@@ -19,8 +19,8 @@ export function AppPieChart<T extends { value: number }>({ chartData, chartConfi
   return (
     <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
       <PieChart>
-        <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-        <Pie data={chartData} dataKey="value" nameKey="task" innerRadius={75} strokeWidth={100}>
+        <ChartTooltip cursor content={<ChartTooltipContent className="bg-white border-none" hideLabel />} />
+        <Pie data={chartData} dataKey="value" nameKey="task" innerRadius={innerRadius} strokeWidth={100}>
           <Label
             content={({ viewBox }) => {
               if (viewBox && "cx" in viewBox && "cy" in viewBox) {
