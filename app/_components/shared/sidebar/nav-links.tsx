@@ -105,9 +105,7 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
                                     </span>
                                 </div>
                                 {item.subMenu && (
-                                    <FaChevronDown
-                                        className={`transition-transform duration-300 ${((openDropDown === item.path) && isActive) ? 'rotate-180' : ''}`}
-                                    />
+                                    <FaChevronDown className={`transition-transform duration-300 ${((openDropDown === item.path)) ? 'rotate-180' : ''}`} />
                                 )}
                             </button>
                             {(item.subMenu && (openDropDown === item.path)) && (
