@@ -1,18 +1,20 @@
-import { PageHeader } from "@/app/_components/hr-admin/performance/page-header";
-import ManagerAssessmentTable from "./table";
+'use client'
 
-const ManagerAssessmentPage = () => {
+import { PageHeader } from "@/app/_components/hr-admin/performance/page-header";
+import FeedbackTable from "./table";
+
+const FeedbackPage = () => {
   return (
     <div className="flex flex-col gap-6 py-6">
       <PageHeader
-        title="Manager Assessment"
-        description='Employess requiring assessment'
-        buttonLabel="New Assessment"
-        to={"/hr-admin/performance/manager-assessment/new"}
+        title="360 Feedback"
+        description='Manage and track ongoing and upcoming 360 feedback in your organization'
+        buttonLabel="New 360 Feedback Cycle"
+        to={"/hr-admin/performance/360-feedback/new"}
       />
-      <ManagerAssessmentTable />
+      <FeedbackTable />
     </div>
   )
 };
 
-export default ManagerAssessmentPage;
+export default FeedbackPage;

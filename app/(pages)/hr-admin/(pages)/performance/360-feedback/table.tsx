@@ -2,15 +2,13 @@
 
 import { AppSelect } from "@/app/_components/shared/select";
 import { LuListFilter } from "react-icons/lu";
-
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { RiSearchLine } from "react-icons/ri";
 import AppButton from "@/app/_components/shared/button";
-import { Checkbox } from "@/components/ui/checkbox";
 
 
 
-const ManagerAssessmentTable = () => {
+const FeedbackTable = () => {
   return (
     <div className="common-card overflow-x-scroll">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
@@ -24,29 +22,62 @@ const ManagerAssessmentTable = () => {
             <LuListFilter /> Filter
           </button>
         }
+        width="mr-4 w-56 -mt-10"
           menuItems={
             <div className="p-4 space-y-10">
               <div className="space-y-4">
                 <AppSelect
                   listItems={[
-                    { label: "Completed", value: "completed" },
-                    { label: "In Progress", value: "in-progress" },
-                    { label: "Not Started", value: "not-started" },
+                    { label: "Q1 2024", value: "q1-2024" },
+                    { label: "Q2 2024", value: "q2-2024" },
+                    { label: "Q3 2024", value: "q3-2024" },
+                    { label: "Q4 2024", value: "q4-2024" },
                   ]}
-                  label="Status"
-                  placeholder="Pending"
+                  label="Feedback Cycle Title"
+                  placeholder="Q1 2024"
                   onChange={() => { }}
                 />
 
                 <AppSelect
                   listItems={[
-                    { label: "Today", value: "today" },
-                    { label: "This Week", value: "this-week" },
-                    { label: "This Month", value: "this-month" },
-                    { label: "This Year", value: "this-year" },
+                    { label: "Pending", value: "pending" },
+                    { label: "In Progress", value: "in-progress" },
+                    { label: "Completed", value: "completed" },
                   ]}
-                  label="Date"
-                  placeholder="Today"
+                  label="Status"
+                  placeholder="Pending"
+                  onChange={() => { }}
+                />
+                <AppSelect
+                  listItems={[
+                    { label: "Pending", value: "pending" },
+                    { label: "In Progress", value: "in-progress" },
+                    { label: "Completed", value: "completed" },
+                  ]}
+                  label="Status"
+                  placeholder="Pending"
+                  onChange={() => { }}
+                />
+                <AppSelect
+                  listItems={[
+                    { label: "All", value: "all" },
+                    { label: "Finance", value: "finance" },
+                    { label: "Marketing", value: "marketing" },
+                    { label: "Sales", value: "sales" },
+                    { label: "Engineering", value: "engineering" },
+                  ]}
+                  label="Department"
+                  placeholder="All"
+                  onChange={() => { }}
+                />
+                <AppSelect
+                  listItems={[
+                    { label: "Pending", value: "pending" },
+                    { label: "In Progress", value: "in-progress" },
+                    { label: "Completed", value: "completed" },
+                  ]}
+                  label="Employee"
+                  placeholder="Sarah Johnson"
                   onChange={() => { }}
                 />
               </div>
@@ -63,13 +94,10 @@ const ManagerAssessmentTable = () => {
         <table className='w-full border-collapse'>
           <thead className='bg-[#F7F9FC]'>
             <tr>
-              <th className='px-6 py-3 text-left'>
-                <Checkbox className={"rounded-md border-gray-300"} />
-              </th>
-              <th className='px-4 py-3 text-left'>Assessment Name</th>
-              <th className='px-4 py-3 text-left'>Employee</th>
-              <th className='px-4 py-3 text-left'>Manager</th>
-              <th className='px-4 py-3 text-left'>Due Date</th>
+              <th className='px-4 py-3 text-left'>Employee Namee</th>
+              <th className='px-4 py-3 text-left'>Feedback Cycle Name</th>
+              <th className='px-4 py-3 text-left'>Start Date</th>
+              <th className='px-4 py-3 text-left'>End Date</th>
               <th className='px-4 py-3 text-left'>Status</th>
             </tr>
           </thead>
@@ -77,17 +105,14 @@ const ManagerAssessmentTable = () => {
             {Array.from(Array(5)).map((_, idx) => {
               return (
                 <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
-                  <td className='px-6 py-4'>
-                    <Checkbox className={"rounded-md border-gray-300"} />
+                  <td className='px-4 py-4'>
+                    <p className='text-sm text-primary'>Sarah Johnson</p>
                   </td>
                   <td className='px-4 py-4'>
                     <p className='text-sm'>Q3 Performance Review</p>
                   </td>
                   <td className='px-4 py-4'>
-                    <p className='text-sm'>Mark Johnson</p>
-                  </td>
-                  <td className='px-4 py-4'>
-                    <p className='text-sm'>Mark Johnson</p>
+                    <p className='text-sm'>28 July 2024</p>
                   </td>
                   <td className='px-4 py-4'>
                     <p className='text-sm'>28 July 2024</p>
@@ -105,4 +130,4 @@ const ManagerAssessmentTable = () => {
   );
 };
 
-export default ManagerAssessmentTable;
+export default FeedbackTable;

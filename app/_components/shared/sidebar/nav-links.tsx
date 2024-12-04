@@ -47,6 +47,7 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
                 { name: 'Continuous Feedback', path: '/hr-admin/performance/continuous-feedback' },
                 { name: 'Self Assessment', path: '/hr-admin/performance/self-assessment' },
                 { name: 'Manager Assessment', path: '/hr-admin/performance/manager-assessment' },
+                { name: '360 Feedback', path: '/hr-admin/performance/360-feedback' },
             ],
         },
         {

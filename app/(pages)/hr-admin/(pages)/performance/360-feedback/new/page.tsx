@@ -5,6 +5,7 @@ import CardLayout from "@/app/_components/shared/cards"
 import { AppDatePicker } from "@/app/_components/shared/date-picker"
 import InputText from "@/app/_components/shared/input-text"
 import { AppSelect } from "@/app/_components/shared/select"
+import { Checkbox } from "@/components/ui/checkbox"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -16,21 +17,24 @@ const NewSelfAssessmentPage = () => {
     employees: [""],
     dueDate: "",
     template: "",
-    manager: "",
+    department: "",
+    feedbackProviders: [""],
+    startDate: "",
+    endDate: "",
   })
 
   return (
     <div className="space-y-8">
-      <h1 className="text-lg font-semibold">New Assessment</h1>
+      <h1 className="text-lg font-semibold">New 360 Feedback Cycle</h1>
 
       <CardLayout bg="bg-white p-4 md:p-6">
         <div className="flex flex-col gap-6">
-          <h2 className="font-semibold">Manager Assessment</h2>
+          <h2 className="font-semibold">Feedback Cycle Details</h2>
 
           <div className="grid gap-6">
             <div className="flex flex-col md:flex-row gap-6">
               <InputText
-                label="Assessment Name"
+                label="Feedback Cycle Name"
                 placeholder="Enter Name"
                 value={formData.assessmentName}
                 id="assessment-name"
@@ -39,13 +43,15 @@ const NewSelfAssessmentPage = () => {
 
               <AppSelect
                 listItems={[
-                  { label: "Manager 1", value: "manager-1" },
-                  { label: "Manager 2", value: "manager-2" },
-                  { label: "Manager 3", value: "manager-3" },
+                  { label: "All", value: "all" },
+                  { label: "Finance", value: "finance" },
+                  { label: "Marketing", value: "marketing" },
+                  { label: "Sales", value: "sales" },
+                  { label: "Engineering", value: "engineering" },
                 ]}
-                label="Manager"
-                placeholder="Select Manager"
-                onChange={(value) => setFormData({ ...formData, manager: value })}
+                label="Department"
+                placeholder="Select Department"
+                onChange={(value) => setFormData({ ...formData, department: value })}
               />
             </div>
 
@@ -60,36 +66,41 @@ const NewSelfAssessmentPage = () => {
                 placeholder="Select Employees"
                 onChange={(value) => setFormData({ ...formData, employees: [...formData.employees, value] })}
               />
-
-              <AppDatePicker
-                label="Due Date"
-                placeholder="Select Date"
-                selectedDate={formData.dueDate ? new Date(formData.dueDate) : new Date()}
-                setSelectedDate={(value) => setFormData({ ...formData, dueDate: value?.toISOString() ?? "" })}
-              />
-            </div>
-
-            <div className="">
               <AppSelect
                 listItems={[
-                  { label: "Template 1", value: "template-1" },
-                  { label: "Template 2", value: "template-2" },
-                  { label: "Template 3", value: "template-3" },
+                  { label: "All", value: "all" },
+                  { label: "Manager", value: "manager" },
+                  { label: "Peer", value: "peer" },
+                  { label: "Self", value: "self" },
                 ]}
-                label="Template"
-                placeholder="Select Template"
-                onChange={(value) => setFormData({ ...formData, template: value })}
-              />
-              <AppButton
-                label="Preview"
-                className="font-bold py-0 px-0 w-max md:w-max disabled:text-gray-500 text-primary"
-                onClick={() => { router.push("/hr-admin/performance/self-assessment/template-preview") }}
+                label="Feedback Providers"
+                placeholder="Select Feedback Providers"
+                onChange={(value) => setFormData({ ...formData, feedbackProviders: [...formData.feedbackProviders, value] })}
               />
             </div>
 
+            <div className="flex flex-col md:flex-row gap-6">
+              <AppDatePicker
+                label="Start Date"
+                placeholder="Select Date"
+                selectedDate={formData.startDate ? new Date(formData.startDate) : new Date()}
+                setSelectedDate={(value) => setFormData({ ...formData, startDate: value?.toISOString() ?? "" })}
+              />
+
+              <AppDatePicker
+                label="End Date"
+                placeholder="Select Date"
+                selectedDate={formData.endDate ? new Date(formData.endDate) : new Date()}
+                setSelectedDate={(value) => setFormData({ ...formData, endDate: value?.toISOString() ?? "" })}
+              />
+            </div>
           </div>
 
 
+          <div className="flex gap-2 items-center">
+            <input type="checkbox" id="anonymous-feedback" name="anonymous-feedback" />
+            <label htmlFor="anonymous-feedback" className="text-sm text-gray-500">Enable anonymous feedback for this cycle</label>
+          </div>
         </div>
       </CardLayout>
 
@@ -100,9 +111,9 @@ const NewSelfAssessmentPage = () => {
           onClick={() => { }}
         />
         <AppButton
-          label="Submit"
+          label="Next"
           className="disabled:btn-inactive btn-primary"
-          onClick={() => { router.push("/hr-admin/performance/manager-assessment") }}
+          onClick={() => { router.push("/hr-admin/performance/360-feedback/new/feedback") }}
         />
       </div>
     </div>

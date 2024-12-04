@@ -20,7 +20,7 @@ const TemplatePreviewPage = () => {
       </div>
 
       <CardLayout bg="border-none bg-white p-4 md:p-6 text-sm">
-        <div className="space-y-4">
+        <div className="space-y-4 flex flex-col md:flex-row justify-between">
           <PreviewTitle name="Template Name" description="Q3 2024 Peer Review" />
           <PreviewTitle name="Questions" description="12" />
           <PreviewTitle name="Created By" description="Lucy Okpara" />
