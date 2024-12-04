@@ -46,6 +46,7 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
                 { name: 'Goals', path: '/hr-admin/performance/goals' },
                 { name: 'Continuous Feedback', path: '/hr-admin/performance/continuous-feedback' },
                 { name: 'Self Assessment', path: '/hr-admin/performance/self-assessment' },
+                { name: 'Manager Assessment', path: '/hr-admin/performance/manager-assessment' },
             ],
         },
         {
