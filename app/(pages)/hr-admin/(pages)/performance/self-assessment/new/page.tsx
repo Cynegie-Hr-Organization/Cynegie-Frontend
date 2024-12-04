@@ -5,9 +5,11 @@ import CardLayout from "@/app/_components/shared/cards"
 import { AppDatePicker } from "@/app/_components/shared/date-picker"
 import InputText from "@/app/_components/shared/input-text"
 import { AppSelect } from "@/app/_components/shared/select"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 const NewSelfAssessmentPage = () => {
+  const router = useRouter();
 
   const [formData, setFormData] = useState({
     assessmentName: "",
@@ -96,7 +98,7 @@ const NewSelfAssessmentPage = () => {
         <AppButton
           label="Submit"
           className="disabled:btn-inactive btn-primary"
-          onClick={() => { }}
+          onClick={() => { router.push("/hr-admin/performance/self-assessment") }}
         />
       </div>
     </div>
