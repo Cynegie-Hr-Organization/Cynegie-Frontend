@@ -14,7 +14,7 @@ export function AppDropdownMenu({ trigger, menuItems, width = "w-56" }: { trigge
       <DropdownMenuTrigger asChild>
         {trigger}
       </DropdownMenuTrigger>
-      <DropdownMenuContent className={cn("bg-white", width)}>
+      <DropdownMenuContent className={cn("bg-white rounded-lg", width)}>
         <DropdownMenuGroup>
           {menuItems}
         </DropdownMenuGroup>

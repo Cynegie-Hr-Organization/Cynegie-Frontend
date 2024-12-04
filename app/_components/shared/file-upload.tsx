@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { IoCloseCircle } from "react-icons/io5";
 
-export const AttachmentUpload = ({ label, onChange, className }: {
+export const AppFileUpload = ({ label, onChange, className }: {
   label?: string,
   onChange: (files: File[]) => void,
   className?: string

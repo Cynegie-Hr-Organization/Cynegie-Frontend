@@ -8,6 +8,8 @@ import { IoIosArrowDown } from "react-icons/io";
 import AppButton from "@/app/_components/shared/button";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
+import InputText, { InputTextArea } from "@/app/_components/shared/input-text";
+import { AppFileUpload } from "@/app/_components/shared/file-upload";
 
 const ContinuousFeedbackPage = () => {
   return (
@@ -30,34 +32,27 @@ const PageHeader = () => {
 
       <div className="flex items-center gap-x-2">
         <AppDropdownMenu
-          width="w-max "
+          width="w-max"
           trigger={
             <button className="bg-white text-gray-500 border border-gray-400 flex items-center justify-center gap-x-2 capitalize outline-none rounded-lg px-[12.33px] py-[9px] font-bold ">
               Actions <IoIosArrowDown />
             </button>
           }
           menuItems={
-            <div>
-              <div className="lg:hidden flex items-center gap-x-2 cursor-pointer hover:bg-gray-100 rounded-lg px-2 py-1">
-                <span>Add New Feedback</span>
-              </div>
-              <div className=" flex items-center gap-x-2 cursor-pointer hover:bg-gray-100 rounded-lg px-2 py-1">
-                <span>Recognize Achievement</span>
-              </div>
-              <div className="lg:hidden flex items-center gap-x-2 cursor-pointer hover:bg-gray-100 rounded-lg px-2 py-1">
-                <span>Personal Goal</span>
-              </div>
-              <div className="lg:hidden flex items-center gap-x-2 cursor-pointer hover:bg-gray-100 rounded-lg px-2 py-1">
-                <span>Team Goals</span>
-              </div>
-              <div className="flex items-center gap-x-2 cursor-pointer hover:bg-gray-100 rounded-lg px-2 py-1">
-                <span>Request Feedback</span>
-              </div>
-
+            <div className="p-2">
+              <span className="lg:hidden flex items-center gap-x-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2">Add New Feedback</span>
+              <RecognizeAchievementModal trigger={
+                <span className="flex items-center gap-x-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2">
+                  Recognize Achievement
+                </span>
+              } />
+              <span className="flex items-center gap-x-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2">Personal Goal</span>
+              <span className="flex items-center gap-x-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2">Team Goals</span>
+              <span className="flex items-center gap-x-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2">Request Feedback</span>
               <DeleteModal trigger={
-                <div className="flex items-center gap-x-2 cursor-pointer hover:bg-gray-100 rounded-lg px-2 py-1 text-red-500">
-                  <span>Delete Feedback</span>
-                </div>
+                <span className="flex items-center gap-x-2 cursor-pointer hover:bg-gray-100 rounded-lg p-2 text-red-500">
+                  Delete Feedback
+                </span>
               } />
             </div>
           }
@@ -71,6 +66,73 @@ const PageHeader = () => {
         />
       </div>
     </div>
+  )
+}
+
+const RecognizeAchievementModal = ({ trigger }: { trigger: React.ReactNode }) => {
+  return (
+    <DrawerDialog
+      trigger={trigger}
+      header={<DialogTitle className="text-lg font-bold text-center">
+        <span className="flex flex-col items-center justify-center gap-y-2">
+          <span>Recognize Achievement</span>
+          <span className="text-sm text-gray-400 max-w-[367px] text-center">
+            Fill the details below
+          </span>
+        </span>
+      </DialogTitle>}
+      footer={
+        <div className="flex flex-col md:flex-row items-center justify-center gap-2">
+          <AppButton label="Cancel" className="btn-secondary" />
+          <AppButton label="Submit" className="btn-inactive" />
+        </div>
+      }
+    >
+      <form action="">
+        <div className="space-y-4">
+          <InputText
+            label="Employee"
+            id="employee"
+            placeholder="Select Employee"
+            requiredField
+            value={""}
+            onChange={(e) => { }}
+          />
+
+          <InputText
+            label="Recognition Type"
+            id="recognition-type"
+            placeholder="Select Recognition type"
+            requiredField
+            value={""}
+            onChange={(e) => { }}
+          />
+
+          <InputText
+            label="Date Of Recognition"
+            id="date-of-recognition"
+            placeholder="Select Date of Recognition"
+            requiredField
+            value={""}
+            onChange={(e) => { }}
+          />
+
+          <InputTextArea
+            label="Comments"
+            id="comment"
+            placeholder="Enter your comment here"
+            requiredField
+            value={""}
+            onChange={(e) => { }}
+          />
+
+          <AppFileUpload
+            label="Attachment"
+            onChange={(e) => { }}
+          />
+        </div>
+      </form>
+    </DrawerDialog>
   )
 }
 

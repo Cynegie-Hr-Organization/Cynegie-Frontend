@@ -1,7 +1,7 @@
 'use client'
 
 import CardLayout from "@/app/_components/shared/cards";
-import { AttachmentUpload } from "@/app/_components/shared/file-upload";
+import { AppFileUpload } from "@/app/_components/shared/file-upload";
 import { InputTextArea } from "@/app/_components/shared/input-text";
 import AppRadio from "@/app/_components/shared/radio";
 import { AppSelect } from "@/app/_components/shared/select";
@@ -51,7 +51,7 @@ const GiveFeeedback = () => {
           placeholder="Select Rating"
           onChange={(value) => { setFormData({ ...formData, rating: value }) }}
         />
-        <AttachmentUpload
+        <AppFileUpload
           label="Attachment"
           className="w-full"
           onChange={(files) => { console.log(files) }}
