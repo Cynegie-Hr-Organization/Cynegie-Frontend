@@ -83,7 +83,6 @@ const CandidatesTable = () => {
                   columnIndex == 0 ? (
                     <TableCell key={field}>
                       <Stack direction='row' alignItems='center' gap={2}>
-                        <Avatar src="/image/gabi-lewis.png" />
                         <Box>{field}</Box>
                       </Stack>
                     </TableCell>

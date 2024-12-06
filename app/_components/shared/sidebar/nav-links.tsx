@@ -48,6 +48,9 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
                 { name: 'Self Assessment', path: '/hr-admin/performance/self-assessment' },
                 { name: 'Manager Assessment', path: '/hr-admin/performance/manager-assessment' },
                 { name: '360 Feedback', path: '/hr-admin/performance/360-feedback' },
+                { name: 'Template', path: '/hr-admin/performance/template' },
+                { name: 'Learning', path: '/hr-admin/performance/learning-management' },
+                { name: 'KPI', path: '/hr-admin/performance/kpi' },
             ],
         },
         {
@@ -87,15 +90,15 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
     };
 
     return (
-        <div className="w-64 transition-all duration-300 ease-in-out">
-            <ul className="flex flex-col gap-2 mr-3">
+        <div className=" transition-all duration-300 ease-in-out">
+            <ul className="flex flex-col gap-2">
                 {menuLinks.map((item: DashboardMenu) => {
                     const isActive = isPathActive(item.path, item.subMenu);
 
                     return (
                         <li key={item.path}>
                             <button
-                                className={`flex items-center justify-between cursor-pointer p-3 w-full px-3 rounded-[4px] 
+                                className={`flex items-center justify-between cursor-pointer p-3 w-full rounded-[4px] 
                                     ${isActive ? 'bg-primary text-white' : 'text-black'} transition duration-100`}
                                 onClick={() => {
                                     setOpenDropDown(openDropDown === item.path ? null : item.path);
