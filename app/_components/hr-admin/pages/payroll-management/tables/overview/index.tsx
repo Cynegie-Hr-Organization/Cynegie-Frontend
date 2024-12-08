@@ -180,7 +180,15 @@ const PayrollTable = () => {
                 'Status',
                 'Actions',
               ].map((field) => (
-                <TableCell key={field} sx={{ whiteSpace: 'nowrap' }}>
+                <TableCell
+                  key={field}
+                  sx={{
+                    whiteSpace: 'nowrap',
+                    fontWeight: 500,
+                    fontSize: '14px',
+                    color: '#344054',
+                  }}
+                >
                   {field}
                 </TableCell>
               ))}
@@ -232,8 +240,14 @@ const PayrollTable = () => {
                       handleTableActionClick(e);
                       if (row.status == 'Approved') {
                         setTableActionPopoverContent([
-                          { name: 'View Details', route: '' },
-                          { name: 'View Payroll Report', route: '' },
+                          {
+                            name: 'View Details',
+                            route: '',
+                          },
+                          {
+                            name: 'View Payroll Report',
+                            route: '/hr-admin/payroll/view-payroll-report',
+                          },
                         ]);
                       }
                       if (row.status == 'Pending') {

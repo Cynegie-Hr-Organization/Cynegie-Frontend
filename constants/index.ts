@@ -1,3 +1,4 @@
+import { Filter, StatusMap } from '@/app/_components/shared/table/types';
 import { ChartOptions } from 'chart.js';
 
 export const iconBaseUrl = '/icons/';
@@ -5,6 +6,7 @@ export const iconBaseUrl = '/icons/';
 export const icon = {
   graduatingCap: `${iconBaseUrl}graduating-cap.svg`,
   square: `${iconBaseUrl}square.svg`,
+  bin: `${iconBaseUrl}bin.svg`,
 };
 
 export const color = {
@@ -41,6 +43,20 @@ export const color = {
       color: '#475367',
       borderColor: '#98A2B3',
     },
+    filter: {
+      backgroundColor: '#FFFFFF',
+      color: '#344054',
+      borderColor: '#D0D5DD',
+    },
+    disabled: {
+      backgroundColor: '#98A2B3',
+      color: '#101928',
+      borderColor: '#98A2B3',
+    },
+  },
+  progress: {
+    filled: '#475367',
+    unfilled: '#F0F2F5',
   },
 };
 
@@ -70,4 +86,58 @@ export const defaultDonutChartOptions: ChartOptions<'doughnut'> = {
   },
   events: [],
   cutout: '85%',
+};
+
+export const APRStatusMap: StatusMap = {
+  Approved: 'success',
+  Pending: 'warning',
+  Rejected: 'error',
+};
+
+export const CISStatusMap: StatusMap = {
+  Completed: 'success',
+  'In Progress': 'warning',
+  'Not Started': 'error',
+};
+
+export const CPStatusMap: StatusMap = {
+  Completed: 'success',
+  Pending: 'warning',
+};
+
+export const AttendanceStatusMap: StatusMap = {
+  Present: 'grey',
+  Late: 'info',
+  Absent: 'error',
+};
+
+export const tableFilter = {
+  department: { name: 'Department', items: ['All', 'Sales', 'Finance', 'IT'] },
+  status: {
+    name: 'Status',
+    items: ['All', 'Approved', 'Pending', 'Rejected'],
+  },
+};
+
+const basePath = {
+  employee: '/employee/',
+  performanceManagement: 'performance-management/',
+  learningDevelopment: 'learning-development',
+};
+
+export const route = {
+  employee: {
+    performanceManagement: {
+      home: `${basePath.employee}${basePath.performanceManagement}`,
+      selfAssessment: `${basePath.employee}${basePath.performanceManagement}self-assessment`,
+      viewGoal: `${basePath.employee}${basePath.performanceManagement}view-goal`,
+      continuousFeedback: `${basePath.employee}${basePath.performanceManagement}continuous-feedback`,
+      developmentPlan: `${basePath.employee}${basePath.performanceManagement}development-plan`,
+      viewDevelopmentPlan: `${basePath.employee}${basePath.performanceManagement}view-development-plan`,
+    },
+    learningDevelopment: {
+      home: `${basePath.employee}${basePath.learningDevelopment}`,
+      viewDetails: `${basePath.employee}${basePath.learningDevelopment}view-course-details`,
+    },
+  },
 };

@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
-import { Popover, List, ListItem, ListItemText } from '@mui/material';
+import { Popover as MuiPopover } from '@mui/material';
+import { PopoverProps, PopoverType } from './types';
+import MoreOptionsPopoverContent from './content/more-options';
+import FilterPopoverContent from './content/filter';
 
-const MoreOptionsPopover: React.FC<{
-  triggerButton: React.ReactNode;
-  options: { name: string; onClick: () => void }[];
-}> = ({ triggerButton, options }) => {
+const Popover: React.FC<PopoverProps> = (props) => {
+  const { type, getTriggerButtonClick, triggerButton, moreOptions, filters } =
+    props;
+
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    getTriggerButtonClick?.();
     setAnchorEl(event.currentTarget);
   };
 
@@ -23,7 +27,7 @@ const MoreOptionsPopover: React.FC<{
       {React.cloneElement(triggerButton as React.ReactElement, {
         onClick: handleButtonClick,
       })}
-      <Popover
+      <MuiPopover
         id={id}
         open={open}
         anchorEl={anchorEl}
@@ -37,26 +41,18 @@ const MoreOptionsPopover: React.FC<{
           horizontal: 'left',
         }}
       >
-        <List sx={{ color: '#475367', fontWeight: 400, fontSize: '14px' }}>
-          {options.map((item) => (
-            <ListItem
-              key={item.name}
-              component='button'
-              sx={{
-                '&:hover': { color: '#0035C3' },
-              }}
-              onClick={() => {
-                item.onClick();
-                handleClose();
-              }}
-            >
-              <ListItemText primary={item.name} />
-            </ListItem>
-          ))}
-        </List>
-      </Popover>
+        {type === PopoverType.moreOptions ? (
+          <MoreOptionsPopoverContent
+            options={moreOptions}
+            itemClick={handleClose}
+            dataToReturnOnItemClick={props.dataToReturnOnItemClick}
+          />
+        ) : (
+          <FilterPopoverContent filters={filters} />
+        )}
+      </MuiPopover>
     </>
   );
 };
 
-export default MoreOptionsPopover;
+export default Popover;

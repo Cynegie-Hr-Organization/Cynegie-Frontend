@@ -4,11 +4,11 @@ import { ChartData, ChartOptions } from 'chart.js';
 export type DonutChartProps = {
   data: ChartData<'doughnut', number[], string>;
   options: ChartOptions<'doughnut'>;
-  chartWidth: number;
-  chartHeight: number;
-  centerText?: ChartCenterTextProps;
-  containerSx?: SxProps;
-  isValuePercentage?: boolean;
+  chartwidth: number;
+  chartheight: number;
+  centertext?: ChartCenterTextProps;
+  containersx?: SxProps;
+  isvaluepercentage?: boolean;
 };
 
 export type ChartCenterTextProps = ChartCenterTextValueProps & {

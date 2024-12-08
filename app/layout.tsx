@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import 'rsuite/dist/rsuite.min.css';
 
 export const metadata: Metadata = {
   title: 'Cynegie',

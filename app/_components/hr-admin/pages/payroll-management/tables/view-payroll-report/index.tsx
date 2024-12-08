@@ -2,7 +2,6 @@ import { ChevronLeft, ChevronRight, FilterList } from '@mui/icons-material';
 import {
   Avatar,
   Box,
-  Checkbox,
   MenuItem,
   Select,
   Stack,
@@ -15,25 +14,9 @@ import {
   TextField,
 } from '@mui/material';
 import Image from 'next/image';
-import { useState, ChangeEvent } from 'react';
 import { viewPayrollReportTable } from './data';
 
 const ViewPayrollReportTable = () => {
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
-
-  const handleCheckboxChange = (
-    event: ChangeEvent<HTMLInputElement>,
-    rowIndex: number
-  ) => {
-    setSelectedRows((prevSelectedRows) => {
-      if (event.target.checked) {
-        return [...prevSelectedRows, rowIndex];
-      } else {
-        return prevSelectedRows.filter((index) => index !== rowIndex);
-      }
-    });
-  };
-
   return (
     <Stack gap={2} className='common-card'>
       <Stack
@@ -97,26 +80,6 @@ const ViewPayrollReportTable = () => {
         <Table>
           <TableHead sx={{ backgroundColor: '#F7F9FC' }}>
             <TableRow>
-              <TableCell sx={{ whiteSpace: 'nowrap', width: '50px' }}>
-                <Checkbox
-                  sx={{
-                    '& .MuiSvgIcon-root': {
-                      strokeWidth: '1.25px',
-                    },
-                  }}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setSelectedRows([0, 1, 2, 3, 4]);
-                    } else {
-                      setSelectedRows([]);
-                    }
-                  }}
-                  checked={selectedRows.length === 5}
-                  indeterminate={
-                    selectedRows.length > 0 && selectedRows.length < 5
-                  }
-                />
-              </TableCell>
               {[
                 'Employee Name',
                 'Department',
@@ -138,12 +101,6 @@ const ViewPayrollReportTable = () => {
           <TableBody>
             {viewPayrollReportTable.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
-                <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                  <Checkbox
-                    checked={selectedRows.includes(rowIndex)}
-                    onChange={(e) => handleCheckboxChange(e, rowIndex)}
-                  />
-                </TableCell>
                 {[
                   row.name,
                   row.department,

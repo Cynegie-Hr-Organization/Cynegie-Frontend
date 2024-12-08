@@ -24,6 +24,7 @@ const SummaryCards = () => {
                 path={setCardIcon(card.labelText)}
               />
             }
+            hasIcon
             iconContainerHeight={28}
             iconContainerWidth={28}
             lineBelowValue

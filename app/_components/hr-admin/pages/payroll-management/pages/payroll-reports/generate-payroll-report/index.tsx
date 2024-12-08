@@ -88,6 +88,16 @@ const HrAdminGeneratePayrollReport = () => {
                         borderRadius: '4.62px',
                         pr: '15px',
                       }}
+                      renderValue={(value) => (
+                        <p
+                          style={{
+                            color: value === item.placeholder ? 'grey' : '',
+                            fontSize: '14px',
+                          }}
+                        >
+                          {value}
+                        </p>
+                      )}
                     >
                       <MenuItem
                         style={{ display: 'none' }}
@@ -198,6 +208,16 @@ const HrAdminGeneratePayrollReport = () => {
                           borderRadius: '4.62px',
                           pr: '15px',
                         }}
+                        renderValue={(value) => (
+                          <p
+                            style={{
+                              color: value === item.placeholder ? 'grey' : '',
+                              fontSize: '14px',
+                            }}
+                          >
+                            {value}
+                          </p>
+                        )}
                       >
                         <MenuItem
                           style={{ display: 'none' }}
@@ -263,6 +283,16 @@ const HrAdminGeneratePayrollReport = () => {
                         borderRadius: '4.62px',
                         pr: '15px',
                       }}
+                      renderValue={(value) => (
+                        <p
+                          style={{
+                            color: value === item.placeholder ? 'grey' : '',
+                            fontSize: '14px',
+                          }}
+                        >
+                          {value}
+                        </p>
+                      )}
                     >
                       <MenuItem
                         style={{ display: 'none' }}

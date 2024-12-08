@@ -1,18 +1,19 @@
 'use client';
 import { Grid2, Stack } from '@mui/material';
-import EmployeeMyCoursesTable from '../../tables/my-courses';
-import PageHeading from '../attendance-and-time-tracking/heading';
+import PageHeading from '../../../shared/page/heading';
 import PageContainer from '@/app/_components/shared/page/container';
 import SummaryCards from './summary-cards';
 import SummaryOfCompletedTraining from './summary-of-completed-training';
-import Title from '@/app/_components/shared/section-with-cards/title';
+import Table from '@/app/_components/shared/table';
+import useMyCoursesTable from './hooks/table/useMyCoursesTable';
 
 const EmployeeLearningAndDevelopment = () => {
+  const { myCourseTableData } = useMyCoursesTable();
   return (
     <>
       <PageContainer>
         <PageHeading text='Learning and Development' />
-        <Grid2 container spacing={2}>
+        <Grid2 container spacing={3}>
           {[
             <SummaryCards key={0} />,
             <SummaryOfCompletedTraining key={1} />,
@@ -30,8 +31,7 @@ const EmployeeLearningAndDevelopment = () => {
           ))}
         </Grid2>
         <Stack gap={2}>
-          <Title size='small' text='My Courses' />
-          <EmployeeMyCoursesTable />
+          <Table {...myCourseTableData} />
         </Stack>
       </PageContainer>
     </>

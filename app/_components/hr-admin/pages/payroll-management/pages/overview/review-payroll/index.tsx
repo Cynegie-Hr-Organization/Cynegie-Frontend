@@ -222,8 +222,9 @@ const HrAdminReviewPayrollPage = () => {
                   <Box
                     sx={{
                       fontWeight: 600,
-                      fontSize: '16px',
-                      color: '#1B1B1B',
+                      fontSize: '14px',
+                      color: '#0A112F',
+                      opacity: 0.5,
                     }}
                   >
                     {item.title}
@@ -244,7 +245,14 @@ const HrAdminReviewPayrollPage = () => {
           ))}
         </Grid2>
         <Stack direction='row' justifyContent='flex-end'>
-          <div style={{ color: '#0035C3', fontSize: '14px', fontWeight: 700 }}>
+          <div
+            style={{
+              color: '#0035C3',
+              fontSize: '14px',
+              fontWeight: 700,
+              cursor: 'pointer',
+            }}
+          >
             Add New Employee
           </div>
         </Stack>

@@ -5,9 +5,13 @@ import { useRouter } from 'next/navigation';
 import ViewCustomPayrollReport from '../../../tables/view-custom-payroll-report';
 import PayrollSummaryChart from '../../../charts/payroll-summary';
 import Image from 'next/image';
+import { useState } from 'react';
+// import Modal from '@/app/_components/employee/modals/modal';
+import DownloadReportModal from '../../../modals/download-report';
 
 const HrAdminViewCustomPayrollReportPage = () => {
   const router = useRouter();
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
   return (
     <Stack gap={3} mx={5} mb={10} mt={6}>
       <Stack
@@ -28,7 +32,8 @@ const HrAdminViewCustomPayrollReportPage = () => {
         </div>
         <button
           onClick={() =>
-            router.push('/hr-admin/payroll/generate-payroll-report')
+            // router.push('/hr-admin/payroll/generate-payroll-report')
+            setShowDownloadModal(true)
           }
           style={{
             borderRadius: '8px',
@@ -95,8 +100,9 @@ const HrAdminViewCustomPayrollReportPage = () => {
                   <Box
                     sx={{
                       fontWeight: 600,
-                      fontSize: '16px',
-                      color: '#1B1B1B',
+                      fontSize: '14px',
+                      color: '#0A112F',
+                      opacity: 0.5,
                     }}
                   >
                     {item.title}
@@ -124,6 +130,10 @@ const HrAdminViewCustomPayrollReportPage = () => {
         </Stack>
       </div>
       <ViewCustomPayrollReport />
+      <DownloadReportModal
+        open={showDownloadModal}
+        onCloseFn={() => setShowDownloadModal(false)}
+      />
     </Stack>
   );
 };

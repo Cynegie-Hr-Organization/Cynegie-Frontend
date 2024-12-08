@@ -5,7 +5,10 @@ import SectionWithCards from '@/app/_components/shared/section-with-cards';
 import keyPerformanceIndiciatorsSectionData from './sections/key-performance-indicators/data';
 import ReviewCycleProgressSection from './sections/review-cycle-progress';
 import Page from '@/app/_components/shared/page';
-import performanceManagementPageData from './data';
+import TabFormat from '@/app/_components/shared/tabs';
+import Table from '@/app/_components/shared/table';
+import usePerformanceManagementPage from './hooks/usePerformanceManagementPage';
+import Modal from '../../modals/modal';
 
 const EmployeePerformanceManagement = () => {
   const sectionsWithCards = [
@@ -14,6 +17,13 @@ const EmployeePerformanceManagement = () => {
   ].map((sectionData, index) => (
     <SectionWithCards {...sectionData} key={index} />
   ));
+
+  const {
+    performanceManagementPageData,
+    goalsTableData,
+    selfAssessmentsTableData,
+    completeModalData,
+  } = usePerformanceManagementPage();
 
   return (
     <Page {...performanceManagementPageData}>
@@ -30,6 +40,16 @@ const EmployeePerformanceManagement = () => {
           )
         )}
       </Grid2>
+      <TabFormat
+        tabs={[
+          { name: 'Goals', component: <Table {...goalsTableData} /> },
+          {
+            name: 'Self Assessments',
+            component: <Table {...selfAssessmentsTableData} />,
+          },
+        ]}
+      />
+      <Modal {...completeModalData} />
     </Page>
   );
 };

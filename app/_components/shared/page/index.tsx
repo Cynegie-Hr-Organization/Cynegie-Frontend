@@ -1,4 +1,4 @@
-import PageHeading from '../../employee/pages/attendance-and-time-tracking/heading';
+import PageHeading from './heading';
 import PageContainer from './container';
 import { PageProps } from './types';
 

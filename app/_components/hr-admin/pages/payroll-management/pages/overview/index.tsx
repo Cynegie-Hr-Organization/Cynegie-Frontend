@@ -22,6 +22,7 @@ import { useRouter } from 'next/navigation';
 import { DateRangePicker } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import dayjs from 'dayjs';
+import { color } from '@/constants';
 
 const HrAdminPayrollOverviewPage = () => {
   const router = useRouter();
@@ -105,9 +106,18 @@ const HrAdminPayrollOverviewPage = () => {
               <ChevronLeft sx={{ transform: 'rotate(270deg)' }} />
             </button>
             <Button
-              sx={{ display: { xs: 'none', md: 'block' } }}
+              sx={{
+                display: {
+                  xs: 'none',
+                  md: 'block',
+                  textTransform: 'none',
+                  backgroundColor: color.info.dark,
+                },
+                boxShadow: 'none',
+                borderRadius: 1,
+                height: '37.5px',
+              }}
               variant='contained'
-              className='common-button'
               onClick={() => router.push('/hr-admin/payroll/create-payroll')}
             >
               Create Payroll
@@ -139,15 +149,15 @@ const HrAdminPayrollOverviewPage = () => {
           ].map((item, index) => (
             <Grid2
               key={index}
-              size={{ xs: 12, sm: 6, md: 3 }}
+              size={{ xs: 12, sm: 6, md: 6, lg: 3 }}
               className='common-card'
             >
               <Stack gap={3}>
                 <Box
                   sx={{
-                    fontWeight: 600,
-                    fontSize: '16px',
-                    color: '#1B1B1B',
+                    fontWeight: 500,
+                    fontSize: '11.9px',
+                    color: '#848897',
                   }}
                 >
                   {item.title}

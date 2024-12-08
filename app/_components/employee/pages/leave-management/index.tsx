@@ -1,83 +1,21 @@
 'use client';
 import Page from '@/app/_components/shared/page';
-import leaveManagementPageData from './data';
-import { Grid2, Stack } from '@mui/material';
-import leaveManagementChartsData, {
-  leaveManagementChartLabels,
-} from './charts/data';
-import DoughnutChart from '@/app/_components/shared/charts/donut-chart';
-import {
-  color,
-  defaultDonutChartData,
-  defaultDonutChartOptions,
-} from '@/constants';
-import DotLegend from './charts/legend';
+import useLeaveManagementPage from './hooks/useLeaveManagementPage';
+import LeaveManagementChart from './chart';
 
-const getAvailableDays = (totalDays: number, usedDays: number) => {
-  return totalDays - usedDays;
-};
-
-const EmployeeLeaveManagementPage: React.FC = () => {
+const EmployeeLeaveManagement: React.FC = () => {
+  const { pageData, chartsData } = useLeaveManagementPage();
   return (
-    <Page {...leaveManagementPageData}>
-      <Grid2 container spacing={2}>
-        {leaveManagementChartsData.map((section, index) => (
-          <Grid2
-            className='common-card'
-            key={index}
-            size={{ xs: 12, sm: 6, md: 3 }}
-          >
-            <Stack gap={5}>
-              <div className=' card-title-small'>{section.title}</div>
-              <DoughnutChart
-                data={{
-                  ...defaultDonutChartData,
-                  labels: leaveManagementChartLabels,
-                  datasets: [
-                    {
-                      ...defaultDonutChartData.datasets[0],
-                      data: [
-                        section.usedDays,
-                        getAvailableDays(section.totalDays, section.usedDays),
-                      ],
-                      backgroundColor: [
-                        section.usedDaysColor,
-                        defaultDonutChartData.datasets[0].backgroundColor[1],
-                      ],
-                    },
-                  ],
-                }}
-                options={defaultDonutChartOptions}
-                chartWidth={100}
-                chartHeight={60}
-                centerText={{
-                  value: section.usedDays,
-                  denominator: section.totalDays,
-                }}
-              />
-              <Stack gap={1}>
-                {leaveManagementChartLabels.map((label, index) => (
-                  <DotLegend
-                    key={index}
-                    label={label}
-                    dotColor={
-                      index == 0 ? section.usedDaysColor : color.grey.light
-                    }
-                    value={
-                      index == 0
-                        ? section.usedDays
-                        : getAvailableDays(section.totalDays, section.usedDays)
-                    }
-                    countedItemName='day'
-                  />
-                ))}
-              </Stack>
-            </Stack>
-          </Grid2>
+    <Page {...pageData}>
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-5'>
+        {chartsData.map((chart) => (
+          <div key={chart.title} className='common-card'>
+            <LeaveManagementChart {...chart} />
+          </div>
         ))}
-      </Grid2>
+      </div>
     </Page>
   );
 };
 
-export default EmployeeLeaveManagementPage;
+export default EmployeeLeaveManagement;

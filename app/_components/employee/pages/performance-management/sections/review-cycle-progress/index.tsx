@@ -19,11 +19,11 @@ const ReviewCycleProgressSection = () => {
       <DoughnutChart
         data={reviewCycleProgressChartData}
         options={reviewCycleProgressChartOptions}
-        chartWidth={100}
-        chartHeight={60}
-        centerText={{ value: 75 }}
-        isValuePercentage
-        containerSx={{ height: '166px' }}
+        chartwidth={100}
+        chartheight={60}
+        centertext={{ value: 75 }}
+        isvaluepercentage={true}
+        containersx={{ height: '166px' }}
       />
       <LegendSeries
         color={color.warning.dark}

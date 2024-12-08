@@ -7,10 +7,10 @@ import { DonutChartProps } from './types';
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 const DoughnutChart: React.FC<DonutChartProps> = (props) => {
-  const { isValuePercentage = false } = props;
+  const { isvaluepercentage = false } = props;
 
   return (
-    <Box sx={{ ...props.containerSx, width: '100%', position: 'relative' }}>
+    <Box sx={{ ...props.containersx, width: '100%', position: 'relative' }}>
       <Doughnut {...props} />
       <div
         style={{
@@ -22,10 +22,10 @@ const DoughnutChart: React.FC<DonutChartProps> = (props) => {
         }}
       >
         <ChartCenterText
-          value={props.centerText?.value}
-          label={props.centerText?.label}
-          isPercentage={isValuePercentage}
-          denominator={props.centerText?.denominator}
+          value={props.centertext?.value}
+          label={props.centertext?.label}
+          isPercentage={isvaluepercentage}
+          denominator={props.centertext?.denominator}
         />
       </div>
     </Box>

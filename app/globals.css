@@ -104,9 +104,9 @@ body {
     color: #525866;
 }
 
- .rs-input, .rs-input-group {
+ /* .rs-input, .rs-input-group {
     border-width: 2px !important;
-}
+} */
 
 /* Disable hover effect for date range selection */
 /* .rs-picker-calendar-cell:hover {
