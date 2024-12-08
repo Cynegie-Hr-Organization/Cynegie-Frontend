@@ -89,7 +89,7 @@ const KpiPage = () => {
         title="KPI Dashboard"
         description="Manage employee and organization KPI"
         buttonLabel="View Detailed Report"
-        to="/hr-admin/performance/kpi/new"
+        to="/hr-admin/performance/kpi/details"
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
@@ -159,6 +159,7 @@ const KpiPage = () => {
             ]}
           />
         </div>
+
         <div className="common-card flex flex-col gap-y-4">
           <AppMenubar
             overrideClassName='border-none'
