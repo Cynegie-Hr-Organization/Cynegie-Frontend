@@ -17,7 +17,7 @@ const PageHeading: React.FC<PageHeadingProps> = (props) => {
         </div>
       )}
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ flexGrow: 1 }}>
+        <div className='flex flex-col gap-1 flex-grow'>
           <div
             className={
               props.type === 'modal' || props.smallHeading

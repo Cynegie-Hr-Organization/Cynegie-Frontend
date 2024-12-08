@@ -2,6 +2,7 @@ export type GridLayout =
   | 'request-correction'
   | 'request-feedback'
   | 'view-details'
+  | 'view-details-two'
   | 'development-plan';
 
 export const getGridLayout = (
@@ -23,6 +24,10 @@ export const getGridLayout = (
   }
   if (layout === 'development-plan') {
     return { xs: 12, sm: 3 };
+  }
+  if (layout === 'view-details-two') {
+    const sm = index === 3 ? 12 : 4;
+    return { xs: 12, sm: sm };
   }
   return { xs: 12 };
 };

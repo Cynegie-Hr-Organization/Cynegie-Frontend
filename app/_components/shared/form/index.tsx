@@ -9,6 +9,7 @@ import FieldLabel from '../detail-group/detail/value';
 import { FormProps } from './types';
 import { getGridLayout } from '@/utils/grid-layout';
 import ButtonGroup from '../button-group';
+import { textFieldStyle } from './styles';
 
 const Form: React.FC<FormProps> = (props) => {
   const { inputFields, isCard, gridSpacing, layout, buttonGroup } = props;
@@ -26,6 +27,15 @@ const Form: React.FC<FormProps> = (props) => {
             >
               <div className='flex flex-col gap-2'>
                 <FieldLabel wrapText value={field.name ?? ''} />
+                {field.type == 'text' && (
+                  <TextField
+                    sx={textFieldStyle}
+                    fullWidth
+                    placeholder={field.placeholder}
+                    value={field.value}
+                    onChange={(e) => field.setValue?.(e.target.value)}
+                  />
+                )}
                 {field.type == 'message' && (
                   <TextField
                     fullWidth

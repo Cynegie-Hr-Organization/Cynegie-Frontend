@@ -1,52 +1,13 @@
 'use client';
-import { Box, Button, Grid2, Stack } from '@mui/material';
+import { Box, Grid2, Stack } from '@mui/material';
 import PayrollActivitiesTable from '../../tables/payroll/payroll-activities';
+import usePayrollPage from './hooks/usePayrollPage';
+import Page from '@/app/_components/shared/page';
 
 const EmployeePayroll = () => {
+  const { pageProps } = usePayrollPage();
   return (
-    <Stack gap={3} mx={5} mb={10} mt={6}>
-      <Stack direction='row' alignItems='center'>
-        <Stack flexGrow={1} gap={1}>
-          <div className='section-heading'>Employee Payroll Dashboard</div>
-          <div className='section-subtitle'>
-            Access your Employee Payroll Dashboard
-          </div>
-        </Stack>
-        <Stack direction='row' gap={2}>
-          <Button
-            // disabled
-            // onClick={() => router.push('/hr-admin/payroll/salary-advance')}
-            style={{
-              borderRadius: '8px',
-              border: '1.5px solid #98A2B3',
-              color: '#98A2B3',
-              fontSize: '16px',
-              fontWeight: 600,
-              padding: '8px 20px',
-              textTransform: 'none',
-              // width: '250px',
-              //   backgroundColor: '#0035C3',
-            }}
-          >
-            Download Payslip
-          </Button>
-          <button
-            //   onClick={() => setOpenRequestBenefitModal(true)}
-            style={{
-              borderRadius: '8px',
-              border: '1.5px solid #98A2B3',
-              color: '#FFFFFF',
-              fontSize: '16px',
-              fontWeight: 600,
-              padding: '8px 20px',
-              // width: '250px',
-              backgroundColor: '#0035C3',
-            }}
-          >
-            View Payslip
-          </button>
-        </Stack>
-      </Stack>
+    <Page {...pageProps}>
       <Grid2 columnSpacing={2} rowSpacing={2} container>
         {[
           {
@@ -104,7 +65,7 @@ const EmployeePayroll = () => {
         ))}
       </Grid2>
       <PayrollActivitiesTable getSelectedRows={() => {}} />
-    </Stack>
+    </Page>
   );
 };
 
