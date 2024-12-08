@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface MoveStageModalProps {
   isOpen: boolean;
@@ -60,38 +60,37 @@ const MoveStageModal: React.FC<MoveStageModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-  <div>
-    <label
-      htmlFor="currentStage"
-      className="block text-sm font-medium text-gray-700"
-    >
-      Current Stage
-    </label>
-    <input
-      id="currentStage"
-      type="text"
-      value="Screening"
-      readOnly
-      className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-300"
-    />
-  </div>
+            <div>
+              <label
+                htmlFor="currentStage"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Current Stage
+              </label>
+              <input
+                id="currentStage"
+                type="text"
+                value="Screening"
+                readOnly
+                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-300"
+              />
+            </div>
 
-  <div>
-    <label
-      htmlFor="nextStage"
-      className="block text-sm font-medium text-gray-700"
-    >
-      Next Stage <span className="text-red-500">*</span>
-    </label>
-    <input
-      id="nextStage"
-      type="text"
-      placeholder="Enter next stage"
-      className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-300"
-    />
-  </div>
-</div>
-
+            <div>
+              <label
+                htmlFor="nextStage"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Next Stage <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="nextStage"
+                type="text"
+                placeholder="Enter next stage"
+                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-300"
+              />
+            </div>
+          </div>
 
           <div>
             <label

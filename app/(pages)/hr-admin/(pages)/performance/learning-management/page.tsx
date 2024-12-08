@@ -1,9 +1,7 @@
 "use client"
 
 import AppButton from "@/app/_components/shared/button"
-import Link from "next/link"
 import LearningManagementTable from "./table"
-import { useRouter } from "next/dist/client/components/navigation"
 import { DrawerDialog } from "@/components/drawer/modal"
 import { AppSelect } from "@/app/_components/shared/select"
 import InputText, { InputTextArea } from "@/app/_components/shared/input-text"

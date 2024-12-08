@@ -3,18 +3,17 @@
 import React, { useEffect, useState } from 'react';
 import CardLayout from "@/app/_components/shared/cards";
 import { AppRadialChart } from "./radial-chart";
-import { ChartConfig } from "@/components/ui/chart";
 import { Avatar } from "@mui/material";
 import { GoDotFill } from 'react-icons/go';
 import { IoIosArrowForward } from 'react-icons/io';
 import GoalDetailTable from './table';
 import { HiOutlineUserGroup } from 'react-icons/hi';
 
-interface IPieChartData {
-  task: string;
-  value: number;
-  fill: string;
-}
+// interface IPieChartData {
+//   task: string;
+//   value: number;
+//   fill: string;
+// }
 
 const GoalDetailPage = () => {
   return (
@@ -33,11 +32,11 @@ const PerformanceReviewCard = () => {
 
   const colors = { grey: '#E6EBF9', yellow: '#FFAD33', green: '#0F973D', blue: '#335DCF' };
 
-  const piechartData: IPieChartData[] = [
-    { task: "completed", value: 45, fill: colors.green },
-    { task: "active", value: 30, fill: colors.blue },
-    { task: "closed", value: 25, fill: colors.yellow },
-  ]
+  // const piechartData: IPieChartData[] = [
+  //   { task: "completed", value: 45, fill: colors.green },
+  //   { task: "active", value: 30, fill: colors.blue },
+  //   { task: "closed", value: 25, fill: colors.yellow },
+  // ]
 
   const [isClient, setIsClient] = useState(false);
 

@@ -9,10 +9,15 @@ import { FiDownload } from "react-icons/fi"
 import GoalsTable from "./goal-table"
 import PerformanceTable from "./performance-table"
 import { useTabNavigation } from "@/app/hooks/useTabNavigation"
+import { useRouter } from "next/navigation"
+
+
+
 
 type Tab = "performance" | "goal";
 
 const EmployeeReviewPage = () => {
+  const router = useRouter();
   const TABS: Tab[] = ["goal", "performance"];
 
   const {
@@ -43,7 +48,7 @@ const EmployeeReviewPage = () => {
     <div className="mb-6">
       <div className="flex items-center justify-between">
         <Breadcrumb />
-        <AppButton label="Close Review" className="btn-primary !px-4" />
+        <AppButton label="Close Review" className="btn-primary !px-4" onClick={() => router.back()} />
       </div>
 
 

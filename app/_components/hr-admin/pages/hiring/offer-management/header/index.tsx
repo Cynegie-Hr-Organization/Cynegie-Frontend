@@ -2,15 +2,12 @@ import React from "react";
 import { useRouter } from "next/navigation";
 
 const HiringCandidateOfferHeader = () => {
-
   const router = useRouter();
 
-
   const handleCreateJobOfferClick = () => {
-      router.push("/hr-admin/hiring/offer-management/create-job-offer")
-  }
- 
-  
+    router.push("/hr-admin/hiring/offer-management/create-job-offer");
+  };
+
   return (
     <>
       {/* Header Section */}
@@ -19,17 +16,14 @@ const HiringCandidateOfferHeader = () => {
           Offer Management
         </h1>
         <div className="flex flex-row items-center">
-         
           <button
-            className="px-6 py-2 text-base font-semibold bg-[#0035C3] text-white rounded-lg hover:bg-blue-600 focus:outline-none"
+            className="px-2 md:px-6 py-2 text-sm md:text-base font-semibold bg-[#0035C3] text-white rounded-lg hover:bg-blue-600 focus:outline-none"
             onClick={handleCreateJobOfferClick}
           >
             Create job offer
           </button>
         </div>
       </header>
-
-    
     </>
   );
 };

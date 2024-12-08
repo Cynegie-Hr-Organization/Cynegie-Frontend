@@ -10,7 +10,10 @@ import { useState } from "react";
 const GiveFeeedback = () => {
   const [formData, setFormData] = useState({
     recipient: '',
-    feedbackType: '',
+    feedbackType: {
+      positive: false,
+      constructive: false,
+    },
     comment: '',
     rating: '',
   });
@@ -31,8 +34,32 @@ const GiveFeeedback = () => {
       <div className="space-y-2">
         <p className="text-sm font-semibold">Feedback Type</p>
         <div className="space-y-3">
-          <AppRadio label="Positive" id="positive" onChange={(value) => { setFormData({ ...formData, feedbackType: value }) }} />
-          <AppRadio label="Constructive" id="constructive" onChange={(value) => { setFormData({ ...formData, feedbackType: value }) }} />
+          <AppRadio
+            id="positive"
+            label="Positive"
+            checked={formData.feedbackType.positive}
+            onChange={(value) => {
+              setFormData(prev => ({
+                ...prev,
+                feedbackType: {
+                  ...prev.feedbackType,
+                  positive: value
+                }
+              }))
+            }} />
+          <AppRadio
+            id="constructive"
+            label="Constructive"
+            checked={formData.feedbackType.constructive}
+            onChange={(value) => { 
+              setFormData(prev => ({ 
+                ...prev, 
+                feedbackType: { 
+                  ...prev.feedbackType, 
+                  constructive: value 
+                } 
+              })) 
+            }} />
         </div>
       </div>
 

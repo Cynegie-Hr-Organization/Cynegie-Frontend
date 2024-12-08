@@ -101,45 +101,43 @@ const AddQuestionModal = ({ trigger }: { trigger: ReactNode }) => {
           onBtn1Click={() => { }}
           onBtn2Click={() => { }}
         />
-      }
-      children={
-        <div className="space-y-4">
-          <InputText
-            label="Question"
-            id="question"
-            requiredField
-            placeholder="Enter question"
-            onChange={() => { }}
-            value=""
-          />
+      }>
+      <form className="space-y-4">
+        <InputText
+          label="Question"
+          id="question"
+          requiredField
+          placeholder="Enter question"
+          onChange={() => { }}
+          value=""
+        />
 
-          <InputTextArea
-            label="Description"
-            id="description"
-            placeholder="Enter description"
-            requiredField
-            onChange={() => { }}
-            value=""
-          />
+        <InputTextArea
+          label="Description"
+          id="description"
+          placeholder="Enter description"
+          requiredField
+          onChange={() => { }}
+          value=""
+        />
 
-          <div className="flex flex-col gap-4">
-            <p className="font-semibold">Response Criteria</p>
-            <div className="space-y-6">
-              <Criteria
-                label="Rating, Multi Select"
-                id="rating-multi-select"
-                onChange={() => { }}
-              />
-              <Criteria
-                label="Comment"
-                id="comment"
-                onChange={() => { }}
-              />
-            </div>
+        <div className="flex flex-col gap-4">
+          <p className="font-semibold">Response Criteria</p>
+          <div className="space-y-6">
+            <Criteria
+              label="Rating, Multi Select"
+              id="rating-multi-select"
+              onChange={() => { }}
+            />
+            <Criteria
+              label="Comment"
+              id="comment"
+              onChange={() => { }}
+            />
           </div>
         </div>
-      }
-    />
+      </form>
+    </DrawerDialog>
   )
 }
 

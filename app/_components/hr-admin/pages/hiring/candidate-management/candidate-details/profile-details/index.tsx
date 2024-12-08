@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const ProfileDetails = () => {
   return (
@@ -7,7 +7,10 @@ const ProfileDetails = () => {
       <section className="mb-6">
         <h1 className="text-lg font-semibold mb-2">About</h1>
         <p className="text-sm text-gray-900">
-          “Empathy-driven and innovation-focused, I’m a UX Designer dedicated to crafting user experience that not only meet but exceed expectations. With passion for creating intuitive and human-centered designs, I’m shaping the future of user experience, one solution at a time…”
+          “Empathy-driven and innovation-focused, I’m a UX Designer dedicated to
+          crafting user experience that not only meet but exceed expectations.
+          With passion for creating intuitive and human-centered designs, I’m
+          shaping the future of user experience, one solution at a time…”
         </p>
       </section>
 
@@ -29,7 +32,8 @@ const ProfileDetails = () => {
             September 2022 - November 2024
           </p>
           <p className="text-sm text-gray-900">
-            Have worked on numerous real-life projects with complex concepts into visually appealing products.
+            Have worked on numerous real-life projects with complex concepts
+            into visually appealing products.
           </p>
         </div>
 
@@ -47,7 +51,11 @@ const ProfileDetails = () => {
             September 2022 - November 2024
           </p>
           <p className="text-sm text-gray-900">
-            I had the opportunity to work with “IBM” for a few years, where I specialize in conducting UX Research for complex and challenging projects. During my time there, I developed a strong expertise in uncovering user insights and informing design decisions to drive business success.
+            I had the opportunity to work with “IBM” for a few years, where I
+            specialize in conducting UX Research for complex and challenging
+            projects. During my time there, I developed a strong expertise in
+            uncovering user insights and informing design decisions to drive
+            business success.
           </p>
         </div>
       </section>

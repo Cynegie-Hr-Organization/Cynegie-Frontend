@@ -1,7 +1,6 @@
 "use client"
 
 import { LuPlusCircle, LuTrash } from "react-icons/lu";
-import { useRouter } from "next/navigation";
 import ContinuousFeedbackTable from "./table";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { IoIosArrowDown } from "react-icons/io";
@@ -22,7 +21,6 @@ const ContinuousFeedbackPage = () => {
 
 
 const PageHeader = () => {
-  const router = useRouter();
   return (
     <div className="flex items-center justify-between gap-y-4">
       <div>
@@ -96,7 +94,7 @@ const RecognizeAchievementModal = ({ trigger }: { trigger: React.ReactNode }) =>
             placeholder="Select Employee"
             requiredField
             value={""}
-            onChange={(e) => { }}
+            onChange={() => { }}
           />
 
           <InputText
@@ -105,7 +103,7 @@ const RecognizeAchievementModal = ({ trigger }: { trigger: React.ReactNode }) =>
             placeholder="Select Recognition type"
             requiredField
             value={""}
-            onChange={(e) => { }}
+            onChange={() => { }}
           />
 
           <InputText
@@ -114,7 +112,7 @@ const RecognizeAchievementModal = ({ trigger }: { trigger: React.ReactNode }) =>
             placeholder="Select Date of Recognition"
             requiredField
             value={""}
-            onChange={(e) => { }}
+            onChange={() => { }}
           />
 
           <InputTextArea
@@ -123,12 +121,12 @@ const RecognizeAchievementModal = ({ trigger }: { trigger: React.ReactNode }) =>
             placeholder="Enter your comment here"
             requiredField
             value={""}
-            onChange={(e) => { }}
+            onChange={() => { }}
           />
 
           <AppFileUpload
             label="Attachment"
-            onChange={(e) => { }}
+            onChange={() => { }}
           />
         </div>
       </form>

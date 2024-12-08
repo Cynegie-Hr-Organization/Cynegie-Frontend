@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react';
-import Pagination from './pagination';
-import { useRouter } from 'next/navigation';
+import React, { useState } from "react";
+import Pagination from "./pagination";
+import { useRouter } from "next/navigation";
 
 interface Column<T> {
   header: string;
@@ -64,10 +64,8 @@ const JobDetailsTable = <T extends Record<string, any>>({
             />
           </svg>
         </div>
-        <div className="relative" >
-          <button
-            className="flex items-center border border-gray-300 rounded-md px-2 md:px-4 py-1 md:py-2 text-sm hover:bg-gray-100"
-          >
+        <div className="relative">
+          <button className="flex items-center border border-gray-300 rounded-md px-2 md:px-4 py-1 md:py-2 text-sm hover:bg-gray-100">
             <svg
               width="20"
               height="21"
@@ -91,8 +89,6 @@ const JobDetailsTable = <T extends Record<string, any>>({
             </svg>
             Filter
           </button>
-
-         
         </div>
       </div>
 
@@ -102,7 +98,9 @@ const JobDetailsTable = <T extends Record<string, any>>({
           <thead>
             <tr className="border-b bg-gray-50">
               {columns.map((column, index) => (
-                <th key={index} className="p-2">{column.header}</th>
+                <th key={index} className="p-2">
+                  {column.header}
+                </th>
               ))}
               {showActions && (
                 <th className="p-2 justify-end">
@@ -121,7 +119,7 @@ const JobDetailsTable = <T extends Record<string, any>>({
                 ))}
                 {showActions && (
                   <td className="p-2 pr-2 justify-center">
-    <div className="relative flex justify-center">
+                    <div className="relative flex justify-center">
                       <button
                         onClick={() => toggleDropdown(rowIndex)}
                         className="p-2 bg-gray-100 rounded-md hover:bg-gray-200"
@@ -168,19 +166,21 @@ const JobDetailsTable = <T extends Record<string, any>>({
                         <div className="absolute top-0 right-24 bg-white shadow-lg border flex flex-col border-gray-300 w-44 rounded-md mt-1 p-2 z-10">
                           <button
                             className="text-sm p-1 text-gray-900 hover:bg-gray-100"
-                            onClick={() => router.push('/hr-admin/hiring/job-details')}
+                            onClick={() =>
+                              router.push("/hr-admin/hiring/job-details")
+                            }
                           >
                             View Details
                           </button>
                           <button
                             className="text-sm p-1 text-gray-900 hover:bg-gray-100"
-                            onClick={() => router.push('/hr-admin/hiring/edit-job')}
+                            onClick={() =>
+                              router.push("/hr-admin/hiring/edit-job")
+                            }
                           >
                             Edit
                           </button>
-                          <button
-                            className="text-sm p-1 text-red-500 hover:bg-gray-100"
-                          >
+                          <button className="text-sm p-1 text-red-500 hover:bg-gray-100">
                             Delete
                           </button>
                         </div>

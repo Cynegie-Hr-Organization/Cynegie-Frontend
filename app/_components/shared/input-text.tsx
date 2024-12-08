@@ -29,7 +29,7 @@ const InputText = ({ label, id, placeholder, requiredField = false, type = 'text
     </div>
   );
 };
-export const InputTextArea = ({ label, id, placeholder, requiredField = false, type = 'text', onChange, value }: {
+export const InputTextArea = ({ label, id, placeholder, requiredField = false, onChange, value }: {
   label: string,
   id: string,
   placeholder: string,

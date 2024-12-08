@@ -1,7 +1,5 @@
-import { LuListFilter, LuMoreVertical } from "react-icons/lu";
-import AppMenubar from "@/app/_components/shared/menubar";
+import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
-import Link from "next/link";
 import { Checkbox } from "@/components/ui/checkbox";
 
 

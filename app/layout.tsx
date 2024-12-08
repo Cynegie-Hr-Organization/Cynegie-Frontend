@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import QueryClientProvider from "@/contexts/ReactQueryProvider";
 
 export const metadata: Metadata = {
   title: "Cynegie",
@@ -13,8 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased font-sans" style={{ fontFamily: "'Open Sans', sans-serif" }}>
-        {children}
+      <body className="antialiased font-sans">
+        <ToastContainer />
+        <QueryClientProvider>{children}</QueryClientProvider>
       </body>
     </html>
   );

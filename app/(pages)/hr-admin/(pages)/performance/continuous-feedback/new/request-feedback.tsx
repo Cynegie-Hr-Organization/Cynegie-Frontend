@@ -1,6 +1,6 @@
 'use client'
 
-import AppButton from "@/app/_components/shared/button";
+
 import CardLayout from "@/app/_components/shared/cards";
 import { InputTextArea } from "@/app/_components/shared/input-text";
 import AppRadio from "@/app/_components/shared/radio";
@@ -13,7 +13,7 @@ const RequestFeedback = () => {
 
   const [formData, setFormData] = useState({
     recipient: '',
-    feedbackType: '',
+    feedbackType: false,
     comment: '',
     dueDate: "",
   });
@@ -38,8 +38,8 @@ const RequestFeedback = () => {
       <div className="space-y-2">
         <p className="text-sm font-semibold">Feedback Type</p>
         <div className="space-y-3">
-          <AppRadio label="Positive" id="positive" onChange={(value) => { setFormData({ ...formData, feedbackType: value }) }} />
-          <AppRadio label="Constructive" id="constructive" onChange={(value) => { setFormData({ ...formData, feedbackType: value }) }} />
+          <AppRadio label="Positive" id="positive" checked={formData.feedbackType} onChange={(value) => { setFormData({ ...formData, feedbackType: value }) }} />
+          <AppRadio label="Constructive" id="constructive" checked={formData.feedbackType} onChange={(value) => { setFormData({ ...formData, feedbackType: value }) }} />
         </div>
       </div>
 

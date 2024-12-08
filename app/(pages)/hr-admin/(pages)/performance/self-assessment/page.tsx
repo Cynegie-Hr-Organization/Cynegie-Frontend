@@ -1,9 +1,6 @@
 "use client"
 
-import AppButton from "@/app/_components/shared/button"
-import Link from "next/link"
 import SelfAssessmentTable from "./table"
-import { useRouter } from "next/dist/client/components/navigation"
 import { PageHeader } from "@/app/_components/hr-admin/performance/page-header"
 
 const SelfAssessmentPage = () => {

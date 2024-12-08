@@ -60,14 +60,14 @@ const PerformanceGoalsCreatePage = () => {
   };
 
 
-  const isFormValid = formData.goalName.trim() !== "" &&
-    formData.startDate &&
-    formData.dueDate &&
-    formData.daysOfGrace.trim() !== "" &&
-    formData.assignedEmployees.length > 0 &&
-    formData.priority.trim() !== "" &&
-    formData.alignment.trim() !== "" &&
-    formData.milestones.length > 0;
+  // const isFormValid = formData.goalName.trim() !== "" &&
+  //   formData.startDate &&
+  //   formData.dueDate &&
+  //   formData.daysOfGrace.trim() !== "" &&
+  //   formData.assignedEmployees.length > 0 &&
+  //   formData.priority.trim() !== "" &&
+  //   formData.alignment.trim() !== "" &&
+  //   formData.milestones.length > 0;
 
   return (
     <form className="space-y-8 pt-5 pb-10" onSubmit={handleSubmit}>

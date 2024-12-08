@@ -12,6 +12,13 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
     const router = useRouter();
     const [openDropDown, setOpenDropDown] = useState<string | null>(null);
 
+    interface DashboardMenu {
+        name: string;
+        icon: JSX.Element;
+        path: string;
+        subMenu?: { name: string; path: string }[];
+    }
+
     const menuLinks: DashboardMenu[] = [
         {
             name: 'Dashboard',
@@ -143,10 +150,3 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
 };
 
 export default NavLinks;
-
-export interface DashboardMenu {
-    name: string;
-    path: string;
-    icon?: React.JSX.Element;
-    subMenu?: { name: string; path: string }[];
-}

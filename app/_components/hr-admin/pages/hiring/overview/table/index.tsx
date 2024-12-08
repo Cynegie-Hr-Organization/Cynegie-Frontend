@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
-import Pagination from './pagination';
+import React from "react";
+import Pagination from "@/app/_components/hr-admin/pages/hiring/shared/pagination";
 
 interface Column<T> {
   header: string;
@@ -38,7 +38,7 @@ const Table = <T extends Record<string, any>>({
             className="border border-gray-300 rounded-md px-3 py-2 text-sm pl-10"
           />
           {/* Search SVG Icon inside the input */}
-          
+
           <svg
             width="20"
             height="21"

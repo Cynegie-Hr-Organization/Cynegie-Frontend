@@ -1,7 +1,6 @@
-
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import { FC } from 'react';
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { FC } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,7 +9,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '../ui/alert-dialog';
+} from "../ui/alert-dialog";
 
 type SuccessModalTypes = {
   open: boolean;
@@ -47,7 +46,7 @@ export const SuccessModal: FC<SuccessModalTypes> = ({
             <div className="border-4 border-[#cedafc] rounded-full p-1 bg-[#cedafc]">
               <div className="bg-FreeSpeechBlue rounded-full lg:w-[86px] w-[63px] h-[63px] lg:h-[86px] flex justify-center items-center">
                 <Image
-                  src=''
+                  src=""
                   width={54}
                   height={46}
                   alt="good icon"
@@ -69,17 +68,17 @@ export const SuccessModal: FC<SuccessModalTypes> = ({
           <div className="w-full flex flex-col md:flex-row gap-2 justify-center px-2">
             <AlertDialogAction
               onClick={() => {
-                navigate.push(link ? link : '/app-permission-request');
+                navigate.push(link ? link : "/app-permission-request");
                 onClose();
               }}
               className={`bg-PersianBlue hover:bg-PersianBlue text-white ${btnOneclassName} w-[216px]`}
             >
-              {btnText ? btnText : 'Continue to App Dashboard'}
+              {btnText ? btnText : "Continue to App Dashboard"}
             </AlertDialogAction>
             {secondBtnText && (
               <AlertDialogAction
                 onClick={() => {
-                  navigate.push(secondBtnLink ? secondBtnLink : '');
+                  navigate.push(secondBtnLink ? secondBtnLink : "");
                   onClose();
                 }}
                 className={`bg-PersianBlue hover:bg-PersianBlue text-white w-[216px] ${btnTwoclassName}`}

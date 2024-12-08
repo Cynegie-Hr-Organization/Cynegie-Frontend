@@ -1,10 +1,6 @@
 import React from "react";
 
-
 const InterviewSchedulesHeader: React.FC = () => {
- 
- 
-
   return (
     <>
       {/* Header Section */}
@@ -12,12 +8,8 @@ const InterviewSchedulesHeader: React.FC = () => {
         <h1 className="text-xl md:text-[18px] font-bold text-gray-800 md:mb-4">
           Scheduling Interview
         </h1>
-
-       
-        
       </header>
-
-       </>
+    </>
   );
 };
 

@@ -5,7 +5,6 @@ import CardLayout from "@/app/_components/shared/cards"
 import { AppDatePicker } from "@/app/_components/shared/date-picker"
 import InputText from "@/app/_components/shared/input-text"
 import { AppSelect } from "@/app/_components/shared/select"
-import { Checkbox } from "@/components/ui/checkbox"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 

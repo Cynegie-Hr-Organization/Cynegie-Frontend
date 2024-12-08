@@ -1,13 +1,19 @@
-"use client"
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts"
+"use client";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-
+} from "@/components/ui/chart";
 
 const chartData = [
   { month: "Jan", pay: 150 },
@@ -21,41 +27,49 @@ const chartData = [
   { month: "Sep", pay: 250 },
   { month: "Oct", pay: 200 },
   { month: "Nov", pay: 200 },
-  { month: "Dec", pay: 200 }
+  { month: "Dec", pay: 200 },
 ];
-
 
 const chartConfig = {
   total: {
     label: "Total",
     color: "linear-gradient(90deg, #0035C380 0%, #0035C300 100%)",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 const formatLargeNumber = (value: number) => {
   if (value >= 1_000_000_000) {
-    return new Intl.NumberFormat('en-US', {
-      style: 'decimal',
-      maximumFractionDigits: 1,
-    }).format(value / 1_000_000_000) + 'B';
+    return (
+      new Intl.NumberFormat("en-US", {
+        style: "decimal",
+        maximumFractionDigits: 1,
+      }).format(value / 1_000_000_000) + "B"
+    );
   } else if (value >= 1_000_000) {
-    return new Intl.NumberFormat('en-US', {
-      style: 'decimal',
-      maximumFractionDigits: 1,
-    }).format(value / 1_000_000) + 'M';
+    return (
+      new Intl.NumberFormat("en-US", {
+        style: "decimal",
+        maximumFractionDigits: 1,
+      }).format(value / 1_000_000) + "M"
+    );
   } else if (value >= 1_000) {
-    return new Intl.NumberFormat('en-US', {
-      style: 'decimal',
-      maximumFractionDigits: 1,
-    }).format(value / 1_000) + 'k';
+    return (
+      new Intl.NumberFormat("en-US", {
+        style: "decimal",
+        maximumFractionDigits: 1,
+      }).format(value / 1_000) + "k"
+    );
   } else {
-    return new Intl.NumberFormat('en-US').format(value);
+    return new Intl.NumberFormat("en-US").format(value);
   }
 };
 
 export function GradientLineChart() {
   return (
-    <ChartContainer className="h-[300px] w-full mt-6 -ml-6" config={chartConfig}>
+    <ChartContainer
+      className="h-[300px] w-full mt-6 -ml-6"
+      config={chartConfig}
+    >
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           accessibilityLayer
@@ -68,7 +82,14 @@ export function GradientLineChart() {
           }}
         >
           <defs>
-            <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%" className="bg-amber-600">
+            <linearGradient
+              id="chartGradient"
+              x1="0%"
+              y1="0%"
+              x2="0%"
+              y2="100%"
+              className="bg-amber-600"
+            >
               <stop offset="0%" stopColor="#0035C3" stopOpacity={0.4} />
               <stop offset="100%" stopColor="#ffffff" stopOpacity={0} />
             </linearGradient>
@@ -89,7 +110,7 @@ export function GradientLineChart() {
           <YAxis
             dataKey="pay"
             type="number"
-            domain={['auto', 'auto']}
+            domain={["auto", "auto"]}
             tickLine={false}
             axisLine={false}
             tickFormatter={formatLargeNumber}
@@ -116,5 +137,5 @@ export function GradientLineChart() {
         </AreaChart>
       </ResponsiveContainer>
     </ChartContainer>
-  )
+  );
 }

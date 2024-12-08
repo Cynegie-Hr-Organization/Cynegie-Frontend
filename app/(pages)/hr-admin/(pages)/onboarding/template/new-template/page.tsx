@@ -60,33 +60,33 @@ const CreateNewTemplate = () => {
   const isLastStep = activeStep === TEMPLATE_STEPS[TEMPLATE_STEPS.length - 1];
 
   return (
-    <form className='mb-12'>
+    <form className="mb-12">
       <h3>Create New Template</h3>
 
-      <CardLayout className='mt-6 space-y-6'>
-        <div className='flex flex-col'>
-          <label htmlFor='template-name' className='text-sm font-semibold mb-1'>
+      <CardLayout className="mt-6 space-y-6">
+        <div className="flex flex-col">
+          <label htmlFor="template-name" className="text-sm font-semibold mb-1">
             <span className="after:content-['*'] after:ml-0.5 after:text-base after:text-red-500 block">
               Template Name
             </span>
           </label>
           <input
-            name='template-name'
-            type='text'
-            className='border outline-none rounded-lg p-2'
-            placeholder='Template Name'
+            name="template-name"
+            type="text"
+            className="border outline-none rounded-lg p-2"
+            placeholder="Template Name"
           />
         </div>
-        <div className='flex flex-col'>
-          <label htmlFor='template-name' className='text-sm font-semibold mb-1'>
+        <div className="flex flex-col">
+          <label htmlFor="template-name" className="text-sm font-semibold mb-1">
             <span className="after:content-['*'] after:ml-0.5 after:text-base after:text-red-500 block">
               Description
             </span>
           </label>
           <textarea
-            name='template-name'
-            className='border outline-none rounded-lg p-2 resize-none'
-            placeholder='Description'
+            name="template-name"
+            className="border outline-none rounded-lg p-2 resize-none"
+            placeholder="Description"
           />
         </div>
       </CardLayout>
