@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useRef } from "react";
-import Pagination from "./pagination";
+import Pagination from "@/app/_components/hr-admin/pages/hiring/shared/pagination";
 import { useRouter } from "next/navigation";
 import { Dropdown } from "../../../../../../../../_components/ui/dropdown";
 

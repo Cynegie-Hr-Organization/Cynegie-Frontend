@@ -1,16 +1,11 @@
+import { Job } from "@/types";
 import React from "react";
 
-const JobCardContent = () => {
-  // Dummy data
-  const jobData = {
-    jobDescription:
-      "<p>This is a job description for the position of <strong>Software Engineer</strong>. Responsibilities include developing, testing, and maintaining web applications.</p>",
-    responsibilities:
-      "<ul><li>Health Insurance</li><li>Paid Time Off</li><li>Remote Work Options</li></ul>",
-    requiredSkill:
-      "<p>Candidates should have experience with <strong>React</strong>, <strong>Node.js</strong>, and strong problem-solving skills.</p>",
-  };
+interface JobCardContentProps {
+  job: Job;
+}
 
+const JobCardContent: React.FC<JobCardContentProps> = ({ job }) => {
   return (
     <>
       {" "}
@@ -18,7 +13,7 @@ const JobCardContent = () => {
       <div>
         <p className="mb-1 font-sans text-sm font-semibold">Job Description</p>
         <div
-          dangerouslySetInnerHTML={{ __html: jobData.jobDescription }}
+          dangerouslySetInnerHTML={{ __html: job.description }}
           className="mt-1 text-xs block py-2"
         />
       </div>
@@ -26,7 +21,7 @@ const JobCardContent = () => {
       <div>
         <p className="mb-1 font-sans text-sm font-semibold">Benefits</p>
         <div
-          dangerouslySetInnerHTML={{ __html: jobData.responsibilities }}
+          dangerouslySetInnerHTML={{ __html: job.benefits }}
           className="mt-1 text-xs block py-2"
         />
       </div>
@@ -34,7 +29,7 @@ const JobCardContent = () => {
       <div>
         <p className="mb-1 font-sans text-sm font-semibold">Required Skills</p>
         <div
-          dangerouslySetInnerHTML={{ __html: jobData.requiredSkill }}
+          dangerouslySetInnerHTML={{ __html: job.requiredSkills.join(", ") }}
           className="mt-1 text-xs block py-2"
         />
       </div>

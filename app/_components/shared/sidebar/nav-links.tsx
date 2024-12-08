@@ -1,17 +1,43 @@
-import React, { useState } from "react";
-// import Link from 'next/link';
+import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation"; // For pathname and router
 import { FaChevronDown } from "react-icons/fa6";
 import { RxDashboard } from "react-icons/rx";
 import { HiOutlineChartBar, HiOutlineUserPlus } from "react-icons/hi2";
 import { TbFileUpload } from "react-icons/tb";
+import { getSession } from "next-auth/react";
 
-const NavLinks = () => {
+interface DashboardMenu {
+  name: string;
+  path: string;
+  icon?: React.JSX.Element;
+  subMenu?: { name: string; path: string }[];
+}
+
+const NavLinks: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [openDropDown, setOpenDropDown] = useState<string | null>(null);
+  const [dashboardType, setDashboardType] = useState<
+    "hr-admin" | "it-admin" | null
+  >(null);
 
-  const menuLinks: DashboardMenu[] = [
+  // Fetch session and determine dashboardType
+  useEffect(() => {
+    const fetchSession = async () => {
+      const session = await getSession();
+
+      if (session?.user?.role?.toLowerCase() === "hr_admin") {
+        setDashboardType("hr-admin");
+      } else if (session?.user?.role?.toLowerCase() === "it_admin") {
+        setDashboardType("it-admin");
+      }
+    };
+
+    fetchSession();
+  }, []);
+
+  // Define menu links for different dashboards
+  const hrAdminLinks: DashboardMenu[] = [
     {
       name: "Dashboard",
       icon: <RxDashboard size={17.5} />,
@@ -59,9 +85,25 @@ const NavLinks = () => {
     },
   ];
 
+  const itAdminLinks: DashboardMenu[] = [
+    {
+      name: "Overview",
+      icon: <RxDashboard size={17.5} />,
+      path: "/it-admin",
+    },
+  ];
+
+  // Determine which menu to render
+  const menuLinks =
+    dashboardType === "hr-admin"
+      ? hrAdminLinks
+      : dashboardType === "it-admin"
+        ? itAdminLinks
+        : [];
+
   const isPathActive = (path: string) =>
-    path === "/hr-admin"
-      ? /^\/hr-admin$/.test(pathname)
+    path === `/${dashboardType}`
+      ? new RegExp(`^/${dashboardType}$`).test(pathname)
       : new RegExp(`^${path}.*$`).test(pathname);
 
   return (
@@ -93,7 +135,9 @@ const NavLinks = () => {
                 <div className="flex items-center gap-x-2">
                   <span>{item.icon}</span>
                   <span
-                    className={`text-[14px] font-sans ${isActive ? "font-semibold" : "font-normal"}`}
+                    className={`text-[14px] font-sans ${
+                      isActive ? "font-semibold" : "font-normal"
+                    }`}
                   >
                     {item.name}
                   </span>
@@ -137,10 +181,3 @@ const NavLinks = () => {
 };
 
 export default NavLinks;
-
-export interface DashboardMenu {
-  name: string;
-  path: string;
-  icon?: React.JSX.Element;
-  subMenu?: { name: string; path: string }[];
-}

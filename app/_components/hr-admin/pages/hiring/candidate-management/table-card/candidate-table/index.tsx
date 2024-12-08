@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useRef, useEffect } from "react";
-import Pagination from "./pagination";
+import Pagination from "@/app/_components/hr-admin/pages/hiring/shared/pagination";
 import { Dropdown } from "../../../../../../../_components/ui/dropdown";
 import { useRouter } from "next/navigation";
 import RejectCandidateModal from "../../reject-candidate-modal";
@@ -45,7 +45,7 @@ const CandidateTable = <T extends Record<string, any>>({
     {},
   );
 
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMoveModalOpen, setIsMoveModalOpen] = useState(false); // State for modal visibility
 
   // Toggle filter dropdown

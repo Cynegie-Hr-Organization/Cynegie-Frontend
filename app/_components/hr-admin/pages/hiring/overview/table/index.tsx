@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import Pagination from "./pagination";
+import Pagination from "@/app/_components/hr-admin/pages/hiring/shared/pagination";
 
 interface Column<T> {
   header: string;

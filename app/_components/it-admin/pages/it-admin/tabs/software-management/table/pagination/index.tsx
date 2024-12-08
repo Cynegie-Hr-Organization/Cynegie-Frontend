@@ -2,7 +2,6 @@ import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface PaginationProps {
-  totalPages: number;
   totalItems: number;
   itemsPerPage: number;
   currentPage: number;
@@ -11,13 +10,14 @@ interface PaginationProps {
 }
 
 const Pagination: React.FC<PaginationProps> = ({
-  totalPages,
   totalItems,
   itemsPerPage,
   currentPage,
   onPageChange,
   onItemsPerPageChange,
 }) => {
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
   return (
     <div className="flex items-center justify-between mt-4">
       <div className="flex items-center">

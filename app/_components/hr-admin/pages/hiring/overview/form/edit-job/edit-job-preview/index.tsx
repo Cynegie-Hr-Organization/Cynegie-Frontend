@@ -1,29 +1,19 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import DropdownWithSearchAndMultiSelect from "@/app/_components/ui/multi-select-dropdown";
 import EditJobSuccessModal from "../modal";
+import { Job } from "@/types";
 
 interface EditJobPreviewProps {
   setScreenInView: React.Dispatch<React.SetStateAction<number>>;
+  formData: Job | null;
 }
 
 export default function EditJobPreview({
   setScreenInView,
+  formData,
 }: EditJobPreviewProps) {
-  const [jobData, setJobData] = useState<{
-    requisitorName: string;
-    jobTitle: string;
-    department: string[];
-    location: string[];
-    jobType: string;
-    jobDescription: string;
-    benefits: string;
-    requiredSkill: string;
-    experience: string;
-    qualification: string;
-  } | null>(null);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handlePublishClick = () => {
@@ -39,26 +29,11 @@ export default function EditJobPreview({
     setIsModalOpen(false);
   };
 
-  // Fetch jobData from localStorage on component mount
-  useEffect(() => {
-    const storedData = localStorage.getItem("editFormData");
-    if (storedData) {
-      setJobData(JSON.parse(storedData));
-    }
-  }, []);
+  console.log(formData);
 
   const handleBackScreenSlideClick = () => {
     setScreenInView((prev) => prev - 1);
   };
-
-  // Handle loading state
-  if (!jobData) {
-    return (
-      <div className="p-[15px] md:p-[30px]">
-        <h1>Loading...</h1>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full ">
@@ -93,7 +68,7 @@ export default function EditJobPreview({
           <input
             type="text"
             id="requisitorName"
-            value={jobData.requisitorName}
+            value={formData?.requisitorName}
             disabled
             className="mt-1 block px-2 py-2 border w-full rounded-md bg-gray-200 border-gray-300 shadow-sm sm:text-sm"
           />
@@ -109,7 +84,7 @@ export default function EditJobPreview({
           <input
             type="text"
             id="jobTitle"
-            value={jobData.jobTitle}
+            value={formData?.title}
             disabled
             className="mt-1 block px-2 py-2 border w-full rounded-md bg-gray-200 border-gray-300 shadow-sm sm:text-sm"
           />
@@ -126,7 +101,7 @@ export default function EditJobPreview({
             id="department"
             isMulti={true}
             isDisabled={true}
-            placeholder={jobData.department.join(", ")}
+            placeholder={formData?.department}
 
             // Disable the dropdown for preview
           />
@@ -143,7 +118,7 @@ export default function EditJobPreview({
             id="location"
             isMulti={true}
             isDisabled={true}
-            placeholder={jobData.location.join(", ")}
+            placeholder={formData?.jobLocation}
           />
         </div>
 
@@ -158,7 +133,7 @@ export default function EditJobPreview({
             id="jobType"
             isMulti={false} // Single select
             isDisabled={true}
-            placeholder={jobData.jobType}
+            placeholder={formData?.type}
           />
         </div>
 
@@ -169,7 +144,7 @@ export default function EditJobPreview({
             Job Description
           </p>
           <div
-            dangerouslySetInnerHTML={{ __html: jobData.jobDescription }}
+            dangerouslySetInnerHTML={{ __html: formData?.description || "" }}
             className="mt-1 text-xs block  py-2"
           />
         </div>
@@ -178,7 +153,7 @@ export default function EditJobPreview({
         <div>
           <p className="mb-1 font-sans text-sm font-semibold">Benefits</p>
           <div
-            dangerouslySetInnerHTML={{ __html: jobData.benefits }}
+            dangerouslySetInnerHTML={{ __html: formData?.benefits || "" }}
             className="mt-1 text-xs block  py-2"
           />
         </div>
@@ -189,7 +164,9 @@ export default function EditJobPreview({
             Required Skills
           </p>
           <div
-            dangerouslySetInnerHTML={{ __html: jobData.requiredSkill }}
+            dangerouslySetInnerHTML={{
+              __html: formData?.requiredSkills.join(", ") || "",
+            }}
             className="mt-1 text-xs block  py-2"
           />
         </div>
@@ -198,7 +175,7 @@ export default function EditJobPreview({
         <div>
           <p className="mb-1 font-sans text-sm font-semibold">Qualification</p>
           <div
-            dangerouslySetInnerHTML={{ __html: jobData.qualification }}
+            dangerouslySetInnerHTML={{ __html: formData?.qualification || "" }}
             className="mt-1 text-xs block  py-2"
           />
         </div>

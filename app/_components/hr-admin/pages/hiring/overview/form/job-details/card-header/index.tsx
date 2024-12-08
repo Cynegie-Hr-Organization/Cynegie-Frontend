@@ -1,7 +1,12 @@
 // components/JobCard.js
+import { formatDate } from "@/lib/utils";
+import { Job } from "@/types";
 import Image from "next/image";
+interface JobCardHeaderProps {
+  job: Job;
+}
 
-export default function JobCardHeader() {
+const JobCardHeader: React.FC<JobCardHeaderProps> = ({ job }) => {
   return (
     <div className="font-sans w-full">
       {/* Header */}
@@ -15,10 +20,10 @@ export default function JobCardHeader() {
         />
         <div className="flex-1">
           <div className="bg-blue-100 text-blue-600 text-sm font-medium px-2 py-1 rounded-full inline-block">
-            Marketing
+            {job.department}
           </div>
-          <h2 className="text-lg font-semibold mt-2">Product Manager</h2>
-          <p className="text-gray-500 text-sm">Full Time</p>
+          <h2 className="text-lg font-semibold mt-2">{job.requisitorName}</h2>
+          <p className="text-gray-500 text-sm">{job.title}</p>
         </div>
       </div>
 
@@ -44,18 +49,18 @@ export default function JobCardHeader() {
             fill="#101928"
           />
         </svg>
-        <p>Lagos, NG.</p>
+        <p>{job.jobLocation}</p>
       </div>
 
       {/* Job Details */}
       <div className="grid grid-cols-4 gap-4 text-sm text-gray-600   pt-4">
         <div className="flex flex-col gap-2">
           <p className="font-medium text-gray-400">Job Type</p>
-          <p>Full Time</p>
+          <p>{job.type}</p>
         </div>
         <div className="flex flex-col gap-2">
           <p className="font-medium text-gray-400">Date Created</p>
-          <p>Oct 5, 2024</p>
+          <p>{formatDate(job.createdAt)}</p>
         </div>
         <div className="flex flex-col gap-2">
           <p className="font-medium text-gray-400">Number of Applications</p>
@@ -64,10 +69,12 @@ export default function JobCardHeader() {
         <div className="flex flex-col gap-2">
           <p className="font-medium  text-gray-400">Status</p>
           <div className="bg-[#FEF6E7] w-fit text-[#865503] text-sm font-semibold px-2 py-[1px] rounded-full inline-block">
-            Open
+            {job.status === "Active" ? "Open" : "Closed"}
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default JobCardHeader;

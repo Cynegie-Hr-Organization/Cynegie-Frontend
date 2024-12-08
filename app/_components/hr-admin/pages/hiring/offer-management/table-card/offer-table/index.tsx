@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useRef, useEffect } from "react";
-import Pagination from "./pagination";
 import { Dropdown } from "../../../../../../../_components/ui/dropdown";
 import { useRouter } from "next/navigation";
 import WithdrawModal from "../../withdraw-offer-modal";
 import ResendModal from "../../resend-modal";
+import Pagination from "@/app/_components/hr-admin/pages/hiring/shared/pagination";
 
 interface Column<T> {
   header: string;

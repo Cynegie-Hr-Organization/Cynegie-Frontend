@@ -75,12 +75,16 @@ const SigninMain = () => {
       <section className="min-h-screen font-sans grid place-items-center px-4">
         <div className="bg-white py-10 px-5 lg:w-6/12 lg:px-10 rounded-md shadow-md">
           {/* Header */}
-          <div className="flex flex-col items-center mb-16">
-            <img src="/image/logo.png" alt="Logo" className="mb-5 w-32" />
+          <div className="flex flex-col items-center mb-8 md:mb-16">
+            <img
+              src="/image/logo.png"
+              alt="Logo"
+              className="mb-1 md:mb-5 w-32"
+            />
             <h2 className="text-[#001652] text-2xl font-bold mb-2">
               Welcome back!
             </h2>
-            <p className="font-medium text-base text-[#98A2B3]">
+            <p className="font-medium text-center text-base text-[#98A2B3]">
               Sign in to continue managing your employee.
             </p>
           </div>
@@ -127,13 +131,13 @@ const SigninMain = () => {
               }`}
             >
               {/* Display email */}
-              <div className="flex items-center justify-center gap-2 p-3 px-5 mx-auto rounded-full max-w-fit ring-1 ring-gray-300 mb-8">
+              <div className="flex items-center justify-center gap-2 p-2 md:p-3 md:px-5 mx-auto rounded-full max-w-fit ring-1 ring-gray-300 mb-8">
                 <FaRegUser size={24} />
                 <span>{email}</span>
               </div>
 
               {/* Password Field */}
-              <div className="mb-8">
+              <div className="mb-4 md:mb-8">
                 <label className="mb-2 block text-sm text-gray-700">
                   Password
                 </label>
@@ -184,14 +188,14 @@ const SigninMain = () => {
                     setStep("email");
                     setPassword("");
                   }}
-                  className="mt-4 text-sm text-black-600 hover:underline"
+                  className="mt-4 text-xs md:text-sm text-black-600 hover:underline"
                 >
                   Go Back to Change Email
                 </button>
               </div>
             </form>
           )}
-          <p className="text-sm text-center mt-5 text-[#98A2B3] leading-relaxed">
+          <p className="text-xs md:text-sm text-center mt-5 text-[#98A2B3] leading-relaxed">
             By clicking &quot;Continue&quot; you agree to Cynegie&apos;s{" "}
             <Link href="/" className="text-[#0035C3] underline">
               User Terms of Service

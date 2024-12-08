@@ -54,6 +54,20 @@ const DropdownWithSearchAndMultiSelect = <OptionType,>({
       ...base,
       fontSize,
     }),
+    indicatorsContainer: (base) => ({
+      ...base,
+      borderLeft: "none !important", // Forcibly remove the line
+      padding: "0",
+    }),
+    dropdownIndicator: (base) => ({
+      ...base,
+      padding: "0 8px", // Adjust padding if needed for alignment
+    }),
+    input: (base) => ({
+      ...base,
+      margin: 0, // Remove default spacing
+      padding: 0, // Reset padding
+    }),
   };
 
   return (

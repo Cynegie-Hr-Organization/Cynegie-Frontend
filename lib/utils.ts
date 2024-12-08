@@ -23,3 +23,11 @@ export const newIndex = (index: number) => {
   const { random } = Math;
   return random() + index;
 };
+
+// Helper function to truncate text
+export const truncateText = (text: string, length: number = 100): string => {
+  if (text.length > length) {
+    return `${text.substring(0, length)}...`; // Truncate and add ellipsis
+  }
+  return text;
+};

@@ -1,8 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import DeleteJobModal from "../../../tabs/jobs/delete-modal";
+import { updateJobStatus } from "@/app/api/services/job";
+import { toast } from "react-toastify";
 
-const JobDescriptionHeader = () => {
+interface JobDescriptionHeaderProps {
+  jobId: string;
+}
+
+const JobDescriptionHeader: React.FC<JobDescriptionHeaderProps> = ({
+  jobId,
+}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+  const [isLoading, setIsLoading] = useState(false); // For handling loading state of actions
+
+  const router = useRouter();
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
@@ -29,9 +47,34 @@ const JobDescriptionHeader = () => {
     };
   }, [dropdownOpen]);
 
+  // Function to update job status
+  const handleUpdateJobStatus = async (status: string) => {
+    try {
+      setIsLoading(true);
+      const response = await updateJobStatus(jobId, status);
+      console.log(response);
+      if (response.status === 200) {
+        toast.success(`Job status updated to ${status}`);
+      } else {
+        throw new Error("Failed to update job status");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while updating the job status.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const closeJob = () => handleUpdateJobStatus("Closed");
+  const openJob = () => handleUpdateJobStatus("Active");
+
+  const handleDeleteClick = () => {
+    setIsModalOpen(true);
+  };
+
   return (
     <>
-      {/* Header Section */}
       <header className="flex flex-row justify-between items-center">
         <h1 className="ml-2 text-xl md:text-2xl font-bold text-gray-900 md:mb-4">
           Job Detail
@@ -42,7 +85,7 @@ const JobDescriptionHeader = () => {
         >
           {/* Actions Button */}
           <button
-            className="w-full flex flex-row items-center gap-2 md:w-auto px-4 md:px-6 py-2 border-gray-300 border-2 text-base font-semibold bg-white text-gray-700 rounded-lg hover:border-blue-600 cursor-pointer"
+            className="flex flex-row items-center gap-2 px-4 md:px-6 py-[7px] border-gray-300 border-2 text-base font-semibold bg-white text-gray-700 rounded-lg hover:border-blue-600 cursor-pointer"
             onClick={toggleDropdown}
           >
             Actions
@@ -67,19 +110,29 @@ const JobDescriptionHeader = () => {
             <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
               <button
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
-                onClick={() => alert("Close Job")}
+                onClick={closeJob}
+                disabled={isLoading}
               >
                 Close Job
               </button>
               <button
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
-                onClick={() => alert("Edit Job")}
+                onClick={openJob}
+                disabled={isLoading}
+              >
+                Open Job
+              </button>
+              <button
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
+                onClick={() =>
+                  router.push(`/hr-admin/hiring/edit-job/${jobId}`)
+                }
               >
                 Edit Job
               </button>
               <button
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
-                onClick={() => alert("Delete Job")}
+                onClick={handleDeleteClick}
               >
                 Delete Job
               </button>
@@ -91,6 +144,11 @@ const JobDescriptionHeader = () => {
             View candidates
           </button>
         </div>
+        <DeleteJobModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          jobId={jobId || ""} // Pass the jobId to the modal
+        />
       </header>
     </>
   );

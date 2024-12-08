@@ -34,7 +34,7 @@ const useFetchJobs = () => {
         filters.company,
         filters.requiredSkills,
         filters.type,
-          ),
+      ),
     staleTime: 2 * 60 * 1000,
   });
 
@@ -73,6 +73,7 @@ const useFetchJobs = () => {
     handlePageChange,
     handleItemsPerPageChange,
     setSortOrder,
+    refetch,
   };
 };
 

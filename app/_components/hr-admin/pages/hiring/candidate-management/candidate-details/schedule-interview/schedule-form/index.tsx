@@ -42,7 +42,7 @@ const ScheduleForm: React.FC = () => {
       <form onSubmit={handleSubmit} className="space-y-6 ">
         <div className=" p-4 md:p-6 bg-white">
           {/* Candidate and Interviewer Fields */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 mb-4 md:grid-cols-2 gap-4 md:gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Candidate
@@ -56,8 +56,10 @@ const ScheduleForm: React.FC = () => {
             </div>
 
             <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Assign Interviewer
+              </label>
               <Dropdown
-                label="Assign Interviewer"
                 options={interviewers}
                 selected={selectedInterviewer}
                 onSelect={(value: string) => setSelectedInterviewer(value)}
@@ -66,7 +68,7 @@ const ScheduleForm: React.FC = () => {
           </div>
 
           {/* Date and Time Selection */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 mb-4 md:grid-cols-2 gap-4 md:gap-6">
             <div className="w-full">
               <label className="block mt-4 md:mt-0 text-sm font-medium text-gray-700">
                 Pick Date <span className="text-red-500 mb-1">*</span>
@@ -83,8 +85,8 @@ const ScheduleForm: React.FC = () => {
           </div>
 
           {/* Reminder Section */}
-          <div className="mt-4 md:mt-0">
-            <h3 className="text-lg font-semibold">Set Reminder</h3>
+          <div className="my-4  md:mt-0">
+            <h3 className="text-lg mb-4 font-semibold">Set Reminder</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div className="w-full mt-2 md:mt-0">
                 <label className="block text-sm font-medium text-gray-700">
@@ -109,7 +111,7 @@ const ScheduleForm: React.FC = () => {
           </div>
 
           {/* Reminder Description */}
-          <div className="mt-4 md:mt-0">
+          <div className="mt-4  md:mt-0">
             <label className="block text-sm font-medium text-gray-700">
               Reminder Description
             </label>

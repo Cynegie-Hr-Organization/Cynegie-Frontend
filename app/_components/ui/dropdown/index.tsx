@@ -1,18 +1,53 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
-export const Dropdown = ({ label, options, selected, onSelect }: any) => {
+interface DropdownProps {
+  label: string;
+  options: string[];
+  selected: string;
+  onSelect: (selected: string) => void;
+}
+
+export const Dropdown: React.FC<DropdownProps> = ({
+  label,
+  options,
+  selected,
+  onSelect,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close the dropdown if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  const toggleDropdown = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  const handleSelect = (option: string) => {
+    onSelect(option);
+    setIsOpen(false);
+  };
 
   return (
-    <div className="relative py-1 md:py-2 w-full">
-      <label className="block text-sm font-medium text-gray-700 mb-1">
-        {label}
-      </label>
+    <div ref={dropdownRef} className="relative py-1 md:py-2 w-full">
       {/* Dropdown Button */}
       <div
-        className="border border-gray-300 justify-between flex items-center rounded-md py-2 px-3 bg-white text-sm cursor-pointer"
-        onClick={() => setIsOpen(!isOpen)}
+        className="border border-gray-300 justify-between flex items-center rounded-md py-2 px-1 md:px-3 bg-white text-xs md:text-sm cursor-pointer"
+        onClick={toggleDropdown}
       >
         {selected || `Select ${label}`}
         <svg
@@ -34,13 +69,10 @@ export const Dropdown = ({ label, options, selected, onSelect }: any) => {
       {/* Dropdown Options */}
       {isOpen && (
         <div className="absolute bg-white shadow-lg border border-gray-300 rounded-md w-full mt-1 z-10">
-          {options.map((option: string, index: number) => (
+          {options.map((option, index) => (
             <div
               key={index}
-              onClick={() => {
-                onSelect(option);
-                setIsOpen(false);
-              }}
+              onClick={() => handleSelect(option)}
               className="py-2 px-3 hover:bg-gray-100 cursor-pointer text-sm"
             >
               {option}

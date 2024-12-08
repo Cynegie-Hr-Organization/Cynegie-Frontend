@@ -13,6 +13,7 @@ const JobsTab = () => {
     handleFilterChange,
     handlePageChange,
     handleItemsPerPageChange,
+    refetch,
   } = useFetchJobs();
 
   // Define columns
@@ -58,6 +59,7 @@ const JobsTab = () => {
           onItemsPerPageChange={handleItemsPerPageChange}
           handleSearch={handleSearch}
           handleFilterChange={handleFilterChange}
+          refetch={refetch}
         />
       </div>
     </div>

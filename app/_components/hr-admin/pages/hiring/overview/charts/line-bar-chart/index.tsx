@@ -99,15 +99,15 @@ const BarChartComponent: React.FC<BarChartComponentProps> = ({
               <Bar
                 dataKey="Screening"
                 stackId="a"
-                fill="#2563EB"
+                fill="#0035C3"
                 radius={[0, 0, 12, 12]}
               />
-              <Bar dataKey="Interviewing" stackId="a" fill="#BFDBFE" />
-              <Bar dataKey="Offered" stackId="a" fill="#60A5FA" />
+              <Bar dataKey="Interviewing" stackId="a" fill="#5478D7" />
+              <Bar dataKey="Offered" stackId="a" fill="#B0C0EC" />
               <Bar
                 dataKey="Hired"
                 stackId="a"
-                fill="#2263cB"
+                fill="#E4E7EC"
                 radius={[12, 12, 0, 0]}
               />
             </BarChart>

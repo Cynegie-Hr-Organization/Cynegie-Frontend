@@ -9,7 +9,7 @@ import OverviewCards from "../cards/overview-card";
 
 const HrAdminHiringOfferManagement: React.FC = () => {
   return (
-    <div className="space-y-4 p-[15px] md:p-[30px]">
+    <div className="space-y-4 p-[4px] md:p-[30px]">
       <HiringCandidateOfferHeader />
 
       {/* Cards Section */}

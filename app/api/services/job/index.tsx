@@ -4,7 +4,7 @@
 import { request } from "@/utils/request";
 
 import { baseUrl } from "@/constants/config";
-import { CreateJobProps } from "@/types";
+import { CreateJobProps, FetchJob } from "@/types";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/options";
 
@@ -61,15 +61,49 @@ export const getJobs = async (
   }) as Promise<PaginatedResponse<Job>>;
 };
 
-
-export const editJob = async (id: string, payload : any) => {
+export const editJob = async (id: string, payload: any) => {
   const session = await getServerSession(authOptions);
 
-  return request("PATCH", `${baseUrl}/v1/jobs`, {
+  return request("PATCH", `${baseUrl}/v1/jobs/${id}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${session?.token}`,
     },
     data: payload,
   });
+};
+
+export const deleteJob = async (id: string) => {
+  const session = await getServerSession(authOptions);
+
+  return request("DELETE", `${baseUrl}/v1/jobs/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  });
+};
+
+export const updateJobStatus = async (id: string, status: string) => {
+  const session = await getServerSession(authOptions);
+  return request("PATCH", `${baseUrl}/v1/jobs/${id}/status`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: { status },
+  });
+};
+
+export const fetchJobById = async (id: string): Promise<FetchJob> => {
+  const session = await getServerSession(authOptions);
+
+  const response = request("GET", `${baseUrl}/v1/jobs/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  });
+
+  return response as Promise<FetchJob>;
 };

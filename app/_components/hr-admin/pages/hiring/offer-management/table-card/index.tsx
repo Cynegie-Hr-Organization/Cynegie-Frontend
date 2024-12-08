@@ -59,7 +59,7 @@ const OfferManagementTable = () => {
       <div className="h-full w-full">
         <OfferTable
           data={currentItems}
-          columns={columns} // Pass columns to the Table component
+          columns={columns}
           totalItems={totalItems}
           itemsPerPage={itemsPerPage}
           currentPage={currentPage}
