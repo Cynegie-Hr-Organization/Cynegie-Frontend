@@ -1,4 +1,6 @@
-const feedbackOverviewSectionData = {
+import { SectionWithCardsProps } from '@/app/_components/shared/section-with-cards/types';
+
+const feedbackOverviewSectionData: SectionWithCardsProps = {
   title: 'Feedback Overview',
   period: '',
   headerDivider: true,

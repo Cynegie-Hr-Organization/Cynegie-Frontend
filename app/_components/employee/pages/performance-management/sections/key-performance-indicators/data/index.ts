@@ -1,4 +1,6 @@
-const keyPerformanceIndiciatorsSectionData = {
+import { SectionWithCardsProps } from '@/app/_components/shared/section-with-cards/types';
+
+const keyPerformanceIndiciatorsSectionData: SectionWithCardsProps = {
   title: 'Key Performance Indicators',
   period: '',
   headerDivider: true,

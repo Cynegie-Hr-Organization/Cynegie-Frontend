@@ -1,4 +1,4 @@
-import { Box, Tab } from '@mui/material';
+import { Tab } from '@mui/material';
 import React, { useState } from 'react';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { TabFormatProps } from './types';

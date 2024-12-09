@@ -12,8 +12,8 @@ const EmployeeBenefitsSalaryAdvance = () => {
     <Page {...pageProps}>
       <CardGroup {...cardGroupProps} />
       <Table {...tableProps} />
-      {modalsProps.map((props) => (
-        <Modal {...props} />
+      {modalsProps.map((props, index) => (
+        <Modal key={index} {...props} />
       ))}
     </Page>
   );

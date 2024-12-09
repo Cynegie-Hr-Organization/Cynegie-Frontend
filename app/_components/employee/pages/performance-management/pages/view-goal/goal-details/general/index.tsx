@@ -15,7 +15,7 @@ const GeneralGoalDetails: React.FC<GeneralGoalDetailsProps> = (props) => {
       <div className='card-subtitle-large'>{description}</div>
       <div className='flex w-full gap-2 flex-col md:flex-row md:gap-10'>
         {additionalInfo.map((info) => (
-          <div>
+          <div key={info.name}>
             <span className='font-bold'>{info.name}: </span>
             <span>{info.value}</span>
           </div>

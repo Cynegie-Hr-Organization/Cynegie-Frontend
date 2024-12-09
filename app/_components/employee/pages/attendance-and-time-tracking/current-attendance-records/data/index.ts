@@ -1,4 +1,6 @@
-const currentAttendanceRecordsSectionData = {
+import { SectionWithCardsProps } from '@/app/_components/shared/section-with-cards/types';
+
+const currentAttendanceRecordsSectionData: SectionWithCardsProps = {
   title: 'Current Attendance Records',
   period: 'This week',
   headerDivider: true,

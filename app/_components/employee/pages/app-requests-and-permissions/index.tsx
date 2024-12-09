@@ -9,8 +9,8 @@ const EmployeeAppRequestsAndPermissions = () => {
   return (
     <Page {...pageProps}>
       <Table {...tableProps} />
-      {modalsProps.map((props) => (
-        <Modal {...props} />
+      {modalsProps.map((props, index) => (
+        <Modal key={index} {...props} />
       ))}
     </Page>
   );
