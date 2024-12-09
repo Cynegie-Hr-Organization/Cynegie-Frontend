@@ -1,39 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-// import { hiringTabOneData } from "./components/table/data";
 import CardLayout from "@/app/_components/shared/cards";
 import { PiDotsThreeVerticalBold } from "react-icons/pi";
 import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
-import { TextField } from "@mui/material";
+
+
 
 const NewHireList = () => {
   return (
-    <CardLayout className='bg-white overflow-x-scroll'>
-      <div className='w-full flex items-center justify-between flex-grow mb-4'>
-        <TextField
-          className='max-w-[476px]'
-          sx={{
-            width: { xs: "90%", sm: "70%", md: "70%" },
-            mb: { xs: "15px", md: "0px" },
-          }}
-          InputProps={{
-            sx: {
-              height: "35px",
-              borderRadius: "6px",
-              fontSize: "14px",
-              fontWeight: 400,
-            },
-            startAdornment: <RiSearchLine className='mr-2 text-2xl' />,
-          }}
-          placeholder='Search here...'
-        />
+    <CardLayout className='bg-white overflow-x-scroll space-y-8'>
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
+        <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
+          <RiSearchLine className="text-gray-400" />
+          <input type="text" placeholder="Search here..." className="w-full h-9 px-2 outline-none" />
+        </div>
 
-        <button className='flex items-center border border-gray-300 rounded-md px-4 py-2 text-sm hover:bg-gray-100 gap-x-3'>
-          <LuListFilter />
-          Filter
+        <button type="button" className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
+          <LuListFilter /> Filter
         </button>
       </div>
+
+
       <div className='-mx-6'>
         <table className='w-full border-collapse'>
           <thead className='bg-[#F7F9FC]'>
@@ -49,6 +37,7 @@ const NewHireList = () => {
               <th className='px-4 py-3 text-left'>Actions</th>
             </tr>
           </thead>
+
           <tbody>
             {Array.from(Array(5)).map((_, idx) => {
               return (

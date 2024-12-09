@@ -1,45 +1,71 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
-// import { hiringTabOneData } from "./components/table/data";
+import React, { useState } from "react";
 import CardLayout from "@/app/_components/shared/cards";
 import { PiDotsThreeVerticalBold } from "react-icons/pi";
 import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
-import { TextField } from "@mui/material";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useRouter } from "next/dist/client/components/navigation";
+import AppMenubar from "@/app/_components/shared/menubar";
 
 const NewHireList = () => {
-  return (
-    <CardLayout className='bg-white overflow-x-scroll'>
-      <div className='w-full flex items-center justify-between flex-grow mb-4'>
-        <TextField
-          className='max-w-[476px]'
-          sx={{
-            width: { xs: "90%", sm: "70%", md: "70%" },
-            mb: { xs: "15px", md: "0px" },
-          }}
-          InputProps={{
-            sx: {
-              height: "35px",
-              borderRadius: "6px",
-              fontSize: "14px",
-              fontWeight: 400,
-            },
-            startAdornment: <RiSearchLine className='mr-2 text-2xl' />,
-          }}
-          placeholder='Search here...'
-        />
+  const [templates, setTemplates] = useState([
+    {
+      id: 1,
+      name: "Ayomide Alibaba",
+      department: "Admin",
+      position: "Admin Officer",
+      startDate: "21st June, 2024",
+      template: "Standard Onboarding Template",
+    },
+    {
+      id: 2,
+      name: "Ayomide Alibaba",
+      department: "Admin",
+      position: "Admin Officer",
+      startDate: "21st June, 2024",
+      template: "IT Department Template",
+    },
+    {
+      id: 3,
+      name: "Oluwatobi Johnson",
+      department: "IT",
+      position: "Software Engineer",
+      startDate: "5th July, 2024",
+      template: "Software Onboarding Template",
+    },
+    {
+      id: 4,
+      name: "Chiamaka Okoro",
+      department: "HR",
+      position: "HR Manager",
+      startDate: "12th July, 2024",
+      template: "HR Department Template",
+    },
+  ]);
 
-        <button className='flex items-center border border-gray-300 rounded-md px-4 py-2 text-sm hover:bg-gray-100 gap-x-3'>
-          <LuListFilter />
-          Filter
+
+  const handleDelete = (id: number) => {
+    setTemplates((prevProspects) => prevProspects.filter((item) => item.id !== id));
+  };
+
+  return (
+    <CardLayout className='bg-white overflow-x-scroll space-y-8' bg='p-4 md:p-6'>
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
+        <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
+          <RiSearchLine className="text-gray-400" />
+          <input type="text" placeholder="Search here..." className="w-full h-9 px-2 outline-none" />
+        </div>
+
+        <button type="button" className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
+          <LuListFilter /> Filter
         </button>
       </div>
-      <div className='-mx-6'>
+
+      <div className='-mx-4 md:-mx-6'>
         <table className='w-full border-collapse'>
           <thead className='bg-[#F7F9FC]'>
             <tr>
-              <th className='px-4 py-3 text-left'>
+              <th className='pl-4 md:pl-6 py-3 text-left'>
                 <input type='checkbox' />
               </th>
               <th className='px-4 py-3 text-left'>Template Name</th>
@@ -48,28 +74,35 @@ const NewHireList = () => {
               <th className='px-4 py-3 text-left'>Actions</th>
             </tr>
           </thead>
+
           <tbody>
-            {Array.from(Array(5)).map((_, idx) => {
-              return (
-                <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
-                  <td className='px-4 py-4'>
+            {templates.length === 0 ? (
+              <tr>
+                <td colSpan={5} className='text-center p-6'>
+                  <p className="text-sm py-6 border border-dashed border-[#E4E7EC] rounded-lg">No templates available.</p>
+                </td>
+              </tr>
+            ) : (
+              templates.map((item) => (
+                <tr key={item.id} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
+                  <td className='pl-4 md:pl-6 py-4'>
                     <input type='checkbox' className='border-gray-300' />
                   </td>
                   <td className='px-4 py-4'>
-                    <p className='text-sm'>Standard Onboarding Template</p>
+                    <p className='text-sm'>{item.template}</p>
                   </td>
                   <td className='px-4 py-4'>
-                    <p className='text-sm'>Ayomide Alibaba</p>
+                    <p className='text-sm'>{item.name}</p>
                   </td>
                   <td className='px-4 py-4'>
-                    <p className='text-sm'>21st June, 2024</p>
+                    <p className='text-sm'>{item.startDate}</p>
                   </td>
                   <td className='p-4'>
-                    <PopoverMenu />
+                    <ActionMenu onDelete={() => handleDelete(item.id)} />
                   </td>
                 </tr>
-              );
-            })}
+              ))
+            )}
           </tbody>
         </table>
       </div>
@@ -77,22 +110,27 @@ const NewHireList = () => {
   );
 };
 
-function PopoverMenu() {
+const ActionMenu = ({ onDelete }: { onDelete: () => void }) => {
+  const router = useRouter();
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <button className='cursor-pointer border rounded-lg outline-none w-max p-1'>
-          <PiDotsThreeVerticalBold />
-        </button>
-      </PopoverTrigger>
-
-      <PopoverContent className='w-40 bg-white space-y-2 cursor-pointer rounded-lg flex flex-col items-start text-[#475367]'>
-        <button className=''>Edit Template</button>
-        <button className=' w-full'>Preview Template</button>
-        <button className='text-red-500'>Delete Task</button>
-      </PopoverContent>
-    </Popover>
+    <AppMenubar
+      overrideClassName='border-none'
+      menuItems={
+        <ul className='flex flex-col items-start w-full'>
+          <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
+            <button className=''>Edit Template</button>
+          </li>
+          <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
+            <button onClick={() => router.push(`/hr-admin/onboarding/template/new-template/templateId`)}>Preview Template</button>
+          </li>
+          <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
+            <button onClick={onDelete} className='text-red-500'>Delete Task</button>
+          </li>
+        </ul>
+      }>
+      <PiDotsThreeVerticalBold />
+    </AppMenubar>
   );
-}
+};
 
 export default NewHireList;

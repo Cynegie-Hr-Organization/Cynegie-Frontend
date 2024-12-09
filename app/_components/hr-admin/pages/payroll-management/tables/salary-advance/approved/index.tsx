@@ -30,11 +30,9 @@ import AdjustRepaymentDetailsModal from '../../../modals/adjust-repayment-detail
 import { approvedSalaryAdvanceTableData } from './data';
 
 const ApprovedSalaryAdvanceTable = () => {
-  // const [selectedRowIndex, setSelectedRowIndex] = useState(0);
+  const [, setSelectedRowIndex] = useState(0);
   const [showAdjustRepaymentModal, setShowAdjustRepaymentModal] =
     useState(false);
-
-  // const router = useRouter();
 
   const [anchorEl, setAnchorEl] = useState<SVGSVGElement | null>(null);
 

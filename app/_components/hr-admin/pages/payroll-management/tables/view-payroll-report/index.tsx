@@ -14,6 +14,7 @@ import {
   TextField,
 } from '@mui/material';
 import Image from 'next/image';
+import { useState, ChangeEvent } from 'react';
 import { viewPayrollReportTable } from './data';
 
 const ViewPayrollReportTable = () => {

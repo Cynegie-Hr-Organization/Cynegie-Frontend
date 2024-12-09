@@ -8,8 +8,8 @@ import { IoClose } from "react-icons/io5";
 const Sidebar = ({ openMobileMenu, setOpenMobileMenu }: { openMobileMenu: boolean, setOpenMobileMenu: () => void }) => {
 	return (
 		<div
-			className={`${openMobileMenu ? 'flex animate-in' : 'hidden animate-out'} 
-        xl:flex bg-white h-dvh z-50 fixed w-[272px] px-4 pt-7 flex-col justify-between transition duration-500`}>
+			className={`${openMobileMenu ? 'translate-x-0' : '-translate-x-full'} 
+			xl:translate-x-0 transition duration-500 flex bg-white h-dvh z-50 fixed w-[272px] px-4 pt-7 flex-col justify-between`}>
 
 			<div className="space-y-5">
 				<div className="flex items-center justify-between">
@@ -26,7 +26,7 @@ const Sidebar = ({ openMobileMenu, setOpenMobileMenu }: { openMobileMenu: boolea
 					/>
 				</div>
 
-				<NavLinks />
+				<NavLinks onNavLinkClick={setOpenMobileMenu} isMobile={openMobileMenu} />
 			</div>
 
 			<div className="flex items-center justify-between my-6 overflow-hidden">

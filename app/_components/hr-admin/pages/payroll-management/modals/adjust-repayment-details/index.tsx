@@ -1,3 +1,4 @@
+import { newIndex } from '@/lib/utils';
 import { Close } from '@mui/icons-material';
 import { Dialog, DialogContent, MenuItem, Select, Stack } from '@mui/material';
 import React from 'react';
@@ -90,8 +91,8 @@ const AdjustRepaymentDetailsModal: React.FC<{
                       <MenuItem value={item.placeholder}>
                         {item.placeholder}
                       </MenuItem>
-                      {item.options?.map((option) => (
-                        <MenuItem key={option} value={option}>
+                      {item.options?.map((option, index) => (
+                        <MenuItem key={newIndex(index)} value={option}>
                           {option}
                         </MenuItem>
                       ))}

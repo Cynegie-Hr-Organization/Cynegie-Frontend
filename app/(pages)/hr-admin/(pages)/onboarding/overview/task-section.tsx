@@ -15,11 +15,11 @@ const TaskSection = () => {
             list === "task" ? "left-0" : "left-[55%]"
           }`}
         />
-        <button className={`p-4 ${list === "task" ? "text-primary" : "text-gray-500"}`} onClick={() => setList("task")}>
+        <button className={`p-4 outline-none border-none ${list === "task" ? "text-primary" : "text-gray-500"}`} onClick={() => setList("task")}>
           Task List
         </button>
         <button
-          className={`p-4 ${list === "new-hire" ? "text-primary" : "text-gray-500"}`}
+          className={`p-4 outline-none border-none ${list === "new-hire" ? "text-primary" : "text-gray-500"}`}
           onClick={() => setList("new-hire")}>
           New Hire List
         </button>

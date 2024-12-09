@@ -1,10 +1,20 @@
 @import "react-datepicker/dist/react-datepicker.css";
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
+
+
+
+
+
+.btn-active{
+    @apply active:scale-95 transition-all duration-300;
+}
 * {
     box-sizing: border-box
 }
@@ -119,4 +129,14 @@ body {
                 background-color: #0035C3 !important;
                 padding: 6px 20px !important;
                 text-transform: none !important;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }

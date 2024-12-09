@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
-// import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation'; // For pathname and router
+
+import { usePathname, useRouter } from 'next/navigation';
 import { FaChevronDown } from 'react-icons/fa6';
 import { RxDashboard } from 'react-icons/rx';
 import { HiOutlineChartBar, HiOutlineUserPlus } from 'react-icons/hi2';
 import { TbFileUpload } from 'react-icons/tb';
+import { LiaMoneyBillWaveSolid } from 'react-icons/lia';
 
-const NavLinks = () => {
+const NavLinks = ({
+  onNavLinkClick,
+  isMobile,
+}: {
+  onNavLinkClick: () => void;
+  isMobile: boolean;
+}) => {
   const pathname = usePathname();
   const router = useRouter();
   const [openDropDown, setOpenDropDown] = useState<string | null>(null);
@@ -42,15 +49,15 @@ const NavLinks = () => {
     {
       name: 'Performance',
       icon: <HiOutlineChartBar size={17.5} />,
-      path: '/hr-admin/performance-magnt/overview',
+      path: '/hr-admin/performance/overview',
       subMenu: [
-        { name: 'Overview', path: '/hr-admin/performance-magnt/overview' },
-        { name: 'Goals', path: '/hr-admin/performance-magnt/goals' },
+        { name: 'Overview', path: '/hr-admin/performance/overview' },
+        { name: 'Goals', path: '/hr-admin/performance/goals' },
       ],
     },
     {
       name: 'Payroll',
-      icon: <HiOutlineChartBar size={17.5} />,
+      icon: <LiaMoneyBillWaveSolid size={17.5} />,
       path: '/hr-admin/payroll/overview',
       subMenu: [
         { name: 'Overview', path: '/hr-admin/payroll/overview' },
@@ -61,16 +68,40 @@ const NavLinks = () => {
     },
   ];
 
-  const isPathActive = (path: string) =>
-    path === '/hr-admin'
-      ? /^\/hr-admin$/.test(pathname)
-      : new RegExp(`^${path}.*$`).test(pathname);
+  const isPathActive = (
+    path: string,
+    subMenu?: { name: string; path: string }[]
+  ) => {
+    if (path === '/hr-admin') {
+      return /^\/hr-admin$/.test(pathname);
+    }
+
+    const pathParts = path.split('/').filter(Boolean);
+    const currentPathParts = pathname.split('/').filter(Boolean);
+
+    const isMainPathActive =
+      currentPathParts.length >= pathParts.length &&
+      pathParts.every((part, index) => currentPathParts[index] === part);
+
+    const isSubPathActive = subMenu?.some((subItem) =>
+      pathname.startsWith(subItem.path)
+    );
+
+    return isMainPathActive || isSubPathActive;
+  };
+
+  const handleNavLinkClick = (link: string) => {
+    router.push(link);
+    if (isMobile) {
+      onNavLinkClick();
+    }
+  };
 
   return (
     <div className='w-64 transition-all duration-300 ease-in-out'>
       <ul className='flex flex-col gap-2 mr-3'>
         {menuLinks.map((item: DashboardMenu) => {
-          const isActive = isPathActive(item.path);
+          const isActive = isPathActive(item.path, item.subMenu);
 
           return (
             <li key={item.path}>
@@ -82,14 +113,10 @@ const NavLinks = () => {
                                         : 'text-black'
                                     } transition duration-100`}
                 onClick={() => {
-                  router.push(item.path);
-                  if (item.subMenu) {
-                    setOpenDropDown(
-                      isActive && openDropDown === item.path ? null : item.path
-                    );
-                  } else {
-                    setOpenDropDown(null);
-                  }
+                  setOpenDropDown(
+                    openDropDown === item.path ? null : item.path
+                  );
+                  handleNavLinkClick(item.path);
                 }}
               >
                 <div className='flex items-center gap-x-2'>
@@ -105,7 +132,7 @@ const NavLinks = () => {
                 {item.subMenu && (
                   <FaChevronDown
                     className={`transition-transform duration-300 ${
-                      openDropDown === item.path && isActive ? 'rotate-180' : ''
+                      openDropDown === item.path ? 'rotate-180' : ''
                     }`}
                   />
                 )}
@@ -118,7 +145,7 @@ const NavLinks = () => {
                     return (
                       <li key={subItem.path}>
                         <button
-                          onClick={() => router.push(subItem.path)}
+                          onClick={() => handleNavLinkClick(subItem.path)}
                           className={`flex items-center p-2 text-[14px] font-sans pl-5 ${
                             isSubActive
                               ? 'text-primary font-semibold'

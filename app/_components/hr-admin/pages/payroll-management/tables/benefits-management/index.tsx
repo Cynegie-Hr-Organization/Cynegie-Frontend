@@ -28,7 +28,7 @@ import { useRouter } from 'next/navigation';
 import benefitsManagementTableData from './data';
 
 const PayrollBenefitsManagementTable = () => {
-  // const [selectedRowIndex, setSelectedRowIndex] = useState(0);
+  const [, setSelectedRowIndex] = useState(0);
 
   const router = useRouter();
 

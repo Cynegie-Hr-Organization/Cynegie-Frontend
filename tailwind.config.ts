@@ -55,7 +55,7 @@ export default {
     			}
     		},
     		fontFamily: {
-    			sans: ['Open Sans Condensed', 'sans-serif'],
+    			sans: ['Open Sans', 'sans-serif'],
     			heading: ["var(--font-roboto)", "sans-serif"]
     		},
     		screens: {

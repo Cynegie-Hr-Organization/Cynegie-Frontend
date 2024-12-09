@@ -1,0 +1,199 @@
+"use client";
+
+import CardLayout from "@/app/_components/shared/cards";
+import InputText from "@/app/_components/shared/input-text";
+import { AppDatePicker } from "@/app/_components/shared/date-picker";
+import { AppSelect } from "@/app/_components/shared/select";
+import { useState, useEffect } from "react";
+import { AppSwitch } from "@/app/_components/shared/switch";
+import { DrawerDialog } from "@/components/drawer/modal";
+import Link from "next/link";
+import { DialogTitle } from "@/components/ui/dialog";
+
+
+interface IReviewCycle {
+  reviewCycleName: string,
+  startDate: Date | undefined,
+  endDate: Date | undefined,
+  daysOfGrace: string,
+  assignedEmployees: string[],
+  assignedReviewer: string,
+  reminderType: string,
+  reminderFrequency: string,
+  notifyEmployees: boolean,
+  notifyReviewers: boolean,
+}
+const EditReviewCycle = () => {
+  const [formData, setFormData] = useState<IReviewCycle>({
+    reviewCycleName: "",
+    startDate: undefined,
+    endDate: undefined,
+    daysOfGrace: "",
+    assignedEmployees: [],
+    assignedReviewer: "",
+    reminderType: "",
+    reminderFrequency: "",
+    notifyEmployees: false,
+    notifyReviewers: false,
+  });
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const data = {
+      ...formData,
+      startDate: formData.startDate?.toISOString(),
+      endDate: formData.endDate?.toISOString(),
+    };
+    console.log(data);
+  };
+
+  return (
+    <form className="space-y-8 pt-5 pb-10" onSubmit={handleSubmit}>
+      <h3 className="text-lg font-semibold">Edit Review Cycle</h3>
+
+      <CardLayout className="bg-white space-y-4 md:space-y-8" bg="p-4 md:p-6">
+        <InputText
+          label="Review Cycle Name"
+          id="review-cycle-name"
+          placeholder="Enter cycle name"
+          requiredField
+          onChange={(e) => setFormData({ ...formData, reviewCycleName: e.target.value })}
+          value={formData.reviewCycleName}
+        />
+
+        <div className="flex flex-col md:flex-row gap-y-4 md:gap-10 items-center justify-between w-full">
+          <AppDatePicker
+            label="Start Date"
+            requiredField
+            selectedDate={formData.startDate}
+            setSelectedDate={(date) => setFormData({ ...formData, startDate: date })}
+          />
+          <AppDatePicker
+            label="End Date"
+            requiredField
+            selectedDate={formData.endDate}
+            setSelectedDate={(date) => setFormData({ ...formData, endDate: date })}
+          />
+          <InputText
+            label="Days of Grace"
+            type="number"
+            id="days-of-grace"
+            placeholder="Select days of grace"
+            requiredField
+            onChange={(e) => setFormData({ ...formData, daysOfGrace: e.target.value })}
+            value={formData.daysOfGrace}
+          />
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-y-4 md:gap-10 items-center justify-between w-full">
+          <AppSelect
+            label="Assign Employees"
+            requiredField
+            placeholder="Select employees"
+            onChange={(value) => {
+              setFormData({ ...formData, assignedEmployees: [...new Set([...formData.assignedEmployees, value])] });
+            }}
+            listItems={[
+              { label: "Employee 1", value: "employee-1" },
+              { label: "Employee 2", value: "employee-2" },
+              { label: "Employee 3", value: "employee-3" },
+            ]}
+          />
+          <AppSelect
+            label="Assign Reviewer"
+            requiredField
+            placeholder="Select reviewer"
+            onChange={(value) => setFormData({ ...formData, assignedReviewer: value })}
+            listItems={[
+              { label: "Reviewer 1", value: "reviewer-1" },
+              { label: "Reviewer 2", value: "reviewer-2" },
+              { label: "Reviewer 3", value: "reviewer-3" },
+            ]}
+          />
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-y-4 md:gap-10 items-center justify-between w-full">
+          <AppSelect
+            label="Reminder Type"
+            requiredField
+            placeholder="Select reminder type"
+            onChange={(value) => setFormData({ ...formData, reminderType: value })}
+            listItems={[
+              { label: "Before Review", value: "before-review" },
+              { label: "After Review", value: "after-review" },
+            ]}
+          />
+          <AppSelect
+            label="Reminder Frequency"
+            requiredField
+            placeholder="Select reminder frequency"
+            onChange={(value) => setFormData({ ...formData, reminderFrequency: value })}
+            listItems={[
+              { label: "Daily", value: "daily" },
+              { label: "Weekly", value: "weekly" },
+              { label: "Monthly", value: "monthly" },
+            ]}
+          />
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-y-4 md:gap-x-10 items-start md:items-center w-full mb-40">
+          <AppSwitch label="Notify Employees" id="notify-employees" onChange={(value) => setFormData({ ...formData, notifyEmployees: value })} />
+          <AppSwitch label="Notify Reviewers" id="notify-reviewers" onChange={(value) => setFormData({ ...formData, notifyReviewers: value })} />
+        </div>
+      </CardLayout>
+
+      <div className="flex flex-col md:flex-row gap-y-4 md:gap-x-4 justify-end">
+        <button type="button"
+          className="transition-all duration-300 order-1 md:order-none bg-white px-4 py-2 rounded-md disabled:cursor-not-allowed border disabled:bg-gray-300 border-gray-400 disabled:text-gray-500 font-semibold"
+        >
+          Cancel
+        </button>
+        <ConfirmationModal trigger={
+          <button
+            type="submit"
+            disabled={
+              !formData.reviewCycleName ||
+              !formData.startDate ||
+              !formData.endDate ||
+              !formData.daysOfGrace ||
+              formData.assignedEmployees.length === 0 ||
+              formData.assignedReviewer === "" ||
+              !formData.reminderType ||
+              !formData.reminderFrequency ||
+              (!formData.notifyEmployees && !formData.notifyReviewers)
+            }
+            className="transition-all duration-300 bg-primary text-white px-4 py-2 rounded-md disabled:cursor-not-allowed disabled:border disabled:bg-gray-300 disabled:border-gray-400 disabled:text-gray-500 font-semibold"
+          >
+            Save Changes
+          </button>
+        } />
+
+      </div>
+    </form>
+  );
+};
+
+const ConfirmationModal = ({ trigger }: { trigger: React.ReactNode }) => {
+  return <DrawerDialog trigger={trigger}
+    header={
+      <DialogTitle className="text-lg font-semibold w-full flex justify-center">
+        Close Review
+      </DialogTitle>}
+    footer={
+      <div className="flex flex-col md:flex-row gap-y-4 md:gap-x-6 justify-center">
+        <button className="bg-white px-4 py-2 rounded-md font-semibold border border-gray-400 w-full lg:w-[148px] order-1 lg:order-none">Cancel</button>
+        <Link href="/hr-admin/performance/overview" className="bg-primary text-white px-4 py-2 rounded-md font-semibold flex justify-center">Save Changes</Link>
+      </div>
+    }>
+    <div className="space-y-4 bg-white p-4 rounded-md flex justify-center">
+      <p>Are you sure you want to close this review?</p>
+    </div>
+  </DrawerDialog>;
+}
+
+export default EditReviewCycle;

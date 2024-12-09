@@ -7,17 +7,20 @@ import { useRouter } from 'next/navigation';
 import { DatePicker, DateRangePicker, Input } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import CalendarIcon from '@/app/_components/icons/calendar';
+import dayjs from 'dayjs';
 
 const HrAdminCreatePayrollPage = () => {
   const router = useRouter();
   const [selectedRows, setSelectedRows] = useState<number[]>([0]);
-  // const [dateRange, setDateRange] = React.useState<{
-  //   startDate: Date;
-  //   endDate: Date;
-  // }>({
-  //   startDate: dayjs().startOf('month').toDate(),
-  //   endDate: dayjs().endOf('month').toDate(),
-  // });
+  const [dateRange, setDateRange] = React.useState<{
+    startDate: Date;
+    endDate: Date;
+  }>({
+    startDate: dayjs().startOf('month').toDate(),
+    endDate: dayjs().endOf('month').toDate(),
+  });
+
+  console.log(dateRange);
   // const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
   //   null
   // );
@@ -46,20 +49,9 @@ const HrAdminCreatePayrollPage = () => {
               { label: 'Payment Date', placeholder: 'Select date' },
             ].map((item, index) => (
               <Grid2 key={index} size={{ xs: 12, md: 4 }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 5,
-                  }}
-                >
-                  <div
-                    style={{
-                      color: '#101928',
-                      fontWeight: 600,
-                      fontSize: '14px',
-                    }}
-                  >
+                <div className='flex flex-col gap-5'>
+                  <div className='text-[#101928] font-semibold text-sm'>
+                    {' '}
                     {item.label}
                   </div>
                   {index == 0 ? (
@@ -98,9 +90,11 @@ const HrAdminCreatePayrollPage = () => {
                       ranges={[]}
                       format='dd MMM yyyy'
                       placeholder={item.placeholder}
-                      // onChange={(e) => {
-                      //   e && setDateRange({ startDate: e[0], endDate: e[1] });
-                      // }}
+                      onChange={(e) => {
+                        if (e) {
+                          setDateRange({ startDate: e[0], endDate: e[1] });
+                        }
+                      }}
                       character=' – '
                       caretAs={CalendarIcon}
                     />

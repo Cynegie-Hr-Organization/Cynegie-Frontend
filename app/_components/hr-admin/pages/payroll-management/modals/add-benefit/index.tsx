@@ -1,3 +1,4 @@
+import { newIndex } from '@/lib/utils';
 import { Close } from '@mui/icons-material';
 import {
   Dialog,
@@ -85,8 +86,8 @@ const AddBenefitModal: React.FC<{
                         >
                           {item.placeholder}
                         </MenuItem>
-                        {item.options?.map((option) => (
-                          <MenuItem key={option} value={option}>
+                        {item.options?.map((option, index) => (
+                          <MenuItem key={newIndex(index)} value={option}>
                             {option}
                           </MenuItem>
                         ))}
@@ -154,7 +155,7 @@ const AddBenefitModal: React.FC<{
                   },
                 ].map((item, index) => (
                   <Grid2
-                    key={index}
+                    key={newIndex(index)}
                     size={{ xs: 12, md: index == 3 || index == 4 ? 6 : 4 }}
                   >
                     <div
@@ -186,8 +187,8 @@ const AddBenefitModal: React.FC<{
                           <MenuItem value={item.placeholder}>
                             {item.placeholder}
                           </MenuItem>
-                          {item.options?.map((option) => (
-                            <MenuItem key={option} value={option}>
+                          {item.options?.map((option, index) => (
+                            <MenuItem key={newIndex(index)} value={option}>
                               {option}
                             </MenuItem>
                           ))}
@@ -226,7 +227,7 @@ const AddBenefitModal: React.FC<{
                     placeholder: 'Enter',
                   },
                 ].map((item, index) => (
-                  <Grid2 key={index} size={{ xs: 12, md: 6 }}>
+                  <Grid2 key={newIndex(index)} size={{ xs: 12, md: 6 }}>
                     <div
                       style={{
                         display: 'flex',
@@ -246,7 +247,7 @@ const AddBenefitModal: React.FC<{
                       </div>
                       <Input
                         placeholder={item.placeholder}
-                        key={index}
+                        key={newIndex(index)}
                         style={{ borderRadius: '6px' }}
                       />
                     </div>

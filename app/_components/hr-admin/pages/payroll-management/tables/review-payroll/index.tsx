@@ -28,7 +28,6 @@ import { useState } from 'react';
 import { reviewPayrollTableData } from './data';
 
 const ReviewPayrollTable = () => {
-  // const router = useRouter();
   const [filterAnchorEl, setFilterAnchorEl] =
     useState<HTMLButtonElement | null>(null);
   const [tableActionAnchorEl, setTableActionAnchorEl] =

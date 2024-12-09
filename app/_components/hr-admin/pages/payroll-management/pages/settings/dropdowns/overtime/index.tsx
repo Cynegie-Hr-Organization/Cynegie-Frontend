@@ -1,3 +1,4 @@
+import { newIndex } from '@/lib/utils';
 import { Grid2, MenuItem, Select, TextField } from '@mui/material';
 
 const OvertimeDropdownSettings = () => {
@@ -16,7 +17,7 @@ const OvertimeDropdownSettings = () => {
           ],
         },
       ].map((item, index) => (
-        <Grid2 key={index} size={{ xs: 12, md: 6 }}>
+        <Grid2 key={newIndex(index)} size={{ xs: 12, md: 6 }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             <div
               style={{
@@ -37,8 +38,8 @@ const OvertimeDropdownSettings = () => {
                 }}
               >
                 <MenuItem value={item.placeholder}>{item.placeholder}</MenuItem>
-                {item.options?.map((option) => (
-                  <MenuItem key={option} value={option}>
+                {item.options?.map((option, index) => (
+                  <MenuItem key={newIndex(index)} value={option}>
                     {option}
                   </MenuItem>
                 ))}

@@ -4,6 +4,7 @@ import {
   MultiSelect,
   Option,
 } from '@/app/_components/shared/multi-select-dropdown';
+import { newIndex } from '@/lib/utils';
 
 const PayrollApprovalDropdownSettings = () => {
   const [approvalLevelsSelected, setapprovalLevelsSelected] = useState<
@@ -42,10 +43,10 @@ const PayrollApprovalDropdownSettings = () => {
             </div>
             <div className='App'>
               <MultiSelect
-                key='example_id'
+                key={newIndex(index)}
                 options={item.options}
                 onChange={item.onChange}
-                value={item.value}
+                value={item.value ?? []}
                 isSelectAll={true}
                 menuPlacement={'bottom'}
               />

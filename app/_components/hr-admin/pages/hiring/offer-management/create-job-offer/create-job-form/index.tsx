@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import CustomDatePicker from '../../../../../../ui/date-picker';
-// import { useRouter } from 'next/navigation';
 import { Dayjs } from 'dayjs';
 import dynamic from 'next/dynamic';
 import { EditorState, convertToRaw } from 'draft-js';
@@ -14,9 +13,9 @@ const Editor = dynamic(
 );
 
 const CreateJobOfferForm: React.FC = () => {
-  const [candidateName /*, setCandidateName*/] = useState('Precious Henry');
-  const [jobTitle /*, setJobTitle*/] = useState('Front End Developer');
-  const [department /*, setDepartment*/] = useState('Engineering');
+  const [candidateName] = useState('Precious Henry');
+  const [jobTitle] = useState('Front End Developer');
+  const [department] = useState('Engineering');
   const [offerDate, setOfferDate] = useState<Dayjs | null>(null);
   const [expirationDate, setExpirationDate] = useState<Dayjs | null>(null);
   const [jobStartDate, setJobStartDate] = useState<Dayjs | null>(null);
@@ -32,11 +31,8 @@ const CreateJobOfferForm: React.FC = () => {
     setBenefits(editorState);
   };
 
-  // const router = useRouter();
-
   const handleSubmitClick = () => {
-    // Simulate publish logic here
-    setIsModalOpen(true); // Open the modal
+    setIsModalOpen(true);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

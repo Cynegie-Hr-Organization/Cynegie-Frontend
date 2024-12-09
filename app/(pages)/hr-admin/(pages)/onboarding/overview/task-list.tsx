@@ -1,7 +1,7 @@
 "use client";
 
 
-import { Avatar, TextField } from "@mui/material";
+import { Avatar } from "@mui/material";
 import { RiSearchLine } from "react-icons/ri";
 import { GoDotFill, GoPlus } from "react-icons/go";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
@@ -40,8 +40,8 @@ const TouchPreview = () => {
   if (!preview.display || !isTouchDevice) return null;
 
   return (
-    <div 
-      className="fixed top-0 left-0 z-50 w-[242px] pointer-events-none" 
+    <div
+      className="fixed top-0 left-0 z-50 w-[242px] pointer-events-none"
       style={preview.display ? preview.style : undefined}
     >
       <div className="text-xs space-y-[14.67px] p-2 rounded-xl shadow-md bg-white opacity-90 -rotate-6">
@@ -128,29 +128,15 @@ const TaskList = () => {
   }, []);
 
   return (
-    <CardLayout className='bg-white'>
-      <div className='w-full flex items-center justify-between flex-grow mb-4'>
-        <TextField
-          className='max-w-[476px]'
-          sx={{
-            width: { xs: "90%", sm: "70%", md: "70%" },
-            mb: { xs: "15px", md: "0px" },
-          }}
-          InputProps={{
-            sx: {
-              height: "35px",
-              borderRadius: "6px",
-              fontSize: "14px",
-              fontWeight: 400,
-            },
-            startAdornment: <RiSearchLine className='mr-2 text-2xl' />,
-          }}
-          placeholder='Search here...'
-        />
+    <CardLayout className='bg-white space-y-8'>
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
+        <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
+          <RiSearchLine className="text-gray-400" />
+          <input type="text" placeholder="Search here..." className="w-full h-9 px-2 outline-none" />
+        </div>
 
-        <button className='flex items-center border border-gray-300 rounded-md px-4 py-2 text-sm hover:bg-gray-100 gap-x-3'>
-          <LuListFilter />
-          Filter
+        <button type="button" className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
+          <LuListFilter /> Filter
         </button>
       </div>
 
