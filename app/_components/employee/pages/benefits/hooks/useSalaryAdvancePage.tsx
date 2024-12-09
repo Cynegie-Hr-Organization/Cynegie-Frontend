@@ -130,7 +130,7 @@ const useSalaryAdvancePage = () => {
     },
     buttonOne: {
       type: ButtonType.contained,
-      text: 'Request Beneift',
+      text: 'Request Salary Advance',
       onClick: () => setOpenRequestModal(false),
     },
     centerButton: true,

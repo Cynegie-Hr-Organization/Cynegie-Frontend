@@ -21,10 +21,7 @@ const Form: React.FC<FormProps> = (props) => {
       >
         <Grid2 container spacing={gridSpacing}>
           {inputFields?.map((field, index) => (
-            <Grid2
-              key={field.name}
-              size={getGridLayout(index, inputFields.length, layout)}
-            >
+            <Grid2 key={field.name} size={getGridLayout(index, layout)}>
               <div className='flex flex-col gap-2'>
                 <FieldLabel wrapText value={field.name ?? ''} />
                 {field.type == 'text' && (

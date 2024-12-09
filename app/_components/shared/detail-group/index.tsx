@@ -11,10 +11,7 @@ const DetailGroup: React.FC<DetailGroupProps> = (props) => {
       {!spaceBetweenLayout && (
         <Grid2 container spacing={3}>
           {details?.map((item, index) => (
-            <Grid2
-              key={index}
-              size={getGridLayout(index, details.length, gridLayout)}
-            >
+            <Grid2 key={index} size={getGridLayout(index, gridLayout)}>
               <Detail
                 name={item.name}
                 value={item.value}

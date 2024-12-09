@@ -3,13 +3,10 @@ export type GridLayout =
   | 'request-feedback'
   | 'view-details'
   | 'view-details-two'
-  | 'development-plan';
+  | 'development-plan'
+  | '3-columns';
 
-export const getGridLayout = (
-  index: number,
-  length: number,
-  layout?: GridLayout
-) => {
+export const getGridLayout = (index: number, layout?: GridLayout) => {
   if (layout === 'request-correction') {
     const lg = index === 3 ? 12 : index == 4 ? 6 : 4;
     return { xs: 12, md: lg, lg: lg };
@@ -28,6 +25,9 @@ export const getGridLayout = (
   if (layout === 'view-details-two') {
     const sm = index === 3 ? 12 : 4;
     return { xs: 12, sm: sm };
+  }
+  if (layout === '3-columns') {
+    return { xs: 12, sm: 4 };
   }
   return { xs: 12 };
 };

@@ -22,8 +22,8 @@ const ButtonGroup: React.FC<ButtonGroupProps> = (props) => {
       {leftButton && rightButton && (
         <div className={`flex justify-${getPosition(position)}`}>
           <div className='flex flex-row gap-4'>
-            {[leftButton, rightButton].map((buttonProps) => (
-              <Button key={buttonProps.text} {...buttonProps} />
+            {[leftButton, rightButton].map((buttonProps, index) => (
+              <Button key={index} {...buttonProps} />
             ))}
           </div>
         </div>
