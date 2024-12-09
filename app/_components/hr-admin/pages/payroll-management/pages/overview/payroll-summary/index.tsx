@@ -26,9 +26,9 @@ const HrAdminPayrollSummaryPage = () => {
       <Stack
         gap={2}
         sx={{
-          backgroundColor: '#0035C3',
-          borderRadius: '10px',
-          padding: '30px',
+          backgroundColor: "#0035C3",
+          borderRadius: "10px",
+          padding: "30px",
         }}
       >
         <div style={{ fontSize: '14px', fontWeight: 400, color: '#FFF' }}>
