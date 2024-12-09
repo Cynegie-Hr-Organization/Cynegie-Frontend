@@ -1,10 +1,10 @@
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
-import Popover from '@/app/_components/shared/popover';
 import { color, icon } from '@/constants';
 import { ButtonProps, ButtonType } from '../../page/heading/types';
-import { PopoverType } from '@/app/_components/shared/popover/types';
+import { PopoverType } from '@/app/_components/shared/custom-popover/types';
 import SvgIcon from '../../../icons/container';
+import Popover from '../../custom-popover';
 
 const Button: React.FC<ButtonProps> = (props) => {
   const {

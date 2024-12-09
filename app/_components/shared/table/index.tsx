@@ -16,8 +16,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { FieldType, TableProps, TableAction } from './types';
 import StatusPill from '../pills/status';
 import { FilterList, MoreVert } from '@mui/icons-material';
-import Popover from '../popover';
-import { PopoverType } from '../popover/types';
+import { PopoverType } from '../custom-popover/types';
 import Button from '../button-group/button';
 import { ButtonType } from '../page/heading/types';
 import { Input, InputGroup } from 'rsuite';
@@ -25,6 +24,7 @@ import Image from 'next/image';
 import TablePagination from './pagination';
 import { color } from '@/constants';
 import { usePathname, useRouter } from 'next/navigation';
+import Popover from '../custom-popover';
 
 const Table: React.FC<TableProps> = (props) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);

@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 import ReviewPayrollTable from '../../../tables/review-payroll';
 import { DatePicker, DateRangePicker, Input } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
-import dayjs from 'dayjs';
 import Image from 'next/image';
 
 const HrAdminReviewPayrollPage = () => {

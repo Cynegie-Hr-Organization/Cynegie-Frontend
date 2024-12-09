@@ -30,7 +30,7 @@ import AdjustRepaymentDetailsModal from '../../../modals/adjust-repayment-detail
 import { approvedSalaryAdvanceTableData } from './data';
 
 const ApprovedSalaryAdvanceTable = () => {
-  const [, setSelectedRowIndex] = useState(0);
+  // const [, setSelectedRowIndex] = useState(0);
   const [showAdjustRepaymentModal, setShowAdjustRepaymentModal] =
     useState(false);
 
