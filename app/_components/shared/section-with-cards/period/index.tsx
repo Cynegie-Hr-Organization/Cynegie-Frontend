@@ -1,7 +1,7 @@
-const Period: React.FC<{
-  text: string;
-  font?: { size: number; weight: number; color: string };
-}> = ({ text, font }) => {
+import { CardPeriodProps } from '../types';
+
+const Period: React.FC<CardPeriodProps> = (props) => {
+  const { text, font } = props;
   return (
     <div
       style={{

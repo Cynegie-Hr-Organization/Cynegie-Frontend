@@ -111,6 +111,11 @@ export const AttendanceStatusMap: StatusMap = {
   Absent: 'error',
 };
 
+export const ReadAdminStatusMap: StatusMap = {
+  Read: 'warning',
+  Admin: 'info',
+};
+
 export const tableFilter = {
   department: { name: 'Department', items: ['All', 'Sales', 'Finance', 'IT'] },
   status: {

@@ -1,21 +1,16 @@
 import { Stack } from '@mui/material';
 import Header from '../header';
+import { SectionCardContainerProps } from '../types';
 
-const SectionCardContainer: React.FC<{
-  title: string;
-  period?: string;
-  periodFont?: { size: number; weight: number; color: string };
-  periodClick?: () => void;
-  headerDivider?: boolean;
-  children: React.ReactNode;
-}> = ({
-  title,
-  period,
-  children,
-  headerDivider = false,
-  periodFont,
-  periodClick,
-}) => {
+const SectionCardContainer: React.FC<SectionCardContainerProps> = (props) => {
+  const {
+    title,
+    period,
+    children,
+    headerDivider = false,
+    periodFont,
+    periodClick,
+  } = props;
   return (
     <Stack sx={{ minHeight: '100%' }} gap={2}>
       <Header

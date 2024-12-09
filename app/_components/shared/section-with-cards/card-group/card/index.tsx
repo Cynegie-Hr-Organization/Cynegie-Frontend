@@ -2,35 +2,23 @@ import { Stack } from '@mui/material';
 import Value from './value';
 import CardLabel from './label';
 import React from 'react';
-import { ColorVariant } from '@/types';
+import { CardProps } from '../../types';
 
-const Card: React.FC<{
-  value: number;
-  valueBelow?: boolean;
-  valueLineColor?: string;
-  lineBelowValue?: boolean;
-  icon: React.ReactElement;
-  iconColorVariant?: ColorVariant;
-  iconContainerHeight: number;
-  iconContainerWidth: number;
-  labelText: string;
-  hasIcon?: boolean;
-  denominator?: number;
-  isPercentage?: boolean;
-}> = ({
-  value,
-  icon,
-  iconColorVariant,
-  iconContainerHeight,
-  iconContainerWidth,
-  labelText,
-  valueBelow = true,
-  lineBelowValue = false,
-  valueLineColor,
-  hasIcon = false,
-  denominator,
-  isPercentage = false,
-}) => {
+const Card: React.FC<CardProps> = (props) => {
+  const {
+    value,
+    icon,
+    iconColorVariant,
+    iconContainerHeight,
+    iconContainerWidth,
+    labelText,
+    valueBelow = true,
+    lineBelowValue = false,
+    valueLineColor,
+    hasIcon = false,
+    denominator,
+    isPercentage = false,
+  } = props;
   return (
     <Stack
       flexDirection={valueBelow ? 'column-reverse' : 'column'}

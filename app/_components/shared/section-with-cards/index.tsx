@@ -1,13 +1,10 @@
 import React from 'react';
 import CardGroup from './card-group';
 import SectionCardContainer from './container';
+import { SectionWithCardsProps } from './types';
 
-const SectionWithCards: React.FC<{
-  title: string;
-  period?: string;
-  headerDivider?: boolean;
-  cardsData: any[];
-}> = ({ title, period, headerDivider = false, cardsData }) => {
+const SectionWithCards: React.FC<SectionWithCardsProps> = (props) => {
+  const { title, period, headerDivider = false, cardsData } = props;
   return (
     <SectionCardContainer
       title={title}

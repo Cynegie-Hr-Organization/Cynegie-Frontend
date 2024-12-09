@@ -2,11 +2,9 @@ import Card from './card';
 import { Grid2 } from '@mui/material';
 import SvgIcon from '@/app/_components/icons/container';
 import { icon } from '@/constants';
+import { CardGroupProps } from '../types';
 
-const CardGroup: React.FC<{
-  data: any[];
-  hasIcon?: boolean;
-}> = ({ data }) => {
+const CardGroup: React.FC<CardGroupProps> = ({ data }) => {
   return (
     <Grid2 container spacing={2}>
       {data.map((card, index) => (

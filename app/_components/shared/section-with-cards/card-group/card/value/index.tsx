@@ -1,16 +1,13 @@
-const Value: React.FC<{
-  value?: number;
-  lineBelow?: boolean;
-  lineColor?: string;
-  denominator?: number;
-  isPercentage?: boolean;
-}> = ({
-  value,
-  lineBelow = false,
-  lineColor,
-  denominator,
-  isPercentage = false,
-}) => {
+import { CardValueProps } from '../../../types';
+
+const Value: React.FC<CardValueProps> = (props) => {
+  const {
+    value,
+    lineBelow = false,
+    lineColor,
+    denominator,
+    isPercentage = false,
+  } = props;
   return (
     <div
       style={{

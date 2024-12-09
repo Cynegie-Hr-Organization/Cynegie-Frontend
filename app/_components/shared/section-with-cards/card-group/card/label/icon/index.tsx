@@ -1,13 +1,9 @@
-import { ColorVariant } from '@/types';
 import { getColorVariant } from '@/utils';
 import React from 'react';
+import { CardLabelIconProps } from '../../../../types';
 
-const CardLabelIcon: React.FC<{
-  icon: React.ReactElement;
-  colorVariant?: ColorVariant;
-  containerHeight: number;
-  containerWidth: number;
-}> = ({ icon, colorVariant, containerHeight, containerWidth }) => {
+const CardLabelIcon: React.FC<CardLabelIconProps> = (props) => {
+  const { icon, colorVariant, containerHeight, containerWidth } = props;
   return (
     <div
       style={{

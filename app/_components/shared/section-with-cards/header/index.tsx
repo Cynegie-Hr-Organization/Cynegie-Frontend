@@ -2,22 +2,17 @@ import { Box, Divider, Stack } from '@mui/material';
 import React from 'react';
 import Title from '../title';
 import Period from '../period';
+import { CardHeaderProps } from '../types';
 
-const Header: React.FC<{
-  title: string;
-  period?: string;
-  hasDivider?: boolean;
-  periodFont?: { size: number; weight: number; color: string };
-  titleSize?: 'small' | 'large';
-  periodClick?: () => void;
-}> = ({
-  title,
-  period = '',
-  hasDivider = false,
-  titleSize = 'small',
-  periodFont,
-  periodClick,
-}) => {
+const Header: React.FC<CardHeaderProps> = (props) => {
+  const {
+    title,
+    period = '',
+    hasDivider = false,
+    titleSize = 'small',
+    periodFont,
+    periodClick,
+  } = props;
   return (
     <Stack {...(hasDivider && { gap: 1.5 })}>
       <Stack direction='row' alignItems='center'>
