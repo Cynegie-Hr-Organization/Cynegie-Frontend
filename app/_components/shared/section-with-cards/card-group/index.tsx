@@ -4,20 +4,22 @@ import SvgIcon from '@/app/_components/icons/container';
 import { icon } from '@/constants';
 import { CardGroupProps } from '../types';
 
-const CardGroup: React.FC<CardGroupProps> = ({ data }) => {
+const CardGroup: React.FC<CardGroupProps> = ({ data, gridItemSize }) => {
   return (
     <Grid2 container spacing={2}>
       {data.map((card, index) => (
-        <Grid2 key={index} size={{ xs: 12, sm: 6 }}>
+        <Grid2 key={index} size={gridItemSize ?? { xs: 12, sm: 6 }}>
           <Card
             value={card.value}
-            valueBelow={false}
-            icon={<SvgIcon path={icon.square} width={16} height={16} />}
+            valueBelow={card.valueBelow ?? false}
+            icon={
+              card.icon ?? <SvgIcon path={icon.square} width={16} height={16} />
+            }
             iconColorVariant={card.iconColorVariant}
             iconContainerHeight={27.11}
             iconContainerWidth={27.11}
             labelText={card.labelText}
-            hasIcon={card.hasIcon}
+            hasIcon={card.icon ? true : false}
             denominator={card.denominator}
             isPercentage={card.isPercentage}
           />

@@ -1,4 +1,4 @@
-import { Filter, StatusMap } from '@/app/_components/shared/table/types';
+import { StatusMap } from '@/app/_components/shared/table/types';
 import { ChartOptions } from 'chart.js';
 
 export const iconBaseUrl = '/icons/';
@@ -7,6 +7,8 @@ export const icon = {
   graduatingCap: `${iconBaseUrl}graduating-cap.svg`,
   square: `${iconBaseUrl}square.svg`,
   bin: `${iconBaseUrl}bin.svg`,
+  gift: `${iconBaseUrl}gift.svg`,
+  paperMoney: `${iconBaseUrl}paper-money.svg`,
 };
 
 export const color = {
@@ -127,7 +129,8 @@ export const tableFilter = {
 const basePath = {
   employee: '/employee/',
   performanceManagement: 'performance-management/',
-  learningDevelopment: 'learning-development',
+  learningDevelopment: 'learning-development/',
+  benefits: 'benefits/',
 };
 
 export const route = {
@@ -143,6 +146,10 @@ export const route = {
     learningDevelopment: {
       home: `${basePath.employee}${basePath.learningDevelopment}`,
       viewDetails: `${basePath.employee}${basePath.learningDevelopment}view-course-details`,
+    },
+    benefits: {
+      home: `${basePath.employee}${basePath.benefits}`,
+      salaryAdvance: `${basePath.employee}${basePath.benefits}salary-advance`,
     },
   },
 };

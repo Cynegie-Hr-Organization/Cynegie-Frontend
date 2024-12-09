@@ -25,17 +25,20 @@ const DetailGroup: React.FC<DetailGroupProps> = (props) => {
           ))}
         </Grid2>
       )}
-      {spaceBetweenLayout &&
-        details?.map((item, index) => (
-          <Detail
-            key={index}
-            name={item.name}
-            value={item.value}
-            spaceBetweenLayout={spaceBetweenLayout}
-            type={item.type}
-            statusMap={statusMap}
-          />
-        ))}
+      {spaceBetweenLayout && (
+        <div className='flex flex-col gap-5'>
+          {details?.map((item, index) => (
+            <Detail
+              key={index}
+              name={item.name}
+              value={item.value}
+              spaceBetweenLayout={spaceBetweenLayout}
+              type={item.type}
+              statusMap={statusMap}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

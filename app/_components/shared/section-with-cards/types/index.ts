@@ -4,7 +4,7 @@ export type SectionWithCardsProps = {
   title: string;
   period?: string;
   headerDivider?: boolean;
-  cardsData: any[];
+  cardsData: CardProps[];
 };
 
 export type CardProps = {
@@ -72,6 +72,9 @@ export type SectionCardContainerProps = {
 };
 
 export type CardGroupProps = {
-  data: any[];
+  data: CardProps[];
   hasIcon?: boolean;
+  gridItemSize?: GridItemSize;
 };
+
+type GridItemSize = { xs?: number; sm?: number; md?: number; lg?: number };

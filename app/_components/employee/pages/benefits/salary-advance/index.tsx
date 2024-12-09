@@ -1,13 +1,13 @@
 'use client';
 import Page from '@/app/_components/shared/page';
-import useBenefitsPage from './hooks/useBenefitsPage';
 import CardGroup from '@/app/_components/shared/section-with-cards/card-group';
 import Table from '@/app/_components/shared/table';
-import Modal from '../../modals/modal';
+import useSalaryAdvancePage from '../hooks/useSalaryAdvancePage';
+import Modal from '../../../modals/modal';
 
-const EmployeeBenefits = () => {
+const EmployeeBenefitsSalaryAdvance = () => {
   const { pageProps, cardGroupProps, tableProps, modalsProps } =
-    useBenefitsPage();
+    useSalaryAdvancePage();
   return (
     <Page {...pageProps}>
       <CardGroup {...cardGroupProps} />
@@ -19,4 +19,4 @@ const EmployeeBenefits = () => {
   );
 };
 
-export default EmployeeBenefits;
+export default EmployeeBenefitsSalaryAdvance;
