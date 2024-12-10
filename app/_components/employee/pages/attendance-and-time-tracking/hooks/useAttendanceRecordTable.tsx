@@ -155,11 +155,11 @@ const useAttendanceRecordTable = () => {
     reduceVerticalGap: true,
   };
 
+  const modalsData = [detailsModalData, correctionModalData, successModalData];
+
   return {
     attendanceRecordTableData,
-    detailsModalData,
-    correctionModalData,
-    successModalData,
+    modalsData,
   };
 };
 

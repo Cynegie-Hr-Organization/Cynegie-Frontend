@@ -1,14 +1,10 @@
 'use client';
-import { ChevronLeft } from '@mui/icons-material';
-import { Alert, Avatar, Grid2, Stack } from '@mui/material';
-import { DatePicker, Input } from 'rsuite';
+import { Alert, Avatar, Stack } from '@mui/material';
 import 'rsuite/dist/rsuite.min.css';
 import { BsExclamationCircle } from 'react-icons/bs';
-import CalendarIcon from '@/app/_components/icons/calendar';
 import Page from '@/app/_components/shared/page';
 import useEmployeeProfilePage from './hooks';
 import Form from '@/app/_components/shared/form';
-import Button from '@/app/_components/shared/button-group/button';
 import ButtonGroup from '@/app/_components/shared/button-group';
 
 const EmployeeProfile = () => {

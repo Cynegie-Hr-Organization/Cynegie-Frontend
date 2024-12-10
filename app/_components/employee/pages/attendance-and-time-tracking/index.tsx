@@ -11,12 +11,7 @@ import useAttendanceRecordTable from './hooks/useAttendanceRecordTable';
 import Modal from '../../modals/modal';
 
 const EmployeeAttendanceAndTimeTracking = () => {
-  const {
-    attendanceRecordTableData,
-    detailsModalData,
-    correctionModalData,
-    successModalData,
-  } = useAttendanceRecordTable();
+  const { attendanceRecordTableData, modalsData } = useAttendanceRecordTable();
 
   return (
     <>
@@ -47,9 +42,9 @@ const EmployeeAttendanceAndTimeTracking = () => {
         </Grid2>
         <Table {...attendanceRecordTableData} />
       </Page>
-      <Modal {...detailsModalData} />
-      <Modal {...correctionModalData} />
-      <Modal {...successModalData} />
+      {modalsData.map((data, index) => (
+        <Modal key={index} {...data} />
+      ))}
     </>
   );
 };

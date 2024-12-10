@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import 'rsuite/dist/rsuite.min.css';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 export const metadata: Metadata = {
   title: 'Cynegie',
