@@ -15,10 +15,7 @@ import { baseUrl } from "@/constants/config";
 
 
 
-const Sidebar = ({ openMobileMenu, setOpenMobileMenu }: { 
-  openMobileMenu: boolean, 
-  setOpenMobileMenu: () => void 
-}) => {
+const FinanceAdminSidebar = ({ openMobileMenu, setOpenMobileMenu }: { openMobileMenu: boolean, setOpenMobileMenu: () => void }) => {
   const router = useRouter();
   const [userDetails, setUserDetails] = useState<{
     name: string;
@@ -124,4 +121,4 @@ const Sidebar = ({ openMobileMenu, setOpenMobileMenu }: {
   );
 };
 
-export default Sidebar;
+export default FinanceAdminSidebar;

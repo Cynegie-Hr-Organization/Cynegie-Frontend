@@ -59,7 +59,7 @@ export function BarChartComponent({ chartData, chartConfig }: BarChartComponentP
           cursor={false}
           content={<ChartTooltipContent className="bg-white border-none" />}
         />
-        <Bar dataKey="desktop" fill="#E8E8E8" radius={4}  />
+        <Bar dataKey="desktop" fill="#E8E8E8" radius={4} />
         <Bar dataKey="mobile" fill="#0035C3" radius={4} />
       </BarChart>
     </ChartContainer>
