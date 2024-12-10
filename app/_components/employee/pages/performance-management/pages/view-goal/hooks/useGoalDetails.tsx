@@ -62,7 +62,7 @@ const useGoalDetails = () => {
       department: 'HR Team',
       dueDate: '12 Dec 2024',
       priority: 'High',
-      userPictures: [],
+      userPictures: Array(5).fill('/image/team/mattew.png'),
     },
     alignmentDetails: {
       alignedGoal: {

@@ -19,7 +19,7 @@ const CardGroup: React.FC<CardGroupProps> = ({ data, gridItemSize }) => {
             iconContainerHeight={27.11}
             iconContainerWidth={27.11}
             labelText={card.labelText}
-            hasIcon={card.icon ? true : false}
+            hasIcon={card.hasIcon || card.icon ? true : false}
             denominator={card.denominator}
             isPercentage={card.isPercentage}
           />

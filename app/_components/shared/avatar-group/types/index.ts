@@ -1,3 +1,3 @@
 export type AvatarGroupProps = {
-  avatars: string[];
+  avatars?: string[];
 };

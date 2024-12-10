@@ -7,7 +7,7 @@ const GoalDetails: React.FC<GoalDetailsProps> = (props) => {
   const { generalDetails, alignmentDetails, tableTabs } = props;
 
   return (
-    <div className='common-card mt-[-20]'>
+    <div className='common-card mt-[-5]'>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-5 p-5'>
         <GeneralGoalDetails {...generalDetails} />
         <AlignmentGoalDetails {...alignmentDetails} />

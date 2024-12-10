@@ -1,7 +1,9 @@
+import AvatarGroup from '@/app/_components/shared/avatar-group';
 import { GeneralGoalDetailsProps } from '../types';
 
 const GeneralGoalDetails: React.FC<GeneralGoalDetailsProps> = (props) => {
-  const { name, description, department, dueDate, priority } = props;
+  const { name, description, department, dueDate, priority, userPictures } =
+    props;
 
   const additionalInfo = [
     { name: 'Department', value: department },
@@ -21,8 +23,8 @@ const GeneralGoalDetails: React.FC<GeneralGoalDetailsProps> = (props) => {
           </div>
         ))}
       </div>
-      <div>
-        <p>Avatar Group</p>
+      <div className='flex flex-col gap-5'>
+        <AvatarGroup avatars={userPictures} />
         <p>Shared With</p>
       </div>
     </div>
