@@ -2,6 +2,12 @@ import DetailGroup from '@/app/_components/shared/detail-group';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';
 import { PageProps } from '@/app/_components/shared/page/types';
 import { SectionCardContainerProps } from '@/app/_components/shared/section-with-cards/types';
+import TimeOff from '../sections/time-off';
+import UpcomingEvent from '../sections/upcoming-event';
+import RecentActivityCardDetails from '../sections/recent-activity';
+import { TimeOffProps } from '../sections/time-off/types';
+import Profile from '../sections/profile';
+import { ProfileProps } from '../sections/profile/types';
 
 const useEmployeeDashboardPage = () => {
   const pageProps: PageProps = {
@@ -17,11 +23,42 @@ const useEmployeeDashboardPage = () => {
     },
   };
 
+  const timeOff: TimeOffProps = {
+    used: 50,
+    total: 100,
+    requests: [
+      {
+        dotColor: 'blue',
+        date: 'Jul 30, 2024',
+        type: 'Sick',
+        status: 'Approved',
+      },
+      {
+        dotColor: 'green',
+        date: 'Aug 1, 2024',
+        type: 'Annual',
+        status: 'Rejected',
+      },
+      {
+        dotColor: 'red',
+        date: 'Aug 12, 2024',
+        type: 'Exam',
+        status: 'Pending',
+      },
+    ],
+  };
+
+  const profileProps: ProfileProps = {
+    image: '/image/team/mattew.png',
+    name: 'John Doe',
+    role: 'Software Engineer',
+  };
+
   const sectionGroups: SectionCardContainerProps[][] = [
     [
-      { title: 'Time-Off', children: <></> },
-      { title: 'Profile', children: <></> },
-      { title: 'Upcoming Event', children: <></> },
+      { title: 'Time-Off', children: <TimeOff {...timeOff} /> },
+      { title: 'Profile', children: <Profile {...profileProps} /> },
+      { title: 'Upcoming Event', children: <UpcomingEvent /> },
     ],
     [
       {
@@ -58,7 +95,7 @@ const useEmployeeDashboardPage = () => {
           ></DetailGroup>
         ),
       },
-      { title: 'Recent Activity', children: <></> },
+      { title: 'Recent Activity', children: <RecentActivityCardDetails /> },
     ],
   ];
 
