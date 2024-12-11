@@ -6,6 +6,7 @@ import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { IoIosArrowDown } from "react-icons/io";
 import { ChartConfig } from "@/components/ui/chart";
 import { BarChartComponent } from "./bar-chart";
+import FinanceAdminDashboardTable from "./table";
 
 
 const chartConfig = {
@@ -58,20 +59,20 @@ const FinanceAdminDashboard = () => {
 
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 py-6">
       <PageHeader
         title="Finance Management"
         description="Manage finance and organization"
         buttonLabel="Run Financial Reports"
         actionButtonLabel="Actions"
-        to="/finance-admin/new"
+        to="/finance-admin/budget-management"
       />
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {pageCards.map((card, index) => (
           <div className="common-card space-y-5" key={index}>
-            <h3>{card.title}</h3>
-            <p className="text-xl font-bold">{card.description}</p>
+            <h3 className="font-roboto text-xs xl:text-sm text-[#848897] font-medium">{card.title}</h3>
+            <p className="font-roboto text-xl font-bold">{card.description}</p>
           </div>
         ))}
       </div>
@@ -88,19 +89,42 @@ const FinanceAdminDashboard = () => {
         </div>
 
         <div className="flex flex-col md:flex-row items-center gap-6">
-          <div className="h-[220px] xl:h-[280px] max:w-[862px] lg:w-[862px] w-[300px]">
+          <div className="h-[220px] xl:h-[280px] w-full">
             <BarChartComponent chartData={chartData} chartConfig={chartConfig} />
           </div>
 
-          <div className="space-y-1">
-            <p className="text-sm text-gray-500">Total Profit</p>
-            <p className="text-xl font-bold">$34,886</p>
+          <div className="flex flex-col gap-4">
+            <ChartInfo title="Total Profit" value="$4,862" className="!text-primary" themeColor="bg-primary" />
+            <ChartInfo title="Total Loss" value="$1,862" />
           </div>
+
         </div>
       </div>
+
+
+
+      <FinanceAdminDashboardTable />
     </div>
   );
 };
+
+const ChartInfo = ({ title, value, themeColor, className }: {
+  title: string,
+  value: string,
+  themeColor?: string,
+  className?: string
+}) => {
+  return (
+    <div className={`space-y-1 text-[#727B8F] ${className || ''}`}>
+      <p className="text-xs">{title}</p>
+      <div className="flex items-center gap-2">
+        <p className="text-xl font-bold text-[#292D32]">{value}</p>
+        <div className={`h-4 w-7 rounded-md ${themeColor ?? 'bg-[#E8E8E8]'}`} />
+      </div>
+    </div>
+  )
+}
+
 
 
 const PageHeader = ({ title, description, buttonLabel, to }: {

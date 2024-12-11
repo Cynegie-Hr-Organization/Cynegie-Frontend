@@ -30,7 +30,7 @@ const InputText = ({ label, id, placeholder, requiredField = false, type = 'text
   );
 };
 export const InputTextArea = ({ label, id, placeholder, requiredField = false, onChange, value }: {
-  label: string,
+  label?: string,
   id: string,
   placeholder: string,
   requiredField?: boolean,
