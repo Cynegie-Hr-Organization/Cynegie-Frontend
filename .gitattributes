@@ -1,0 +1,5 @@
+app/_components/hr-admin/pages/payroll-management/* merge=accept-current
+app/_components/hr-admin/pages/hiring/* merge=accept-current
+app/(pages)/hr-admin/(pages)/hiring/* merge=accept-current
+app/(pages)/hr-admin/(pages)/payroll/* merge=accept-current
+app/(pages)/hr-admin/(pages)/performance/* merge=accept-current

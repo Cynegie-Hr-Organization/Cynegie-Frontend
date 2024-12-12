@@ -1,0 +1,7 @@
+  ;  [merge "accept-incoming"]
+  ;      name = accept incoming changes
+  ;      driver = true
+
+   [merge "accept-current"]
+       name = accept current changes
+       driver = git checkout --ours -- %P && git add -- %P
