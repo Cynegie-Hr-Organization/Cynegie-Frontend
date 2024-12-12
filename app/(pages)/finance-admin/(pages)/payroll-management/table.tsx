@@ -1,27 +1,23 @@
+import AppButton from "@/app/_components/shared/button";
+import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
+import { InputTextArea } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
-
-import { LuListFilter, LuTrash } from "react-icons/lu";
-
+import { DrawerDialog } from "@/components/drawer/modal";
+import { Checkbox } from "@/components/ui/checkbox";
+import { DialogTitle } from "@/components/ui/dialog";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useRouter } from "next/navigation";
+import { HiDotsVertical } from "react-icons/hi";
+import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 
-import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
-import { Checkbox } from "@/components/ui/checkbox";
-import AppButton from "@/app/_components/shared/button";
-import { ReactNode } from "react";
-import { DrawerDialog } from "@/components/drawer/modal";
-import InputText, { InputTextArea } from "@/app/_components/shared/input-text";
-import { DialogTitle } from "@/components/ui/dialog";
-import { DeleteSvg } from "@/app/_components/icons/delete";
-import { HiDotsHorizontal, HiDotsVertical } from "react-icons/hi";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
-const FinanceAdminBudgetTable = () => {
+
+
+
+const PayrollManagementTable = () => {
   return (
     <div className="common-card overflow-x-scroll space-y-4">
-      <h3 className="font-roboto text-xl font-bold">
-        Budget List
-      </h3>
-
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
         <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
           <RiSearchLine className="text-gray-400" />
@@ -75,11 +71,12 @@ const FinanceAdminBudgetTable = () => {
               <th className='px-6 py-3 text-left'>
                 <Checkbox className={"rounded-md border-gray-300"} />
               </th>
-              <th className='px-4 py-3 text-left'>Date</th>
-              <th className='px-4 py-3 text-left'>Transaction type</th>
-              <th className='px-4 py-3 text-left'>Reciept</th>
-              <th className='px-4 py-3 text-left'>Amount</th>
-              <th className='px-4 py-3 text-left'>Status</th>
+              <th className='px-4 py-3 text-left'>Payroll Name</th>
+              <th className='px-4 py-3 text-left'>Payroll Period</th>
+              <th className='px-4 py-3 text-left'>Payment date</th>
+              <th className='px-4 py-3 text-left'>Total Employees</th>
+              <th className='px-4 py-3 text-left'>Total Amount</th>
+              <th className='px-4 py-3 text-left'>Approval Status</th>
               <th className='px-4 py-3 text-left'>Actions</th>
             </tr>
           </thead>
@@ -91,13 +88,16 @@ const FinanceAdminBudgetTable = () => {
                     <Checkbox className={"rounded-md border-gray-300"} />
                   </td>
                   <td className='px-4 py-4'>
+                    <p className='text-sm'>Finance Sept 2024 Payroll</p>
+                  </td>
+                  <td className='px-4 py-4'>
+                    <p className='text-sm'>1st Sept - 31st Sept</p>
+                  </td>
+                  <td className='px-4 py-4'>
                     <p className='text-sm'>17 Apr, 2023</p>
                   </td>
                   <td className='px-4 py-4'>
-                    <p className='text-sm'>Credit</p>
-                  </td>
-                  <td className='px-4 py-4'>
-                    <p className='text-sm'>56hgklotrn23</p>
+                    <p className='text-sm'>22</p>
                   </td>
                   <td className='px-4 py-4'>
                     <p className='text-sm'>₦18,205,000</p>
@@ -120,18 +120,19 @@ const FinanceAdminBudgetTable = () => {
 
 
 function PopoverMenu() {
+  const router = useRouter()
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button className='cursor-pointer outline-none p-1'>
+        <button className='cursor-pointer outline-none p-1 border border-gray-300 rounded-lg'>
           <HiDotsVertical />
         </button>
       </PopoverTrigger>
 
       <PopoverContent className='w-40 bg-white space-y-2 cursor-pointer rounded-lg flex flex-col items-start text-[#475367]'>
-        <button className=''>View</button>
-        <button className=''>Edit</button>
-        <DeleteModal trigger={<button className='text-red-500'>Delete</button>} />
+        <button onClick={() => router.push('/finance-admin/payroll-management/approval')} className=''>Approve</button>
+        <RejectModal trigger={<button>Reject</button>} />
+        <button onClick={() => router.push('/finance-admin/payroll-management/123')}>View Details</button>
       </PopoverContent>
     </Popover>
   );
@@ -139,30 +140,29 @@ function PopoverMenu() {
 
 
 
-const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
+const RejectModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
     <DrawerDialog
       trigger={trigger}
-      header={<DialogTitle className="text-lg font-bold text-center">
-        <span className="flex flex-col items-center justify-center gap-y-6">
-          <DeleteSvg />
-          <span className="flex flex-col items-center justify-center gap-y-2">
-            <span>Are you sure you want to delete this budget?</span>
-            <span className="text-sm text-gray-400 max-w-[367px] text-center">
-              Why do you want to delete this budget? This action cannot be reversed!
+      header={
+        <DialogTitle className="text-lg font-bold -mx-4 lg:mx-0 lg:px-6  pt-4 lg:pt-6">
+          <span className="flex flex-col gap-y-1">
+            <span>Confirm Rejection</span>
+            <span className="text-sm text-gray-400 max-w-[367px]">
+              Please provide a reason for rejecting this Payroll
             </span>
           </span>
-        </span>
-      </DialogTitle>}
+        </DialogTitle>
+      }
       footer={
-        <div className="flex flex-col md:flex-row items-center justify-center gap-2">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-2 pb-4 lg:pb-6">
           <AppButton label="Cancel" className="bg-white border-2 border-gray-400 text-gray-500 md:w-[150px] w-full" />
-          <AppButton label="Delete" className="bg-red-700 text-white md:w-[150px] w-full border border-red-700" />
+          <AppButton label="Confirm Rejection" className="bg-red-700 text-white md:w-[150px] w-full border border-red-700" />
         </div>
       }
     >
-      <div className="md:p-4 lg:p-6 p-2">
-        <InputTextArea id="reason" placeholder="Enter reason" onChange={function (e) {
+      <div className="lg:p-6">
+        <InputTextArea label="Rejection Reason" id="reason" placeholder="Enter reason" onChange={function (e) {
           console.log(e.target.value)
         }} value="" />
       </div>
@@ -175,4 +175,4 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
 
 
 
-export default FinanceAdminBudgetTable;
+export default PayrollManagementTable;

@@ -82,8 +82,8 @@ const FinanceAdminDashboard = () => {
         description="Manage finance and organization"
         button1Label="Manage Account"
         button2Label="Payroll Approvals"
-        link1="/finance-admin/budget-management"
-        link2="/finance-admin/journals"
+        link1="/finance-admin/budgets"
+        link2="/finance-admin/payroll-management"
       />
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

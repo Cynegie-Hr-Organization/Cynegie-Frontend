@@ -32,9 +32,9 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
             path: '/finance-admin',
         },
         {
-            name: 'Chart of Account',
+            name: 'Payroll Management',
             icon: <HiOutlineUserPlus size={17.5} />,
-            path: '/finance-admin/chart-of-account',
+            path: '/finance-admin/payroll-management',
         },
         {
             name: 'Budgets',
@@ -42,7 +42,7 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
             path: '/finance-admin/budgets',
         },
         {
-            name: 'Journals',
+            name: 'Vendor Management',
             icon: <RiBookLine size={17.5} />,
             path: '/finance-admin/journals',
         },

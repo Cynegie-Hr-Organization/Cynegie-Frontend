@@ -171,4 +171,9 @@ input[type="number"] {
   body {
     @apply bg-background text-foreground;
   }
+
+
+  .blue-card-decoration {
+    @apply relative after:content-[''] after:absolute after:-top-48 after:-right-48 after:bg-white/15 after:rounded-full after:h-[381.76px] after:w-[457px] before:content-[''] before:absolute before:-top-10 before:-right-20 before:bg-white/10 before:rounded-full before:h-[381.76px] before:w-[457px];
+  }
 }

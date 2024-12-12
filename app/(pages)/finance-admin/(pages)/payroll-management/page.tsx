@@ -1,43 +1,93 @@
 "use client"
 
-import { IoIosArrowDown } from "react-icons/io";
 import AppButton from "@/app/_components/shared/button";
-import { useRouter } from "next/navigation";
-import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
-import FinanceAdminBudgetTable from "./table";
-import { ReactNode } from "react";
-import { DrawerDialog } from "@/components/drawer/modal";
-import InputText, { InputTextArea } from "@/app/_components/shared/input-text";
-import { DialogTitle } from "@/components/ui/dialog";
-import { AppSelect } from "@/app/_components/shared/select";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
+import InputText, { InputTextArea } from "@/app/_components/shared/input-text";
+import { AppSelect } from "@/app/_components/shared/select";
+import { DrawerDialog } from "@/components/drawer/modal";
+import { DialogTitle } from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
+import { ReactNode } from "react";
+import { TiMediaStop } from "react-icons/ti";
+import PayrollManagementTable from "./table";
 
 
 
 
+const PayrollManagement = () => {
+  const pageCards = [
+    {
+      color: "#F9FAFB",
+      textColor: "#344054",
+      title: "Total Amount Processed",
+      description: "₦34,886,000",
+    },
+    {
+      icon: <TiMediaStop />,
+      color: "#FFF5E6",
+      textColor: "#FFAD33",
+      title: "Pending Payrolls",
+      description: "3",
+    },
+    {
+      icon: <TiMediaStop />,
+      color: "#E7F6EC",
+      textColor: "#0F973D",
+      title: "Completed Payrolls",
+      description: "27",
+    },
+    {
+      icon: <TiMediaStop />,
+      color: "#FBEAE9",
+      textColor: "#D42620",
+      title: "Rejected Payrolls",
+      description: "80%",
+    },
+  ];
 
-
-const FinanceAdminDashboardBudgetManagement = () => {
   return (
     <div className="space-y-8">
       <PageHeader
-        title="Budget Management"
-        description="Manage your budgets and transactions here"
-        buttonLabel="Add New"
+        title="Payroll Management"
+        description="Manage your payroll and organization"
+        buttonLabel="Payroll Report"
+        to="/finance-admin/payroll-management/report"
       />
 
-      <FinanceAdminBudgetTable />
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {pageCards.map((card, index) => (
+          <div className="common-card space-y-5" key={index}>
+            <div className="flex items-center gap-2">
+              {card.icon && <div className="rounded-full p-2" style={{ backgroundColor: card.color, color: card.textColor }}>{card.icon}</div>}
+              <h3 className="font-roboto lg:text-xs text-sm text-[#848897] font-medium">{card.title}</h3>
+            </div>
+            <p className="font-roboto text-xl font-bold">{card.description}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="font-roboto text-xl font-bold">Payrolls</h3>
+        <PayrollManagementTable />
+      </div>
     </div>
   )
 }
 
 
-const PageHeader = ({ title, description, buttonLabel }: {
+const PageHeader = ({ title, description, buttonLabel, to }: {
   title: string,
   description: string,
   actionButtonLabel?: string,
   buttonLabel: string,
+  to: string,
 }) => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(to);
+  }
+
   return (
     <div className="flex justify-between items-center">
       <div>
@@ -46,7 +96,7 @@ const PageHeader = ({ title, description, buttonLabel }: {
       </div>
 
       <div className="flex items-center gap-4">
-        <NewBudgetModal trigger={<AppButton label={buttonLabel} className="btn-primary w-full hidden md:block" />} />
+        <AppButton onClick={handleClick} label={buttonLabel} className="btn-primary w-full hidden md:block" />
       </div>
     </div>
   )
@@ -100,4 +150,4 @@ const NewBudgetModal = ({ trigger }: { trigger: ReactNode }) => {
 
 
 
-export default FinanceAdminDashboardBudgetManagement;
+export default PayrollManagement;

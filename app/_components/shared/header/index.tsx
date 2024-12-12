@@ -1,13 +1,13 @@
 "use client";
 
+import { getUserDetails } from "@/utils/getUserDetails";
+import { useFetchSecurityAlertsMetric } from "@/utils/it-admin/useFetchMetrics";
+import { useEffect, useState } from "react";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { IoMenu } from "react-icons/io5";
-import { useEffect, useState } from "react";
-import { getUserDetails } from "@/utils/getUserDetails";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import RecentActivities from "../../it-admin/pages/it-admin/recent-activities";
-import { useFetchSecurityAlertsMetric } from "@/utils/it-admin/useFetchMetrics";
 
 const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
   const [userName, setUserName] = useState<string>("");
@@ -52,28 +52,29 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
   return (
     <div className="flex items-center justify-between p-5 md:border-b md:border-DreamyCloud md:bg-white">
       <div className="items-center hidden gap-3 xl:flex">
-        <img
-          className="w-[40px] h-[40px]"
-          src="/image/avatar.png"
-          alt="avatar"
-        />
+
 
         <div>
           {loading ? (
-            <p className="font-sans text-lg font-bold text-Sambucus">
-              Welcome, <Skeleton width={100} /> 👋
-            </p>
+            <ProfileSkeleton />
           ) : (
-            <p className="font-sans text-lg font-bold text-Sambucus">
-              Welcome, {userName || "User"} 👋
-            </p>
-          )}
-
-          {/* Render date only after it is set on the client */}
-          {currentDate && (
-            <p className="font-sans text-xs font-normal text-Charcoal">
-              It’s {currentDate}
-            </p>
+            <div className="flex items-center gap-2">
+              <img
+                className="w-[40px] h-[40px]"
+                src="/image/avatar.png"
+                alt="avatar"
+              />
+              <div className="space-y-1">
+                <p className="font-sans text-lg font-bold text-Sambucus">
+                  Welcome, {userName || "User"} 👋
+                </p>
+                {currentDate && (
+                  <p className="font-sans text-xs font-normal text-Charcoal">
+                    It’s {currentDate}
+                  </p>
+                )}
+              </div>
+            </div>
           )}
         </div>
       </div>
@@ -108,6 +109,19 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
           <RecentActivities recentAlerts={recentAlerts} isLoading={isLoading} />
         </div>
       )}
+    </div>
+  );
+};
+
+
+const ProfileSkeleton = () => {
+  return (
+    <div className="flex gap-2">
+      <Skeleton width={40} height={40} circle className="mb-0" />
+      <div className="space-y-0">
+        <Skeleton width={200} height={18} className="mb-0" />
+        <Skeleton width={200} height={10} className="mb-0" />
+      </div>
     </div>
   );
 };
