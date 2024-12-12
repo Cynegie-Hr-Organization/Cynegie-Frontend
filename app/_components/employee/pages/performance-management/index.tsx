@@ -1,14 +1,16 @@
 'use client';
-import { Grid2 } from '@mui/material';
-import feedbackOverviewSectionData from './sections/feedback-overview/data';
+import Page from '@/app/_components/shared/page';
 import SectionWithCards from '@/app/_components/shared/section-with-cards';
+import AppTabs from '@/app/_components/shared/tabs';
+import { Grid2 } from '@mui/material';
+import Modal from '../../modal';
+import usePerformanceManagementPage from './hooks/usePerformanceManagementPage';
+import feedbackOverviewSectionData from './sections/feedback-overview/data';
 import keyPerformanceIndiciatorsSectionData from './sections/key-performance-indicators/data';
 import ReviewCycleProgressSection from './sections/review-cycle-progress';
-import Page from '@/app/_components/shared/page';
-import TabFormat from '@/app/_components/shared/tabs';
-import Table from '@/app/_components/shared/table';
-import usePerformanceManagementPage from './hooks/usePerformanceManagementPage';
-import Modal from '../../modal';
+
+
+
 
 const EmployeePerformanceManagement = () => {
   const sectionsWithCards = [
@@ -20,8 +22,6 @@ const EmployeePerformanceManagement = () => {
 
   const {
     performanceManagementPageData,
-    goalsTableData,
-    selfAssessmentsTableData,
     completeModalData,
   } = usePerformanceManagementPage();
 
@@ -40,12 +40,12 @@ const EmployeePerformanceManagement = () => {
           )
         )}
       </Grid2>
-      <TabFormat
+      <AppTabs
         tabs={[
-          { name: 'Goals', component: <Table {...goalsTableData} /> },
+          { label: 'Goals', onClick: () => { } },
           {
-            name: 'Self Assessments',
-            component: <Table {...selfAssessmentsTableData} />,
+            label: 'Self Assessments',
+            onClick: () => { },
           },
         ]}
       />

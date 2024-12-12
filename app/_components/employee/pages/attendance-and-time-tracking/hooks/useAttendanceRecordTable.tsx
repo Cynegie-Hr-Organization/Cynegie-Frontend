@@ -135,7 +135,8 @@ const useAttendanceRecordTable = () => {
       text: 'Submit Request',
 
       onClick: () => {
-        setOpenCorrectionModal(false), setOpenSuccessModal(true);
+        setOpenCorrectionModal(false);
+        setOpenSuccessModal(true);
       },
     },
   };

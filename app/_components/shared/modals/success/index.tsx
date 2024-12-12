@@ -1,21 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-<<<<<<< HEAD
-import { FC } from "react";
-
-import { GoodIcon } from "@/public/icons";
-import { useRouter } from "next/navigation";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/app/_components/ui/alert-dialog";
-import Image from "next/image";
-=======
 import { FC } from 'react';
 
 
@@ -23,7 +7,6 @@ import { GoodIcon } from '@/public/icons';
 import { useRouter } from 'next/navigation';
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/app/_components/ui/alert-dialog';
 import Image from 'next/image';
->>>>>>> babe6fecba49bf1e0980f00ba744544d1ad7ccfd
 
 type SuccessModalTypes = {
   open: boolean;
@@ -82,29 +65,17 @@ export const SuccessModal: FC<SuccessModalTypes> = ({
           <div className="w-full flex flex-col md:flex-row gap-2 justify-center px-2">
             <AlertDialogAction
               onClick={() => {
-<<<<<<< HEAD
-                router.push(link ? link : "/app-permission-request");
-=======
                 router.push(link ? link : '/app-permission-request');
->>>>>>> babe6fecba49bf1e0980f00ba744544d1ad7ccfd
                 onClose();
               }}
               className={`bg-PersianBlue hover:bg-PersianBlue text-white ${btnOneclassName} w-[216px]`}
             >
-<<<<<<< HEAD
-              {btnText ? btnText : "Continue to App Dashboard"}
-=======
               {btnText ? btnText : 'Continue to App Dashboard'}
->>>>>>> babe6fecba49bf1e0980f00ba744544d1ad7ccfd
             </AlertDialogAction>
             {secondBtnText && (
               <AlertDialogAction
                 onClick={() => {
-<<<<<<< HEAD
-                  router.push(secondBtnLink ? secondBtnLink : "");
-=======
                   router.push(secondBtnLink ? secondBtnLink : '');
->>>>>>> babe6fecba49bf1e0980f00ba744544d1ad7ccfd
                   onClose();
                 }}
                 className={`bg-PersianBlue hover:bg-PersianBlue text-white w-[216px] ${btnTwoclassName}`}

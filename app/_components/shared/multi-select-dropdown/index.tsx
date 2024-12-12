@@ -78,7 +78,6 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
 
   const onInputChange = (
     inputValue: string,
-<<<<<<< HEAD
     event: { action: InputAction },
   ) => {
     if (event.action === "input-change") setSelectInput(inputValue);
@@ -88,17 +87,6 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if ((e.key === " " || e.key === "Enter") && !selectInput)
-=======
-    event: { action: InputAction }
-  ) => {
-    if (event.action === 'input-change') setSelectInput(inputValue);
-    else if (event.action === 'menu-close' && selectInput !== '')
-      setSelectInput('');
-  };
-
-  const onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-    if ((e.key === ' ' || e.key === 'Enter') && !selectInput)
->>>>>>> babe6fecba49bf1e0980f00ba744544d1ad7ccfd
       e.preventDefault();
   };
 
@@ -120,11 +108,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
               (props.value ?? []).filter((opt: T) => opt.label === label)
                 .length === 0
           ),
-<<<<<<< HEAD
         ].sort(comparator),
-=======
-        ].sort(comparator)
->>>>>>> babe6fecba49bf1e0980f00ba744544d1ad7ccfd
       );
     else if (
       selected.length > 0 &&
@@ -145,7 +129,6 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
   const customStyles: StylesConfig<Option, true> = {
     multiValueLabel: (def) => ({
       ...def,
-<<<<<<< HEAD
       backgroundColor: "lightgray",
     }),
     multiValueRemove: (def) => ({
@@ -156,18 +139,6 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
       ...base,
       maxHeight: "30px",
       overflow: "auto",
-=======
-      backgroundColor: 'lightgray',
-    }),
-    multiValueRemove: (def) => ({
-      ...def,
-      backgroundColor: 'lightgray',
-    }),
-    valueContainer: (base) => ({
-      ...base,
-      maxHeight: '30px',
-      overflow: 'auto',
->>>>>>> babe6fecba49bf1e0980f00ba744544d1ad7ccfd
       paddingTop: 0,
     }),
     option: (styles, { isSelected, isFocused }) => {
@@ -197,11 +168,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
         selectAllLabel.current = `All (${filteredOptions.length}) selected`;
       else
         selectAllLabel.current = `${filteredSelectedOptions?.length} / ${filteredOptions.length} selected`;
-<<<<<<< HEAD
     } else selectAllLabel.current = "Select all";
-=======
-    } else selectAllLabel.current = 'Select all';
->>>>>>> babe6fecba49bf1e0980f00ba744544d1ad7ccfd
 
     allOption.label = selectAllLabel.current;
 
@@ -219,11 +186,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
           ...props.components,
         }}
         filterOption={customFilterOption}
-<<<<<<< HEAD
         menuPlacement={props.menuPlacement ?? "auto"}
-=======
-        menuPlacement={props.menuPlacement ?? 'auto'}
->>>>>>> babe6fecba49bf1e0980f00ba744544d1ad7ccfd
         styles={customStyles}
         isMulti
         closeMenuOnSelect={false}
@@ -246,11 +209,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
         Input: Input,
         ...props.components,
       }}
-<<<<<<< HEAD
       menuPlacement={props.menuPlacement ?? "auto"}
-=======
-      menuPlacement={props.menuPlacement ?? 'auto'}
->>>>>>> babe6fecba49bf1e0980f00ba744544d1ad7ccfd
       onKeyDown={onKeyDown}
       tabSelectsValue={false}
       hideSelectedOptions={true}
