@@ -1,19 +1,18 @@
 import { AppSelect } from "@/app/_components/shared/select";
 
-import { LuListFilter, LuTrash } from "react-icons/lu";
+import { LuListFilter } from "react-icons/lu";
 
 import { RiSearchLine } from "react-icons/ri";
 
-import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
-import { Checkbox } from "@/components/ui/checkbox";
-import AppButton from "@/app/_components/shared/button";
-import { ReactNode } from "react";
-import { DrawerDialog } from "@/components/drawer/modal";
-import InputText, { InputTextArea } from "@/app/_components/shared/input-text";
-import { DialogTitle } from "@/components/ui/dialog";
 import { DeleteSvg } from "@/app/_components/icons/delete";
-import { HiDotsHorizontal, HiDotsVertical } from "react-icons/hi";
+import AppButton from "@/app/_components/shared/button";
+import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
+import { InputTextArea } from "@/app/_components/shared/input-text";
+import { DrawerDialog } from "@/components/drawer/modal";
+import { Checkbox } from "@/components/ui/checkbox";
+import { DialogTitle } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { HiDotsVertical } from "react-icons/hi";
 
 const TransactionsTable = () => {
   return (

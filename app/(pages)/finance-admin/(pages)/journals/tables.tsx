@@ -1,17 +1,13 @@
 "use client"
 
-import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
-import { AppSelect } from "@/app/_components/shared/select";
-import { DrawerDialog } from "@/components/drawer/modal";
-import { DialogTitle } from "@/components/ui/dialog";
-import InputText, { InputTextArea } from "@/app/_components/shared/input-text";
 import { DeleteSvg } from "@/app/_components/icons/delete";
-import { HiDotsVertical } from "react-icons/hi";
-import { PopoverContent, PopoverTrigger, Popover } from "@/components/ui/popover";
-import { IoIosArrowDown } from "react-icons/io";
-import { AppDatePicker } from "@/app/_components/shared/date-picker";
-import { Checkbox } from "@/components/ui/checkbox";
 import AppButton from "@/app/_components/shared/button";
+import { InputTextArea } from "@/app/_components/shared/input-text";
+import { DrawerDialog } from "@/components/drawer/modal";
+import { Checkbox } from "@/components/ui/checkbox";
+import { DialogTitle } from "@/components/ui/dialog";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { HiDotsVertical } from "react-icons/hi";
 
 export const JournalsTable = () => {
   return (
@@ -77,91 +73,91 @@ export const JournalsTable = () => {
 }
 
 
-const NewLedgerAccountModal = ({ trigger }: { trigger: React.ReactNode }) => {
-  return (
-    <DrawerDialog
-      trigger={trigger}
-      header={
-        <DialogTitle className="">
-          <p className="text-lg font-bold">New Ledger Account</p>
-          <p className="text-sm text-gray-400">Create a new ledger account</p>
-        </DialogTitle>
-      }
-      footer={
-        <div className="flex flex-col md:flex-row items-center justify-center gap-2">
-          <AppButton label="Close" className="bg-white border-2 border-gray-400 text-gray-500 md:w-[150px] w-full" />
-          <AppButton label="Create" className="bg-primary text-white md:w-[150px] w-full border border-primary" />
-        </div>
-      }
-    >
-      <form className="p-4 space-y-6">
-        <InputText id="account-name" label="Account Name" requiredField placeholder="Enter name" onChange={function (e) {
-          console.log(e.target.value)
-        }} value={""} />
-        <AppSelect listItems={[
-          { label: "High", value: "high" },
-          { label: "Medium", value: "medium" },
-          { label: "Low", value: "low" },
-        ]} label="Account Type"
-          requiredField
-          placeholder="Enter name"
-          onChange={function (e) {
-            console.log(e)
-          }}
-        />
-        <AppSelect listItems={[
-          { label: "High", value: "high" },
-          { label: "Medium", value: "medium" },
-          { label: "Low", value: "low" },
-        ]}
-          label="Account Group"
-          requiredField
-          placeholder="Enter name"
-          onChange={function (e) {
-            console.log(e)
-          }}
-        />
-        <AppSelect listItems={[
-          { label: "High", value: "high" },
-          { label: "Medium", value: "medium" },
-          { label: "Low", value: "low" },
-        ]} label="BCR" requiredField placeholder="Enter name" onChange={function (e) {
-          console.log(e)
-        }}
-        />
-        <InputTextArea
-          id="description"
-          label="Description"
-          requiredField
-          placeholder="Enter description"
-          onChange={function (e) {
-            console.log(e.target.value)
-          }}
-          value={""}
-        />
+// const NewLedgerAccountModal = ({ trigger }: { trigger: React.ReactNode }) => {
+//   return (
+//     <DrawerDialog
+//       trigger={trigger}
+//       header={
+//         <DialogTitle className="">
+//           <p className="text-lg font-bold">New Ledger Account</p>
+//           <p className="text-sm text-gray-400">Create a new ledger account</p>
+//         </DialogTitle>
+//       }
+//       footer={
+//         <div className="flex flex-col md:flex-row items-center justify-center gap-2">
+//           <AppButton label="Close" className="bg-white border-2 border-gray-400 text-gray-500 md:w-[150px] w-full" />
+//           <AppButton label="Create" className="bg-primary text-white md:w-[150px] w-full border border-primary" />
+//         </div>
+//       }
+//     >
+//       <form className="p-4 space-y-6">
+//         <InputText id="account-name" label="Account Name" requiredField placeholder="Enter name" onChange={function (e) {
+//           console.log(e.target.value)
+//         }} value={""} />
+//         <AppSelect listItems={[
+//           { label: "High", value: "high" },
+//           { label: "Medium", value: "medium" },
+//           { label: "Low", value: "low" },
+//         ]} label="Account Type"
+//           requiredField
+//           placeholder="Enter name"
+//           onChange={function (e) {
+//             console.log(e)
+//           }}
+//         />
+//         <AppSelect listItems={[
+//           { label: "High", value: "high" },
+//           { label: "Medium", value: "medium" },
+//           { label: "Low", value: "low" },
+//         ]}
+//           label="Account Group"
+//           requiredField
+//           placeholder="Enter name"
+//           onChange={function (e) {
+//             console.log(e)
+//           }}
+//         />
+//         <AppSelect listItems={[
+//           { label: "High", value: "high" },
+//           { label: "Medium", value: "medium" },
+//           { label: "Low", value: "low" },
+//         ]} label="BCR" requiredField placeholder="Enter name" onChange={function (e) {
+//           console.log(e)
+//         }}
+//         />
+//         <InputTextArea
+//           id="description"
+//           label="Description"
+//           requiredField
+//           placeholder="Enter description"
+//           onChange={function (e) {
+//             console.log(e.target.value)
+//           }}
+//           value={""}
+//         />
 
-        <InputText
-          id="opening-balance"
-          label="Opening Balance"
-          placeholder="0"
-          onChange={function (e) {
-            console.log(e.target.value)
-          }}
-          value={""}
-        />
-        <AppDatePicker
-          label="Opening Balance Date"
-          requiredField
-          placeholder="Enter opening balance date"
-          setSelectedDate={function (e) {
-            console.log(e)
-          }}
-          selectedDate={new Date()}
-        />
-      </form>
-    </DrawerDialog>
-  )
-}
+//         <InputText
+//           id="opening-balance"
+//           label="Opening Balance"
+//           placeholder="0"
+//           onChange={function (e) {
+//             console.log(e.target.value)
+//           }}
+//           value={""}
+//         />
+//         <AppDatePicker
+//           label="Opening Balance Date"
+//           requiredField
+//           placeholder="Enter opening balance date"
+//           setSelectedDate={function (e) {
+//             console.log(e)
+//           }}
+//           selectedDate={new Date()}
+//         />
+//       </form>
+//     </DrawerDialog>
+//   )
+// }
 
 
 

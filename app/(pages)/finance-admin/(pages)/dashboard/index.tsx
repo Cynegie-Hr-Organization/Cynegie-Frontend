@@ -4,12 +4,11 @@ import AppButton from "@/app/_components/shared/button";
 import { AppSelect } from "@/app/_components/shared/select";
 import { ChartConfig } from "@/components/ui/chart";
 import { useRouter } from "next/navigation";
+import { FaMoneyBillWave } from "react-icons/fa";
+import { HiUserGroup } from "react-icons/hi";
+import { TiMediaStop } from "react-icons/ti";
 import { BarChartComponent } from "./bar-chart";
 import FinanceAdminDashboardTable from "./table";
-import { LuListFilter } from "react-icons/lu";
-import { FaMoneyBillWave } from "react-icons/fa";
-import { TiMediaStop } from "react-icons/ti";
-import { HiUserGroup } from "react-icons/hi";
 
 const chartConfig = {
   desktop: {
