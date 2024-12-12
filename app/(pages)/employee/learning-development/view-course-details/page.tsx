@@ -1,6 +1,6 @@
 'use client';
 
-import Modal from '@/app/_components/employee/modals/modal';
+import Modal from '@/app/_components/employee/modal';
 import EmployeeLearningAndDevelopmentCourseDetails from '@/app/_components/employee/pages/learning-and-development/pages/course-details';
 import courseDetails from '@/app/_components/employee/pages/learning-and-development/pages/course-details/data/course';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';

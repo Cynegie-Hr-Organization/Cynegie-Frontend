@@ -1,7 +1,6 @@
 'use client';
 import {
   Box,
-  Button as MuiButton,
   Checkbox,
   Table as MuiTable,
   Stack,
@@ -15,16 +14,16 @@ import {
 import React, { ChangeEvent, useState } from 'react';
 import { FieldType, TableProps, TableAction } from './types';
 import StatusPill from '../pills/status';
-import { FilterList, MoreVert } from '@mui/icons-material';
+import { FilterList } from '@mui/icons-material';
 import { PopoverType } from '../custom-popover/types';
 import Button from '../button-group/button';
 import { ButtonType } from '../page/heading/types';
-import { Input, InputGroup } from 'rsuite';
-import Image from 'next/image';
 import TablePagination from './pagination';
 import { color } from '@/constants';
 import { usePathname, useRouter } from 'next/navigation';
 import Popover from '../custom-popover';
+import SearchField from '../../employee/input-fields/search';
+import MoreOptionsButton from '../more-options-button';
 
 const Table: React.FC<TableProps> = (props) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
@@ -69,21 +68,7 @@ const Table: React.FC<TableProps> = (props) => {
                 mb: { xs: '15px', md: '0px' },
               }}
             >
-              <InputGroup>
-                <InputGroup.Addon style={{ backgroundColor: 'transparent' }}>
-                  <Image
-                    src='/icons/search-2.svg'
-                    alt=''
-                    width={18}
-                    height={18}
-                    style={{ margin: '-15px 0px -15px 0px' }}
-                  />
-                </InputGroup.Addon>
-                <Input
-                  style={{ paddingLeft: '0px', height: '30px' }}
-                  placeholder='Search here...'
-                />
-              </InputGroup>
+              <SearchField />
             </Box>
           </Box>
           {props.filters && (
@@ -248,18 +233,7 @@ const Table: React.FC<TableProps> = (props) => {
                     <TableCell sx={{ whiteSpace: 'nowrap' }}>
                       <Popover
                         type={PopoverType.moreOptions}
-                        triggerButton={
-                          <MuiButton>
-                            <MoreVert
-                              sx={{
-                                borderWidth: '0.5px',
-                                borderRadius: '4px',
-                                padding: '2px',
-                                fill: '#000',
-                              }}
-                            />
-                          </MuiButton>
-                        }
+                        triggerButton={<MoreOptionsButton />}
                         getTriggerButtonClick={() =>
                           setActions(
                             props.statusActionMap?.[

@@ -1,6 +1,5 @@
-import { Stack } from '@mui/material';
 import React from 'react';
-import { PageHeadingProps } from './types';
+import { ButtonType, PageHeadingProps } from './types';
 import Button from '../../button-group/button';
 import { Close } from '@mui/icons-material';
 import HeadingBack from './back';
@@ -40,10 +39,24 @@ const PageHeading: React.FC<PageHeadingProps> = (props) => {
           )}
         </div>
         {props.hasButtons && (
-          <Stack direction='row' gap={3}>
+          <div className='hidden md:flex gap-5'>
             {props.leftButton && <Button {...props.leftButton} />}
             {props.rightButton && <Button {...props.rightButton} />}
-          </Stack>
+          </div>
+        )}
+        {props.smActions && (
+          <div className='block md:hidden'>
+            <Button
+              text='Actions'
+              type={ButtonType.outlined}
+              popoverOptions={props.smActions}
+            />
+          </div>
+        )}
+        {props.rightButtonSm && props.rightButton && (
+          <div className='block md:hidden ml-3'>
+            <Button small={props.rightButtonSm} {...props.rightButton} />
+          </div>
         )}
         {props.type === 'modal' && (
           <Close

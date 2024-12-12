@@ -14,6 +14,7 @@ const Button: React.FC<ButtonProps> = (props) => {
     onClick,
     popoverOptions,
     fullWidth,
+    small,
   } = props;
 
   const borderStyle = { border: '1.5px solid' };
@@ -94,8 +95,11 @@ const Button: React.FC<ButtonProps> = (props) => {
           alignItems: 'center',
           gap: 5,
         }),
-        width: fullWidth ? '100%' : 'fit-content',
+        // width: fullWidth ? '100%' : 'fit-content',
+        ...(popoverOptions && { textWrap: 'nowrap' }),
+        ...(small && { fontSize: '14px', textWrap: 'nowrap' }),
       }}
+      className={`w-full sm:${fullWidth ? 'w-full' : 'w-fit'}`}
     >
       {iconProp}
       {type === ButtonType.deleteWithIcon && (

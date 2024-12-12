@@ -1,3 +1,5 @@
+import { TableAction } from '../../../table/types';
+
 export type PageHeadingProps = {
   type?: HeadingType;
   smallHeading?: boolean;
@@ -9,6 +11,8 @@ export type PageHeadingProps = {
   rightButton?: ButtonProps;
   onBackTextClick?: () => void;
   onCloseClick?: (arg: boolean) => void;
+  smActions?: TableAction[];
+  rightButtonSm?: boolean;
 };
 
 export type ButtonProps = {
@@ -18,6 +22,7 @@ export type ButtonProps = {
   onClick?: () => void;
   popoverOptions?: { name: string; onClick: () => void }[];
   fullWidth?: boolean;
+  small?: boolean;
 };
 
 export type ContainedButtonProps = {

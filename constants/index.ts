@@ -9,6 +9,11 @@ export const icon = {
   bin: `${iconBaseUrl}bin.svg`,
   gift: `${iconBaseUrl}gift.svg`,
   paperMoney: `${iconBaseUrl}paper-money.svg`,
+  grid: `${iconBaseUrl}grid.svg`,
+  stack: `${iconBaseUrl}stack.svg`,
+  message: `${iconBaseUrl}message.svg`,
+  calendar: `${iconBaseUrl}calendar.svg`,
+  calendarTwo: `${iconBaseUrl}calendar-2.svg`,
 };
 
 export const color = {
@@ -118,6 +123,11 @@ export const ReadAdminStatusMap: StatusMap = {
   Admin: 'info',
 };
 
+export const PDStatusMap: StatusMap = {
+  Done: 'success',
+  Pending: 'warning',
+};
+
 export const tableFilter = {
   department: { name: 'Department', items: ['All', 'Sales', 'Finance', 'IT'] },
   status: {
@@ -131,6 +141,8 @@ const basePath = {
   performanceManagement: 'performance-management/',
   learningDevelopment: 'learning-development/',
   benefits: 'benefits/',
+  upcomingWidget: 'upcoming-widget/',
+  task: 'task/',
 };
 
 export const route = {
@@ -150,6 +162,11 @@ export const route = {
     benefits: {
       home: `${basePath.employee}${basePath.benefits}`,
       salaryAdvance: `${basePath.employee}${basePath.benefits}salary-advance`,
+    },
+    dashboard: {
+      home: `${basePath.employee}`,
+      upcomingWidget: `${basePath.employee}${basePath.upcomingWidget}`,
+      task: `${basePath.employee}${basePath.task}`,
     },
   },
 };
