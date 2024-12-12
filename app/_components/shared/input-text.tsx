@@ -29,7 +29,6 @@ const InputText = ({ label, id, placeholder, requiredField = false, type = 'text
     </div>
   );
 };
-<<<<<<< HEAD
 export const InputTextArea = ({ label, id, placeholder, requiredField = false, onChange, value }: {
   label?: string,
   id: string,
@@ -57,7 +56,5 @@ export const InputTextArea = ({ label, id, placeholder, requiredField = false, o
     </div>
   );
 };
-=======
->>>>>>> babe6fecba49bf1e0980f00ba744544d1ad7ccfd
 
 export default InputText;
