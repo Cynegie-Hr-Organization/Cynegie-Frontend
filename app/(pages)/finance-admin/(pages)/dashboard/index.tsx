@@ -1,13 +1,15 @@
 "use client"
 
-import { useRouter } from "next/navigation";
 import AppButton from "@/app/_components/shared/button";
-import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
-import { IoIosArrowDown } from "react-icons/io";
+import { AppSelect } from "@/app/_components/shared/select";
 import { ChartConfig } from "@/components/ui/chart";
+import { useRouter } from "next/navigation";
 import { BarChartComponent } from "./bar-chart";
 import FinanceAdminDashboardTable from "./table";
-
+import { LuListFilter } from "react-icons/lu";
+import { FaMoneyBillWave } from "react-icons/fa";
+import { TiMediaStop } from "react-icons/ti";
+import { HiUserGroup } from "react-icons/hi";
 
 const chartConfig = {
   desktop: {
@@ -25,20 +27,32 @@ const chartConfig = {
 const FinanceAdminDashboard = () => {
   const pageCards = [
     {
-      title: "Total Revenue",
+      icon: <FaMoneyBillWave />,
+      color: "#F9FAFB",
+      textColor: "#344054",
+      title: "Total Transactions Proccessed",
       description: "₦34,886,000",
     },
     {
-      title: "Total Expenses",
-      description: "₦34,886,000",
+      icon: <TiMediaStop />,
+      color: "#FFF5E6",
+      textColor: "#FFAD33",
+      title: "Pending Payroll Approvals",
+      description: "3",
     },
     {
-      title: "Net Profit",
-      description: "₦34,886,000",
+      icon: <HiUserGroup />,
+      color: "#E7F6EC",
+      textColor: "#0F973D",
+      title: "Active Vendors",
+      description: "27",
     },
     {
-      title: "Net Loss",
-      description: "₦34,886,000",
+      icon: <FaMoneyBillWave />,
+      color: "#E6EBF9",
+      textColor: "#0035C3",
+      title: "Budget Utilization",
+      description: "80%",
     },
   ];
 
@@ -46,15 +60,18 @@ const FinanceAdminDashboard = () => {
 
 
   const chartData = [
-    { date: "2023-01-15", desktop: 150, mobile: 95 },
-    { date: "2023-02-20", desktop: 220, mobile: 180 },
-    { date: "2023-03-10", desktop: 300, mobile: 210 },
-    { date: "2023-04-05", desktop: 175, mobile: 160 },
-    { date: "2023-05-25", desktop: 260, mobile: 145 },
-    { date: "2023-06-30", desktop: 190, mobile: 170 },
-    { date: "2023-07-12", desktop: 205, mobile: 155 },
-    { date: "2023-08-18", desktop: 230, mobile: 190 },
-    { date: "2023-09-22", desktop: 280, mobile: 200 },
+    { month: "January", desktop: 150, mobile: 95 },
+    { month: "February", desktop: 220, mobile: 180 },
+    { month: "March", desktop: 300, mobile: 210 },
+    { month: "April", desktop: 175, mobile: 160 },
+    { month: "May", desktop: 260, mobile: 145 },
+    { month: "June", desktop: 190, mobile: 170 },
+    { month: "July", desktop: 205, mobile: 155 },
+    { month: "August", desktop: 230, mobile: 190 },
+    { month: "September", desktop: 280, mobile: 200 },
+    { month: "October", desktop: 230, mobile: 190 },
+    { month: "November", desktop: 280, mobile: 200 },
+    { month: "December", desktop: 230, mobile: 190 },
   ]
 
 
@@ -63,15 +80,19 @@ const FinanceAdminDashboard = () => {
       <PageHeader
         title="Finance Management"
         description="Manage finance and organization"
-        buttonLabel="Run Financial Reports"
-        actionButtonLabel="Actions"
-        to="/finance-admin/budget-management"
+        button1Label="Manage Account"
+        button2Label="Payroll Approvals"
+        link1="/finance-admin/budget-management"
+        link2="/finance-admin/journals"
       />
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {pageCards.map((card, index) => (
           <div className="common-card space-y-5" key={index}>
-            <h3 className="font-roboto text-xs xl:text-sm text-[#848897] font-medium">{card.title}</h3>
+            <div className="flex items-center gap-2">
+              <div className="rounded-full p-2" style={{ backgroundColor: card.color, color: card.textColor }}>{card.icon}</div>
+              <h3 className="font-roboto lg:text-xs text-sm text-[#848897] font-medium">{card.title}</h3>
+            </div>
             <p className="font-roboto text-xl font-bold">{card.description}</p>
           </div>
         ))}
@@ -79,64 +100,38 @@ const FinanceAdminDashboard = () => {
 
       <div className="common-card space-y-5">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-bold text-black">Financial Summary</h3>
-          <div className="flex items-center gap-4 text-[10px]">
-            <button className="border border-gray-400 rounded-md p-1 bg-gray-300">1W</button>
-            <button className="border border-gray-400 rounded-md p-1">3M</button>
-            <button className="border border-gray-400 rounded-md p-1">6M</button>
-            <button className="border border-gray-400 rounded-md p-1">1Y</button>
-          </div>
+          <h3 className="font-semibold">Overall Budget Utilization </h3>
+          <ChartDropdownFilters />
         </div>
 
-        <div className="flex flex-col md:flex-row items-center gap-6">
-          <div className="h-[220px] xl:h-[280px] w-full">
-            <BarChartComponent chartData={chartData} chartConfig={chartConfig} />
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <ChartInfo title="Total Profit" value="$4,862" className="!text-primary" themeColor="bg-primary" />
-            <ChartInfo title="Total Loss" value="$1,862" />
-          </div>
-
+        <div className="h-[220px] xl:h-[280px] w-full">
+          <BarChartComponent chartData={chartData} chartConfig={chartConfig} />
         </div>
       </div>
 
 
 
-      <FinanceAdminDashboardTable />
+      <div className="space-y-4">
+        <h3 className="text-xl font-bold text-black font-roboto">Recent Transactions</h3>
+        <FinanceAdminDashboardTable />
+      </div>
     </div>
   );
 };
 
-const ChartInfo = ({ title, value, themeColor, className }: {
-  title: string,
-  value: string,
-  themeColor?: string,
-  className?: string
-}) => {
-  return (
-    <div className={`space-y-1 text-[#727B8F] ${className || ''}`}>
-      <p className="text-xs">{title}</p>
-      <div className="flex items-center gap-2">
-        <p className="text-xl font-bold text-[#292D32]">{value}</p>
-        <div className={`h-4 w-7 rounded-md ${themeColor ?? 'bg-[#E8E8E8]'}`} />
-      </div>
-    </div>
-  )
-}
 
 
-
-const PageHeader = ({ title, description, buttonLabel, to }: {
+const PageHeader = ({ title, description, button1Label, button2Label, link1, link2 }: {
   title: string,
   description: string,
-  actionButtonLabel: string,
-  buttonLabel: string,
-  to: string
+  button1Label: string,
+  button2Label: string,
+  link1: string,
+  link2: string
 }) => {
   const router = useRouter();
-  const handleClick = () => router.push(to)
-
+  const handleBtn1Click = () => router.push(link1)
+  const handleBtn2Click = () => router.push(link2)
   return (
     <div className="flex justify-between items-center">
       <div>
@@ -145,26 +140,39 @@ const PageHeader = ({ title, description, buttonLabel, to }: {
       </div>
 
       <div className="flex items-center gap-4">
-        <AppDropdownMenu
-          width="w-[230px]"
-          menuItems={
-            <div className="text-sm">
-              <button className="p-2 hover:bg-gray-100 rounded-lg w-full text-left">Manage Budgets</button>
-              <button className="p-2 hover:bg-gray-100 rounded-lg w-full text-left">View Transactions</button>
-              <button className="p-2 hover:bg-gray-100 rounded-lg w-full text-left">Update Financial Settings</button>
-            </div>
-          }
-
-          trigger={
-            <div className="flex items-center gap-2 btn-secondary rounded-md px-4 py-2 cursor-pointer">
-              <p>Actions</p>
-              <IoIosArrowDown />
-            </div>
-          }
-        />
-
-        <AppButton onClick={handleClick} label={buttonLabel} className="btn-primary w-full hidden md:block" />
+        <AppButton onClick={handleBtn1Click} label={button1Label} className="btn-secondary w-full hidden md:block" />
+        <AppButton onClick={handleBtn2Click} label={button2Label} className="btn-primary w-full hidden md:block" />
       </div>
+    </div>
+  )
+}
+
+
+const ChartDropdownFilters = () => {
+  return (
+    <div className="flex items-center gap-2">
+      <AppSelect
+        placeholder="Department"
+        width="w-max"
+        listItems={[
+          { label: "All", value: "all" },
+          { label: "Department 1", value: "department-1" },
+          { label: "Department 2", value: "department-2" },
+          { label: "Department 3", value: "department-3" },
+        ]}
+        onChange={() => { }}
+      />
+
+      <AppSelect
+        placeholder="Time Period"
+        listItems={[
+          { label: "This Month", value: "this-month" },
+          { label: "Last Month", value: "last-month" },
+          { label: "This Year", value: "this-year" },
+          { label: "Last Year", value: "last-year" },
+        ]}
+        onChange={() => { }}
+      />
     </div>
   )
 }

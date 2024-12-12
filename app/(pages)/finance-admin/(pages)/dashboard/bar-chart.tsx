@@ -27,7 +27,7 @@ export interface BarChartComponentProps {
 export function BarChartComponent({ chartData, chartConfig }: BarChartComponentProps) {
   return (
     <ChartContainer className="w-full h-full" config={chartConfig}>
-      <BarChart accessibilityLayer data={chartData} barCategoryGap="20%">
+      <BarChart accessibilityLayer data={chartData} barCategoryGap="37%">
         <CartesianGrid
           horizontal={true}
           vertical={false}
@@ -39,7 +39,7 @@ export function BarChartComponent({ chartData, chartConfig }: BarChartComponentP
         <YAxis
           className="text-xs font-semibold text-[#bebebe]"
           dataKey={(data) => {
-            const keys = Object.keys(data).filter(key => key !== 'date');
+            const keys = Object.keys(data).filter(key => key !== 'month');
             return keys.reduce((sum, key) => sum + data[key], 0);
           }}
           tickLine={false}
@@ -49,17 +49,17 @@ export function BarChartComponent({ chartData, chartConfig }: BarChartComponentP
           tickFormatter={(value) => `$${Number(Math.round(value))}k`}
         />
         <XAxis
-          dataKey="date"
+          dataKey="month"
           tickLine={false}
           tickMargin={15}
           axisLine={false}
-          tickFormatter={(value) => localTime(value)}
+          tickFormatter={(value) => value.slice(0, 3)}
         />
         <ChartTooltip
           cursor={false}
           content={<ChartTooltipContent className="bg-white border-none" />}
         />
-        <Bar dataKey="desktop" fill="#E8E8E8" radius={4} />
+        {/* <Bar dataKey="desktop" fill="#E8E8E8" radius={4} /> */}
         <Bar dataKey="mobile" fill="#0035C3" radius={4} />
       </BarChart>
     </ChartContainer>

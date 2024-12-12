@@ -1,65 +1,21 @@
-import { DeleteSvg } from "@/app/_components/icons/delete";
-import AppButton from "@/app/_components/shared/button";
+"use client"
+
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
-import { InputTextArea } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import { DrawerDialog } from "@/components/drawer/modal";
-import { Checkbox } from "@/components/ui/checkbox";
 import { DialogTitle } from "@/components/ui/dialog";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import InputText, { InputTextArea } from "@/app/_components/shared/input-text";
+import { DeleteSvg } from "@/app/_components/icons/delete";
 import { HiDotsVertical } from "react-icons/hi";
-import { LuListFilter } from "react-icons/lu";
-import { RiSearchLine } from "react-icons/ri";
+import { PopoverContent, PopoverTrigger, Popover } from "@/components/ui/popover";
+import { IoIosArrowDown } from "react-icons/io";
+import { AppDatePicker } from "@/app/_components/shared/date-picker";
+import { Checkbox } from "@/components/ui/checkbox";
+import AppButton from "@/app/_components/shared/button";
 
-const TransactionsTable = () => {
+export const JournalsTable = () => {
   return (
     <div className="common-card overflow-x-scroll space-y-4">
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
-        <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
-          <RiSearchLine className="text-gray-400" />
-          <input type="text" placeholder="Search here..." className="w-full h-9 px-2 outline-none" />
-        </div>
-
-        <AppDropdownMenu trigger={
-          <button type="button" className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
-            <LuListFilter /> Filter
-          </button>
-        }
-          menuItems={
-            <div className="p-4 space-y-10">
-              <div className="space-y-4">
-                <AppSelect listItems={[
-                  { label: "High", value: "high" },
-                  { label: "Medium", value: "medium" },
-                  { label: "Low", value: "low" },
-                ]}
-                  label="Priority"
-                  placeholder="High"
-                  onChange={function (value: string): void {
-                    console.log(value)
-                  }} />
-
-                <AppSelect
-                  listItems={[
-                    { label: "Completed", value: "completed" },
-                    { label: "In Progress", value: "in-progress" },
-                    { label: "Not Started", value: "not-started" },
-                  ]}
-                  label="Status"
-                  placeholder="Pending"
-                  onChange={function (value: string): void {
-                    console.log(value)
-                  }} />
-              </div>
-
-              <div className="flex items-center justify-between gap-4">
-                <AppButton label="Reset" className="btn-secondary w-[90px]" />
-                <AppButton label="Filter" className="btn-primary w-[90px]" />
-              </div>
-            </div>
-          } />
-      </div>
-
       <div className='-mx-5 mt-4'>
         <table className='w-full border-collapse'>
           <thead className='bg-[#F7F9FC]'>
@@ -85,16 +41,16 @@ const TransactionsTable = () => {
                     <Checkbox className={"rounded-md border-gray-300"} />
                   </td>
                   <td className='px-4 py-4'>
+                    <p className='text-sm'>17 Apr, 2023</p>
+                  </td>
+                  <td className='px-4 py-4'>
+                    <p className='text-sm'>Credit</p>
+                  </td>
+                  <td className='px-4 py-4'>
                     <p className='text-sm'>56hgklotrn23</p>
                   </td>
                   <td className='px-4 py-4'>
-                    <p className='text-sm'>Aug 28, 2024</p>
-                  </td>
-                  <td className='px-4 py-4'>
-                    <p className='text-sm'>56hgklotrn23</p>
-                  </td>
-                  <td className='px-4 py-4'>
-                    <p className='text-sm'>Bank Transfer</p>
+                    <p className='text-sm'>₦18,205,000</p>
                   </td>
                   <td className='px-4 py-4'>
                     <p className='text-sm'>₦18,205,000</p>
@@ -121,6 +77,94 @@ const TransactionsTable = () => {
 }
 
 
+const NewLedgerAccountModal = ({ trigger }: { trigger: React.ReactNode }) => {
+  return (
+    <DrawerDialog
+      trigger={trigger}
+      header={
+        <DialogTitle className="">
+          <p className="text-lg font-bold">New Ledger Account</p>
+          <p className="text-sm text-gray-400">Create a new ledger account</p>
+        </DialogTitle>
+      }
+      footer={
+        <div className="flex flex-col md:flex-row items-center justify-center gap-2">
+          <AppButton label="Close" className="bg-white border-2 border-gray-400 text-gray-500 md:w-[150px] w-full" />
+          <AppButton label="Create" className="bg-primary text-white md:w-[150px] w-full border border-primary" />
+        </div>
+      }
+    >
+      <form className="p-4 space-y-6">
+        <InputText id="account-name" label="Account Name" requiredField placeholder="Enter name" onChange={function (e) {
+          console.log(e.target.value)
+        }} value={""} />
+        <AppSelect listItems={[
+          { label: "High", value: "high" },
+          { label: "Medium", value: "medium" },
+          { label: "Low", value: "low" },
+        ]} label="Account Type"
+          requiredField
+          placeholder="Enter name"
+          onChange={function (e) {
+            console.log(e)
+          }}
+        />
+        <AppSelect listItems={[
+          { label: "High", value: "high" },
+          { label: "Medium", value: "medium" },
+          { label: "Low", value: "low" },
+        ]}
+          label="Account Group"
+          requiredField
+          placeholder="Enter name"
+          onChange={function (e) {
+            console.log(e)
+          }}
+        />
+        <AppSelect listItems={[
+          { label: "High", value: "high" },
+          { label: "Medium", value: "medium" },
+          { label: "Low", value: "low" },
+        ]} label="BCR" requiredField placeholder="Enter name" onChange={function (e) {
+          console.log(e)
+        }}
+        />
+        <InputTextArea
+          id="description"
+          label="Description"
+          requiredField
+          placeholder="Enter description"
+          onChange={function (e) {
+            console.log(e.target.value)
+          }}
+          value={""}
+        />
+
+        <InputText
+          id="opening-balance"
+          label="Opening Balance"
+          placeholder="0"
+          onChange={function (e) {
+            console.log(e.target.value)
+          }}
+          value={""}
+        />
+        <AppDatePicker
+          label="Opening Balance Date"
+          requiredField
+          placeholder="Enter opening balance date"
+          setSelectedDate={function (e) {
+            console.log(e)
+          }}
+          selectedDate={new Date()}
+        />
+      </form>
+    </DrawerDialog>
+  )
+}
+
+
+
 function PopoverMenu() {
   return (
     <Popover>
@@ -131,13 +175,12 @@ function PopoverMenu() {
       </PopoverTrigger>
 
       <PopoverContent className='w-40 bg-white space-y-2 cursor-pointer rounded-lg flex flex-col items-start text-[#475367]'>
-        <PreviewModal trigger={<button className=''>View Details</button>} />
+        <PreviewModal trigger={<button className=''>View</button>} />
         <DeleteModal trigger={<button className='text-red-500'>Delete</button>} />
       </PopoverContent>
     </Popover>
   );
 }
-
 
 
 const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
@@ -203,9 +246,3 @@ const TransactionDetailItem = ({ label, value, pillValue }: { label: string, val
   )
 }
 
-
-
-
-
-
-export default TransactionsTable;
