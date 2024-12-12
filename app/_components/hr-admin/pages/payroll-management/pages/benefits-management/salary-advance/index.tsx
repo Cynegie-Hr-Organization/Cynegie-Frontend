@@ -23,7 +23,7 @@ const HrAdminPayrollSalaryAdvancePage = () => {
     borderColor: "divider",
   };
   return (
-    <Stack gap={4} mx={5} mb={10} mt={6}>
+    <Stack gap={4} mb={10} mt={6}>
       <Stack
         direction="row"
         alignItems="center"

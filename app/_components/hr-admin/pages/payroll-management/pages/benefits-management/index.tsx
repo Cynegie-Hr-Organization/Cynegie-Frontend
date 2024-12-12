@@ -11,7 +11,7 @@ const HrAdminPayrollBenefitsManagementPage = () => {
   const router = useRouter();
   const [showAddBenefitsModal, setShowAddBenefitsModal] = useState(false);
   return (
-    <Stack gap={3} mx={5} mb={10} mt={6}>
+    <Stack gap={3} mb={10} mt={6}>
       <Stack direction="row" alignItems="center">
         <div style={{ flexGrow: 1 }} className="section-heading">
           Benefits Management

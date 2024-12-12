@@ -6,7 +6,7 @@ import PayrollBenefitsEnrollmentTable from "../../../tables/benefits-enrollment"
 const HrAdminPayrollBenefitsEnrollmentPage = () => {
   const router = useRouter();
   return (
-    <Stack gap={4} mx={5} mb={10} mt={6}>
+    <Stack gap={4} mb={10} mt={6}>
       <Stack direction="row" alignItems="center">
         <div style={{ flexGrow: 1 }} className="section-heading">
           Benefits Enrollment
