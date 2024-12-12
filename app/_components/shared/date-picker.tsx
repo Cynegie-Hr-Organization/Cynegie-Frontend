@@ -12,12 +12,20 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
+<<<<<<< HEAD
 export function AppDatePicker({ label, requiredField = false, selectedDate, setSelectedDate, placeholder = "Pick a date" }: {
   label?: string,
   requiredField?: boolean,
   selectedDate?: Date,
   setSelectedDate: (date?: Date) => void,
   placeholder?: string
+=======
+export function AppDatePicker({ label, requiredField = false, selectedDate, setSelectedDate }: {
+  label?: string,
+  requiredField?: boolean,
+  selectedDate?: Date,
+  setSelectedDate: (date?: Date) => void
+>>>>>>> babe6fecba49bf1e0980f00ba744544d1ad7ccfd
 }) {
 
   const handleDateChange = (date?: Date) => {
@@ -36,7 +44,11 @@ export function AppDatePicker({ label, requiredField = false, selectedDate, setS
               !selectedDate && "text-muted-foreground"
             )}
           >
+<<<<<<< HEAD
             {selectedDate ? format(selectedDate, "MMM d, yyyy") : <span className="text-gray-400">{placeholder}</span>} <Calendar1 />
+=======
+            {selectedDate ? format(selectedDate, "MMM d, yyyy") : <span className="text-gray-400">Pick a date</span>} <Calendar1 />
+>>>>>>> babe6fecba49bf1e0980f00ba744544d1ad7ccfd
           </button>
         </div>
 

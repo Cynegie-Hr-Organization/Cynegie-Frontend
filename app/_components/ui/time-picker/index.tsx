@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
@@ -7,6 +8,17 @@ import { Dayjs } from "dayjs";
 interface CustomTimePickerProps {
   value: Dayjs | null;
   onChange: (newValue: Dayjs | null) => void;
+=======
+import React from 'react';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Dayjs } from 'dayjs';
+
+interface CustomTimePickerProps {
+  value?: Dayjs | null;
+  onChange?: (newValue: Dayjs | null) => void;
+>>>>>>> babe6fecba49bf1e0980f00ba744544d1ad7ccfd
 }
 
 const CustomTimePicker: React.FC<CustomTimePickerProps> = ({
@@ -20,6 +32,7 @@ const CustomTimePicker: React.FC<CustomTimePickerProps> = ({
         onChange={onChange}
         slotProps={{
           textField: {
+<<<<<<< HEAD
             id: "time-picker",
             placeholder: "Pick Time",
             fullWidth: true,
@@ -32,6 +45,20 @@ const CustomTimePicker: React.FC<CustomTimePickerProps> = ({
                 marginTop: "4px",
               },
               "& .MuiInputBase-input": {
+=======
+            id: 'time-picker',
+            placeholder: 'Pick Time',
+            fullWidth: true,
+            sx: {
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '8px',
+                borderColor: '#7e57c2',
+                paddingY: 0.6, // Reduce vertical padding
+                height: 'auto',
+                marginTop: '4px',
+              },
+              '& .MuiInputBase-input': {
+>>>>>>> babe6fecba49bf1e0980f00ba744544d1ad7ccfd
                 paddingY: 0.6, // Reduce padding inside the input
               },
             },

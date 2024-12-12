@@ -1,0 +1,22 @@
+/* .rbc-time-slot {
+    height: 50px !important;
+  }
+
+  .rbc-row-content {
+    display: none;
+  }
+
+  .rbc-header {
+    height: 50px
+  }
+
+  .rbc-allday-cell {
+    display: none;
+  } */
+
+  @media only screen and (min-width: 768px) {
+    .picker-indicator-container {
+      flex-direction: column;
+      gap: 2
+    }
+  }
