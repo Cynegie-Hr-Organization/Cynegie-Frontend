@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { FaChevronDown } from 'react-icons/fa6';
 import { RxDashboard } from 'react-icons/rx';
-import { HiOutlineChartBar, HiOutlineUserPlus } from 'react-icons/hi2';
-import { TbFileUpload } from 'react-icons/tb';
+import { HiOutlineChartBar, HiOutlineChartPie, HiOutlineUserPlus } from 'react-icons/hi2';
+import { TbFileText, TbFileUpload } from 'react-icons/tb';
 import { LuRepeat } from 'react-icons/lu';
 import { PiBuildingOffice } from 'react-icons/pi';
 import { RiBookLine } from 'react-icons/ri';
@@ -33,12 +33,12 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
         },
         {
             name: 'Payroll Management',
-            icon: <HiOutlineUserPlus size={17.5} />,
+            icon: <TbFileText size={17.5} />,
             path: '/finance-admin/payroll-management',
         },
         {
             name: 'Budgets',
-            icon: <TbFileUpload size={17.5} />,
+            icon: <HiOutlineChartPie size={17.5} />,
             path: '/finance-admin/budgets',
         },
         {
