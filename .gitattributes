@@ -3,3 +3,12 @@ app/_components/hr-admin/pages/hiring/* merge=accept-current
 app/(pages)/hr-admin/(pages)/hiring/* merge=accept-current
 app/(pages)/hr-admin/(pages)/payroll/* merge=accept-current
 app/(pages)/hr-admin/(pages)/performance/* merge=accept-current
+app/(pages)/hr-admin/(pages)/onboarding/* merge=accept-current
+
+
+yarn.lock merge=ours
+.eslintrc.json merge=ours
+.gitconfig merge=ours
+
+
+
