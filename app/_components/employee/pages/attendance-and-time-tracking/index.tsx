@@ -8,10 +8,15 @@ import Page from '@/app/_components/shared/page';
 import { ButtonType } from '../../../shared/page/heading/types';
 import Table from '@/app/_components/shared/table';
 import useAttendanceRecordTable from './hooks/useAttendanceRecordTable';
-import Modal from '../../modals/modal';
+import Modal from '../../modal';
+import { TableAction } from '@/app/_components/shared/table/types';
 
 const EmployeeAttendanceAndTimeTracking = () => {
   const { attendanceRecordTableData, modalsData } = useAttendanceRecordTable();
+  const pageActions: TableAction[] = [
+    { name: 'Clock In', onClick: () => {} },
+    { name: 'Clock Out', onClick: () => {} },
+  ];
 
   return (
     <>
@@ -20,6 +25,7 @@ const EmployeeAttendanceAndTimeTracking = () => {
         hasButtons
         leftButton={{ text: 'Clock Out', type: ButtonType.outlined }}
         rightButton={{ text: 'Clock In', type: ButtonType.contained }}
+        smActions={pageActions}
       >
         <Grid2 container spacing={2}>
           {[

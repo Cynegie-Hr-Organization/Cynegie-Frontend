@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, Stack } from '@mui/material';
 import React from 'react';
-import Heading from '../../../shared/page/heading';
+import Heading from '../../shared/page/heading';
 import { ModalProps } from './types';
 import Button from '@/app/_components/shared/button-group/button';
 import Image from 'next/image';
@@ -67,7 +67,9 @@ const Modal: React.FC<ModalProps> = (props) => {
             </div>
           )}
           {buttonOne && buttonTwo && (
-            <div className={`flex justify-center gap-10`}>
+            <div
+              className={`flex flex-col items-center sm:flex-row justify-center gap-5 sm:gap-10`}
+            >
               <Button {...buttonOne} />
               <Button {...buttonTwo} />
             </div>

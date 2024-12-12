@@ -2,8 +2,8 @@ import { ButtonType } from '@/app/_components/shared/page/heading/types';
 import { PageProps } from '@/app/_components/shared/page/types';
 import { FieldType, TableProps } from '@/app/_components/shared/table/types';
 import { ReadAdminStatusMap } from '@/constants';
-import { ModalProps } from '../../../modals/modal/types';
 import { useState } from 'react';
+import { ModalProps } from '../../../modal/types';
 
 const useAppRequestsPage = () => {
   const [openRequestModal, setOpenRequestModal] = useState(false);
@@ -19,6 +19,7 @@ const useAppRequestsPage = () => {
       text: 'App Request',
       onClick: () => setOpenRequestModal(true),
     },
+    rightButtonSm: true,
   };
 
   const tableProps: TableProps = {

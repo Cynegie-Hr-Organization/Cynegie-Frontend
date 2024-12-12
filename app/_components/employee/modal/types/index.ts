@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
-import { ButtonProps } from '../../../../shared/page/heading/types';
 import { DetailGroupProps } from '@/app/_components/shared/detail-group/types';
 import { FormProps } from '@/app/_components/shared/form/types';
+import { ButtonProps } from '@/app/_components/shared/page/heading/types';
 
 export type ModalProps = {
   open: boolean;

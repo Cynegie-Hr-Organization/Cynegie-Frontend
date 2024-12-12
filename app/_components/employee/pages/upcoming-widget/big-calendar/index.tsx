@@ -26,7 +26,7 @@ interface MyEvent {
 // Sample events
 const events: MyEvent[] = [
   {
-    title: 'Meeting with Bob',
+    title: 'Meeting with Cynegie',
     start: new Date(2024, 11, 10, 10, 0),
     end: new Date(2024, 11, 10, 11, 0),
     description: 'Discuss project updates with Bob',
@@ -34,7 +34,7 @@ const events: MyEvent[] = [
     color: 'blue',
   },
   {
-    title: 'Lunch with Sarah',
+    title: 'Lunch with Sadiq',
     start: new Date(2024, 11, 10, 12, 0),
     end: new Date(2024, 11, 10, 13, 0),
     description: 'Casual lunch to catch up',
@@ -42,7 +42,7 @@ const events: MyEvent[] = [
     color: 'green',
   },
   {
-    title: 'Client Call: ABC Corp',
+    title: 'Client Call: Cynegie',
     start: new Date(2024, 11, 11, 14, 30),
     end: new Date(2024, 11, 11, 15, 30),
     description: 'Discuss contract terms and project timelines',
@@ -50,7 +50,7 @@ const events: MyEvent[] = [
     color: 'red',
   },
   {
-    title: 'Team Workshop',
+    title: 'Team Activities',
     start: new Date(2024, 11, 12, 9, 0),
     end: new Date(2024, 11, 12, 12, 0),
     description: 'A hands-on workshop on React development',
@@ -58,7 +58,7 @@ const events: MyEvent[] = [
     color: 'purple',
   },
   {
-    title: 'Product Launch',
+    title: 'Product Review',
     start: new Date(2024, 11, 14, 16, 0),
     end: new Date(2024, 11, 14, 18, 0),
     description: 'Celebrating the successful launch of our new product',
@@ -100,7 +100,7 @@ const BigCalendar = () => {
                   width: 'fit-content',
                   px: 0.8,
                   pb: 3,
-                  //   height: 'fit-content',
+                  height: 'fit-content',
                   boxShadow: '0px 5px 10px 0px rgba(0, 0, 0, 0.1)',
                 }}
               />

@@ -2,14 +2,14 @@ import DetailGroup from '@/app/_components/shared/detail-group';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';
 import { PageProps } from '@/app/_components/shared/page/types';
 import { SectionCardContainerProps } from '@/app/_components/shared/section-with-cards/types';
-import TimeOff from '../sections/time-off';
-import UpcomingEvent from '../sections/upcoming-event';
 import RecentActivityCardDetails from '../sections/recent-activity';
 import { TimeOffProps } from '../sections/time-off/types';
-import Profile from '../sections/profile';
 import { ProfileProps } from '../sections/profile/types';
+import { useRouter } from 'next/navigation';
+import { route } from '@/constants';
 
 const useEmployeeDashboardPage = () => {
+  const router = useRouter();
   const pageProps: PageProps = {
     text: 'Dashboard',
     hasButtons: true,
@@ -56,9 +56,10 @@ const useEmployeeDashboardPage = () => {
 
   const sectionGroups: SectionCardContainerProps[][] = [
     [
-      { title: 'Time-Off', children: <TimeOff {...timeOff} /> },
-      { title: 'Profile', children: <Profile {...profileProps} /> },
-      { title: 'Upcoming Event', children: <UpcomingEvent /> },
+      //TODO: Correct mapping of first sectionGroup grid
+      // { title: 'Time-Off', children: <TimeOff {...timeOff} /> },
+      // { title: 'Profile', children: <Profile {...profileProps} /> },
+      // { title: 'Upcoming Event', children: <UpcomingEvent /> },
     ],
     [
       {
@@ -95,7 +96,11 @@ const useEmployeeDashboardPage = () => {
           ></DetailGroup>
         ),
       },
-      { title: 'Recent Activity', children: <RecentActivityCardDetails /> },
+      {
+        title: 'Recent Activity',
+        children: <RecentActivityCardDetails />,
+        periodClick: () => router.push(route.employee.dashboard.task),
+      },
     ],
   ];
 
@@ -105,7 +110,13 @@ const useEmployeeDashboardPage = () => {
     }`;
   };
 
-  return { pageProps, sectionGroups, getGroupOneItemLayout };
+  return {
+    pageProps,
+    sectionGroups,
+    getGroupOneItemLayout,
+    timeOff,
+    profileProps,
+  };
 };
 
 export default useEmployeeDashboardPage;

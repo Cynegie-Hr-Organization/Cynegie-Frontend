@@ -3,10 +3,10 @@ import { FieldType, TableProps } from '@/app/_components/shared/table/types';
 import { Tab } from '@/app/_components/shared/tabs/types';
 import { CPStatusMap, route } from '@/constants';
 import { useState } from 'react';
-import { ModalProps } from '../../../modals/modal/types';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';
 import { useRouter } from 'next/navigation';
 import { PageProps } from '@/app/_components/shared/page/types';
+import { ModalProps } from '../../../modal/types';
 
 const useContinuousFeedbackPage = () => {
   const router = useRouter();

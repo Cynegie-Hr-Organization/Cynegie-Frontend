@@ -8,7 +8,7 @@ import Page from '@/app/_components/shared/page';
 import TabFormat from '@/app/_components/shared/tabs';
 import Table from '@/app/_components/shared/table';
 import usePerformanceManagementPage from './hooks/usePerformanceManagementPage';
-import Modal from '../../modals/modal';
+import Modal from '../../modal';
 
 const EmployeePerformanceManagement = () => {
   const sectionsWithCards = [

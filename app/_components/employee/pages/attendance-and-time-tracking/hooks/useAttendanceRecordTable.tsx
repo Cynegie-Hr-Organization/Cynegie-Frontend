@@ -1,8 +1,8 @@
-import { ModalProps } from '@/app/_components/employee/modals/modal/types';
 import { FieldType, TableProps } from '@/app/_components/shared/table/types';
 import { AttendanceStatusMap } from '@/constants';
 import { useState } from 'react';
 import { ButtonType } from '../../../../shared/page/heading/types';
+import { ModalProps } from '../../../modal/types';
 
 const useAttendanceRecordTable = () => {
   const [openDetailsModal, setOpenDetailsModal] = useState(false);

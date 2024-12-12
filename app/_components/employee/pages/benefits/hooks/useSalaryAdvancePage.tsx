@@ -2,11 +2,11 @@ import { ButtonType } from '@/app/_components/shared/page/heading/types';
 import { PageProps } from '@/app/_components/shared/page/types';
 import { FieldType, TableProps } from '@/app/_components/shared/table/types';
 import { APRStatusMap, icon, route } from '@/constants';
-import { ModalProps } from '../../../modals/modal/types';
 import { useState } from 'react';
 import { CardGroupProps } from '@/app/_components/shared/section-with-cards/types';
 import SvgIcon from '@/app/_components/icons/container';
 import { useRouter } from 'next/navigation';
+import { ModalProps } from '../../../modal/types';
 
 const useSalaryAdvancePage = () => {
   const [openRequestModal, setOpenRequestModal] = useState(false);

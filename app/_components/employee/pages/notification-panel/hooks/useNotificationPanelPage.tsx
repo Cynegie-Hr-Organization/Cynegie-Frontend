@@ -1,8 +1,8 @@
 import { PageProps } from '@/app/_components/shared/page/types';
 import { FieldType, TableProps } from '@/app/_components/shared/table/types';
 import { useState } from 'react';
-import { ModalProps } from '../../../modals/modal/types';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';
+import { ModalProps } from '../../../modal/types';
 
 const useNotificationPanelPage = () => {
   const [openDetailsModal, setOpenDetailsModal] = useState(false);

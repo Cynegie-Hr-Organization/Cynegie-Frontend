@@ -4,25 +4,28 @@ import { FieldType, TableProps } from '@/app/_components/shared/table/types';
 import { CISStatusMap, route } from '@/constants';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { ModalProps } from '../../../modals/modal/types';
+import { ModalProps } from '../../../modal/types';
 
 const usePerformanceManagementPage = () => {
   const router = useRouter();
   const [showCompleteModal, setShowCompleteModal] = useState(false);
+
+  const pageActions = [
+    {
+      name: 'Development Plan',
+      onClick: () =>
+        router.push(route.employee.performanceManagement.developmentPlan),
+    },
+    { name: 'Create Goals', onClick: () => {} },
+  ];
+
   const performanceManagementPageData: PageProps = {
     text: 'Performance Management',
     hasButtons: true,
     leftButton: {
       text: 'Actions',
       type: ButtonType.outlined,
-      popoverOptions: [
-        {
-          name: 'Development Plan',
-          onClick: () =>
-            router.push(route.employee.performanceManagement.developmentPlan),
-        },
-        { name: 'Create Goals', onClick: () => {} },
-      ],
+      popoverOptions: pageActions,
     },
     rightButton: {
       type: ButtonType.contained,
@@ -30,6 +33,14 @@ const usePerformanceManagementPage = () => {
       onClick: () =>
         router.push(route.employee.performanceManagement.continuousFeedback),
     },
+    smActions: [
+      ...pageActions,
+      {
+        name: 'Continuous Feedback',
+        onClick: () =>
+          router.push(route.employee.performanceManagement.continuousFeedback),
+      },
+    ],
   };
 
   const goalsTableData: TableProps = {

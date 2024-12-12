@@ -2,7 +2,7 @@
 import Page from '@/app/_components/shared/page';
 import TabFormat from '@/app/_components/shared/tabs';
 import useContinuousFeedbackPage from '../../hooks/useContinuousFeedbackPage';
-import Modal from '@/app/_components/employee/modals/modal';
+import Modal from '@/app/_components/employee/modal';
 
 const EmployeePerformanceManagementContinuousFeeback = () => {
   const {

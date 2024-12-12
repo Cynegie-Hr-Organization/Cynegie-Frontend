@@ -3,7 +3,7 @@ import Page from '@/app/_components/shared/page';
 import useLeaveManagementPage from './hooks/useLeaveManagementPage';
 import LeaveManagementChart from './chart';
 import Table from '@/app/_components/shared/table';
-import Modal from '../../modals/modal';
+import Modal from '../../modal';
 
 const EmployeeLeaveManagement: React.FC = () => {
   const { pageData, chartsData, tableData, modalsData } =

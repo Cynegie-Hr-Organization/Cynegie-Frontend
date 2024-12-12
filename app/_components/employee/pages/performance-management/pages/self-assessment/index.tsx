@@ -1,5 +1,5 @@
 'use client';
-import Modal from '@/app/_components/employee/modals/modal';
+import Modal from '@/app/_components/employee/modal';
 import Form from '@/app/_components/shared/form';
 import Page from '@/app/_components/shared/page';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';

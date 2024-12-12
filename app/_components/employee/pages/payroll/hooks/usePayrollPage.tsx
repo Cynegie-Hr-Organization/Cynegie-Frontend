@@ -7,6 +7,7 @@ const usePayrollPage = () => {
   const pageProps: PageProps = {
     text: 'Employee Payroll Dashboard',
     subtitle: 'Access your Employee Payroll Dashboard',
+    hasButtons: true,
     leftButton: {
       type: ButtonType.outlined,
       text: 'Download Payslip',
@@ -15,6 +16,7 @@ const usePayrollPage = () => {
       type: ButtonType.contained,
       text: 'View Payslip',
     },
+    rightButtonSm: true,
   };
 
   const cards: CardProps[] = [

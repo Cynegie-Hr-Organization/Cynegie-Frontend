@@ -4,7 +4,7 @@ import { LeaveManagementChartProps } from '../chart';
 import { APRStatusMap, color } from '@/constants';
 import { FieldType, TableProps } from '@/app/_components/shared/table/types';
 import { useState } from 'react';
-import { ModalProps } from '../../../modals/modal/types';
+import { ModalProps } from '../../../modal/types';
 
 const useLeaveManagementPage = () => {
   const [openRequestTimeOffModal, setOpenRequestTimeOffModal] = useState(false);
@@ -21,6 +21,7 @@ const useLeaveManagementPage = () => {
       text: 'Request Leave',
       onClick: () => setOpenRequestTimeOffModal(true),
     },
+    rightButtonSm: true,
   };
 
   const chartsData: LeaveManagementChartProps[] = [

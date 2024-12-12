@@ -1,7 +1,7 @@
 import React from 'react';
-import { InputFieldOption } from '../../modals/modal/types';
 import { Radio, RadioGroup } from '@mui/material';
 import DetailValue from '@/app/_components/shared/detail-group/detail/value';
+import { InputFieldOption } from '../../modal/types';
 
 type RadioFieldProps = {
   options: InputFieldOption[];

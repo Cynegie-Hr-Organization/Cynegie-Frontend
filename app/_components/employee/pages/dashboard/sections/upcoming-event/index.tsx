@@ -16,13 +16,14 @@ const UpcomingEvent = () => {
       rowSpacing={2}
       container
     >
-      <Grid xs={12} md={6} lg={7} item>
+      <Grid xs={12} sm={6} md={6} lg={7} item>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DateCalendar showDaysOutsideCurrentMonth={false} />
         </LocalizationProvider>
       </Grid>
       <Grid
         xs={12}
+        sm={6}
         md={6}
         lg={5}
         item

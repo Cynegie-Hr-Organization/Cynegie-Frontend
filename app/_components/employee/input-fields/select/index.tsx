@@ -1,6 +1,6 @@
 import { MenuItem, Select } from '@mui/material';
 import React, { SetStateAction } from 'react';
-import { InputFieldOption } from '../../modals/modal/types';
+import { InputFieldOption } from '../../modal/types';
 
 export type SelectFieldProps = {
   value?: string | number;
