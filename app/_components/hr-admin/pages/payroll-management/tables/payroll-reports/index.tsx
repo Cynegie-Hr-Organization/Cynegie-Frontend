@@ -27,7 +27,6 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { payrollReportsTableData } from './data';
-import DownloadReportModal from '../../modals/download-report';
 
 const PayrollReportsTable = () => {
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
@@ -50,8 +49,6 @@ const PayrollReportsTable = () => {
 
   const open = Boolean(anchorEl);
   const id = open ? 'more-vert-popover' : undefined;
-
-  const [openDownloadModal, setOpenDownloadModal] = useState(false);
 
   return (
     <Stack gap={2} className='common-card'>
@@ -230,16 +227,12 @@ const PayrollReportsTable = () => {
           <ListItem
             component='button'
             sx={{ '&:hover': { color: '#0035C3' } }}
-            onClick={() => setOpenDownloadModal(true)}
+            onClick={() => alert('Download in Progress')}
           >
             <ListItemText primary='Download Report' />
           </ListItem>
         </List>
       </Popover>
-      <DownloadReportModal
-        open={openDownloadModal}
-        onCloseFn={() => setOpenDownloadModal(false)}
-      />
     </Stack>
   );
 };

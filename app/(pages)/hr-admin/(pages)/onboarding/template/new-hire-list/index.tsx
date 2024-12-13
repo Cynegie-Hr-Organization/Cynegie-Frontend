@@ -1,4 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
+
+
+
 import React, { useState } from "react";
 import CardLayout from "@/app/_components/shared/cards";
 import { PiDotsThreeVerticalBold } from "react-icons/pi";
@@ -68,10 +73,10 @@ const NewHireList = () => {
               <th className='pl-4 md:pl-6 py-3 text-left'>
                 <input type='checkbox' />
               </th>
-              <th className='px-4 py-3 text-left'>Template Name</th>
-              <th className='px-4 py-3 text-left'>Creator</th>
-              <th className='px-4 py-3 text-left'>Last Modified</th>
-              <th className='px-4 py-3 text-left'>Actions</th>
+              <th className="px-4 py-3 text-left">Template Name</th>
+              <th className="px-4 py-3 text-left">Creator</th>
+              <th className="px-4 py-3 text-left">Last Modified</th>
+              <th className="px-4 py-3 text-left">Actions</th>
             </tr>
           </thead>
 

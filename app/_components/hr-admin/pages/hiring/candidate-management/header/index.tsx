@@ -1,11 +1,6 @@
 import React from "react";
 
-
 const HiringCandidateManagementHeader = () => {
-
-
- 
-  
   return (
     <>
       {/* Header Section */}
@@ -14,7 +9,6 @@ const HiringCandidateManagementHeader = () => {
           Candidate Details
         </h1>
         <div className="flex flex-row items-center">
-         
           {/* <button
             className="px-6 py-2 text-base font-semibold bg-[#0035C3] text-white rounded-lg hover:bg-blue-600 focus:outline-none"
             onClick={handleCreateJobClick}
@@ -23,8 +17,6 @@ const HiringCandidateManagementHeader = () => {
           </button> */}
         </div>
       </header>
-
-    
     </>
   );
 };

@@ -1,5 +1,4 @@
-import HrAdminHiringCandidateManagement from '@/app/_components/hr-admin/pages/hiring/candidate-management';
-
+import HrAdminHiringCandidateManagement from "@/app/_components/hr-admin/pages/hiring/candidate-management";
 
 const HrAdminHiringCandidateManagementPage = () => {
   return <HrAdminHiringCandidateManagement />;

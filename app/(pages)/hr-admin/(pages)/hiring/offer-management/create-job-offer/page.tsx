@@ -1,10 +1,7 @@
-
-
-import CreateJobOffer from '@/app/_components/hr-admin/pages/hiring/offer-management/create-job-offer';
-
+import CreateJobOffer from "@/app/_components/hr-admin/pages/hiring/offer-management/create-job-offer";
 
 const CreateJobOfferPage = () => {
-    return <CreateJobOffer />;
+  return <CreateJobOffer />;
 };
 
 export default CreateJobOfferPage;

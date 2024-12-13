@@ -2,7 +2,7 @@ import { Menubar, MenubarContent, MenubarMenu, MenubarTrigger, MenubarItem } fro
 import { cn } from "@/lib/utils";
 
 const AppMenubar = ({ children, menuItems, className, overrideClassName }: {
-  children: React.ReactNode, menuItems: React.ReactNode,
+  children?: React.ReactNode, menuItems: React.ReactNode,
   className?: string, overrideClassName?: string
 }) => {
   return (

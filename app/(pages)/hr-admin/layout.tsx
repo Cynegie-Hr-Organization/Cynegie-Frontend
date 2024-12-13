@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Header from "@/app/_components/shared/header";
 import Sidebar from "@/app/_components/shared/sidebar";
@@ -6,12 +6,12 @@ import { ReactNode, useState } from "react";
 
 const AdminLayout = ({ children }: { children: ReactNode }) => {
   const [toggleMenu, setToggleMenu] = useState(false);
-  const handleToggleMenu = () => setToggleMenu(!toggleMenu)
+  const handleToggleMenu = () => setToggleMenu(!toggleMenu);
 
   return (
     <>
       <Sidebar setOpenMobileMenu={handleToggleMenu} openMobileMenu={toggleMenu} />
-      <div className="bg-[#F9FAFB] h-dvh overflow-y-scroll w-full xl:pl-[17rem] relative">
+      <div className="bg-[#F9FAFB] h-dvh overflow-y-scroll w-full xl:pl-64 relative">
         <div className={`bg-black bg-opacity-30 fixed inset-0 z-20 ${toggleMenu ? 'block' : 'hidden'}`}></div>
         <Header onMenuClick={handleToggleMenu} />
 
@@ -20,7 +20,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
         </main>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default AdminLayout
+export default AdminLayout;

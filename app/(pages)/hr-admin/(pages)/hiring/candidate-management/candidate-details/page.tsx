@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-"use client"
+"use client";
 
-
-import  HrAdminHiringCandidateDetails from '@/app/_components/hr-admin/pages/hiring/candidate-management/candidate-details';
+import HrAdminHiringCandidateDetails from "@/app/_components/hr-admin/pages/hiring/candidate-management/candidate-details";
 
 const HiringOverviewCandidateDetailsPage = () => {
   return (
-      <>
-      <HrAdminHiringCandidateDetails/>
-      </>
+    <>
+      <HrAdminHiringCandidateDetails />
+    </>
   );
 };
 

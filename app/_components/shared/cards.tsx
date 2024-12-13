@@ -9,7 +9,9 @@ const CardLayout = ({
   className?: string;
   bg?: string;
 }) => {
-  return <div className={`border  rounded-xl ${className} ${bg}`}>{children}</div>;
+  return (
+    <div className={`border  rounded-xl ${className} ${bg}`}>{children}</div>
+  );
 };
 
 export default CardLayout;

@@ -1,9 +1,8 @@
-'use client';
+"use client";
 
-import DashboardLayout from './dashboard-layout';
-import OverviewSection from './overview-section';
-import CandidatesSection from './candidates-section';
-
+import DashboardLayout from "./dashboard-layout";
+import OverviewSection from "./overview-section";
+import CandidatesSection from "./candidates-section";
 
 const HrAdminDashboardPage = () => {
   return (
@@ -13,7 +12,5 @@ const HrAdminDashboardPage = () => {
     </DashboardLayout>
   );
 };
-
-
 
 export default HrAdminDashboardPage;

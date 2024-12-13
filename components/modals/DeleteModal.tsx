@@ -40,9 +40,7 @@ export const DeleteModal: FC<DeleteTypes> = ({
         <div className="flex items-center justify-center">
           <div className="border-4 rounded-full border-LightMistGray">
             <div className="p-1 border-4 rounded-full border-DustyRose bg-DustyRose">
-              <div>
-                {/* <img src={DeleteIcon} alt="Delete icon" /> */}
-              </div>
+              <div>{/* <img src={DeleteIcon} alt="Delete icon" /> */}</div>
             </div>
           </div>
         </div>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import RejectCandidateModal from "../reject-candidate-modal";
-
+import RejectCandidateModal from "../../../../candidate-management/reject-candidate-modal";
 
 const InterviewDetailsTopHeader = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -11,18 +10,21 @@ const InterviewDetailsTopHeader = () => {
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
       setDropdownOpen(false);
     }
   };
 
   const handleRejectClick = () => {
     setIsModalOpen(true);
-  }
+  };
 
   const closeModal = () => {
-  setIsModalOpen(false); 
- };
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     if (dropdownOpen) {
@@ -40,10 +42,11 @@ const InterviewDetailsTopHeader = () => {
     <>
       {/* Header Section */}
       <header className="flex flex-row justify-between items-center">
-        <h1 className="ml-2 text-xl md:text-2xl font-bold text-gray-900 md:mb-4">
-          
-        </h1>
-        <div className="relative flex flex-row gap-2 items-center" ref={dropdownRef}>
+        <h1 className="ml-2 text-xl md:text-2xl font-bold text-gray-900 md:mb-4"></h1>
+        <div
+          className="relative flex flex-row gap-2 items-center"
+          ref={dropdownRef}
+        >
           {/* Actions Button */}
           <button
             className="w-full flex flex-row items-center gap-2 md:w-auto px-4 md:px-6 py-2 border-gray-300 border-2 text-base font-semibold bg-white text-gray-700 rounded-lg hover:border-blue-600 cursor-pointer"
@@ -73,7 +76,7 @@ const InterviewDetailsTopHeader = () => {
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
                 onClick={() => alert("Close Job")}
               >
-                Schedule follow up interview 
+                Schedule follow up interview
               </button>
               <button
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
@@ -89,12 +92,9 @@ const InterviewDetailsTopHeader = () => {
               </button>
             </div>
           )}
-
-       
         </div>
       </header>
       <RejectCandidateModal isOpen={isModalOpen} onClose={closeModal} />
-
     </>
   );
 };

@@ -25,8 +25,8 @@
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"],
   "paths": {
-      "@toast-ui/react-calendar": [
-        "node_modules/@toast-ui/react-calendar/types/index.d.ts"
-      ]
-    }
+    "@toast-ui/react-calendar": [
+      "node_modules/@toast-ui/react-calendar/types/index.d.ts"
+    ]
+  }
 }

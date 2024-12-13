@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react';
-import InterviewTabTable from './table';
-import { interviewTabData } from './table/data';
+import React, { useState } from "react";
+import InterviewTabTable from "./table";
+import { interviewTabData } from "./table/data";
 
 const InterviewTab = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -11,38 +11,41 @@ const InterviewTab = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = interviewTabData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = interviewTabData.slice(
+    indexOfFirstItem,
+    indexOfLastItem,
+  );
 
   // Define columns
   const columns = [
     {
-      header: 'Candidate Name',
+      header: "Candidate Name",
       accessor: (row: any) => row.candidateName,
     },
     {
-      header: 'Interviewer',
+      header: "Interviewer",
       accessor: (row: any) => row.interviewer,
     },
     {
-      header: 'Applied Position',
+      header: "Applied Position",
       accessor: (row: any) => row.appliedPosition,
     },
     {
-      header: 'Interview Date',
+      header: "Interview Date",
       accessor: (row: any) => new Date(row.interviewDate).toLocaleDateString(),
     },
     {
-      header: 'Interview Time',
+      header: "Interview Time",
       accessor: (row: any) => row.interviewTime,
     },
     {
-      header: 'Status',
+      header: "Status",
       accessor: (row: any) => (
         <span
           className={`px-3 py-1 text-xs rounded-full ${
-            row.status === 'Completed'
-              ? 'bg-green-200 text-green-800'
-              : 'bg-blue-200 text-blue-800'
+            row.status === "Completed"
+              ? "bg-green-200 text-green-800"
+              : "bg-blue-200 text-blue-800"
           }`}
         >
           {row.status}

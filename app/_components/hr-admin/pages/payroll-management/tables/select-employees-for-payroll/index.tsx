@@ -1,4 +1,8 @@
-import { ChevronLeft, ChevronRight, FilterList } from '@mui/icons-material';
+import {
+  ChevronLeft,
+  ChevronRight,
+  FilterList,
+} from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -27,7 +31,7 @@ const SelectEmployeesForPayrollTable: React.FC<{
 
   const handleCheckboxChange = (
     event: ChangeEvent<HTMLInputElement>,
-    rowIndex: number
+    rowIndex: number,
   ) => {
     setSelectedRows((prevSelectedRows) => {
       if (event.target.checked) {
@@ -44,7 +48,7 @@ const SelectEmployeesForPayrollTable: React.FC<{
     useState<HTMLButtonElement | null>(null);
 
   const handleFilterClick: React.MouseEventHandler<HTMLButtonElement> = (
-    event
+    event,
   ) => {
     const buttonElement = event.currentTarget;
     setFilterAnchorEl(buttonElement);
@@ -55,36 +59,36 @@ const SelectEmployeesForPayrollTable: React.FC<{
   };
 
   const openFilter = Boolean(filterAnchorEl);
-  const filterId = openFilter ? 'filter-popover' : undefined;
+  const filterId = openFilter ? "filter-popover" : undefined;
 
   return (
-    <Stack gap={2} className='common-card'>
+    <Stack gap={2} className="common-card">
       <Stack
         sx={{
-          flexDirection: { xs: 'column', md: 'row' },
-          alignItems: { xs: 'flex-start', md: 'center' },
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: { xs: "flex-start", md: "center" },
         }}
       >
-        <Box sx={{ width: '100%' }} flexGrow={1}>
+        <Box sx={{ width: "100%" }} flexGrow={1}>
           <Box
             sx={{
-              width: { xs: '90%', sm: '70%', md: '70%' },
-              mb: { xs: '15px', md: '0px' },
+              width: { xs: "90%", sm: "70%", md: "70%" },
+              mb: { xs: "15px", md: "0px" },
             }}
           >
             <InputGroup>
-              <InputGroup.Addon style={{ backgroundColor: 'transparent' }}>
+              <InputGroup.Addon style={{ backgroundColor: "transparent" }}>
                 <Image
-                  src='/icons/search-2.svg'
-                  alt=''
+                  src="/icons/search-2.svg"
+                  alt=""
                   width={18}
                   height={18}
-                  style={{ margin: '-15px 0px -15px 0px' }}
+                  style={{ margin: "-15px 0px -15px 0px" }}
                 />
               </InputGroup.Addon>
               <Input
-                style={{ paddingLeft: '0px', height: '30px' }}
-                placeholder='Search here...'
+                style={{ paddingLeft: "0px", height: "30px" }}
+                placeholder="Search here..."
               />
             </InputGroup>
           </Box>
@@ -92,27 +96,27 @@ const SelectEmployeesForPayrollTable: React.FC<{
         <Box>
           <Button
             style={{
-              height: '30px',
-              borderRadius: '4.62px',
-              border: '1px solid #D0D5DD',
-              padding: '15px 15px',
-              boxShadow: '0px 0px 1px 0px #888888',
-              display: 'flex',
-              flexDirection: 'row',
+              height: "30px",
+              borderRadius: "4.62px",
+              border: "1px solid #D0D5DD",
+              padding: "15px 15px",
+              boxShadow: "0px 0px 1px 0px #888888",
+              display: "flex",
+              flexDirection: "row",
               gap: 5,
-              alignItems: 'center',
-              textTransform: 'none',
-              color: 'inherit',
+              alignItems: "center",
+              textTransform: "none",
+              color: "inherit",
             }}
-            sx={{ '&:hover': { backgroundColor: '#F0F0F0' } }}
+            sx={{ "&:hover": { backgroundColor: "#F0F0F0" } }}
             onClick={handleFilterClick}
           >
             <FilterList />
             <div
               style={{
                 fontWeight: 500,
-                color: '#344054',
-                fontSize: '14px',
+                color: "#344054",
+                fontSize: "14px",
               }}
             >
               Filter
@@ -122,13 +126,13 @@ const SelectEmployeesForPayrollTable: React.FC<{
       </Stack>
       <TableContainer>
         <Table>
-          <TableHead sx={{ backgroundColor: '#F7F9FC' }}>
+          <TableHead sx={{ backgroundColor: "#F7F9FC" }}>
             <TableRow>
-              <TableCell sx={{ whiteSpace: 'nowrap', width: '50px' }}>
+              <TableCell sx={{ whiteSpace: "nowrap", width: "50px" }}>
                 <Checkbox
                   sx={{
-                    '& .MuiSvgIcon-root': {
-                      strokeWidth: '1.25px',
+                    "& .MuiSvgIcon-root": {
+                      strokeWidth: "1.25px",
                     },
                   }}
                   onChange={(e) => {
@@ -147,13 +151,13 @@ const SelectEmployeesForPayrollTable: React.FC<{
                 />
               </TableCell>
               {[
-                'Employee Name',
-                'Department',
-                'Gross Pay',
-                'Deduction',
-                'Net Pay',
+                "Employee Name",
+                "Department",
+                "Gross Pay",
+                "Deduction",
+                "Net Pay",
               ].map((field) => (
-                <TableCell key={field} sx={{ whiteSpace: 'nowrap' }}>
+                <TableCell key={field} sx={{ whiteSpace: "nowrap" }}>
                   {field}
                 </TableCell>
               ))}
@@ -162,7 +166,7 @@ const SelectEmployeesForPayrollTable: React.FC<{
           <TableBody>
             {selectEmployeesForPayrollTableData.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
-                <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                <TableCell sx={{ whiteSpace: "nowrap" }}>
                   <Checkbox
                     checked={selectedRows.includes(rowIndex)}
                     onChange={(e) => handleCheckboxChange(e, rowIndex)}
@@ -176,17 +180,17 @@ const SelectEmployeesForPayrollTable: React.FC<{
                   row.netPay,
                 ].map((field, columnIndex) =>
                   columnIndex == 0 ? (
-                    <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>
-                      <Stack direction='row' gap={1.5} alignItems='center'>
+                    <TableCell sx={{ whiteSpace: "nowrap" }} key={columnIndex}>
+                      <Stack direction="row" gap={1.5} alignItems="center">
                         <Avatar src={row.image} />
                         <div>{field}</div>
                       </Stack>
                     </TableCell>
                   ) : (
-                    <TableCell sx={{ whiteSpace: 'nowrap' }} key={columnIndex}>
+                    <TableCell sx={{ whiteSpace: "nowrap" }} key={columnIndex}>
                       {field}
                     </TableCell>
-                  )
+                  ),
                 )}
               </TableRow>
             ))}
@@ -195,26 +199,26 @@ const SelectEmployeesForPayrollTable: React.FC<{
       </TableContainer>
       <Stack
         sx={{
-          flexDirection: { xs: 'column', sm: 'row' },
-          alignItems: { xs: 'flex-start', sm: 'center' },
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: { xs: "flex-start", sm: "center" },
           gap: { xs: 2, sm: 0 },
         }}
       >
-        <Stack direction='row' alignItems='center' gap={2} flexGrow={1}>
-          <div style={{ fontWeight: 400, fontSize: '14px', color: '#525866' }}>
+        <Stack direction="row" alignItems="center" gap={2} flexGrow={1}>
+          <div style={{ fontWeight: 400, fontSize: "14px", color: "#525866" }}>
             Show rows per page
           </div>
           <Select
-            defaultValue='5'
-            sx={{ height: '30px', borderRadius: '4.62px', pr: '5px' }}
+            defaultValue="5"
+            sx={{ height: "30px", borderRadius: "4.62px", pr: "5px" }}
             disabled
           >
-            <MenuItem value='5'>5</MenuItem>
+            <MenuItem value="5">5</MenuItem>
           </Select>
         </Stack>
-        <Stack direction='row' alignItems='center' gap={2}>
+        <Stack direction="row" alignItems="center" gap={2}>
           <div>1-5 of 1</div>
-          <Stack direction='row' gap={2}>
+          <Stack direction="row" gap={2}>
             <ChevronLeft />
             <ChevronRight />
           </Stack>
@@ -226,54 +230,54 @@ const SelectEmployeesForPayrollTable: React.FC<{
         anchorEl={filterAnchorEl}
         onClose={handleFilterClose}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
+          vertical: "bottom",
+          horizontal: "left",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
+          vertical: "top",
+          horizontal: "left",
         }}
       >
         <Stack padding={5} gap={5}>
           <Stack gap={3}>
             <Stack gap={1}>
               <div
-                style={{ fontWeight: 400, fontSize: '12px', color: '#303030' }}
+                style={{ fontWeight: 400, fontSize: "12px", color: "#303030" }}
               >
                 Department
               </div>
               <Select
-                defaultValue='All'
-                sx={{ height: '40px', borderRadius: '5px', width: '200px' }}
+                defaultValue="All"
+                sx={{ height: "40px", borderRadius: "5px", width: "200px" }}
               >
-                <MenuItem value='All'>All</MenuItem>
-                <MenuItem value='Sales'>Sales</MenuItem>
-                <MenuItem value='IT'>IT</MenuItem>
-                <MenuItem value='Finance'>Finance</MenuItem>
+                <MenuItem value="All">All</MenuItem>
+                <MenuItem value="Sales">Sales</MenuItem>
+                <MenuItem value="IT">IT</MenuItem>
+                <MenuItem value="Finance">Finance</MenuItem>
               </Select>
             </Stack>
           </Stack>
-          <Stack direction='row' justifyContent='space-between'>
+          <Stack direction="row" justifyContent="space-between">
             <Button
               sx={{
-                display: { xs: 'none', md: 'block' },
-                textTransform: 'none',
-                fontSize: '14px',
-                border: '0px',
-                color: '#9CA3AF',
+                display: { xs: "none", md: "block" },
+                textTransform: "none",
+                fontSize: "14px",
+                border: "0px",
+                color: "#9CA3AF",
               }}
-              variant='outlined'
+              variant="outlined"
             >
               Reset
             </Button>
             <Button
               sx={{
-                display: { xs: 'none', md: 'block' },
-                fontSize: '14px',
-                boxShadow: 'none',
+                display: { xs: "none", md: "block" },
+                fontSize: "14px",
+                boxShadow: "none",
               }}
-              variant='contained'
-              className='common-button'
+              variant="contained"
+              className="common-button"
             >
               Filter
             </Button>
