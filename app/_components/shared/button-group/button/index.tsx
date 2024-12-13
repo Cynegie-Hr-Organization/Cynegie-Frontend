@@ -95,9 +95,8 @@ const Button: React.FC<ButtonProps> = (props) => {
           alignItems: 'center',
           gap: 5,
         }),
-        // width: fullWidth ? '100%' : 'fit-content',
-        ...(popoverOptions && { textWrap: 'nowrap' }),
-        ...(small && { fontSize: '14px', textWrap: 'nowrap' }),
+        ...(small && { fontSize: '14px' }),
+        textWrap: 'nowrap',
       }}
       className={`w-full sm:${fullWidth ? 'w-full' : 'w-fit'}`}
     >

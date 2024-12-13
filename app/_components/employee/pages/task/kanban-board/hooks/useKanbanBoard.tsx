@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { DropResult } from 'react-beautiful-dnd';
 import { BoardData } from '../types';

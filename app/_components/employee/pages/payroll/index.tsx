@@ -4,9 +4,11 @@ import usePayrollPage from './hooks/usePayrollPage';
 import Page from '@/app/_components/shared/page';
 import Table from '@/app/_components/shared/table';
 import Card from '@/app/_components/shared/section-with-cards/card-group/card';
+import Modal from '../../modal';
 
 const EmployeePayroll = () => {
-  const { pageProps, tableProps, cards } = usePayrollPage();
+  const { pageProps, tableProps, cards, payrollSlipModalProps } =
+    usePayrollPage();
   return (
     <Page {...pageProps}>
       <Grid2 columnSpacing={2} rowSpacing={2} container>
@@ -17,6 +19,7 @@ const EmployeePayroll = () => {
         ))}
       </Grid2>
       <Table {...tableProps} />
+      <Modal {...payrollSlipModalProps} />
     </Page>
   );
 };
