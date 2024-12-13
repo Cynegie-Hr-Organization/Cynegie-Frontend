@@ -38,6 +38,7 @@ export enum ButtonType {
   deleteContained,
   deleteWithIcon,
   disabled,
+  black,
 }
 
 export type HeadingType = 'page' | 'modal' | 'card';

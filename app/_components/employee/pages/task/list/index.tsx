@@ -7,9 +7,12 @@ import { getColorVariant } from '@/utils';
 import MoreOptionsButton from '@/app/_components/shared/more-options-button';
 import IconWithData from '@/app/_components/shared/icon-with-data';
 import { KanbanBoardProps } from '../kanban-board';
+import Popover from '@/app/_components/shared/custom-popover';
+import { PopoverType } from '@/app/_components/shared/custom-popover/types';
 
 const TaskList: React.FC<Omit<KanbanBoardProps, 'onDragEnd'>> = ({
   boardData,
+  onTaskClick,
 }) => {
   return (
     <div className='flex flex-col gap-8 w-[1000] md:w-full'>
@@ -58,7 +61,13 @@ const TaskList: React.FC<Omit<KanbanBoardProps, 'onDragEnd'>> = ({
                   />
                 </div>
                 <div>
-                  <MoreOptionsButton />
+                  <Popover
+                    type={PopoverType.moreOptions}
+                    triggerButton={<MoreOptionsButton />}
+                    moreOptions={[
+                      { name: 'View Details', onClick: onTaskClick },
+                    ]}
+                  />
                 </div>
               </div>
             ))}

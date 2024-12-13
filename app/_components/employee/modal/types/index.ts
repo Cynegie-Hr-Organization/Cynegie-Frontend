@@ -3,6 +3,7 @@ import { DetailGroupProps } from '@/app/_components/shared/detail-group/types';
 import { FormProps } from '@/app/_components/shared/form/types';
 import { ButtonProps } from '@/app/_components/shared/page/heading/types';
 import { ButtonGroupPosition } from '@/app/_components/shared/button-group/types';
+import { ViewTaskProps } from '../../pages/task/view-task/types';
 
 export type ModalProps = {
   open: boolean;
@@ -21,7 +22,7 @@ export type ModalProps = {
   form?: FormProps;
   isPayrollSlip?: boolean;
   buttonGroupPosition?: ButtonGroupPosition;
-  isViewTask?: boolean;
+  viewTaskProps?: ViewTaskProps;
 };
 
 export type ModalData = Omit<ModalProps, 'open' | 'onClose'>;

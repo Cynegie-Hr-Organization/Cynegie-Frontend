@@ -8,6 +8,7 @@ import Form from '@/app/_components/shared/form';
 import DetailGroup from '@/app/_components/shared/detail-group';
 import PayrollSlip from '../pages/payroll/payroll-slip';
 import ButtonGroup from '../../shared/button-group';
+import ViewTask from '../pages/task/view-task';
 
 const dialogStyle = {
   '& .MuiDialog-paper': {
@@ -34,6 +35,7 @@ const Modal: React.FC<ModalProps> = (props) => {
     form,
     isPayrollSlip = false,
     buttonGroupPosition = 'center',
+    viewTaskProps,
   } = props;
 
   return (
@@ -51,6 +53,7 @@ const Modal: React.FC<ModalProps> = (props) => {
                 onCloseClick={onClose}
               />
             )}
+            {viewTaskProps && <ViewTask {...viewTaskProps} />}
             {centerImage && (
               <div className='flex justify-center'>
                 <Image src={centerImage} width={100} height={100} alt='' />

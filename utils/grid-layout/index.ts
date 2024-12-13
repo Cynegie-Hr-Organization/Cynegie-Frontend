@@ -4,7 +4,8 @@ export type GridLayout =
   | 'view-details'
   | 'view-details-two'
   | 'development-plan'
-  | '3-columns';
+  | '3-columns'
+  | 'view-task-details';
 
 export const getGridLayout = (index: number, layout?: GridLayout) => {
   if (layout === 'request-correction') {
@@ -28,6 +29,9 @@ export const getGridLayout = (index: number, layout?: GridLayout) => {
   }
   if (layout === '3-columns') {
     return { xs: 12, sm: 4 };
+  }
+  if (layout === 'view-task-details') {
+    return { xs: 12, sm: 2.4 };
   }
   return { xs: 12 };
 };

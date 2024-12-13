@@ -8,13 +8,19 @@ import {
 import TaskCard from './cards/task';
 import { BoardData } from './types';
 import Modal from '../../../modal';
+import { ButtonType } from '@/app/_components/shared/page/heading/types';
 
 export type KanbanBoardProps = {
   boardData: BoardData;
   onDragEnd: (arg: DropResult) => void;
+  onTaskClick: () => void;
 };
 
-const KanbanBoard: React.FC<KanbanBoardProps> = ({ boardData, onDragEnd }) => {
+const KanbanBoard: React.FC<KanbanBoardProps> = ({
+  boardData,
+  onDragEnd,
+  onTaskClick,
+}) => {
   return (
     <>
       <div>
@@ -78,6 +84,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ boardData, onDragEnd }) => {
                                   ...provided.draggableProps.style,
                                   cursor: 'default',
                                 }}
+                                onClick={onTaskClick}
                               >
                                 <TaskCard {...task} status={column.status} />
                               </div>
@@ -94,12 +101,6 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({ boardData, onDragEnd }) => {
           </div>
         </DragDropContext>
       </div>
-      <Modal
-        open={true}
-        onClose={() => {}}
-        title='View Task'
-        subtitle='View task below'
-      />
     </>
   );
 };

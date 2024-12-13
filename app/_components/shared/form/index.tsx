@@ -21,7 +21,7 @@ const Form: React.FC<FormProps> = (props) => {
       >
         <Grid2 container spacing={gridSpacing}>
           {inputFields?.map((field, index) => (
-            <Grid2 key={field.name} size={getGridLayout(index, layout)}>
+            <Grid2 key={index} size={getGridLayout(index, layout)}>
               <div className='flex flex-col gap-2'>
                 <FieldLabel wrapText value={field.name ?? ''} />
                 {field.type == 'text' && (
@@ -55,7 +55,7 @@ const Form: React.FC<FormProps> = (props) => {
                   />
                 )}
                 {field.type == 'radio' && (
-                  <RadioField key={field.value} options={field.options ?? []} />
+                  <RadioField key={index} options={field.options ?? []} />
                 )}
                 {field.type == 'date' && <CustomDatePicker removeTopMargin />}
                 {field.type == 'time' && <CustomTimePicker />}
