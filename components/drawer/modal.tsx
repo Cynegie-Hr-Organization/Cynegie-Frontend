@@ -22,9 +22,10 @@ export function DrawerDialog({
   children,
   trigger,
   header,
-  footer
-}: { children: React.ReactNode, trigger: React.ReactNode, header: React.ReactNode, footer?: React.ReactNode }) {
-  const [open, setOpen] = React.useState(false)
+  footer,
+  open,
+  setOpen
+}: { children: React.ReactNode, trigger: React.ReactNode, header: React.ReactNode, footer?: React.ReactNode, open?: boolean, setOpen?: React.Dispatch<React.SetStateAction<boolean>> }) {
   const isDesktop = useMediaQuery("(min-width: 768px)")
 
   if (isDesktop) {

@@ -2,6 +2,7 @@
 
 import { DeleteSvg } from "@/app/_components/icons/delete";
 import AppButton from "@/app/_components/shared/button";
+import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import InputText from "@/app/_components/shared/input-text";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -9,7 +10,8 @@ import { DialogTitle } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
-import DrawerTitle from "rsuite/esm/Drawer/DrawerTitle";
+
+
 
 
 
@@ -152,22 +154,25 @@ const TransactionDetailItem = ({ label, value, pillValue }: { label: string, val
 }
 
 const EditVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => {
-const [formData, setFormData] = useState({
-    vendorName:"John Doe",
+  const [, setOpen] = useState(false)
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([])
+  const [formData, setFormData] = useState({
+    vendorName: "John Doe",
     phoneNumber: "01234567890",
     email: "john.doe@techsupplies.com",
     contactPerson: "Michael Jackson",
     paymentTerms: "Net 30days",
     vendorAddress: "123 TechStreet, Lagos , Nigeria",
-});
+  });
+
 
   return (
     <DrawerDialog trigger={trigger}
       header={
-        <DrawerTitle>
+        <DialogTitle>
           <p className="font-roboto text-xl font-bold">Edit Vendor</p>
           <p className="font-roboto text-sm font-normal text-gray-500">Edit details</p>
-        </DrawerTitle>
+        </DialogTitle>
       }
       footer={
         <div className="flex items-center justify-center gap-4">
@@ -231,9 +236,28 @@ const [formData, setFormData] = useState({
             requiredField
             type={"text"}
           />
+
+          <AppMultipleSelect
+            label="Options"
+            items={[
+              { label: "Option 1", value: "option1" },
+              { label: "Option 2", value: "option2" },
+              { label: "Option 3", value: "option3" },
+              { label: "Option 4", value: "option4" },
+              { label: "Option 5", value: "option5" },
+              { label: "Option 6", value: "option6" },
+              { label: "Option 7", value: "option7" },
+              { label: "Option 8", value: "option8" },
+              { label: "Option 9", value: "option9" },
+              { label: "Option 10", value: "option10" },
+              { label: "Option 11", value: "option11" },
+            ]}
+            selectedValues={selectedOptions}
+            onSelectionChange={setSelectedOptions}
+            placeholder="Select options"
+          />
         </div>
       </form>
     </DrawerDialog>
   )
 }
-
