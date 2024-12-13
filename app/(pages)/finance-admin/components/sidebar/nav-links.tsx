@@ -44,7 +44,7 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
         {
             name: 'Vendor Management',
             icon: <RiBookLine size={17.5} />,
-            path: '/finance-admin/journals',
+            path: '/finance-admin/vendor-management',
         },
         {
             name: 'Banking',
@@ -52,9 +52,9 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
             path: '/finance-admin/banking',
         },
         {
-            name: 'Bank Transactions',
+            name: 'Settings',
             icon: <LuRepeat size={17.5} />,
-            path: '/finance-admin/bank-transactions',
+            path: '/finance-admin/settings',
         },
     ];
 
