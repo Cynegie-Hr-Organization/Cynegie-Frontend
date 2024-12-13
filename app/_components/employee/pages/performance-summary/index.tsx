@@ -3,13 +3,16 @@ import Page from '@/app/_components/shared/page';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';
 import SectionCardContainer from '@/app/_components/shared/section-with-cards/container';
 import QuickAction from './quick-action';
-import { color, icon } from '@/constants';
+import { color, icon, route } from '@/constants';
 import DotLegend from '@/app/_components/shared/charts/legends/dot-legend';
+import { useRouter } from 'next/navigation';
 
 const EmployeePerformanceSummary = () => {
+  const router = useRouter();
   return (
     <Page
-      backText=''
+      backText=' '
+      onBackTextClick={() => router.push(route.employee.dashboard.home)}
       text='Dashboard'
       subtitle='Access your Employee Dashboard'
       hasButtons

@@ -20,6 +20,7 @@ const useEmployeeDashboardPage = () => {
     rightButton: {
       type: ButtonType.contained,
       text: 'Performance Summary',
+      onClick: () => router.push(route.employee.dashboard.performanceSummary),
     },
   };
 
