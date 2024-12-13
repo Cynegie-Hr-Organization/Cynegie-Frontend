@@ -23,8 +23,9 @@ const DotLegend: React.FC<DotLegend> = (props) => {
         </div>
       </div>
       {props.countedItemName && (
-        <div>{`${props.value} ${
-          props.countedItemName + (!(props.value == 1) ? 's' : '')
+        <div>{`${props.value ?? ''} ${
+          props.countedItemName +
+          (!(props.value == 1) ? `${props.value ? 's' : ''}` : '')
         }`}</div>
       )}
     </div>

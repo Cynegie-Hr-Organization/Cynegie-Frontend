@@ -7,8 +7,6 @@ import {
 } from 'react-beautiful-dnd';
 import TaskCard from './cards/task';
 import { BoardData } from './types';
-import Modal from '../../../modal';
-import { ButtonType } from '@/app/_components/shared/page/heading/types';
 
 export type KanbanBoardProps = {
   boardData: BoardData;

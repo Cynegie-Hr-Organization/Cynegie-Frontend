@@ -15,6 +15,9 @@ export const icon = {
   calendar: `${iconBaseUrl}calendar.svg`,
   calendarTwo: `${iconBaseUrl}calendar-2.svg`,
   clock: `${iconBaseUrl}clock.svg`,
+  user: `${iconBaseUrl}user.svg`,
+  signOut: `${iconBaseUrl}sign-out.svg`,
+  receipt: `${iconBaseUrl}receipt.svg`,
 };
 
 export const color = {

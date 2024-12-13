@@ -14,7 +14,6 @@ import Form from '@/app/_components/shared/form';
 const ViewTask: React.FC<ViewTaskProps> = ({
   name,
   appName,
-  assignedTo,
   dateCreated,
   label,
   dueDate,
