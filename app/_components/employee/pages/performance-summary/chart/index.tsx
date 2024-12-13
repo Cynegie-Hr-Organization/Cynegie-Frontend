@@ -1,6 +1,6 @@
 import { color } from '@/constants';
 import React from 'react';
-import { AreaChart, Area, Tooltip, ResponsiveContainer, XAxis } from 'recharts';
+import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 
 const data = [
   { ['2024']: 0, ['2023']: 0 },
