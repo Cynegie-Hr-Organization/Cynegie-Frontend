@@ -6,6 +6,10 @@ import { DrawerDialog } from "@/components/drawer/modal";
 import { DrawerTitle } from "@/components/ui/drawer";
 import { VendorTable } from "./tables";
 
+
+
+
+
 const FinanceAdminJournals = () => {
   return (
     <div className="space-y-8">
@@ -19,7 +23,8 @@ const FinanceAdminJournals = () => {
   )
 }
 
-export const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => {
+const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => {
+
   return (
     <DrawerDialog trigger={trigger}
       header={

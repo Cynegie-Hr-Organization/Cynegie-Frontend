@@ -2,13 +2,18 @@
 
 import { DeleteSvg } from "@/app/_components/icons/delete";
 import AppButton from "@/app/_components/shared/button";
-import { InputTextArea } from "@/app/_components/shared/input-text";
+import InputText from "@/app/_components/shared/input-text";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DialogTitle } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
-import { AddVendorModal } from "./page";
+import DrawerTitle from "rsuite/esm/Drawer/DrawerTitle";
+
+
+
+
 
 export const VendorTable = () => {
   return (
@@ -76,7 +81,7 @@ function PopoverMenu() {
 
       <PopoverContent className='w-40 bg-white space-y-2 cursor-pointer rounded-lg flex flex-col items-start text-[#475367]'>
         <PreviewModal trigger={<button className=''>View</button>} />
-        <AddVendorModal trigger={<button className=''>Edit</button>} />
+        <EditVendorModal trigger={<button className=''>Edit</button>} />
         <DeleteModal trigger={<button className='text-red-500'>Deactivate</button>} />
       </PopoverContent>
     </Popover>
@@ -104,7 +109,7 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
         </div>
       }
     >
-     <></>
+      <></>
     </DrawerDialog>
   )
 }
@@ -143,6 +148,92 @@ const TransactionDetailItem = ({ label, value, pillValue }: { label: string, val
       <p className="text-black font-bold">{value}</p>
       {pillValue && <p className="text-sm font-semibold text-green-600 bg-green-50 rounded-full px-2 py-1 w-fit text-nowrap">{pillValue}</p>}
     </div>
+  )
+}
+
+const EditVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => {
+const [formData, setFormData] = useState({
+    vendorName:"John Doe",
+    phoneNumber: "01234567890",
+    email: "john.doe@techsupplies.com",
+    contactPerson: "Michael Jackson",
+    paymentTerms: "Net 30days",
+    vendorAddress: "123 TechStreet, Lagos , Nigeria",
+});
+
+  return (
+    <DrawerDialog trigger={trigger}
+      header={
+        <DrawerTitle>
+          <p className="font-roboto text-xl font-bold">Edit Vendor</p>
+          <p className="font-roboto text-sm font-normal text-gray-500">Edit details</p>
+        </DrawerTitle>
+      }
+      footer={
+        <div className="flex items-center justify-center gap-4">
+          <AppButton label="Cancel" className="btn-secondary w-[296px]" />
+          <AppButton label="Edit" className="btn-primary w-[296px]" />
+        </div>}>
+
+      <form>
+        <div className="space-y-4">
+          <InputText
+            label="Vendor Name"
+            placeholder="Enter vendor name"
+            onChange={(e) => { setFormData({ ...formData, vendorName: e.target.value }) }}
+            value={formData.vendorName}
+            id={"vendor-name"}
+            requiredField
+            type={"text"}
+          />
+          <InputText
+            label="Phone Number"
+            placeholder="Enter vendor name"
+            onChange={(e) => { setFormData({ ...formData, phoneNumber: e.target.value }) }}
+            value={formData.phoneNumber}
+            id={"vendor-name"}
+            requiredField
+            type={"text"}
+          />
+          <InputText
+            label="Email"
+            placeholder="Enter vendor name"
+            onChange={(e) => { setFormData({ ...formData, email: e.target.value }) }}
+            value={formData.email}
+            id={"vendor-name"}
+            requiredField
+            type={"text"}
+          />
+          <InputText
+            label="Contact Person"
+            placeholder="Enter vendor name"
+            onChange={(e) => { setFormData({ ...formData, contactPerson: e.target.value }) }}
+            value={formData.contactPerson}
+            id={"vendor-name"}
+            requiredField
+            type={"text"}
+          />
+          <InputText
+            label="Payment Terms"
+            placeholder="Enter vendor name"
+            onChange={(e) => { setFormData({ ...formData, paymentTerms: e.target.value }) }}
+            value={formData.paymentTerms}
+            id={"vendor-name"}
+            requiredField
+            type={"text"}
+          />
+          <InputText
+            label="Vendor Address"
+            placeholder="Enter vendor name"
+            onChange={(e) => { setFormData({ ...formData, vendorAddress: e.target.value }) }}
+            value={formData.vendorAddress}
+            id={"vendor-name"}
+            requiredField
+            type={"text"}
+          />
+        </div>
+      </form>
+    </DrawerDialog>
   )
 }
 

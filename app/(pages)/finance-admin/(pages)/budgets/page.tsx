@@ -76,7 +76,7 @@ const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
               label="Start Date"
               placeholder="Date"
               selectedDate={new Date()}
-              setSelectedDate={(date) => { }}
+              setSelectedDate={() => { }}
               requiredField
             />
             <AppDatePicker

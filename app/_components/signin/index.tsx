@@ -10,6 +10,7 @@ import { rolesMap } from "@/types/form";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AppButton from "../shared/button";
 
 const SigninMain = () => {
   const router = useRouter();
@@ -112,12 +113,13 @@ const SigninMain = () => {
                   />
                 </div>
               </div>
-              <button
+              <AppButton
                 type="submit"
-                className="bg-[#E4E7EC] hover:bg-blue-500 text-white font-semibold w-full px-5 py-2 rounded-md transition-all duration-500"
-              >
-                Continue
-              </button>
+                label="Continue"
+                className="btn-primary md:w-full"
+                isLoading={isLoading}
+                disabled={isLoading || email.length < 3}
+              />
             </form>
           )}
 
@@ -168,17 +170,13 @@ const SigninMain = () => {
                 </div>
               </div>
 
-              <button
+              <AppButton
+                label={isLoading ? "Signing In..." : "Sign In"}
                 type="submit"
-                className={`${
-                  isLoading
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-[#E4E7EC] hover:bg-blue-500"
-                } text-white font-semibold w-full px-5 py-2 rounded-md transition-all duration-500`}
-                disabled={isLoading}
-              >
-                {isLoading ? "Signing In..." : "Sign In"}
-              </button>
+                className="btn-primary md:w-full"
+                isLoading={isLoading}
+                disabled={isLoading || email.length < 3 || password.length < 3}
+              />
 
               {/* Go Back Button */}
               <div className="flex w-full items-center justify-center">
