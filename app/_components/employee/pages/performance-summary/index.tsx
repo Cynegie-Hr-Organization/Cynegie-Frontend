@@ -11,8 +11,6 @@ const EmployeePerformanceSummary = () => {
   const router = useRouter();
   return (
     <Page
-      backText=' '
-      onBackTextClick={() => router.push(route.employee.dashboard.home)}
       text='Dashboard'
       subtitle='Access your Employee Dashboard'
       hasButtons
