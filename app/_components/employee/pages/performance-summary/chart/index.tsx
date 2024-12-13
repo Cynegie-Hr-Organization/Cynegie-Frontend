@@ -3,13 +3,13 @@ import React from 'react';
 import { AreaChart, Area, Tooltip, ResponsiveContainer } from 'recharts';
 
 const data = [
-  { name: 'Jan', uv: 0, amt: 0 },
-  { name: 'Feb', uv: 3000, amt: 2210 },
-  { name: 'Mar', uv: 2000, amt: 2290 },
-  { name: 'Apr', uv: 2780, amt: 2000 },
-  { name: 'May', uv: 1890, amt: 2181 },
-  { name: 'Jun', uv: 2390, amt: 2500 },
-  { name: 'Jul', uv: 3490, amt: 2100 },
+  { name: 'Jan', ['2024']: 0, ['2023']: 0 },
+  { name: 'Feb', ['2024']: 3000, ['2023']: 2210 },
+  { name: 'Mar', ['2024']: 2000, ['2023']: 2290 },
+  { name: 'Apr', ['2024']: 2780, ['2023']: 2000 },
+  { name: 'May', ['2024']: 1890, ['2023']: 2181 },
+  { name: 'Jun', ['2024']: 2390, ['2023']: 2500 },
+  { name: 'Jul', ['2024']: 3490, ['2023']: 2100 },
 ];
 
 const PerformanceSummaryChart = () => {
@@ -19,9 +19,16 @@ const PerformanceSummaryChart = () => {
         <Tooltip />
         <Area
           type='linear'
-          dataKey='uv'
+          dataKey='2024'
           strokeWidth={2}
           stroke={color.info.dark}
+          fill='url(#gradientUv)'
+        />
+        <Area
+          type='linear'
+          dataKey='2023'
+          strokeWidth={2}
+          stroke={color.warning.dark}
           fill='url(#gradientUv)'
         />
       </AreaChart>
