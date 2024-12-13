@@ -66,16 +66,6 @@ export function AppMultipleSelect({
     onSelectionChange(newSelection)
   }
 
-  const handleSelectAll = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (selectedValues.length === items.length) {
-      onSelectionChange([])
-    } else {
-      onSelectionChange(items.map(item => item.value))
-    }
-  }
-
   const displayValue = () => {
     if (selectedValues.length === 0) return <p className="text-gray-400">{placeholder}</p>
     const selectedLabels = items
@@ -111,18 +101,7 @@ export function AppMultipleSelect({
               className="h-8"
             />
           </div>
-          <DropdownMenuGroup className="max-h-[200px] overflow-y-auto">
-            <DropdownMenuItem
-              className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 hover:rounded-md text-sm px-2"
-              onClick={handleSelectAll}
-              onSelect={(e: any) => e.preventDefault()}
-            >
-              <div className="w-4 h-4 border rounded flex items-center justify-center">
-                {selectedValues.length === items.length && <Check className="w-3 h-3" />}
-              </div>
-              <span>Select all</span>
-            </DropdownMenuItem>
-            
+          <DropdownMenuGroup className="max-h-[200px] overflow-y-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-gray-200">            
             {filteredItems.map((item) => (
               <DropdownMenuItem
                 key={item.value}
