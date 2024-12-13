@@ -6,6 +6,7 @@ import QuickAction from './quick-action';
 import { color, icon, route } from '@/constants';
 import DotLegend from '@/app/_components/shared/charts/legends/dot-legend';
 import { useRouter } from 'next/navigation';
+import PerformanceSummaryChart from './chart';
 
 const EmployeePerformanceSummary = () => {
   const router = useRouter();
@@ -23,7 +24,7 @@ const EmployeePerformanceSummary = () => {
     >
       <div className='common-card'>
         <SectionCardContainer title='Performance Summary'>
-          <></>
+          <PerformanceSummaryChart />
         </SectionCardContainer>
       </div>
       <div className='flex flex-col gap-4'>
