@@ -154,32 +154,32 @@ const TransactionDetailItem = ({ label, value, pillValue }: { label: string, val
 }
 
 const EditVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => {
-  const [, setOpen] = useState(false)
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([])
+  const [open, setOpen] = useState(false)
   const [formData, setFormData] = useState({
     vendorName: "John Doe",
     phoneNumber: "01234567890",
-    email: "john.doe@techsupplies.com",
-    contactPerson: "Michael Jackson",
-    paymentTerms: "Net 30days",
-    vendorAddress: "123 TechStreet, Lagos , Nigeria",
-  });
-
+    email: "john@example.com",
+    address: "123 Street",
+    city: "City",
+    state: "State",
+  })
 
   return (
-    <DrawerDialog trigger={trigger}
+    <DrawerDialog 
+      open={open} 
+      setOpen={setOpen}
+      trigger={trigger}
       header={
         <DialogTitle>
           <p className="font-roboto text-xl font-bold">Edit Vendor</p>
-          <p className="font-roboto text-sm font-normal text-gray-500">Edit details</p>
         </DialogTitle>
       }
       footer={
         <div className="flex items-center justify-center gap-4">
-          <AppButton label="Cancel" className="btn-secondary w-[296px]" />
-          <AppButton label="Edit" className="btn-primary w-[296px]" />
-        </div>}>
-
+          <AppButton label="Cancel" className="btn-secondary w-[296px]" onClick={() => setOpen(false)} />
+          <AppButton label="Edit" className="btn-primary w-[296px]" onClick={() => setOpen(false)} />
+        </div>
+      }>
       <form>
         <div className="space-y-4">
           <InputText
@@ -210,28 +210,28 @@ const EditVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) =>
             type={"text"}
           />
           <InputText
-            label="Contact Person"
+            label="Address"
             placeholder="Enter vendor name"
-            onChange={(e) => { setFormData({ ...formData, contactPerson: e.target.value }) }}
-            value={formData.contactPerson}
+            onChange={(e) => { setFormData({ ...formData, address: e.target.value }) }}
+            value={formData.address}
             id={"vendor-name"}
             requiredField
             type={"text"}
           />
           <InputText
-            label="Payment Terms"
+            label="City"
             placeholder="Enter vendor name"
-            onChange={(e) => { setFormData({ ...formData, paymentTerms: e.target.value }) }}
-            value={formData.paymentTerms}
+            onChange={(e) => { setFormData({ ...formData, city: e.target.value }) }}
+            value={formData.city}
             id={"vendor-name"}
             requiredField
             type={"text"}
           />
           <InputText
-            label="Vendor Address"
+            label="State"
             placeholder="Enter vendor name"
-            onChange={(e) => { setFormData({ ...formData, vendorAddress: e.target.value }) }}
-            value={formData.vendorAddress}
+            onChange={(e) => { setFormData({ ...formData, state: e.target.value }) }}
+            value={formData.state}
             id={"vendor-name"}
             requiredField
             type={"text"}
