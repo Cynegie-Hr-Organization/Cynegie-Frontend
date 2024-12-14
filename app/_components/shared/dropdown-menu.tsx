@@ -31,11 +31,6 @@ export function AppDropdownMenu({ trigger, menuItems, width = "w-56" }: { trigge
   )
 }
 
-
-
-
-
-
 export function AppMultipleSelect({
   label,
   requiredField,
@@ -66,15 +61,16 @@ export function AppMultipleSelect({
 
   const handleItemClick = (e: React.MouseEvent, value: string) => {
     e.preventDefault()
-    e.stopPropagation()
-    const newSelection = selectedValues.includes(value)
-      ? selectedValues.filter(v => v !== value)
+    const newValue = selectedValues.includes(value)
+      ? selectedValues.filter(item => item !== value)
       : [...selectedValues, value]
-    onSelectionChange(newSelection)
+    onSelectionChange(newValue)
   }
 
   const displayValue = () => {
-    if (selectedValues.length === 0) return <span className="text-gray-400">{placeholder}</span>
+    if (!selectedValues || selectedValues.length === 0) {
+      return <span className="text-gray-400">{placeholder}</span>
+    }
     const selectedLabels = items
       .filter(item => selectedValues.includes(item.value))
       .map(item => item.label)
@@ -115,7 +111,7 @@ export function AppMultipleSelect({
               {noResultsText}
             </div>
           ) : (
-            <DropdownMenuGroup className="max-h-[200px] overflow-y-auto w-full">
+              <DropdownMenuGroup className="max-h-[200px] overflow-y-auto w-full multi-select">
               <DropdownMenuItem
                 className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 hover:rounded-md text-sm px-2 border-b"
                 onClick={(e) => {

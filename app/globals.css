@@ -79,22 +79,26 @@
   --sidebar-ring: 217.2 91.2% 59.8%;
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
+.multi-select::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
-::-webkit-scrollbar-track {
+.multi-select:hover::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.multi-select::-webkit-scrollbar-track {
   background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
+.multi-select::-webkit-scrollbar-thumb {
   background: hsl(var(--primary));
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.multi-select:hover::-webkit-scrollbar-thumb {
   opacity: 0.8;
 }
 

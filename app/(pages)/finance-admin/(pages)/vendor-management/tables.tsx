@@ -162,11 +162,12 @@ const EditVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) =>
     address: "123 Street",
     city: "City",
     state: "State",
+    paymentTerms: [] as string[]
   })
 
   return (
-    <DrawerDialog 
-      open={open} 
+    <DrawerDialog
+      open={open}
       setOpen={setOpen}
       trigger={trigger}
       header={
@@ -236,6 +237,21 @@ const EditVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) =>
             requiredField
             type={"text"}
           />
+
+          <AppMultipleSelect
+            label="Payment Terms"
+            placeholder="Select payment terms"
+            items={[
+              { label: "Net 30", value: "net_30" },
+              { label: "Net 45", value: "net_45" },
+              { label: "Net 60", value: "net_60" },
+              { label: "Net 70", value: "net_70" },
+              { label: "Net 80", value: "net_80" },
+              { label: "Net 90", value: "net_90" },
+              { label: "Net 100", value: "net_100" },
+            ]}
+            selectedValues={formData.paymentTerms}
+            onSelectionChange={(values) => { setFormData({ ...formData, paymentTerms: values }); console.log(values) }} />
         </div>
       </form>
     </DrawerDialog>
