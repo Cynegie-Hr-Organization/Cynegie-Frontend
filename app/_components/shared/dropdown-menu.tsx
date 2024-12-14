@@ -11,10 +11,9 @@ import { Check } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { IoIosArrowDown } from "react-icons/io"
 
-interface MenuItem {
-  label: string
-  value: string
-}
+
+
+
 
 export function AppDropdownMenu({ trigger, menuItems, width = "w-56" }: { trigger: ReactNode, menuItems: ReactNode, width?: string }) {
   return (
@@ -30,6 +29,9 @@ export function AppDropdownMenu({ trigger, menuItems, width = "w-56" }: { trigge
     </DropdownMenu>
   )
 }
+
+
+
 
 export function AppMultipleSelect({
   label,
@@ -111,7 +113,7 @@ export function AppMultipleSelect({
               {noResultsText}
             </div>
           ) : (
-              <DropdownMenuGroup className="max-h-[200px] overflow-y-auto w-full multi-select">
+            <DropdownMenuGroup className="max-h-[200px] overflow-y-auto w-full multi-select">
               <DropdownMenuItem
                 className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 hover:rounded-md text-sm px-2 border-b"
                 onClick={(e) => {
