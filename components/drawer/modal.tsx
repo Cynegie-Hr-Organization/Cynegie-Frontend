@@ -23,7 +23,7 @@ export function DrawerDialog({
   trigger,
   header,
   footer,
-  open = false,
+  open,
   setOpen
 }: {
   children: React.ReactNode
@@ -37,8 +37,8 @@ export function DrawerDialog({
 
   if (isDesktop) {
     return (
-      <Dialog 
-        open={open} 
+      <Dialog
+        open={open}
         onOpenChange={setOpen}
       >
         <DialogTrigger asChild>
@@ -60,8 +60,8 @@ export function DrawerDialog({
   }
 
   return (
-    <Drawer 
-      open={open} 
+    <Drawer
+      open={open}
       onOpenChange={setOpen}
     >
       <DrawerTrigger asChild>

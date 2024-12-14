@@ -96,32 +96,45 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
         }
     };
 
+    const handleDropdownToggle = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        const path = (e.currentTarget as HTMLElement).dataset.path;
+        if (path) {
+            setOpenDropDown(openDropDown === path ? null : path);
+        }
+    };
+
     return (
-        <div className=" transition-all duration-300 ease-in-out">
+        <div className="transition-all duration-300 ease-in-out">
             <ul className="flex flex-col gap-2">
                 {menuLinks.map((item: DashboardMenu) => {
                     const isActive = isPathActive(item.path, item.subMenu);
 
                     return (
                         <li key={item.path}>
-                            <button
+                            <div
                                 className={`flex items-center justify-between cursor-pointer p-3 w-full rounded-[4px] 
                                     ${isActive ? 'bg-primary text-white' : 'text-black'} transition duration-100`}
-                                onClick={() => {
-                                    setOpenDropDown(openDropDown === item.path ? null : item.path);
-                                    handleNavLinkClick(item.path);
-                                }}
                             >
-                                <div className="flex items-center gap-x-2">
+                                <button 
+                                    className="flex items-center gap-x-2 flex-grow"
+                                    onClick={() => handleNavLinkClick(item.path)}
+                                >
                                     <span>{item.icon}</span>
                                     <span className={`text-[14px] font-sans ${isActive ? 'font-semibold' : 'font-normal'}`}>
                                         {item.name}
                                     </span>
-                                </div>
+                                </button>
                                 {item.subMenu && (
-                                    <FaChevronDown className={`transition-transform duration-300 ${((openDropDown === item.path)) ? 'rotate-180' : ''}`} />
+                                    <button 
+                                        onClick={handleDropdownToggle}
+                                        data-path={item.path}
+                                        className="p-1"
+                                    >
+                                        <FaChevronDown className={`transition-transform duration-300 ${((openDropDown === item.path)) ? 'rotate-180' : ''}`} />
+                                    </button>
                                 )}
-                            </button>
+                            </div>
                             {(item.subMenu && (openDropDown === item.path)) && (
                                 <ul className="ml-4">
                                     {item.subMenu.map((subItem) => {
