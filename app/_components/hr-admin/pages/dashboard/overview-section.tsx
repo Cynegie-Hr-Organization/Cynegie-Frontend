@@ -4,6 +4,7 @@ import { GradientLineChart } from "./chart";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { newIndex } from "@/lib/utils";
 import Todo from "@/app/_components/todo";
+import Link from "next/link";
 
 const colors = {
   red: "#D42620",
@@ -202,9 +203,9 @@ const PriorityCard = () => {
               );
             })}
         </Grid2>
-        <Box className="underline text-[#0035C3] cursor-pointer">
+        <Link href="/hr-admin/onboarding/overview" className="underline text-[#0035C3] cursor-pointer">
           View all tasks
-        </Box>
+        </Link>
       </Stack>
     </Grid2>
   );

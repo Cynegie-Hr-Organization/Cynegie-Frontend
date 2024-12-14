@@ -1,36 +1,50 @@
 "use client";
+
 import Appbutton from "@/app/_components/shared/buttons";
 import { Stack, Box, Grid2 } from "@mui/material";
 import Image from "next/image";
+import { HiOutlineUserGroup } from "react-icons/hi2";
+import { LuClock3 } from "react-icons/lu";
+import { PiChartLineUp } from "react-icons/pi";
+import { FaCheck } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
-const overviewContents = [
-  {
-    color: "#DEE3FF",
-    title: "Total New Hire",
-    count: 327,
-    icon: 327,
-  },
-  {
-    color: "#DEE3FF",
-    title: "Pending",
-    count: 304,
-    icon: 304,
-  },
-  {
-    color: "#DEE3FF",
-    title: "In progress",
-    count: 56,
-    icon: 56,
-  },
-  {
-    color: "#DEE3FF",
-    title: "Completed",
-    count: 23,
-    icon: 23,
-  },
-];
+
+
+
+
 
 const OverViewSection = () => {
+const router = useRouter();
+
+  const overviewContents = [
+    {
+      color: "#DEE3FF",
+      title: "Total New Hire",
+      count: 327,
+      icon: <HiOutlineUserGroup />,
+    },
+    {
+      color: "#DEE3FF",
+      title: "Pending",
+      count: 304,
+      icon: <LuClock3 />,
+    },
+    {
+      color: "#DEE3FF",
+      title: "In progress",
+      count: 56,
+      icon: <PiChartLineUp />,
+    },
+    {
+      color: "#DEE3FF",
+      title: "Completed",
+      count: 23,
+      icon: <FaCheck />,
+    },
+  ];
+
+
   return (
     <Stack gap={3}>
       <Stack gap={2}>
@@ -39,7 +53,7 @@ const OverViewSection = () => {
           <Appbutton
             buttonText="Onboarding Templates"
             className="bg-primary hidden md:block"
-            onClick={() => {}}
+            onClick={() => router.push("/hr-admin/onboarding/template")}
           />
         </Box>
 
@@ -63,7 +77,7 @@ const OverViewSection = () => {
                       height={13.56}
                     />
                   </Box>
-                  <Box className="font-semibold text-[#1B1B1B]">
+                  <Box className="text-base font-semibold text-[#1B1B1B]">
                     {" "}
                     {content.title}
                   </Box>
