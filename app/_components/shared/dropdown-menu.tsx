@@ -111,6 +111,21 @@ export function AppMultipleSelect({
             </div>
           ) : (
             <DropdownMenuGroup className="max-h-[200px] overflow-y-auto w-full">
+              <DropdownMenuItem
+                className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 hover:rounded-md text-sm px-2 border-b"
+                onClick={(e) => {
+                  e.preventDefault()
+                  const allValues = items.map(item => item.value)
+                  const newSelected = selectedValues.length === items.length ? [] : allValues
+                  onSelectionChange(newSelected)
+                }}
+                onSelect={(e: any) => e.preventDefault()}
+              >
+                <div className="w-4 h-4 border rounded flex items-center justify-center">
+                  {selectedValues.length === items.length && <Check className="w-3 h-3" />}
+                </div>
+                <span>Select All</span>
+              </DropdownMenuItem>
               {filteredItems.map((item) => (
                 <DropdownMenuItem
                   key={item.value}
