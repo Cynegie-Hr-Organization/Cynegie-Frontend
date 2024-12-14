@@ -1,6 +1,5 @@
 'use client';
 
-
 import Button from '@/app/_components/shared/button-group/button';
 import DotLegend from '@/app/_components/shared/charts/legends/dot-legend';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';
@@ -102,7 +101,7 @@ const BigCalendar = () => {
                   width: 'fit-content',
                   px: 0.8,
                   pb: 3,
-                  height: 'fit-content',
+                  height: '100%',
                   boxShadow: '0px 5px 10px 0px rgba(0, 0, 0, 0.1)',
                 }}
               />

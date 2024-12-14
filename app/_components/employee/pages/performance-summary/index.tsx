@@ -3,13 +3,11 @@ import Page from '@/app/_components/shared/page';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';
 import SectionCardContainer from '@/app/_components/shared/section-with-cards/container';
 import QuickAction from './quick-action';
-import { color, icon, route } from '@/constants';
+import { color, icon } from '@/constants';
 import DotLegend from '@/app/_components/shared/charts/legends/dot-legend';
-import { useRouter } from 'next/navigation';
 import PerformanceSummaryChart from './chart';
 
 const EmployeePerformanceSummary = () => {
-  const router = useRouter();
   return (
     <Page
       text='Dashboard'
@@ -22,7 +20,7 @@ const EmployeePerformanceSummary = () => {
       }}
       rightButtonSm
     >
-      <div className='common-card'>
+      <div className='relative common-card'>
         <SectionCardContainer title='Performance Summary'>
           <PerformanceSummaryChart />
         </SectionCardContainer>
