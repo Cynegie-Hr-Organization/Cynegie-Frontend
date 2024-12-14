@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { format } from "date-fns"
+import { format, set } from "date-fns"
 import { Calendar1 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -20,12 +20,15 @@ export function AppDatePicker({ label, requiredField = false, selectedDate, setS
   placeholder?: string
 }) {
 
+  const [open, setOpen] = React.useState(false)
+
   const handleDateChange = (date?: Date) => {
     setSelectedDate(date)
+    setOpen(false)
   }
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <div className="flex flex-col gap-2 w-full">
           {label && <label className={`text-sm font-semibold text-gray-700 ${requiredField ? 'after:content-["*"] after:text-red-500 after:ml-1 after:font-bold' : ''}`}>{label}</label>}

@@ -21,11 +21,11 @@ const NewSelfAssessmentPage = () => {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-lg font-semibold">New Assessment</h1>
+      <h3 className="text-lg font-semibold">New Assessment</h3>
 
       <CardLayout bg="bg-white p-4 md:p-6">
         <div className="flex flex-col gap-6">
-          <h2 className="font-semibold">Manager Assessment</h2>
+          <h3 className="text-lg font-semibold">Manager Assessment</h3>
 
           <div className="grid gap-6">
             <div className="flex flex-col md:flex-row gap-6">

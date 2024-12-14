@@ -1,12 +1,12 @@
 'use client'
 
 import { PageHeader } from "@/app/_components/hr-admin/performance/page-header";
-import AppMenubar from "@/app/_components/shared/menubar";
 import { ChartConfig } from "@/components/ui/chart";
 import { useState, useEffect } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { GradientLineChart } from "./chart";
 import { AppBarChart } from "./barchart";
+import { AppSelect } from "@/app/_components/shared/select";
 
 interface GradientChart {
   completed: number;
@@ -35,12 +35,7 @@ const piechartConfig = {
   },
 } satisfies ChartConfig;
 
-const cardContents: CardContent[] = [
-  { title: "Average Performance Rating", value: "4.2/5", percentage: "+0.3%" },
-  { title: " Goal Achievement Rate", value: "78%", percentage: "+0.3%" },
-  { title: "Employee Engagement Score", value: "72%", percentage: "+0.3%" },
-  { title: "Training Completion Rate", value: "85%", percentage: "+0.3%" },
-];
+
 
 const getRandomNumber = (number: number): number => {
   return Math.floor(Math.random() * number);
@@ -61,7 +56,20 @@ const gradientChartData: GradientChart[] = [
   { month: "Dec", completed: 200, inProgress: getRandomNumber(150) }
 ];
 
+
+
+
+
+
+
+
 const KpiPage = () => {
+  const cardContents: CardContent[] = [
+    { title: "Average Performance Rating", value: "4.2/5", percentage: "+0.3%" },
+    { title: " Goal Achievement Rate", value: "78%", percentage: "+0.3%" },
+    { title: "Employee Engagement Score", value: "72%", percentage: "+0.3%" },
+    { title: "Training Completion Rate", value: "85%", percentage: "+0.3%" },
+  ];
 
   const [chartData, setChartData] = useState<GradientChart[]>([]);
 
@@ -104,51 +112,34 @@ const KpiPage = () => {
         </h3>
 
         <div className="common-card flex flex-col gap-y-4">
-          <AppMenubar
-            overrideClassName='border-none'
-            menuItems={
-              <ul className='flex flex-col items-start w-full'>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button className=''>Today</button>
-                </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 7 Days</button>
-                </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 30 Days</button>
-                </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 6 Months</button>
-                </li>
-              </ul>
-            } >
-            <p className="text-gray-400 font-bold flex gap-2 items-center rounded-lg px-4 py-2 border">Today <span><IoIosArrowDown /></span></p>
-          </AppMenubar>
+          <AppSelect
+            width="w-[144.34px]"
+            placeholder="Today"
+            listItems={[
+              { label: "Today", value: "today" },
+              { label: "Last 7 Days", value: "last-7-days" },
+              { label: "Last 30 Days", value: "last-30-days" },
+              { label: "Last 6 Months", value: "last-6-months" },
+            ]}
+            onChange={() => { }}
+          />
 
           <GradientLineChart chartConfig={piechartConfig} chartData={chartData} />
         </div>
 
         <div className="common-card flex flex-col gap-y-4">
-          <AppMenubar
-            overrideClassName='border-none'
-            menuItems={
-              <ul className='flex flex-col items-start w-full'>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button className=''>Today</button>
-                </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 7 Days</button>
-                </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 30 Days</button>
-                </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 6 Months</button>
-                </li>
-              </ul>
-            } >
-            <p className="text-gray-400 font-bold flex gap-2 items-center rounded-lg px-4 py-2 border">Today <span><IoIosArrowDown /></span></p>
-          </AppMenubar>
+          <AppSelect
+            width="w-[144.34px]"
+            placeholder="Today"
+            listItems={[
+              { label: "Today", value: "today" },
+              { label: "Last 7 Days", value: "last-7-days" },
+              { label: "Last 30 Days", value: "last-30-days" },
+              { label: "Last 6 Months", value: "last-6-months" },
+            ]}
+            onChange={() => { }}
+          />
+
 
           <GradientLineChart
             chartConfig={piechartConfig}
@@ -161,26 +152,17 @@ const KpiPage = () => {
         </div>
 
         <div className="common-card flex flex-col gap-y-4">
-          <AppMenubar
-            overrideClassName='border-none'
-            menuItems={
-              <ul className='flex flex-col items-start w-full'>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button className=''>Today</button>
-                </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 7 Days</button>
-                </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 30 Days</button>
-                </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 6 Months</button>
-                </li>
-              </ul>
-            } >
-            <p className="text-gray-400 font-bold flex gap-2 items-center rounded-lg px-4 py-2 border">Today <span><IoIosArrowDown /></span></p>
-          </AppMenubar>
+          <AppSelect
+            width="w-[144.34px]"
+            placeholder="Today"
+            listItems={[
+              { label: "Today", value: "today" },
+              { label: "Last 7 Days", value: "last-7-days" },
+              { label: "Last 30 Days", value: "last-30-days" },
+              { label: "Last 6 Months", value: "last-6-months" },
+            ]}
+            onChange={() => { }}
+          />
           <div className="max-h-[400px]">
             <AppBarChart />
           </div>
@@ -199,7 +181,7 @@ interface KpiCardProps {
 const KpiCard: React.FC<KpiCardProps> = ({ title, value, percentage }) => {
   return (
     <div className="common-card text-sm space-y-8">
-      <h3 className="font-semibold text-gray-500">{title}</h3>
+      <h3 className="text-sm font-semibold text-gray-500">{title}</h3>
       <div className="flex items-center justify-between gap-x-2">
         <p className="font-bold">{value}</p>
         <p className=" text-green-500">{percentage} <span className="text-gray-500">Last 6 Months</span></p>

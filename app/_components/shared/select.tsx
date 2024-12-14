@@ -31,18 +31,18 @@ export function AppSelect({ listLabel, label, requiredField = false, listItems, 
         <SelectTrigger className={`${triggerStyle} transition-all duration-300 placeholder:text-gray-400 outline-none focus focus:ring focus:ring-offset-0 focus:ring-primary ${width}`}>
           <SelectValue
             className=" placeholder:text-gray-400"
-            placeholder={<p className="text-gray-400">{placeholder}</p>} />
+            placeholder={<p className="text-gray-400">{placeholder}</p>}/>
         </SelectTrigger>
 
         <SelectContent className="bg-white p-0">
-          <SelectGroup className="flex flex-col gap-y-2 justify-start p-0 text-sm">
+          <SelectGroup className="flex flex-col justify-start p-0 text-sm">
             {(listItems.length > 0 && listLabel) ? <SelectLabel className="text-sm px-2">{listLabel}</SelectLabel> : null}
 
             {listItems.map((item) => (
               <SelectItem
                 key={item.value}
                 className="hover:bg-gray-300 hover:rounded-md cursor-pointer text-sm px-2"
-                onChange={() => onChange(item.value)} value={item.value}>{item.label}</SelectItem>
+                onChange={() => console.log(item.value)} value={item.value}>{item.label}</SelectItem>
             ))}
           </SelectGroup>
         </SelectContent>
