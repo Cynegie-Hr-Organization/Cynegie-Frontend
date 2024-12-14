@@ -42,7 +42,7 @@ export function AppSelect({ listLabel, label, requiredField = false, listItems, 
               <SelectItem
                 key={item.value}
                 className="hover:bg-gray-300 hover:rounded-md cursor-pointer text-sm px-2"
-                onChange={() => console.log(item.value)} value={item.value}>{item.label}</SelectItem>
+                onChange={() => onChange(item.value)} value={item.value}>{item.label}</SelectItem>
             ))}
           </SelectGroup>
         </SelectContent>
