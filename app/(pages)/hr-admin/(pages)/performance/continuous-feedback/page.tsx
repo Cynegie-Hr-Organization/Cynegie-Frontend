@@ -9,6 +9,11 @@ import { DrawerDialog } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 import InputText, { InputTextArea } from "@/app/_components/shared/input-text";
 import { AppFileUpload } from "@/app/_components/shared/file-upload";
+import { useRouter } from "next/navigation";
+
+
+
+
 
 const ContinuousFeedbackPage = () => {
   return (
@@ -21,6 +26,8 @@ const ContinuousFeedbackPage = () => {
 
 
 const PageHeader = () => {
+  const router = useRouter();
+
   return (
     <div className="flex items-center justify-between gap-y-4">
       <div>
@@ -60,7 +67,7 @@ const PageHeader = () => {
           label="Give Feedback"
           rightIcon={<LuPlusCircle />}
           className="bg-primary text-white border border-primary lg:flex hidden"
-        // onClick={() => router.push("/hr-admin/performance/goals/create")}
+          onClick={() => router.push("/hr-admin/performance/continuous-feedback/new")}
         />
       </div>
     </div>

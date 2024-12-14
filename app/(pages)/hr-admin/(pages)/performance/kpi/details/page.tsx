@@ -2,7 +2,7 @@
 
 import { GradientLineChart } from "@/app/_components/hr-admin/pages/dashboard/chart";
 import AppButton from "@/app/_components/shared/button";
-import { IoIosArrowBack, IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import { AppBarChart } from "../barchart";
 import { PieChart2 } from "./piechart2";

@@ -11,12 +11,16 @@ import { RiSearchLine } from 'react-icons/ri';
 import AppMenubar from '@/app/_components/shared/menubar';
 import { LuMoreVertical } from 'react-icons/lu';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useRouter } from 'next/navigation';
 
 interface IPieChartData {
   task: string;
   value: number;
   fill: string;
 }
+
+
+
 
 
 const piechartConfig = {
@@ -142,6 +146,7 @@ const PerformanceReviewCard = () => {
 };
 
 const EmployeesTable = () => {
+  const router = useRouter();
   return (
     <div className="space-y-4">
       <h3 className="text-xl font-bold text-black">Employees </h3>
@@ -195,18 +200,32 @@ const EmployeesTable = () => {
                     <td className='px-4 py-4'>
                       <p className='text-sm font-semibold text-amber-600 bg-amber-50 rounded-full px-2 py-1 w-fit text-nowrap'>In Progress</p>
                     </td>
-                    <td className='p-4'>
-                      <AppMenubar menuItems={
-                        <ul className="flex flex-col w-full text-base">
-                          <li className="cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md w-full">
-                            <button type="button">Edit</button>
-                          </li>
-                          <li className="hover:text-red-600 cursor-pointer text-red-500 hover:bg-gray-100 px-2 py-1 rounded-md w-full">
-                            <button type="button">Delete</button>
-                          </li>
-                        </ul>
-                      }>
-                        <LuMoreVertical />
+                    <td className="p-4">
+                      <AppMenubar
+                        menuItems={[
+                          {
+                            key: 'view',
+                            label: 'View Review',
+                            onClick: () => router.push('/hr-admin/performance/anual-performance-review/review'),
+                            className: 'text-left'
+                          },
+                          {
+                            key: 'edit',
+                            label: 'Edit Review',
+                            onClick: () => router.push('/hr-admin/performance/anual-performance-review/edit'),
+                            className: 'text-left'
+                          },
+                          {
+                            key: 'delete',
+                            label: 'Delete Review',
+                            onClick: () => {},
+                            className: 'text-left text-red-500 hover:text-red-600'
+                          }
+                        ]}
+                      >
+                        <button className="p-1">
+                          <LuMoreVertical className="h-5 w-5" />
+                        </button>
                       </AppMenubar>
                     </td>
                   </tr>

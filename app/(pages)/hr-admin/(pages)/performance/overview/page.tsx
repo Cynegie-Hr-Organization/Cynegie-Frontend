@@ -7,18 +7,16 @@ import { AppPieChart } from "../../../../../_components/shared/piechart";
 import { ChartConfig } from "@/components/ui/chart";
 import { GradientLineChart } from "./components/chart";
 import { useMemo } from "react";
-import { LuListFilter, LuMoreVertical } from "react-icons/lu";
+import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 import AppMenubar from "@/app/_components/shared/menubar";
 import { Checkbox } from "@/components/ui/checkbox"
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-
+import { LuMoreVertical } from "react-icons/lu";
 
 
 
 const colors = { grey: '#E6EBF9', yellow: '#FFAD33', green: '#0F973D', blue: '#335DCF' };
-
 
 
 
@@ -81,7 +79,7 @@ const PerformanceOverviewPage = () => {
   return (
     <div className="space-y-8 mb-6">
       <div className="hidden md:flex items-center justify-between gap-4">
-        <h3 className="text-2xl font-medium text-black">
+        <h3 className="text-base md:text-2xl font-medium text-black">
           Performance Overview
         </h3>
 
@@ -217,6 +215,8 @@ const PieChartCard = ({ className, chartData }: { className?: string, chartData:
 }
 
 const PerformanceReviewTable = () => {
+  const router = useRouter();
+
   return (
     <div className="space-y-4">
       <h3 className="text-xl font-bold text-black"> Performance Review Cycle </h3>
@@ -272,9 +272,23 @@ const PerformanceReviewTable = () => {
                     </td>
                     <td className='p-4'>
                       <AppMenubar menuItems={[
-                        <button type="button">Edit</button>,
-                        <button type="button" className="text-red-600 hover:text-red-500">Delete</button>
-                      ]} />
+                        {
+                          key: 'edit',
+                          label: 'Edit',
+                          onClick: () => router.push('/hr-admin/performance/review-cycle/edit'),
+                          className: 'text-left'
+                        },
+                        {
+                          key: 'delete',
+                          label: 'Delete',
+                          onClick: () => {},
+                          className: 'text-left text-red-500 hover:text-red-600'
+                        }
+                      ]}>
+                        <button className="p-1">
+                          <LuMoreVertical className="h-5 w-5" />
+                        </button>
+                      </AppMenubar>
                     </td>
                   </tr>
                 );

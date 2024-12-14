@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-
 import React, { useState } from "react";
 import CardLayout from "@/app/_components/shared/cards";
 import { PiDotsThreeVerticalBold } from "react-icons/pi";
@@ -9,7 +8,6 @@ import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 import { useRouter } from "next/dist/client/components/navigation";
 import AppMenubar from "@/app/_components/shared/menubar";
-
 
 
 
@@ -50,7 +48,6 @@ const TemplateTable = () => {
       template: "HR Department Template",
     },
   ]);
-
 
   const handleDelete = (id: number) => {
     setTemplates((prevProspects) => prevProspects.filter((item) => item.id !== id));
@@ -123,9 +120,23 @@ const ActionMenu = ({ onDelete }: { onDelete: () => void }) => {
   return (
     <AppMenubar
       menuItems={[
-        <button className='w-full h-full text-left'>Edit Template</button>,
-        <button className="w-full h-full text-left" onClick={() => router.push(`/hr-admin/onboarding/template/new-template/templateId`)}>Preview Template</button>,
-        <button onClick={onDelete} className='text-red-500 w-full h-full text-left'>Delete Task</button>
+        {
+          key: 'edit',
+          label: 'Edit Template',
+          className: 'text-left'
+        },
+        {
+          key: 'preview',
+          label: 'Preview Template',
+          onClick: () => router.push(`/hr-admin/onboarding/template/new-template/templateId`),
+          className: 'text-left'
+        },
+        {
+          key: 'delete',
+          label: 'Delete Task',
+          onClick: onDelete,
+          className: 'text-left text-red-500'
+        }
       ]}>
       <PiDotsThreeVerticalBold />
     </AppMenubar>

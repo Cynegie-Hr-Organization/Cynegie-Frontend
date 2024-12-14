@@ -7,9 +7,16 @@ import {
 } from "@/components/ui/menubar"
 import { cn } from "@/lib/utils";
 
+interface MenuItemProps {
+  key: string;
+  label: string | React.ReactNode;
+  onClick?: () => void;
+  className?: string;
+}
+
 interface AppMenubarProps {
   children?: React.ReactNode;
-  menuItems: React.ReactNode[];
+  menuItems: MenuItemProps[];
   className?: string;
   overrideClassName?: string;
 }
@@ -38,12 +45,16 @@ const AppMenubar = ({
           align="end"
           className="min-w-[200px] p-2 rounded-lg border border-gray-100 shadow-md bg-white"
         >
-          {menuItems?.map((item, index) => (
+          {menuItems?.map((item) => (
             <MenubarItem 
-              key={index} 
-              className="w-full px-4 py-2 text-sm cursor-pointer rounded-md hover:bg-gray-50 focus:bg-gray-50 focus:outline-none"
+              key={item.key}
+              className={cn(
+                "w-full px-4 py-2 text-sm cursor-pointer rounded-md hover:bg-gray-50 focus:bg-gray-50 focus:outline-none",
+                item.className
+              )}
+              onClick={item.onClick}
             >
-              {item}
+              {item.label}
             </MenubarItem>
           ))}
         </MenubarContent>
