@@ -239,6 +239,7 @@ const EditVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) =>
 
           <AppMultipleSelect
             label="Options"
+            width={"w-full max-w-full"}
             items={[
               { label: "Option 1", value: "option1" },
               { label: "Option 2", value: "option2" },
