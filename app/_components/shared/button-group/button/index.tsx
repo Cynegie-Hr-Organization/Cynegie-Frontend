@@ -61,6 +61,11 @@ const Button: React.FC<ButtonProps> = (props) => {
     backgroundColor: color.error.dark,
   };
 
+  const blackStyle = {
+    ...containedStyle,
+    backgroundColor: 'black',
+  };
+
   const deleteWithIconStyle = {
     ...containedStyle,
     backgroundColor: 'white',
@@ -89,17 +94,17 @@ const Button: React.FC<ButtonProps> = (props) => {
         ...(type === ButtonType.deleteContained && deleteContainedStyle),
         ...(type === ButtonType.deleteWithIcon && deleteWithIconStyle),
         ...(type === ButtonType.disabled && disabledStyle),
+        ...(type === ButtonType.black && blackStyle),
         borderRadius: '8px',
         ...(iconProp && {
           display: 'flex',
           alignItems: 'center',
           gap: 5,
         }),
-        // width: fullWidth ? '100%' : 'fit-content',
-        ...(popoverOptions && { textWrap: 'nowrap' }),
-        ...(small && { fontSize: '14px', textWrap: 'nowrap' }),
+        ...(small && { fontSize: '14px' }),
+        textWrap: 'nowrap',
       }}
-      className={`w-full sm:${fullWidth ? 'w-full' : 'w-fit'}`}
+      className={`w-fit sm:${fullWidth ? 'w-full' : 'w-fit'}`}
     >
       {iconProp}
       {type === ButtonType.deleteWithIcon && (

@@ -50,41 +50,52 @@ const Table: React.FC<TableProps> = (props) => {
   const router = useRouter();
   const pathname = usePathname();
 
+  const { hasSearchFilter = true, hasPagination = true } = props;
+
   return (
     <Stack {...(props.title && { gap: 2 })}>
       {props.title && <div className='card-title-small'>{props.title}</div>}
-      <Stack gap={2} className='common-card' px={0}>
-        <Stack
-          sx={{
-            flexDirection: { xs: 'column', md: 'row' },
-            alignItems: { xs: 'flex-start', md: 'center' },
-            px: 3,
-          }}
-        >
-          <Box sx={{ width: '100%' }} flexGrow={1}>
-            <Box
-              sx={{
-                width: { xs: '90%', sm: '70%', md: '70%' },
-                mb: { xs: '15px', md: '0px' },
-              }}
-            >
-              <SearchField />
+      <Stack
+        gap={3}
+        style={{ paddingTop: !hasSearchFilter ? '0px' : '' }}
+        className='common-card'
+        px={0}
+      >
+        {hasSearchFilter && (
+          <Stack
+            sx={{
+              flexDirection: { xs: 'column', md: 'row' },
+              alignItems: { xs: 'flex-start', md: 'center' },
+              px: 3,
+            }}
+          >
+            <Box sx={{ width: '100%' }} flexGrow={1}>
+              <Box
+                sx={{
+                  width: { xs: '90%', sm: '70%', md: '70%' },
+                  mb: { xs: '15px', md: '0px' },
+                }}
+              >
+                <SearchField />
+              </Box>
             </Box>
-          </Box>
-          {props.filters && (
-            <Popover
-              type={PopoverType.filter}
-              triggerButton={
-                <Button
-                  type={ButtonType.filter}
-                  icon={<FilterList />}
-                  text='Filter'
-                />
-              }
-              filters={props.filters}
-            ></Popover>
-          )}
-        </Stack>
+            {props.filters && (
+              <div>
+                <Popover
+                  type={PopoverType.filter}
+                  triggerButton={
+                    <Button
+                      type={ButtonType.filter}
+                      icon={<FilterList />}
+                      text='Filter'
+                    />
+                  }
+                  filters={props.filters}
+                ></Popover>
+              </div>
+            )}
+          </Stack>
+        )}
         <TableContainer>
           <MuiTable>
             <TableHead
@@ -255,9 +266,11 @@ const Table: React.FC<TableProps> = (props) => {
             </TableBody>
           </MuiTable>
         </TableContainer>
-        <div className='mx-3'>
-          <TablePagination pageCount={props.pageCount} page={props.page} />
-        </div>
+        {hasPagination && (
+          <div className='mx-3'>
+            <TablePagination pageCount={props.pageCount} page={props.page} />
+          </div>
+        )}
       </Stack>
     </Stack>
   );

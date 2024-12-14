@@ -1,9 +1,9 @@
 import { MoreVert } from '@mui/icons-material';
 import { Button } from '@mui/material';
 
-const MoreOptionsButton = () => {
+const MoreOptionsButton: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
   return (
-    <Button>
+    <Button onClick={onClick}>
       <MoreVert
         sx={{
           borderWidth: '0.5px',

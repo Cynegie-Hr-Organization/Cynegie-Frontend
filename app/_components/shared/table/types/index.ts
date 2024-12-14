@@ -22,6 +22,8 @@ export type TableProps = {
   statusMap?: StatusMap;
   statusActionMap?: StatusActionMap;
   fieldToReturnOnActionItemClick?: string;
+  hasSearchFilter?: boolean;
+  hasPagination?: boolean;
 };
 
 export type Filter = {

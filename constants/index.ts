@@ -14,6 +14,10 @@ export const icon = {
   message: `${iconBaseUrl}message.svg`,
   calendar: `${iconBaseUrl}calendar.svg`,
   calendarTwo: `${iconBaseUrl}calendar-2.svg`,
+  clock: `${iconBaseUrl}clock.svg`,
+  user: `${iconBaseUrl}user.svg`,
+  signOut: `${iconBaseUrl}sign-out.svg`,
+  receipt: `${iconBaseUrl}receipt.svg`,
 };
 
 export const color = {
@@ -143,6 +147,7 @@ const basePath = {
   benefits: 'benefits/',
   upcomingWidget: 'upcoming-widget/',
   task: 'task/',
+  performanceSummary: 'performance-summary/',
 };
 
 export const route = {
@@ -167,6 +172,7 @@ export const route = {
       home: `${basePath.employee}`,
       upcomingWidget: `${basePath.employee}${basePath.upcomingWidget}`,
       task: `${basePath.employee}${basePath.task}`,
+      performanceSummary: `${basePath.employee}${basePath.performanceSummary}`,
     },
   },
 };

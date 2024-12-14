@@ -10,12 +10,16 @@ import Table from '@/app/_components/shared/table';
 import useAttendanceRecordTable from './hooks/useAttendanceRecordTable';
 import Modal from '../../modal';
 import { TableAction } from '@/app/_components/shared/table/types';
+import Toast from '@/app/_components/shared/toast';
+import { useState } from 'react';
 
 const EmployeeAttendanceAndTimeTracking = () => {
   const { attendanceRecordTableData, modalsData } = useAttendanceRecordTable();
+  const [openToast, setOpenToast] = useState(false);
+  const [openClockOutToast, setOpenClockOutToast] = useState(false);
   const pageActions: TableAction[] = [
-    { name: 'Clock In', onClick: () => {} },
-    { name: 'Clock Out', onClick: () => {} },
+    { name: 'Clock In', onClick: () => setOpenToast(true) },
+    { name: 'Clock Out', onClick: () => setOpenClockOutToast(true) },
   ];
 
   return (
@@ -23,8 +27,16 @@ const EmployeeAttendanceAndTimeTracking = () => {
       <Page
         text='Attendance and Time Tracking'
         hasButtons
-        leftButton={{ text: 'Clock Out', type: ButtonType.outlined }}
-        rightButton={{ text: 'Clock In', type: ButtonType.contained }}
+        leftButton={{
+          text: 'Clock Out',
+          type: ButtonType.outlined,
+          onClick: () => setOpenClockOutToast(true),
+        }}
+        rightButton={{
+          text: 'Clock In',
+          type: ButtonType.contained,
+          onClick: () => setOpenToast(true),
+        }}
         smActions={pageActions}
       >
         <Grid2 container spacing={2}>
@@ -51,6 +63,18 @@ const EmployeeAttendanceAndTimeTracking = () => {
       {modalsData.map((data, index) => (
         <Modal key={index} {...data} />
       ))}
+      <Toast
+        open={openToast}
+        onClose={() => setOpenToast(false)}
+        status='Successful'
+        message='You have successfully clocked in at 08:00AM'
+      />
+      <Toast
+        open={openClockOutToast}
+        onClose={() => setOpenClockOutToast(false)}
+        status='Successful'
+        message='You have successfully clocked out at 08:00AM'
+      />
     </>
   );
 };
