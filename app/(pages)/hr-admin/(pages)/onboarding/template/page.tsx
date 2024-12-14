@@ -1,7 +1,7 @@
 "use client";
 
 import Appbutton from "@/app/_components/shared/buttons";
-import NewHireList from "./new-hire-list";
+import TemplateTable from "./new-hire-list";
 import { useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { Spinner } from "@/app/_components/shared/buttons";
@@ -13,7 +13,7 @@ const TemplatePage = () => {
     <div>
       <div className=" flex items-center justify-between mb-11">
         <div>
-          <h3 className="text-[18px] font-semibold">Onboarding Templates</h3>
+          <h3 className="text-lg font-semibold">Onboarding Templates</h3>
           <p className="text-sm">Create and use templates</p>
         </div>
 
@@ -24,7 +24,7 @@ const TemplatePage = () => {
             route.push("/hr-admin/onboarding/template/new-template")
           }
         />
-        
+
         <Appbutton
           buttonText='New Template'
           className='bg-primary block md:hidden'
@@ -33,7 +33,7 @@ const TemplatePage = () => {
       </div>
 
       <Suspense fallback={<Spinner />}>
-        <NewHireList />
+        <TemplateTable />
       </Suspense>
     </div>
   );

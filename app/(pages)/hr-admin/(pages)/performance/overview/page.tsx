@@ -271,18 +271,10 @@ const PerformanceReviewTable = () => {
                       <p className='text-sm font-semibold text-amber-600 bg-amber-50 rounded-full px-2 py-1 w-fit text-nowrap'>In Progress</p>
                     </td>
                     <td className='p-4'>
-                      <AppMenubar menuItems={
-                        <ul className="flex flex-col w-full text-base">
-                          <li className="cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md w-full">
-                            <Link href="/hr-admin/performance/review-cycle/edit">Edit</Link>
-                          </li>
-                          <li className="hover:text-red-600 cursor-pointer text-red-500 hover:bg-gray-100 px-2 py-1 rounded-md w-full">
-                            <button type="button">Delete</button>
-                          </li>
-                        </ul>
-                      }>
-                        <LuMoreVertical />
-                      </AppMenubar>
+                      <AppMenubar menuItems={[
+                        <button type="button">Edit</button>,
+                        <button type="button" className="text-red-600 hover:text-red-500">Delete</button>
+                      ]} />
                     </td>
                   </tr>
                 );

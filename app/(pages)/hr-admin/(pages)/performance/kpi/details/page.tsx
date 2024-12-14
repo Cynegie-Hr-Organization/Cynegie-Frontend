@@ -1,7 +1,6 @@
 "use client"
 
 import { GradientLineChart } from "@/app/_components/hr-admin/pages/dashboard/chart";
-import AppMenubar from "@/app/_components/shared/menubar";
 import AppButton from "@/app/_components/shared/button";
 import { IoIosArrowBack, IoIosArrowDown } from "react-icons/io";
 import { useRouter } from "next/navigation";
