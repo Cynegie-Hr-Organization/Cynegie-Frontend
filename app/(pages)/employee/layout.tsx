@@ -20,7 +20,9 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
             toggleMenu ? 'block' : 'hidden'
           }`}
         ></div>
-        <Header onMenuClick={handleToggleMenu} />
+        <div className='ml-[-16]'>
+          <Header onMenuClick={handleToggleMenu} />
+        </div>
 
         <main className='max-w-[1080px] 2xl:max-w-[1340px] 3xl:max-w-[1440px] mx-auto mt-6 px-4'>
           {children}
