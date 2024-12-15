@@ -2,7 +2,7 @@ import { ColorVariant } from '@/types';
 
 export type SectionWithCardsProps = {
   title: string;
-  isCard: boolean;
+  isCard?: boolean;
   period?: string;
   headerDivider?: boolean;
   cardsData?: CardProps[];
