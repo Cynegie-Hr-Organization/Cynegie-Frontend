@@ -52,7 +52,8 @@ export type CardTitleProps = { text: string; size?: 'small' | 'large' };
 
 export type CardPeriodProps = {
   text: string;
-  font?: { size: number; weight: number; color: string };
+  isClickable?: boolean;
+  font?: { size?: number; weight?: number; color?: string };
 };
 
 export type CardHeaderProps = {
@@ -60,7 +61,7 @@ export type CardHeaderProps = {
   title: string;
   period?: string;
   hasDivider?: boolean;
-  periodFont?: { size: number; weight: number; color: string };
+  periodFont?: { size?: number; weight?: number; color?: string };
   titleSize?: 'small' | 'large';
   periodClick?: () => void;
 };
@@ -69,7 +70,7 @@ export type SectionCardContainerProps = {
   headerIcon?: React.ReactElement;
   title: string;
   period?: string;
-  periodFont?: { size: number; weight: number; color: string };
+  periodFont?: { size?: number; weight?: number; color?: string };
   periodClick?: () => void;
   headerDivider?: boolean;
   isCard?: boolean;

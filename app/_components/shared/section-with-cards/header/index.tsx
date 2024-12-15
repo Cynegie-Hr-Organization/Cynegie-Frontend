@@ -34,7 +34,11 @@ const Header: React.FC<CardHeaderProps> = (props) => {
           onClick={periodClick}
           style={{ ...(periodClick && { cursor: 'pointer' }) }}
         >
-          <Period text={period} font={periodFont} />
+          <Period
+            isClickable={periodClick ? true : false}
+            text={period}
+            font={periodFont}
+          />
         </div>
       </Stack>
       {hasDivider && (

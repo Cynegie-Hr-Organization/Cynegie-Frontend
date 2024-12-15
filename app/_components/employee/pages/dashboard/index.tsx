@@ -35,6 +35,7 @@ const EmployeeDashboard = () => {
             }
             title={'Time-Off'}
             period='View More'
+            periodFont={{ color: 'black' }}
             periodClick={() => router.push(route.employee.leave.home)}
             headerDivider
           >
@@ -52,6 +53,7 @@ const EmployeeDashboard = () => {
             }
             title={'Profile'}
             period='View More'
+            periodFont={{ color: 'black' }}
             periodClick={() => router.push(route.employee.profile.home)}
             headerDivider
           >
@@ -69,6 +71,7 @@ const EmployeeDashboard = () => {
             }
             title={'Upcoming Event'}
             period='View More'
+            periodFont={{ color: 'black' }}
             periodClick={() =>
               router.push(route.employee.dashboard.upcomingWidget)
             }
@@ -96,6 +99,7 @@ const EmployeeDashboard = () => {
             >
               <SectionCardContainer
                 headerIcon={section.headerIcon}
+                periodFont={{ color: 'black' }}
                 title={section.title}
                 period='View More'
                 periodClick={section.periodClick}
