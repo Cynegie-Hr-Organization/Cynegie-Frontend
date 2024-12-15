@@ -87,7 +87,7 @@ const useAttendanceRecordTable = () => {
 
   const detailsModalData: ModalProps = {
     open: openDetailsModal,
-    onClose: setOpenDetailsModal,
+    onClose: () => setOpenDetailsModal(false),
     title: 'View Attendance Details',
     subtitle: 'View attendance details below',
     detailGroup: {
@@ -110,7 +110,7 @@ const useAttendanceRecordTable = () => {
 
   const correctionModalData: ModalProps = {
     open: openCorrectionModal,
-    onClose: setOpenCorrectionModal,
+    onClose: () => setOpenCorrectionModal(false),
     title: 'Request Correction',
     subtitle: 'Fill the details below',
     form: {

@@ -75,5 +75,6 @@ export function formatFileSize(bytes: number): string {
 }
 
 export function addNavItemEllipsis(text: string) {
-  return text.length > 10 ? `${text.slice(0, 21) + '...'}` : text;
+  const limit = 20;
+  return text.length > limit ? `${text.slice(0, limit) + '...'}` : text;
 }

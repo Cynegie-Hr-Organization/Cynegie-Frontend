@@ -1,6 +1,6 @@
 import Table from '@/app/_components/shared/table';
 import { FieldType } from '@/app/_components/shared/table/types';
-import { Tab } from '@/app/_components/shared/tabs/types';
+import { Tab } from '@/app/_components/shared/tab-format/types';
 import { GoalDetailsProps } from '../goal-details/types';
 import { color } from '@/constants';
 
