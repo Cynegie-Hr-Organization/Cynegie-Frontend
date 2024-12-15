@@ -1,9 +1,9 @@
 'use client';
 import Page from '@/app/_components/shared/page';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';
+import TabFormat from '@/app/_components/shared/tab-format';
 import Table from '@/app/_components/shared/table';
 import { FieldType } from '@/app/_components/shared/table/types';
-import TabFormat from '@/app/_components/shared/tabs/index';
 
 const HrAdminEmployeeAttendanceManagement = () => {
   return (

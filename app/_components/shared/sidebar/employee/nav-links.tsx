@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 
 import { usePathname, useRouter } from 'next/navigation';
 import { FaChevronDown } from 'react-icons/fa6';
-import { RxDashboard } from 'react-icons/rx';
-import { /*HiOutlineChartBar,*/ HiOutlineUserPlus } from 'react-icons/hi2';
-// import { TbFileUpload } from 'react-icons/tb';
-// import { LiaMoneyBillWaveSolid } from 'react-icons/lia';
 import { addNavItemEllipsis } from '@/utils';
+import SvgIcon from '@/app/_components/icons/container';
+import { icon } from '@/constants';
 
 const NavLinks = ({
   onNavLinkClick,
@@ -31,57 +29,63 @@ const NavLinks = ({
   const menuLinks: DashboardMenu[] = [
     {
       name: 'Dashboard',
-      icon: <RxDashboard size={iconSize} />,
+      icon: <SvgIcon path={icon.grid} width={iconSize} height={iconSize} />,
       path: '/employee',
     },
     {
       name: 'Task',
-      icon: <HiOutlineUserPlus size={iconSize} />,
+      icon: (
+        <SvgIcon path={icon.clipboard} width={iconSize} height={iconSize} />
+      ),
       path: '/employee/task',
     },
     {
       name: 'Profile',
-      icon: <HiOutlineUserPlus size={iconSize} />,
+      icon: <SvgIcon path={icon.user} width={iconSize} height={iconSize} />,
       path: '/employee/profile',
     },
     {
       name: 'Benefits',
-      icon: <HiOutlineUserPlus size={iconSize} />,
+      icon: <SvgIcon path={icon.gift} width={iconSize} height={iconSize} />,
       path: '/employee/benefits',
     },
     {
-      name: 'App Requests and Permission',
-      icon: <HiOutlineUserPlus size={iconSize} />,
+      name: 'App Request and Permission',
+      icon: <SvgIcon path={icon.key} width={iconSize} height={iconSize} />,
       path: '/employee/app-request',
     },
     {
       name: 'Payroll',
-      icon: <HiOutlineUserPlus size={iconSize} />,
+      icon: (
+        <SvgIcon path={icon.paperMoneyTwo} width={iconSize} height={iconSize} />
+      ),
       path: '/employee/payroll',
     },
     {
       name: 'Device Management',
-      icon: <HiOutlineUserPlus size={iconSize} />,
+      icon: <SvgIcon path={icon.devices} width={iconSize} height={iconSize} />,
       path: '/employee/device-management',
     },
     {
       name: 'Leave Management',
-      icon: <HiOutlineUserPlus size={iconSize} />,
+      icon: <SvgIcon path={icon.airplane} width={iconSize} height={iconSize} />,
       path: '/employee/leave-management',
     },
     {
       name: 'Performance Management',
-      icon: <HiOutlineUserPlus size={iconSize} />,
+      icon: <SvgIcon path={icon.barChart} width={iconSize} height={iconSize} />,
       path: '/employee/performance-management',
     },
     {
       name: 'Learning Development',
-      icon: <HiOutlineUserPlus size={iconSize} />,
+      icon: (
+        <SvgIcon path={icon.graduatingCap} width={iconSize} height={iconSize} />
+      ),
       path: '/employee/learning-development',
     },
     {
       name: 'Attendance and Time Tracking',
-      icon: <HiOutlineUserPlus size={iconSize} />,
+      icon: <SvgIcon path={icon.clockTwo} width={iconSize} height={iconSize} />,
       path: '/employee/attendance',
     },
   ];
@@ -115,6 +119,24 @@ const NavLinks = ({
     }
   };
 
+  const keyIconStyle = {
+    default: 'stroke-black fill-white',
+    active: 'stroke-white fill-none',
+  };
+
+  const isAppRequestAndPermissionPage = (page: string) => {
+    return page === 'App Request and Permission';
+  };
+
+  const graduatingCapIconStyle = {
+    default: 'stroke-black fill-none stroke-[1.2]',
+    active: 'stroke-white fill-none stroke-[1.2]',
+  };
+
+  const isLearningDevelopmentPage = (page: string) => {
+    return page === 'Learning Development';
+  };
+
   return (
     <div className=' transition-all duration-300 ease-in-out'>
       <ul className='flex flex-col mt-[-2]'>
@@ -127,8 +149,24 @@ const NavLinks = ({
                 className={`flex items-center justify-between cursor-pointer p-3 w-full rounded-[4px] 
                                     ${
                                       isActive
-                                        ? 'bg-primary text-white'
-                                        : 'text-black'
+                                        ? `bg-primary text-white fill-white ${
+                                            isAppRequestAndPermissionPage(
+                                              item.name
+                                            ) && keyIconStyle.active
+                                          } ${
+                                            isLearningDevelopmentPage(
+                                              item.name
+                                            ) && graduatingCapIconStyle.active
+                                          }`
+                                        : `text-black ${
+                                            isAppRequestAndPermissionPage(
+                                              item.name
+                                            ) && keyIconStyle.default
+                                          } ${
+                                            isLearningDevelopmentPage(
+                                              item.name
+                                            ) && graduatingCapIconStyle.default
+                                          }`
                                     } transition duration-100`}
                 onClick={() => {
                   setOpenDropDown(

@@ -9,15 +9,22 @@ export const icon = {
   bin: `${iconBaseUrl}bin.svg`,
   gift: `${iconBaseUrl}gift.svg`,
   paperMoney: `${iconBaseUrl}paper-money.svg`,
+  paperMoneyTwo: `${iconBaseUrl}paper-money-two.svg`,
   grid: `${iconBaseUrl}grid.svg`,
   stack: `${iconBaseUrl}stack.svg`,
   message: `${iconBaseUrl}message.svg`,
   calendar: `${iconBaseUrl}calendar.svg`,
   calendarTwo: `${iconBaseUrl}calendar-2.svg`,
   clock: `${iconBaseUrl}clock.svg`,
+  clockTwo: `${iconBaseUrl}clock-two.svg`,
   user: `${iconBaseUrl}user.svg`,
   signOut: `${iconBaseUrl}sign-out.svg`,
   receipt: `${iconBaseUrl}receipt.svg`,
+  key: `${iconBaseUrl}key.svg`,
+  devices: `${iconBaseUrl}devices.svg`,
+  airplane: `${iconBaseUrl}airplane.svg`,
+  barChart: `${iconBaseUrl}barchart.svg`,
+  clipboard: `${iconBaseUrl}clipboard.svg`,
 };
 
 export const color = {
