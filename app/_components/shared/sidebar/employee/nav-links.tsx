@@ -72,7 +72,7 @@ const NavLinks = ({
     {
       name: 'Performance Management',
       icon: <HiOutlineUserPlus size={iconSize} />,
-      path: '/employee/peformance-management',
+      path: '/employee/performance-management',
     },
     {
       name: 'Learning Development',
