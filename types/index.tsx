@@ -158,3 +158,210 @@ export interface DeviceMetrics {
     REJECTED: number;
   };
 }
+
+export type ServerResponse<T> = {
+  status: string;
+  message: string;
+  data: T[];
+  meta: PaginationMeta;
+};
+
+type PaginationMeta = {
+  itemCount: number;
+  totalPages: number;
+  page: number;
+  limit: number;
+};
+
+export type Employee = {
+  employmentInformation: EmploymentInformation;
+  personalInfo: PersonalInfo;
+  compensation: Compensation;
+  documents: string[];
+  NextOfKin: NextOfKin[];
+  accessRights: string[];
+  deletedAt: string | null;
+  company: string; // Company ID
+  createdAt: string;
+  updatedAt: string;
+  id: string | null;
+};
+
+type EmploymentInformation = {
+  jobTitle: string;
+  department: string; // Department ID
+  manager: string;
+  employmentType: "full_time" | "part_time" | "contract";
+  employmentStatus: "active" | "on_leave" | "terminated";
+  workLocation: string;
+  workSchedule: string;
+  probationPeriod: string;
+  contractEndDate: string | null; // ISO date string
+  staffId: string;
+  workEmail: string;
+  hireDate: string; // ISO date string
+  jobDescription: string;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  id: string | null;
+};
+
+type PersonalInfo = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  dateOfBirth: string; // ISO date string
+  country: string;
+  gender: "male" | "female" | "non-binary" | "other";
+  state: string;
+  city: string;
+  streetAddress: string;
+  postalCode: string;
+  nationality: string;
+  maritalStatus: "single" | "married" | "divorced" | "widowed";
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  id: string | null;
+};
+
+type Compensation = {
+  baseSalary: number;
+  salaryFrequency: "annual" | "monthly" | "weekly" | "hourly";
+  overtime: string; // e.g., "time_and_half"
+  taxFilingStatus: string;
+  paymentMethod: string;
+  bonusStructure: string;
+  commission: number;
+  stockOptions: number;
+  payGrade: string;
+  taxIdentificationNumber: string;
+  allowance: Allowance[];
+  deduction: Deduction[];
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  id: string;
+};
+
+type Allowance = {
+  allowanceName: string;
+  allowanceAmount: number;
+  id: string;
+};
+
+type Deduction = {
+  deductionName: string;
+  deductionAmount: number;
+  id: string;
+};
+
+type NextOfKin = {
+  firstName: string;
+  lastName: string;
+  gender: "male" | "female" | "non-binary" | "other";
+  relationship: string;
+  phoneNumber: string;
+  email: string;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  id: string;
+};
+
+export interface ReviewCycle {
+  id: string;
+  cycleName: string;
+  startDate: string;
+  endDate: string;
+  daysOfGrace: number;
+  employees: string[];
+  reviewers: string[];
+  reminderType: string;
+  reminderFrequency: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  company?: string;
+}
+
+export interface KeyResult {
+  result: string;
+  targetValue: number;
+  dueDate: string;
+  _id: string;
+  id: string;
+}
+
+export interface Milestone {
+  milestoneName: string;
+  dueDate: string;
+  _id: string;
+  id: string;
+}
+
+export interface Goal {
+  goalName: string;
+  description: string;
+  goalType: "personal" | "team" | "company";
+  priority: "Low" | "Medium" | "High";
+  employees: string[];
+  dueDate: string;
+  status: "not_started" | "in_progress" | "completed";
+  alignment: string;
+  keyResults: KeyResult[];
+  milestones: Milestone[];
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}
+
+export interface GoalsResponse {
+  status: number;
+  message: string;
+  data: {
+    items: Goal[];
+    totalItems: number;
+    totalPages: number;
+    currentPage: number;
+  };
+}
+
+// Types for create360Feedback payload
+export interface FeedbackDetail {
+  feedbackNature: string;
+  template: string;
+}
+
+export interface Create360FeedbackPayload {
+  feedbackName: string;
+  employees: string[];
+  department: string[];
+  feedbackProviders: string[];
+  startDate: string; // ISO string format
+  endDate: string; // ISO string format
+  feedbackDetails: FeedbackDetail[];
+  anonymousCycle: boolean;
+  status: string;
+}
+
+// Types for get360Feedback response
+export interface FeedbackItem {
+  id: string;
+  feedbackName: string;
+  employees: string[];
+  department: string[];
+  startDate: string;
+  endDate: string;
+  status: string;
+  feedbackDetails: FeedbackDetail[];
+  anonymousCycle: boolean;
+  createdAt: string; // ISO string format
+  updatedAt: string; // ISO string format
+}
+
+export interface Get360FeedbackResponse {
+  items: FeedbackItem[];
+  totalItems: number;
+  totalPages: number;
+  currentPage: number;
+}

@@ -1,8 +1,4 @@
-import {
-  ChevronLeft,
-  ChevronRight,
-  FilterList,
-} from "@mui/icons-material";
+import { ChevronLeft, ChevronRight, FilterList } from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -18,11 +14,11 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from '@mui/material';
-import Image from 'next/image';
-import React, { useState, ChangeEvent } from 'react';
-import { selectEmployeesForPayrollTableData } from './data';
-import { Input, InputGroup } from 'rsuite';
+} from "@mui/material";
+import Image from "next/image";
+import React, { useState, ChangeEvent } from "react";
+import { selectEmployeesForPayrollTableData } from "./data";
+import { Input, InputGroup } from "rsuite";
 
 const SelectEmployeesForPayrollTable: React.FC<{
   getSelectedRows: (selectedRows: number[]) => void;

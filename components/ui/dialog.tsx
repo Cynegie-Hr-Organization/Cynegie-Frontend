@@ -1,9 +1,9 @@
 "use client";
 
-import * as React from "react"
-import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { IoCloseOutline } from "react-icons/io5"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { IoCloseOutline } from "react-icons/io5";
+import { cn } from "@/lib/utils";
 
 const Dialog = DialogPrimitive.Root;
 
@@ -44,7 +44,7 @@ const DialogContent = React.forwardRef<
     >
       {children}
       <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-        <div className='border-none rounded-full h-10 w-10 bg-gray-200 flex items-center justify-center'>
+        <div className="border-none rounded-full h-10 w-10 bg-gray-200 flex items-center justify-center">
           <IoCloseOutline />
         </div>
         <span className="sr-only">Close</span>

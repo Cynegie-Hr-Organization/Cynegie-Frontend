@@ -1,6 +1,5 @@
 "use client";
 
-
 import React, { useState } from "react";
 import Image from "next/image";
 import DropdownWithSearchAndMultiSelect from "@/app/_components/ui/multi-select-dropdown";
@@ -167,7 +166,9 @@ export default function EditJobPreview({
           </p>
           <div
             dangerouslySetInnerHTML={{
-              __html: Array.isArray(formData?.requiredSkills) ? formData?.requiredSkills.join(", ") : formData?.requiredSkills || "",
+              __html: Array.isArray(formData?.requiredSkills)
+                ? formData?.requiredSkills.join(", ")
+                : formData?.requiredSkills || "",
             }}
             className="mt-1 text-xs block  py-2"
           />

@@ -3,14 +3,14 @@ import CalendarIcon from "@/app/_components/icons/calendar";
 import {
   MultiSelect,
   Option,
-} from '@/app/_components/shared/multi-select-dropdown';
-import { newIndex } from '@/lib/utils';
-import { Grid2, MenuItem, Select, Stack } from '@mui/material';
-import dayjs from 'dayjs';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { DateRangePicker } from 'rsuite';
-import 'rsuite/dist/rsuite.min.css';
+} from "@/app/_components/shared/multi-select-dropdown";
+import { newIndex } from "@/lib/utils";
+import { Grid2, MenuItem, Select, Stack } from "@mui/material";
+import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { DateRangePicker } from "rsuite";
+import "rsuite/dist/rsuite.min.css";
 
 const HrAdminGeneratePayrollReport = () => {
   const router = useRouter();
@@ -99,7 +99,9 @@ const HrAdminGeneratePayrollReport = () => {
                         {item.placeholder}
                       </MenuItem>
                       {item.options?.map((option, index) => (
-                        <MenuItem key={newIndex(index)} value={option}>{option}</MenuItem>
+                        <MenuItem key={newIndex(index)} value={option}>
+                          {option}
+                        </MenuItem>
                       ))}
                     </Select>
                   ) : (
@@ -271,7 +273,9 @@ const HrAdminGeneratePayrollReport = () => {
                         {item.placeholder}
                       </MenuItem>
                       {item.options?.map((option, index) => (
-                        <MenuItem key={newIndex(index)} value={option}>{option}</MenuItem>
+                        <MenuItem key={newIndex(index)} value={option}>
+                          {option}
+                        </MenuItem>
                       ))}
                     </Select>
                   </div>

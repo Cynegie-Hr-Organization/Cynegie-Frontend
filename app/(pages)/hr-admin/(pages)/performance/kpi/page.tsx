@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { PageHeader } from "@/app/_components/hr-admin/performance/page-header";
 import AppMenubar from "@/app/_components/shared/menubar";
@@ -44,7 +44,7 @@ const cardContents: CardContent[] = [
 
 const getRandomNumber = (number: number): number => {
   return Math.floor(Math.random() * number);
-}
+};
 
 const gradientChartData: GradientChart[] = [
   { month: "Jan", completed: 150, inProgress: getRandomNumber(150) },
@@ -58,15 +58,14 @@ const gradientChartData: GradientChart[] = [
   { month: "Sep", completed: 250, inProgress: getRandomNumber(150) },
   { month: "Oct", completed: 200, inProgress: getRandomNumber(150) },
   { month: "Nov", completed: 200, inProgress: getRandomNumber(150) },
-  { month: "Dec", completed: 200, inProgress: getRandomNumber(150) }
+  { month: "Dec", completed: 200, inProgress: getRandomNumber(150) },
 ];
 
 const KpiPage = () => {
-
   const [chartData, setChartData] = useState<GradientChart[]>([]);
 
   const fetchData = async (): Promise<GradientChart[]> => {
-    return gradientChartData.map(data => ({
+    return gradientChartData.map((data) => ({
       ...data,
       completed: getRandomNumber(100),
       inProgress: getRandomNumber(150),
@@ -82,7 +81,6 @@ const KpiPage = () => {
     loadChartData();
   }, []);
 
-
   return (
     <div className="space-y-6 mb-12">
       <PageHeader
@@ -94,60 +92,83 @@ const KpiPage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
         {cardContents.map((card, index) => (
-          <KpiCard key={index} title={card.title} value={card.value} percentage={card.percentage} />
+          <KpiCard
+            key={index}
+            title={card.title}
+            value={card.value}
+            percentage={card.percentage}
+          />
         ))}
       </div>
 
       <div className="space-y-4">
-        <h3 className="text-lg font-bold flex items-center gap-x-2">Performance Rating Trends
-          <span className="text-gray-500"><IoIosArrowDown /></span>
+        <h3 className="text-lg font-bold flex items-center gap-x-2">
+          Performance Rating Trends
+          <span className="text-gray-500">
+            <IoIosArrowDown />
+          </span>
         </h3>
 
         <div className="common-card flex flex-col gap-y-4">
           <AppMenubar
-            overrideClassName='border-none'
+            overrideClassName="border-none"
             menuItems={
-              <ul className='flex flex-col items-start w-full'>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button className=''>Today</button>
+              <ul className="flex flex-col items-start w-full">
+                <li className="w-full hover:bg-gray-100 px-4 py-2 rounded-md">
+                  <button className="">Today</button>
                 </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 7 Days</button>
+                <li className="w-full hover:bg-gray-100 px-4 py-2 rounded-md">
+                  <button>Last 7 Days</button>
                 </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 30 Days</button>
+                <li className="w-full hover:bg-gray-100 px-4 py-2 rounded-md">
+                  <button>Last 30 Days</button>
                 </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 6 Months</button>
+                <li className="w-full hover:bg-gray-100 px-4 py-2 rounded-md">
+                  <button>Last 6 Months</button>
                 </li>
               </ul>
-            } >
-            <p className="text-gray-400 font-bold flex gap-2 items-center rounded-lg px-4 py-2 border">Today <span><IoIosArrowDown /></span></p>
+            }
+          >
+            <p className="text-gray-400 font-bold flex gap-2 items-center rounded-lg px-4 py-2 border">
+              Today{" "}
+              <span>
+                <IoIosArrowDown />
+              </span>
+            </p>
           </AppMenubar>
 
-          <GradientLineChart chartConfig={piechartConfig} chartData={chartData} />
+          <GradientLineChart
+            chartConfig={piechartConfig}
+            chartData={chartData}
+          />
         </div>
 
         <div className="common-card flex flex-col gap-y-4">
           <AppMenubar
-            overrideClassName='border-none'
+            overrideClassName="border-none"
             menuItems={
-              <ul className='flex flex-col items-start w-full'>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button className=''>Today</button>
+              <ul className="flex flex-col items-start w-full">
+                <li className="w-full hover:bg-gray-100 px-4 py-2 rounded-md">
+                  <button className="">Today</button>
                 </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 7 Days</button>
+                <li className="w-full hover:bg-gray-100 px-4 py-2 rounded-md">
+                  <button>Last 7 Days</button>
                 </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 30 Days</button>
+                <li className="w-full hover:bg-gray-100 px-4 py-2 rounded-md">
+                  <button>Last 30 Days</button>
                 </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 6 Months</button>
+                <li className="w-full hover:bg-gray-100 px-4 py-2 rounded-md">
+                  <button>Last 6 Months</button>
                 </li>
               </ul>
-            } >
-            <p className="text-gray-400 font-bold flex gap-2 items-center rounded-lg px-4 py-2 border">Today <span><IoIosArrowDown /></span></p>
+            }
+          >
+            <p className="text-gray-400 font-bold flex gap-2 items-center rounded-lg px-4 py-2 border">
+              Today{" "}
+              <span>
+                <IoIosArrowDown />
+              </span>
+            </p>
           </AppMenubar>
 
           <GradientLineChart
@@ -162,24 +183,30 @@ const KpiPage = () => {
 
         <div className="common-card flex flex-col gap-y-4">
           <AppMenubar
-            overrideClassName='border-none'
+            overrideClassName="border-none"
             menuItems={
-              <ul className='flex flex-col items-start w-full'>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button className=''>Today</button>
+              <ul className="flex flex-col items-start w-full">
+                <li className="w-full hover:bg-gray-100 px-4 py-2 rounded-md">
+                  <button className="">Today</button>
                 </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 7 Days</button>
+                <li className="w-full hover:bg-gray-100 px-4 py-2 rounded-md">
+                  <button>Last 7 Days</button>
                 </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 30 Days</button>
+                <li className="w-full hover:bg-gray-100 px-4 py-2 rounded-md">
+                  <button>Last 30 Days</button>
                 </li>
-                <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-                  <button >Last 6 Months</button>
+                <li className="w-full hover:bg-gray-100 px-4 py-2 rounded-md">
+                  <button>Last 6 Months</button>
                 </li>
               </ul>
-            } >
-            <p className="text-gray-400 font-bold flex gap-2 items-center rounded-lg px-4 py-2 border">Today <span><IoIosArrowDown /></span></p>
+            }
+          >
+            <p className="text-gray-400 font-bold flex gap-2 items-center rounded-lg px-4 py-2 border">
+              Today{" "}
+              <span>
+                <IoIosArrowDown />
+              </span>
+            </p>
           </AppMenubar>
           <div className="max-h-[400px]">
             <AppBarChart />
@@ -187,8 +214,8 @@ const KpiPage = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 interface KpiCardProps {
   title: string;
@@ -202,10 +229,12 @@ const KpiCard: React.FC<KpiCardProps> = ({ title, value, percentage }) => {
       <h3 className="font-semibold text-gray-500">{title}</h3>
       <div className="flex items-center justify-between gap-x-2">
         <p className="font-bold">{value}</p>
-        <p className=" text-green-500">{percentage} <span className="text-gray-500">Last 6 Months</span></p>
+        <p className=" text-green-500">
+          {percentage} <span className="text-gray-500">Last 6 Months</span>
+        </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default KpiPage;

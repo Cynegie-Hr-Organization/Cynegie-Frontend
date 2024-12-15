@@ -36,6 +36,17 @@ interface SecurityAlertsPaginatedResponse<T> {
   securityAlerts: T[];
 }
 
+export const createDevice = async (payload: any) => {
+  const session = await getServerSession(authOptions);
+  return request("POST", `${baseUrl}/v1/devices`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: payload,
+  });
+};
+
 export const getDeviceManagement = async (
   page: number,
   limit: number,

@@ -28,30 +28,37 @@ const CustomLegend = (props: {
   payload: {
     value: string;
     color: string;
-  }[]
+  }[];
 }) => {
   const { payload } = props;
   return (
-    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px' }}>
-      {payload.map((entry: {
-        value: string;
-        color: string;
-      }, index: number) => (
-        <div
-          key={`item-${index}`}
-          style={{ display: "flex", alignItems: "center", gap: "8px" }}
-        >
+    <div style={{ display: "flex", justifyContent: "flex-end", gap: "20px" }}>
+      {payload.map(
+        (
+          entry: {
+            value: string;
+            color: string;
+          },
+          index: number,
+        ) => (
           <div
-            style={{
-              width: "12px",
-              height: "12px",
-              backgroundColor: entry.color,
-              borderRadius: "50%",
-            }}
-          />
-          <span style={{ fontSize: "14px", color: "#333" }}>{entry.value}</span>
-        </div>
-      ))}
+            key={`item-${index}`}
+            style={{ display: "flex", alignItems: "center", gap: "8px" }}
+          >
+            <div
+              style={{
+                width: "12px",
+                height: "12px",
+                backgroundColor: entry.color,
+                borderRadius: "50%",
+              }}
+            />
+            <span style={{ fontSize: "14px", color: "#333" }}>
+              {entry.value}
+            </span>
+          </div>
+        ),
+      )}
     </div>
   );
 };
@@ -67,7 +74,14 @@ const toolTipItemContentStyle = {
   fontWeight: 500,
 };
 
-const CustomTooltip = <T extends { salary: number, deductions: number, benefits: number, value: number }>({
+const CustomTooltip = <
+  T extends {
+    salary: number;
+    deductions: number;
+    benefits: number;
+    value: number;
+  },
+>({
   active,
   payload,
 }: {
@@ -94,7 +108,9 @@ const CustomTooltip = <T extends { salary: number, deductions: number, benefits:
           {["Gross Salary", "Deductions", "Benefits"].map((item, index) => (
             <p key={index}>
               <span style={toolTipItemLabelStyle}>{`${item}: `}</span>
-              <span style={toolTipItemContentStyle}>{`₦${payload[index].value.toLocaleString()}`}</span>
+              <span
+                style={toolTipItemContentStyle}
+              >{`₦${payload[index].value.toLocaleString()}`}</span>
             </p>
           ))}
         </div>

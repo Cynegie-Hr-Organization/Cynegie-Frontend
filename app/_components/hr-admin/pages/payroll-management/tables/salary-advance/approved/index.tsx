@@ -22,12 +22,12 @@ import {
   TableHead,
   TableRow,
   TextField,
-} from '@mui/material';
-import Image from 'next/image';
-import { useState } from 'react';
+} from "@mui/material";
+import Image from "next/image";
+import { useState } from "react";
 // import { payrollOverviewTableData } from '../overview/data';
-import AdjustRepaymentDetailsModal from '../../../modals/adjust-repayment-details';
-import { approvedSalaryAdvanceTableData } from './data';
+import AdjustRepaymentDetailsModal from "../../../modals/adjust-repayment-details";
+import { approvedSalaryAdvanceTableData } from "./data";
 
 const ApprovedSalaryAdvanceTable = () => {
   const [, setSelectedRowIndex] = useState(0);

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { MdMoreVert } from "react-icons/md";
 import { MdFilterList } from "react-icons/md";
@@ -9,6 +9,7 @@ import { Dropdown } from "@/app/_components/ui/dropdown";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useRouter } from "next/navigation";
+import AppMenubar from "@/app/_components/shared/menubar";
 
 const JobsTabTable = ({
   jobs,
@@ -25,20 +26,12 @@ const JobsTabTable = ({
   const router = useRouter();
   const [isFilterDropdownOpen, setFilterDropdownOpen] = React.useState(false);
   const [isModalOpen, setIsModalOpen] = React.useState(false); // State for modal visibility
-  const [actionDropdowns, setActionDropdowns] = React.useState<{
-    [key: number]: boolean;
-  }>({});
+
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null); // Selected job ID
 
   const filterDropdownRef = React.useRef<HTMLDivElement>(null);
-  const actionDropdownRefs = React.useRef<{
-    [key: number]: HTMLDivElement | null;
-  }>({});
 
   const toggleFilterDropdown = () => setFilterDropdownOpen((prev) => !prev);
-  const toggleActionDropdown = (rowIndex: number) => {
-    setActionDropdowns((prev) => ({ ...prev, [rowIndex]: !prev[rowIndex] }));
-  };
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -49,37 +42,6 @@ const JobsTabTable = ({
     console.log("Filters applied");
     setFilterDropdownOpen(false);
   };
-
-  // Close all dropdowns when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        filterDropdownRef.current &&
-        !filterDropdownRef.current.contains(event.target as Node)
-      ) {
-        setFilterDropdownOpen(false);
-      }
-
-      // Close action dropdowns
-      Object.keys(actionDropdownRefs.current).forEach((key) => {
-        const index = Number(key);
-        if (
-          actionDropdownRefs.current[index] &&
-          !actionDropdownRefs.current[index]?.contains(event.target as Node)
-        ) {
-          setActionDropdowns((prev) => ({
-            ...prev,
-            [index]: false,
-          }));
-        }
-      });
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const handleViewDetails = (jobId: string) => {
     router.push(`/hr-admin/hiring/job-details/${jobId}`);
@@ -191,7 +153,7 @@ const JobsTabTable = ({
                     {column.header}
                   </th>
                 ))}
-                <th className="py-2 text-center  ">Actions</th>
+                <th className="py-2 text-left  ">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -219,40 +181,32 @@ const JobsTabTable = ({
                     </span>
                   </td>
                   <td className="p-2 text-center">
-                    <div
-                      className="relative"
-                      ref={(el) => {
-                        actionDropdownRefs.current[index] = el;
-                      }}
+                    <AppMenubar
+                      menuItems={
+                        <ul className="flex flex-col w-full text-sm">
+                          <li
+                            className="p-2 hover:bg-gray-100 cursor-pointer"
+                            onClick={() => handleViewDetails(job.id)}
+                          >
+                            View Details
+                          </li>
+                          <li
+                            className="p-2 hover:bg-gray-100 cursor-pointer"
+                            onClick={() => handleEditDetails(job.id)}
+                          >
+                            Edit
+                          </li>
+                          <li
+                            className="p-2 hover:bg-gray-100 cursor-pointer text-red-500"
+                            onClick={() => handleDeleteClick(job.id)}
+                          >
+                            Delete
+                          </li>
+                        </ul>
+                      }
                     >
-                      <button onClick={() => toggleActionDropdown(index)}>
-                        <MdMoreVert size={24} className="text-gray-800" />
-                      </button>
-                      {actionDropdowns[index] && (
-                        <div className="absolute right-0 items-center text-sm bg-white shadow-lg border border-gray-300 w-[8rem] rounded-md z-10">
-                          <ul>
-                            <li
-                              className="p-2 hover:bg-gray-100"
-                              onClick={() => handleViewDetails(job.id)}
-                            >
-                              View Details
-                            </li>
-                            <li
-                              className="p-2 hover:bg-gray-100 "
-                              onClick={() => handleEditDetails(job.id)}
-                            >
-                              Edit
-                            </li>
-                            <li
-                              className="p-2 hover:bg-gray-100 text-red-500"
-                              onClick={() => handleDeleteClick(job.id)}
-                            >
-                              Delete
-                            </li>
-                          </ul>
-                        </div>
-                      )}
-                    </div>
+                      <MdMoreVert size={24} className="text-gray-800" />
+                    </AppMenubar>
                   </td>
                 </tr>
               ))}

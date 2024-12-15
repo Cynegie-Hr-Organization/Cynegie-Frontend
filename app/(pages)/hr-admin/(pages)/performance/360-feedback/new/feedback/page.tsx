@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import AppButton from "@/app/_components/shared/button"
-import CardLayout from "@/app/_components/shared/cards"
-import { AppSelect } from "@/app/_components/shared/select"
-import { useRouter } from "next/navigation"
-import { ReactNode } from "react"
+import AppButton from "@/app/_components/shared/button";
+import CardLayout from "@/app/_components/shared/cards";
+import { AppSelect } from "@/app/_components/shared/select";
+import { useRouter } from "next/navigation";
+import { ReactNode } from "react";
 
 const FeedbackPage = () => {
   const router = useRouter();
@@ -16,10 +16,15 @@ const FeedbackPage = () => {
       <CardLayout className="space-y-6">
         <div>
           <h3 className="font-semibold text-lg">Feedback Criteria</h3>
-          <p className="text-gray-500">Add feedback templates for feedback providers.</p>
+          <p className="text-gray-500">
+            Add feedback templates for feedback providers.
+          </p>
         </div>
 
-        <CriteriaCard title="Peer Feedback" subtitle="Peers will review who they are selected for">
+        <CriteriaCard
+          title="Peer Feedback"
+          subtitle="Peers will review who they are selected for"
+        >
           <AppSelect
             listItems={[
               { label: "Template 1", value: "template-1" },
@@ -28,11 +33,14 @@ const FeedbackPage = () => {
             ]}
             label="Template"
             placeholder="Select Template"
-            onChange={() => { }}
+            onChange={() => {}}
           />
         </CriteriaCard>
 
-        <CriteriaCard title="Peer Feedback" subtitle="Peers will review who they are selected for">
+        <CriteriaCard
+          title="Peer Feedback"
+          subtitle="Peers will review who they are selected for"
+        >
           <AppSelect
             listItems={[
               { label: "Template 1", value: "template-1" },
@@ -41,11 +49,14 @@ const FeedbackPage = () => {
             ]}
             label="Template"
             placeholder="Select Template"
-            onChange={() => { }}
+            onChange={() => {}}
           />
         </CriteriaCard>
 
-        <CriteriaCard title="Peer Feedback" subtitle="Peers will review who they are selected for">
+        <CriteriaCard
+          title="Peer Feedback"
+          subtitle="Peers will review who they are selected for"
+        >
           <AppSelect
             listItems={[
               { label: "Template 1", value: "template-1" },
@@ -54,7 +65,7 @@ const FeedbackPage = () => {
             ]}
             label="Template"
             placeholder="Select Template"
-            onChange={() => { }}
+            onChange={() => {}}
           />
         </CriteriaCard>
       </CardLayout>
@@ -63,19 +74,29 @@ const FeedbackPage = () => {
         <AppButton
           label="Save & Continue Later"
           className="btn-secondary"
-          onClick={() => { }}
+          onClick={() => {}}
         />
         <AppButton
           label="Submit"
           className="disabled:btn-inactive btn-primary"
-          onClick={() => { router.push("/hr-admin/performance/360-feedback/new/feedback") }}
+          onClick={() => {
+            router.push("/hr-admin/performance/360-feedback/new/feedback");
+          }}
         />
       </div>
-    </div >
-  )
-}
+    </div>
+  );
+};
 
-const CriteriaCard = ({ children, title, subtitle }: { children: ReactNode, title: string, subtitle: string }) => {
+const CriteriaCard = ({
+  children,
+  title,
+  subtitle,
+}: {
+  children: ReactNode;
+  title: string;
+  subtitle: string;
+}) => {
   const router = useRouter();
 
   return (
@@ -89,11 +110,15 @@ const CriteriaCard = ({ children, title, subtitle }: { children: ReactNode, titl
         <AppButton
           label="Preview"
           className="font-bold py-0 px-0 w-max md:w-max disabled:text-gray-500 text-primary"
-          onClick={() => { router.push("/hr-admin/performance/self-assessment/template-preview") }}
+          onClick={() => {
+            router.push(
+              "/hr-admin/performance/self-assessment/template-preview",
+            );
+          }}
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FeedbackPage
+export default FeedbackPage;

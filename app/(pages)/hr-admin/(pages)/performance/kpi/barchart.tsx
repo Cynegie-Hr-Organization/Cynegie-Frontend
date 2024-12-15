@@ -1,15 +1,13 @@
-"use client"
+"use client";
 
-import { Bar, BarChart, XAxis, YAxis, CartesianGrid } from "recharts"
+import { Bar, BarChart, XAxis, YAxis, CartesianGrid } from "recharts";
 
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-
-
+} from "@/components/ui/chart";
 
 const chartData = [
   { month: "Jan", completed: 150, inProgress: 150, notStarted: 150 },
@@ -23,8 +21,8 @@ const chartData = [
   { month: "Sep", completed: 175, inProgress: 150, notStarted: 150 },
   { month: "Oct", completed: 220, inProgress: 150, notStarted: 150 },
   { month: "Nov", completed: 195, inProgress: 150, notStarted: 150 },
-  { month: "Dec", completed: 210, inProgress: 150, notStarted: 150 }
-]
+  { month: "Dec", completed: 210, inProgress: 150, notStarted: 150 },
+];
 
 const chartConfig = {
   completed: {
@@ -39,7 +37,7 @@ const chartConfig = {
     label: "Not Started",
     color: "#E6EBF9",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export function AppBarChart() {
   return (
@@ -53,7 +51,7 @@ export function AppBarChart() {
           tickFormatter={(value) => value.slice(0, 3)}
         />
         <YAxis
-          domain={[0, 'dataMax']}
+          domain={[0, "dataMax"]}
           axisLine={false}
           tickLine={false}
           tickMargin={10}
@@ -65,7 +63,7 @@ export function AppBarChart() {
           vertical={false}
           strokeDasharray="5 5"
           stroke="#f0f0f0"
-          horizontalFill={['#fafafa']}
+          horizontalFill={["#fafafa"]}
           fillOpacity={0.1}
         />
         <Bar
@@ -91,12 +89,16 @@ export function AppBarChart() {
         />
         <ChartTooltip
           content={
-            <ChartTooltipContent className="bg-white border-none" labelKey="activities" indicator="line" />
+            <ChartTooltipContent
+              className="bg-white border-none"
+              labelKey="activities"
+              indicator="line"
+            />
           }
           cursor={false}
           defaultIndex={1}
         />
       </BarChart>
     </ChartContainer>
-  )
+  );
 }

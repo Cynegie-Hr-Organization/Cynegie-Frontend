@@ -1,23 +1,26 @@
-"use client"
+"use client";
 
-import { Pie, PieChart } from "recharts"
+import { Pie, PieChart } from "recharts";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 
-
-
-const colors = { grey: '#E6EBF9', yellow: '#FFAD33', green: '#0F973D', blue: '#335DCF' };
+const colors = {
+  grey: "#E6EBF9",
+  yellow: "#FFAD33",
+  green: "#0F973D",
+  blue: "#335DCF",
+};
 
 const chartData = [
   { task: "Communication", value: 275, fill: colors.green },
   { task: "Leadership", value: 200, fill: colors.blue },
   { task: "Teamwork", value: 187, fill: colors.yellow },
   { task: "Initiative", value: 173, fill: colors.grey },
-]
+];
 
 const chartConfig = {
   visitors: {
@@ -43,17 +46,25 @@ const chartConfig = {
     label: "Other",
     color: "hsl(var(--chart-5))",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
-export function OpenDonughtChart({ innerRadius = 60, outerRadius = 90, className }: { innerRadius?: number, outerRadius?: number, className?: string }) {
+export function OpenDonughtChart({
+  innerRadius = 60,
+  outerRadius = 90,
+  className,
+}: {
+  innerRadius?: number;
+  outerRadius?: number;
+  className?: string;
+}) {
   console.log("Rendering OpenDonughtChart with data:", chartData);
 
   return (
     <ChartContainer
       config={chartConfig}
-      className={`mx-auto h-48 w-48 ${className ?? ''}`}
+      className={`mx-auto h-48 w-48 ${className ?? ""}`}
     >
-        <PieChart width={192} height={192}>
+      <PieChart width={192} height={192}>
         <ChartTooltip
           cursor={false}
           content={<ChartTooltipContent className="bg-white" hideLabel />}
@@ -67,5 +78,5 @@ export function OpenDonughtChart({ innerRadius = 60, outerRadius = 90, className
         />
       </PieChart>
     </ChartContainer>
-  )
+  );
 }

@@ -1,20 +1,18 @@
-"use client"
+"use client";
 
-import { Pie, PieChart } from "recharts"
+import { Pie, PieChart } from "recharts";
 
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-
-
+} from "@/components/ui/chart";
 
 const chartData = [
   { browser: "chrome", visitors: 30, fill: "#0030B1" },
   { browser: "safari", visitors: 70, fill: "#FF9900" },
-]
+];
 
 const chartConfig = {
   visitors: {
@@ -40,7 +38,7 @@ const chartConfig = {
     label: "Other",
     color: "hsl(var(--chart-5))",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export function PieChart2() {
   return (
@@ -49,12 +47,14 @@ export function PieChart2() {
       className="mx-auto aspect-square w-[250px]"
     >
       <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent className="bg-white border-none" hideLabel />}
-            />
-            <Pie data={chartData} dataKey="visitors" nameKey="browser" />
-          </PieChart>
+        <ChartTooltip
+          cursor={false}
+          content={
+            <ChartTooltipContent className="bg-white border-none" hideLabel />
+          }
+        />
+        <Pie data={chartData} dataKey="visitors" nameKey="browser" />
+      </PieChart>
     </ChartContainer>
-  )
+  );
 }

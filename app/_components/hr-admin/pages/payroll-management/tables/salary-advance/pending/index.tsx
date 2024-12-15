@@ -27,8 +27,8 @@ import {
 import Image from "next/image";
 import { useState, ChangeEvent } from "react";
 // import { payrollOverviewTableData } from '../overview/data';
-import { useRouter } from 'next/navigation';
-import { pendingSalaryAdvanceTableData } from './data';
+import { useRouter } from "next/navigation";
+import { pendingSalaryAdvanceTableData } from "./data";
 
 const PendingSalaryAdvanceTable = () => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);

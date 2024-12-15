@@ -1,5 +1,14 @@
-import { useState, useRef } from 'react';
-import { default as ReactSelect, components, InputAction, MultiValue, SingleValue, StylesConfig, InputProps, OptionProps } from 'react-select';
+import { useState, useRef } from "react";
+import {
+  default as ReactSelect,
+  components,
+  InputAction,
+  MultiValue,
+  SingleValue,
+  StylesConfig,
+  InputProps,
+  OptionProps,
+} from "react-select";
 
 export type Option = {
   value: number | string;
@@ -12,18 +21,18 @@ export type MultiSelectProps<T> = {
   onChange: (selected: T[]) => void;
   isSelectAll?: boolean;
   components?: typeof components;
-  menuPlacement?: 'auto' | 'top' | 'bottom';
+  menuPlacement?: "auto" | "top" | "bottom";
 };
 
 export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
-  const [selectInput, setSelectInput] = useState<string>('');
+  const [selectInput, setSelectInput] = useState<string>("");
   const isAllSelected = useRef<boolean>(false);
-  const selectAllLabel = useRef<string>('Select all');
-  const allOption = { value: '*', label: selectAllLabel.current } as T;
+  const selectAllLabel = useRef<string>("Select all");
+  const allOption = { value: "*", label: selectAllLabel.current } as T;
 
   const filterOptions = (options: T[], input: string) =>
     options?.filter(({ label }: T) =>
-      label.toLowerCase().includes(input.toLowerCase())
+      label.toLowerCase().includes(input.toLowerCase()),
     );
 
   const comparator = (v1: T, v2: T) =>
@@ -34,12 +43,12 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
 
   const Option = <T extends Option>(optionProps: OptionProps<T, true>) => (
     <components.Option {...optionProps}>
-      {optionProps.data.value === '*' &&
-        !isAllSelected.current &&
-        filteredSelectedOptions?.length > 0 ? (
+      {optionProps.data.value === "*" &&
+      !isAllSelected.current &&
+      filteredSelectedOptions?.length > 0 ? (
         <input
           key={optionProps.data.value}
-          type='checkbox'
+          type="checkbox"
           ref={(input) => {
             if (input) input.indeterminate = true;
           }}
@@ -47,24 +56,30 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
       ) : (
         <input
           key={optionProps.data.value}
-          type='checkbox'
+          type="checkbox"
           checked={optionProps.isSelected || isAllSelected.current}
-          onChange={() => { }}
+          onChange={() => {}}
         />
       )}
-      <label style={{ marginLeft: '5px' }}>{optionProps.label}</label>
+      <label style={{ marginLeft: "5px" }}>{optionProps.label}</label>
     </components.Option>
   );
 
   const Input = <T extends Option>(inputProps: InputProps<T, true>) => (
     <>
       {selectInput.length === 0 ? (
-        <components.Input autoFocus={inputProps.selectProps.menuIsOpen} {...inputProps}>
+        <components.Input
+          autoFocus={inputProps.selectProps.menuIsOpen}
+          {...inputProps}
+        >
           {inputProps.children}
         </components.Input>
       ) : (
-        <div style={{ border: '1px dotted gray' }}>
-          <components.Input autoFocus={inputProps.selectProps.menuIsOpen} {...inputProps}>
+        <div style={{ border: "1px dotted gray" }}>
+          <components.Input
+            autoFocus={inputProps.selectProps.menuIsOpen}
+            {...inputProps}
+          >
             {inputProps.children}
           </components.Input>
         </div>
@@ -73,8 +88,9 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
   );
 
   const customFilterOption = (option: Option, inputValue: string) =>
-    (option.value !== '*' && option.label.toLowerCase().includes(inputValue.toLowerCase())) ||
-    (option.value === '*' && filteredOptions?.length > 0);
+    (option.value !== "*" &&
+      option.label.toLowerCase().includes(inputValue.toLowerCase())) ||
+    (option.value === "*" && filteredOptions?.length > 0);
 
   const onInputChange = (
     inputValue: string,
@@ -97,7 +113,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
       !isAllSelected.current &&
       (selected[selected.length - 1].value === allOption.value ||
         JSON.stringify(filteredOptions) ===
-        JSON.stringify(selected.sort(comparator)))
+          JSON.stringify(selected.sort(comparator)))
     )
       return props.onChange(
         [
@@ -106,7 +122,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
             ({ label }: T) =>
               label.toLowerCase().includes(selectInput?.toLowerCase()) &&
               (props.value ?? []).filter((opt: T) => opt.label === label)
-                .length === 0
+                .length === 0,
           ),
         ].sort(comparator),
       );
@@ -114,14 +130,14 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
       selected.length > 0 &&
       selected[selected.length - 1].value !== allOption.value &&
       JSON.stringify(selected.sort(comparator)) !==
-      JSON.stringify(filteredOptions)
+        JSON.stringify(filteredOptions)
     )
       return props.onChange(selected);
     else
       return props.onChange([
         ...props.value?.filter(
           ({ label }: T) =>
-            !label.toLowerCase().includes(selectInput?.toLowerCase())
+            !label.toLowerCase().includes(selectInput?.toLowerCase()),
         ),
       ]);
   };
@@ -146,13 +162,13 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
         ...styles,
         backgroundColor:
           isSelected && !isFocused
-            ? 'transparent'
+            ? "transparent"
             : isFocused && !isSelected
               ? styles.backgroundColor
               : isFocused && isSelected
-                ? '#DEEBFF'
-                : 'transparent',
-        color: isSelected ? 'inherit' : 'transparent',
+                ? "#DEEBFF"
+                : "transparent",
+        color: isSelected ? "inherit" : "transparent",
       };
     },
     menu: (def) => ({ ...def, zIndex: 9999 }),

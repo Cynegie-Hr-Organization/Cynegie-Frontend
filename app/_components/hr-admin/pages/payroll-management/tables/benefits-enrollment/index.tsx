@@ -1,8 +1,4 @@
-import {
-  ChevronLeft,
-  ChevronRight,
-  FilterList,
-} from "@mui/icons-material";
+import { ChevronLeft, ChevronRight, FilterList } from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -17,10 +13,10 @@ import {
   TableHead,
   TableRow,
   TextField,
-} from '@mui/material';
-import Image from 'next/image';
-import { useState, ChangeEvent } from 'react';
-import { benefitsEnrollmentTableData } from './data';
+} from "@mui/material";
+import Image from "next/image";
+import { useState, ChangeEvent } from "react";
+import { benefitsEnrollmentTableData } from "./data";
 // import { selectEmployeesForPayrollTableData } from './data';
 
 const PayrollBenefitsEnrollmentTable = () => {
