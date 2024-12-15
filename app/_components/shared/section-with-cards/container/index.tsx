@@ -4,6 +4,7 @@ import { SectionCardContainerProps } from '../types';
 
 const SectionCardContainer: React.FC<SectionCardContainerProps> = (props) => {
   const {
+    headerIcon,
     title,
     isCard,
     period,
@@ -19,6 +20,7 @@ const SectionCardContainer: React.FC<SectionCardContainerProps> = (props) => {
       gap={2}
     >
       <Header
+        headerIcon={headerIcon}
         title={title}
         period={period}
         periodFont={periodFont}

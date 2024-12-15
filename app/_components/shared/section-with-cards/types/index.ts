@@ -56,6 +56,7 @@ export type CardPeriodProps = {
 };
 
 export type CardHeaderProps = {
+  headerIcon?: React.ReactElement;
   title: string;
   period?: string;
   hasDivider?: boolean;
@@ -65,6 +66,7 @@ export type CardHeaderProps = {
 };
 
 export type SectionCardContainerProps = {
+  headerIcon?: React.ReactElement;
   title: string;
   period?: string;
   periodFont?: { size: number; weight: number; color: string };

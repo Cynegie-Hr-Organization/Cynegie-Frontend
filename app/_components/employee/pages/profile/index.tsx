@@ -8,7 +8,9 @@ import Form from '@/app/_components/shared/form';
 import ButtonGroup from '@/app/_components/shared/button-group';
 
 const EmployeeProfile = () => {
-  const { pageProps, formProps, editButtonProps } = useEmployeeProfilePage();
+  const { pageProps, formProps, editButtonProps, userDetails } =
+    useEmployeeProfilePage();
+
   return (
     <Page {...pageProps}>
       <Stack className='common-card' gap={3} py={7} px={8}>
@@ -16,12 +18,9 @@ const EmployeeProfile = () => {
           Note that all updates you make will only reflect after approval from
           your Administrator
         </Alert>
-        <div className='flex flex-col items-center'>
-          <Avatar
-            src='/image/avatar.png'
-            sx={{ width: '74px', height: '74px' }}
-          />
-          <div className='card-title-small'>Alibaba Udor</div>
+        <div className='flex flex-col items-center gap-2'>
+          <Avatar src='' sx={{ width: '74px', height: '74px' }} />
+          <div className='card-title-small'>{userDetails?.name ?? ''}</div>
         </div>
         <div className='card-title-small'>Bio Data</div>
         <Form {...formProps} />
