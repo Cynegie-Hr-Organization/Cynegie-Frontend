@@ -6,6 +6,7 @@ import { CardHeaderProps } from '../types';
 
 const Header: React.FC<CardHeaderProps> = (props) => {
   const {
+    headerIcon,
     title,
     period = '',
     hasDivider = false,
@@ -16,14 +17,28 @@ const Header: React.FC<CardHeaderProps> = (props) => {
   return (
     <Stack {...(hasDivider && { gap: 1.5 })}>
       <Stack direction='row' alignItems='center'>
-        <Box flexGrow={1}>
+        <Box
+          flexGrow={1}
+          style={{
+            ...(headerIcon && {
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+            }),
+          }}
+        >
+          {headerIcon && headerIcon}
           <Title text={title} size={titleSize} />
         </Box>
         <div
           onClick={periodClick}
           style={{ ...(periodClick && { cursor: 'pointer' }) }}
         >
-          <Period text={period} font={periodFont} />
+          <Period
+            isClickable={periodClick ? true : false}
+            text={period}
+            font={periodFont}
+          />
         </div>
       </Stack>
       {hasDivider && (

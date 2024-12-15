@@ -9,7 +9,7 @@ import Page from '@/app/_components/shared/page';
 const EmployeeLearningAndDevelopment = () => {
   const { myCourseTableData } = useMyCoursesTable();
   return (
-    <Page text='Learning and Development'>
+    <Page title='Learning and Development'>
       <Grid2 container spacing={3}>
         {[<SummaryCards key={0} />, <SummaryOfCompletedTraining key={1} />].map(
           (component, index) => (

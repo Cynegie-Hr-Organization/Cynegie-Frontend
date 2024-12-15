@@ -1,6 +1,6 @@
 import Table from '@/app/_components/shared/table';
 import { FieldType, TableProps } from '@/app/_components/shared/table/types';
-import { Tab } from '@/app/_components/shared/tabs/types';
+import { Tab } from '@/app/_components/shared/tab-format/types';
 import { CPStatusMap, route } from '@/constants';
 import { useState } from 'react';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';
@@ -17,7 +17,7 @@ const useContinuousFeedbackPage = () => {
 
   const continuousFeedbackPageData: PageProps = {
     backText: 'Back to Performance Management',
-    text: 'Continuous Feedback',
+    title: 'Continuous Feedback',
     onBackTextClick: () =>
       router.push(route.employee.performanceManagement.home),
     hasButtons: true,
@@ -166,6 +166,12 @@ const useContinuousFeedbackPage = () => {
     },
   };
 
+  const modalsProps = [
+    giveFeedbackModalData,
+    successModalData,
+    requestFeedbackModalData,
+  ];
+
   const tableTabs: Tab[] = [
     {
       name: 'Feedback Received',
@@ -180,9 +186,7 @@ const useContinuousFeedbackPage = () => {
   return {
     continuousFeedbackPageData,
     tableTabs,
-    giveFeedbackModalData,
-    successModalData,
-    requestFeedbackModalData,
+    modalsProps,
   };
 };
 

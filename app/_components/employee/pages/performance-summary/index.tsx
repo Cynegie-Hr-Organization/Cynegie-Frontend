@@ -10,7 +10,7 @@ import PerformanceSummaryChart from './chart';
 const EmployeePerformanceSummary = () => {
   return (
     <Page
-      text='Dashboard'
+      title='Dashboard'
       subtitle='Access your Employee Dashboard'
       hasButtons
       rightButton={{

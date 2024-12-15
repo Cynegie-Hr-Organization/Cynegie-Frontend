@@ -6,7 +6,8 @@ import TimeOff from './sections/time-off';
 import Profile from './sections/profile';
 import UpcomingEvent from './sections/upcoming-event';
 import { useRouter } from 'next/navigation';
-import { route } from '@/constants';
+import { icon, route } from '@/constants';
+import SvgIcon from '@/app/_components/icons/container';
 
 const EmployeeDashboard = () => {
   const {
@@ -15,6 +16,7 @@ const EmployeeDashboard = () => {
     getGroupOneItemLayout,
     timeOff,
     profileProps,
+    headerIconSize,
   } = useEmployeeDashboardPage();
 
   const router = useRouter();
@@ -24,8 +26,17 @@ const EmployeeDashboard = () => {
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-[-30]'>
         <div className='common-card sm:col-span-1 lg:col-span-1'>
           <SectionCardContainer
+            headerIcon={
+              <SvgIcon
+                path={icon.clockTwo}
+                width={headerIconSize}
+                height={headerIconSize}
+              />
+            }
             title={'Time-Off'}
             period='View More'
+            periodFont={{ color: 'black' }}
+            periodClick={() => router.push(route.employee.leave.home)}
             headerDivider
           >
             <TimeOff {...timeOff} />
@@ -33,8 +44,17 @@ const EmployeeDashboard = () => {
         </div>
         <div className='common-card sm:col-span-1 lg:col-span-1'>
           <SectionCardContainer
+            headerIcon={
+              <SvgIcon
+                path={icon.user}
+                width={headerIconSize}
+                height={headerIconSize}
+              />
+            }
             title={'Profile'}
             period='View More'
+            periodFont={{ color: 'black' }}
+            periodClick={() => router.push(route.employee.profile.home)}
             headerDivider
           >
             <Profile {...profileProps} />
@@ -42,8 +62,16 @@ const EmployeeDashboard = () => {
         </div>
         <div className='common-card sm:col-span-2 lg:col-span-2'>
           <SectionCardContainer
+            headerIcon={
+              <SvgIcon
+                path={icon.calendarThree}
+                width={headerIconSize}
+                height={headerIconSize}
+              />
+            }
             title={'Upcoming Event'}
             period='View More'
+            periodFont={{ color: 'black' }}
             periodClick={() =>
               router.push(route.employee.dashboard.upcomingWidget)
             }
@@ -70,6 +98,8 @@ const EmployeeDashboard = () => {
               } common-card`}
             >
               <SectionCardContainer
+                headerIcon={section.headerIcon}
+                periodFont={{ color: 'black' }}
                 title={section.title}
                 period='View More'
                 periodClick={section.periodClick}

@@ -1,5 +1,14 @@
 import { useState, useRef } from 'react';
-import { default as ReactSelect, components, InputAction, MultiValue, SingleValue, StylesConfig, InputProps, OptionProps } from 'react-select';
+import {
+  default as ReactSelect,
+  components,
+  InputAction,
+  MultiValue,
+  SingleValue,
+  StylesConfig,
+  InputProps,
+  OptionProps,
+} from 'react-select';
 
 export type Option = {
   value: number | string;
@@ -35,8 +44,8 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
   const Option = <T extends Option>(optionProps: OptionProps<T, true>) => (
     <components.Option {...optionProps}>
       {optionProps.data.value === '*' &&
-        !isAllSelected.current &&
-        filteredSelectedOptions?.length > 0 ? (
+      !isAllSelected.current &&
+      filteredSelectedOptions?.length > 0 ? (
         <input
           key={optionProps.data.value}
           type='checkbox'
@@ -49,7 +58,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
           key={optionProps.data.value}
           type='checkbox'
           checked={optionProps.isSelected || isAllSelected.current}
-          onChange={() => { }}
+          onChange={() => {}}
         />
       )}
       <label style={{ marginLeft: '5px' }}>{optionProps.label}</label>
@@ -59,12 +68,18 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
   const Input = <T extends Option>(inputProps: InputProps<T, true>) => (
     <>
       {selectInput.length === 0 ? (
-        <components.Input autoFocus={inputProps.selectProps.menuIsOpen} {...inputProps}>
+        <components.Input
+          autoFocus={inputProps.selectProps.menuIsOpen}
+          {...inputProps}
+        >
           {inputProps.children}
         </components.Input>
       ) : (
         <div style={{ border: '1px dotted gray' }}>
-          <components.Input autoFocus={inputProps.selectProps.menuIsOpen} {...inputProps}>
+          <components.Input
+            autoFocus={inputProps.selectProps.menuIsOpen}
+            {...inputProps}
+          >
             {inputProps.children}
           </components.Input>
         </div>
@@ -73,20 +88,21 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
   );
 
   const customFilterOption = (option: Option, inputValue: string) =>
-    (option.value !== '*' && option.label.toLowerCase().includes(inputValue.toLowerCase())) ||
+    (option.value !== '*' &&
+      option.label.toLowerCase().includes(inputValue.toLowerCase())) ||
     (option.value === '*' && filteredOptions?.length > 0);
 
   const onInputChange = (
     inputValue: string,
-    event: { action: InputAction },
+    event: { action: InputAction }
   ) => {
-    if (event.action === "input-change") setSelectInput(inputValue);
-    else if (event.action === "menu-close" && selectInput !== "")
-      setSelectInput("");
+    if (event.action === 'input-change') setSelectInput(inputValue);
+    else if (event.action === 'menu-close' && selectInput !== '')
+      setSelectInput('');
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-    if ((e.key === " " || e.key === "Enter") && !selectInput)
+    if ((e.key === ' ' || e.key === 'Enter') && !selectInput)
       e.preventDefault();
   };
 
@@ -97,7 +113,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
       !isAllSelected.current &&
       (selected[selected.length - 1].value === allOption.value ||
         JSON.stringify(filteredOptions) ===
-        JSON.stringify(selected.sort(comparator)))
+          JSON.stringify(selected.sort(comparator)))
     )
       return props.onChange(
         [
@@ -108,13 +124,13 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
               (props.value ?? []).filter((opt: T) => opt.label === label)
                 .length === 0
           ),
-        ].sort(comparator),
+        ].sort(comparator)
       );
     else if (
       selected.length > 0 &&
       selected[selected.length - 1].value !== allOption.value &&
       JSON.stringify(selected.sort(comparator)) !==
-      JSON.stringify(filteredOptions)
+        JSON.stringify(filteredOptions)
     )
       return props.onChange(selected);
     else
@@ -129,16 +145,16 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
   const customStyles: StylesConfig<Option, true> = {
     multiValueLabel: (def) => ({
       ...def,
-      backgroundColor: "lightgray",
+      backgroundColor: 'lightgray',
     }),
     multiValueRemove: (def) => ({
       ...def,
-      backgroundColor: "lightgray",
+      backgroundColor: 'lightgray',
     }),
     valueContainer: (base) => ({
       ...base,
-      maxHeight: "30px",
-      overflow: "auto",
+      maxHeight: '30px',
+      overflow: 'auto',
       paddingTop: 0,
     }),
     option: (styles, { isSelected, isFocused }) => {
@@ -148,10 +164,10 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
           isSelected && !isFocused
             ? 'transparent'
             : isFocused && !isSelected
-              ? styles.backgroundColor
-              : isFocused && isSelected
-                ? '#DEEBFF'
-                : 'transparent',
+            ? styles.backgroundColor
+            : isFocused && isSelected
+            ? '#DEEBFF'
+            : 'transparent',
         color: isSelected ? 'inherit' : 'transparent',
       };
     },
@@ -168,7 +184,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
         selectAllLabel.current = `All (${filteredOptions.length}) selected`;
       else
         selectAllLabel.current = `${filteredSelectedOptions?.length} / ${filteredOptions.length} selected`;
-    } else selectAllLabel.current = "Select all";
+    } else selectAllLabel.current = 'Select all';
 
     allOption.label = selectAllLabel.current;
 
@@ -186,7 +202,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
           ...props.components,
         }}
         filterOption={customFilterOption}
-        menuPlacement={props.menuPlacement ?? "auto"}
+        menuPlacement={props.menuPlacement ?? 'auto'}
         styles={customStyles}
         isMulti
         closeMenuOnSelect={false}
@@ -209,7 +225,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
         Input: Input,
         ...props.components,
       }}
-      menuPlacement={props.menuPlacement ?? "auto"}
+      menuPlacement={props.menuPlacement ?? 'auto'}
       onKeyDown={onKeyDown}
       tabSelectsValue={false}
       hideSelectedOptions={true}

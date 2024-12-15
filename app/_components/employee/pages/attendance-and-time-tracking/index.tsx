@@ -25,7 +25,7 @@ const EmployeeAttendanceAndTimeTracking = () => {
   return (
     <>
       <Page
-        text='Attendance and Time Tracking'
+        title='Attendance and Time Tracking'
         hasButtons
         leftButton={{
           text: 'Clock Out',

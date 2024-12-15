@@ -6,12 +6,32 @@ import RecentActivityCardDetails from '../sections/recent-activity';
 import { TimeOffProps } from '../sections/time-off/types';
 import { ProfileProps } from '../sections/profile/types';
 import { useRouter } from 'next/navigation';
-import { route } from '@/constants';
+import { icon, route } from '@/constants';
+import { useEffect, useState } from 'react';
+import { getUserDetails } from '@/utils/getUserDetails';
+import SvgIcon from '@/app/_components/icons/container';
 
 const useEmployeeDashboardPage = () => {
   const router = useRouter();
+  const [userDetails, setUserDetails] = useState<{
+    name: string;
+    email: string;
+  } | null>(null);
+
+  useEffect(() => {
+    const fetchDetails = async () => {
+      const details = await getUserDetails();
+      if (details) {
+        setUserDetails(details);
+      }
+    };
+    fetchDetails();
+  }, []);
+
+  const headerIconSize = 24;
+
   const pageProps: PageProps = {
-    text: 'Dashboard',
+    title: 'Dashboard',
     hasButtons: true,
     leftButton: {
       type: ButtonType.outlinedBlue,
@@ -50,9 +70,9 @@ const useEmployeeDashboardPage = () => {
   };
 
   const profileProps: ProfileProps = {
-    image: '/image/team/mattew.png',
-    name: 'John Doe',
-    role: 'Software Engineer',
+    image: '',
+    name: userDetails?.name ?? '',
+    role: 'Human Resources',
   };
 
   const sectionGroups: SectionCardContainerProps[][] = [
@@ -64,7 +84,15 @@ const useEmployeeDashboardPage = () => {
     ],
     [
       {
+        headerIcon: (
+          <SvgIcon
+            path={icon.workstation}
+            width={headerIconSize}
+            height={headerIconSize}
+          />
+        ),
         title: 'Device Management',
+        periodClick: () => router.push(route.employee.device.home),
         children: (
           <DetailGroup
             details={[
@@ -81,7 +109,15 @@ const useEmployeeDashboardPage = () => {
         ),
       },
       {
+        headerIcon: (
+          <SvgIcon
+            path={icon.cube}
+            width={headerIconSize}
+            height={headerIconSize}
+          />
+        ),
         title: 'App Management',
+        periodClick: () => router.push(route.employee.appRequest.home),
         children: (
           <DetailGroup
             details={[
@@ -98,6 +134,13 @@ const useEmployeeDashboardPage = () => {
         ),
       },
       {
+        headerIcon: (
+          <SvgIcon
+            path={icon.thunderbolt}
+            width={headerIconSize}
+            height={headerIconSize}
+          />
+        ),
         title: 'Recent Activity',
         children: <RecentActivityCardDetails />,
         periodClick: () => router.push(route.employee.dashboard.task),
@@ -117,6 +160,7 @@ const useEmployeeDashboardPage = () => {
     getGroupOneItemLayout,
     timeOff,
     profileProps,
+    headerIconSize,
   };
 };
 

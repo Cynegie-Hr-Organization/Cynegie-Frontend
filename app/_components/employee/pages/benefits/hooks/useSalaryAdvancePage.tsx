@@ -17,7 +17,7 @@ const useSalaryAdvancePage = () => {
   const pageProps: PageProps = {
     backText: 'Back to Benefits',
     onBackTextClick: () => router.push(route.employee.benefits.home),
-    text: 'Salary Advance',
+    title: 'Salary Advance',
     hasButtons: true,
     rightButton: {
       type: ButtonType.contained,

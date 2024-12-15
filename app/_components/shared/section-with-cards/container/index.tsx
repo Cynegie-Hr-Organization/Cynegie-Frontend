@@ -4,7 +4,9 @@ import { SectionCardContainerProps } from '../types';
 
 const SectionCardContainer: React.FC<SectionCardContainerProps> = (props) => {
   const {
+    headerIcon,
     title,
+    isCard,
     period,
     children,
     headerDivider = false,
@@ -12,8 +14,13 @@ const SectionCardContainer: React.FC<SectionCardContainerProps> = (props) => {
     periodClick,
   } = props;
   return (
-    <Stack sx={{ minHeight: '100%' }} gap={2}>
+    <Stack
+      className={`${isCard && 'common-card'}`}
+      sx={{ minHeight: '100%' }}
+      gap={2}
+    >
       <Header
+        headerIcon={headerIcon}
         title={title}
         period={period}
         periodFont={periodFont}

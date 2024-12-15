@@ -33,14 +33,14 @@ const UpcomingEvent = () => {
           <Stack direction='row' alignItems='center'>
             <div style={{ marginRight: '5px' }}>
               <Avatar
-                src='/account/sadiq.jpg'
+                src='/image/team/mattew.png'
                 sx={{ width: '20px', height: '20px' }}
               />
             </div>
             <div
               style={{ fontWeight: 500, fontSize: '14px', marginRight: '5px' }}
             >
-              Sadiq
+              Matthew
             </div>
             <div
               style={{ fontWeight: 400, fontSize: '12px', color: '#98A2B3' }}

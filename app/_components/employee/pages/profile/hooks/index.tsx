@@ -4,10 +4,27 @@ import {
   ButtonType,
 } from '@/app/_components/shared/page/heading/types';
 import { PageProps } from '@/app/_components/shared/page/types';
+import { useEffect, useState } from 'react';
+import { getUserDetails } from '@/utils/getUserDetails';
 
 const useEmployeeProfilePage = () => {
+  const [userDetails, setUserDetails] = useState<{
+    name: string;
+    email: string;
+  } | null>(null);
+
+  useEffect(() => {
+    const fetchDetails = async () => {
+      const details = await getUserDetails();
+      if (details) {
+        setUserDetails(details);
+      }
+    };
+    fetchDetails();
+  }, []);
+
   const pageProps: PageProps = {
-    text: 'Update Your Profile',
+    title: 'Update Your Profile',
   };
 
   const formProps: FormProps = {
@@ -17,22 +34,22 @@ const useEmployeeProfilePage = () => {
       {
         name: 'First Name',
         type: 'text',
-        value: 'Alibaba',
+        value: userDetails?.name.split(' ')[0] ?? '',
       },
       {
         name: 'Middle Name',
         type: 'text',
-        value: 'Victoria',
+        value: '',
       },
       {
         name: 'Last Name',
         type: 'text',
-        value: 'Udor',
+        value: userDetails?.name.split(' ')[1] ?? '',
       },
       {
         name: 'Email Address',
         type: 'text',
-        value: 'allivic@cynergie.co',
+        value: userDetails?.email ?? '',
       },
       {
         name: 'Phone Number',
@@ -72,7 +89,7 @@ const useEmployeeProfilePage = () => {
     text: 'Edit',
   };
 
-  return { pageProps, formProps, editButtonProps };
+  return { pageProps, formProps, editButtonProps, userDetails };
 };
 
 export default useEmployeeProfilePage;

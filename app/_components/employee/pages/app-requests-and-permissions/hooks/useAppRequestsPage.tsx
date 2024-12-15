@@ -11,7 +11,7 @@ const useAppRequestsPage = () => {
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
 
   const pageProps: PageProps = {
-    text: 'Your Apps & Request',
+    title: 'Your Apps & Request',
     subtitle: 'All Apps and Requests Below',
     hasButtons: true,
     rightButton: {

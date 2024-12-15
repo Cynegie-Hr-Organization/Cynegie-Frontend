@@ -7,7 +7,7 @@ import { CardGroupProps } from '../types';
 const CardGroup: React.FC<CardGroupProps> = ({ data, gridItemSize }) => {
   return (
     <Grid2 container spacing={2}>
-      {data.map((card, index) => (
+      {data?.map((card, index) => (
         <Grid2 key={index} size={gridItemSize ?? { xs: 12, sm: 6 }}>
           <Card
             value={card.value}

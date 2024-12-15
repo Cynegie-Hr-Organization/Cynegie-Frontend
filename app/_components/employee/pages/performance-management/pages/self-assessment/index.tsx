@@ -12,7 +12,7 @@ const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   return (
     <Page
-      text='Self Assessment'
+      title='Self Assessment'
       smallHeading
       backText='Back to assessments'
       onBackTextClick={() =>

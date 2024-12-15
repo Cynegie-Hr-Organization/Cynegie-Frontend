@@ -83,6 +83,8 @@ const Button: React.FC<ButtonProps> = (props) => {
     fontWeight: 600,
   };
 
+  const deleteIconOnly = type === ButtonType.deleteWithIcon && !text;
+
   const button = (
     <button
       onClick={onClick}
@@ -103,6 +105,7 @@ const Button: React.FC<ButtonProps> = (props) => {
         }),
         ...(small && { fontSize: '14px' }),
         textWrap: 'nowrap',
+        ...(deleteIconOnly && { padding: 0 }),
       }}
       className={`w-fit sm:${fullWidth ? 'w-full' : 'w-fit'}`}
     >

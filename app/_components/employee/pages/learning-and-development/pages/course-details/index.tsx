@@ -20,7 +20,7 @@ const EmployeeLearningAndDevelopmentCourseDetails: React.FC<
     <>
       <Page
         smallHeading={props.smallHeading}
-        text={props.heading}
+        title={props.heading}
         backText={props.backText}
         onBackTextClick={props.onBackTextClick}
       >

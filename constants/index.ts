@@ -9,15 +9,26 @@ export const icon = {
   bin: `${iconBaseUrl}bin.svg`,
   gift: `${iconBaseUrl}gift.svg`,
   paperMoney: `${iconBaseUrl}paper-money.svg`,
+  paperMoneyTwo: `${iconBaseUrl}paper-money-two.svg`,
   grid: `${iconBaseUrl}grid.svg`,
   stack: `${iconBaseUrl}stack.svg`,
   message: `${iconBaseUrl}message.svg`,
   calendar: `${iconBaseUrl}calendar.svg`,
   calendarTwo: `${iconBaseUrl}calendar-2.svg`,
+  calendarThree: `${iconBaseUrl}calendar-three.svg`,
   clock: `${iconBaseUrl}clock.svg`,
+  clockTwo: `${iconBaseUrl}clock-two.svg`,
   user: `${iconBaseUrl}user.svg`,
   signOut: `${iconBaseUrl}sign-out.svg`,
   receipt: `${iconBaseUrl}receipt.svg`,
+  key: `${iconBaseUrl}key.svg`,
+  devices: `${iconBaseUrl}devices.svg`,
+  airplane: `${iconBaseUrl}airplane.svg`,
+  barChart: `${iconBaseUrl}barchart.svg`,
+  clipboard: `${iconBaseUrl}clipboard.svg`,
+  workstation: `${iconBaseUrl}workstation.svg`,
+  cube: `${iconBaseUrl}cube.svg`,
+  thunderbolt: `${iconBaseUrl}thunderbolt.svg`,
 };
 
 export const color = {
@@ -148,6 +159,11 @@ const basePath = {
   upcomingWidget: 'upcoming-widget/',
   task: 'task/',
   performanceSummary: 'performance-summary/',
+  attendance: 'attendance/',
+  leave: 'leave-management/',
+  profile: 'profile/',
+  device: 'device-management/',
+  appRequest: 'app-request',
 };
 
 export const route = {
@@ -173,6 +189,21 @@ export const route = {
       upcomingWidget: `${basePath.employee}${basePath.upcomingWidget}`,
       task: `${basePath.employee}${basePath.task}`,
       performanceSummary: `${basePath.employee}${basePath.performanceSummary}`,
+    },
+    attendance: {
+      home: `${basePath.employee}${basePath.attendance}`,
+    },
+    leave: {
+      home: `${basePath.employee}${basePath.leave}`,
+    },
+    profile: {
+      home: `${basePath.employee}${basePath.profile}`,
+    },
+    device: {
+      home: `${basePath.employee}${basePath.device}`,
+    },
+    appRequest: {
+      home: `${basePath.employee}${basePath.appRequest}`,
     },
   },
 };

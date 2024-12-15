@@ -36,7 +36,7 @@ const EmployeeTask = () => {
 
   return (
     <>
-      <Page text='Review your tasks'>
+      <Page title='Review your tasks'>
         <div className='common-card'>
           <div className='flex flex-col gap-4 sm:flex-row sm:gap-0'>
             <h4 className='flex-grow'>Task</h4>

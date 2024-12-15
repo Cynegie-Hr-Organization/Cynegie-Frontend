@@ -9,7 +9,7 @@ const useNotificationPanelPage = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const pageProps: PageProps = {
-    text: 'Notification',
+    title: 'Notification',
     subtitle: 'All Notifications Below',
   };
 

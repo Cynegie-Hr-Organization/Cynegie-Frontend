@@ -1,7 +1,7 @@
 import { GoalDetailsProps } from './types';
 import AlignmentGoalDetails from './alignment';
 import GeneralGoalDetails from './general';
-import TabFormat from '@/app/_components/shared/tabs/index';
+import TabFormat from '@/app/_components/shared/tab-format';
 
 const GoalDetails: React.FC<GoalDetailsProps> = (props) => {
   const { generalDetails, alignmentDetails, tableTabs } = props;

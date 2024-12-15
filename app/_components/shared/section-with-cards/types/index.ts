@@ -2,9 +2,11 @@ import { ColorVariant } from '@/types';
 
 export type SectionWithCardsProps = {
   title: string;
+  isCard?: boolean;
   period?: string;
   headerDivider?: boolean;
-  cardsData: CardProps[];
+  cardsData?: CardProps[];
+  cardsGroup?: CardGroupProps;
 };
 
 export type CardProps = {
@@ -50,29 +52,33 @@ export type CardTitleProps = { text: string; size?: 'small' | 'large' };
 
 export type CardPeriodProps = {
   text: string;
-  font?: { size: number; weight: number; color: string };
+  isClickable?: boolean;
+  font?: { size?: number; weight?: number; color?: string };
 };
 
 export type CardHeaderProps = {
+  headerIcon?: React.ReactElement;
   title: string;
   period?: string;
   hasDivider?: boolean;
-  periodFont?: { size: number; weight: number; color: string };
+  periodFont?: { size?: number; weight?: number; color?: string };
   titleSize?: 'small' | 'large';
   periodClick?: () => void;
 };
 
 export type SectionCardContainerProps = {
+  headerIcon?: React.ReactElement;
   title: string;
   period?: string;
-  periodFont?: { size: number; weight: number; color: string };
+  periodFont?: { size?: number; weight?: number; color?: string };
   periodClick?: () => void;
   headerDivider?: boolean;
+  isCard?: boolean;
   children: React.ReactNode;
 };
 
 export type CardGroupProps = {
-  data: CardProps[];
+  data?: CardProps[];
   hasIcon?: boolean;
   gridItemSize?: GridItemSize;
 };
