@@ -27,7 +27,7 @@ export type ModalProps = {
 
 export type ModalData = Omit<ModalProps, 'open' | 'onClose'>;
 
-export type InputField = {
+export type InputFieldProps = {
   name?: string;
   type: InputFieldType;
   placeholder?: string;
@@ -35,6 +35,7 @@ export type InputField = {
   value?: string | number;
   setValue?: Dispatch<SetStateAction<string | number | undefined>>;
   selectValControlledFromOutside?: boolean;
+  sideButton?: ButtonProps;
 };
 
 export type InputFieldOption = { label: string; value: string | number };
@@ -48,4 +49,5 @@ export type InputFieldType =
   | 'date-range'
   | 'time'
   | 'editor'
-  | 'drag-upload';
+  | 'drag-upload'
+  | 'multi-select';

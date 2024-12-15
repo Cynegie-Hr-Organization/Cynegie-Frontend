@@ -7,7 +7,7 @@ import { PageProps } from '@/app/_components/shared/page/types';
 
 const useEmployeeProfilePage = () => {
   const pageProps: PageProps = {
-    text: 'Update Your Profile',
+    title: 'Update Your Profile',
   };
 
   const formProps: FormProps = {

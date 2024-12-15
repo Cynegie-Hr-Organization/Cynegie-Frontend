@@ -1,9 +1,9 @@
 import { GridLayout } from '@/utils/grid-layout';
 import { ButtonGroupProps } from '../../button-group/types';
-import { InputField } from '@/app/_components/employee/modal/types';
+import { InputFieldProps } from '@/app/_components/employee/modal/types';
 
 export type FormProps = {
-  inputFields?: InputField[];
+  inputFields?: InputFieldProps[];
   isCard?: boolean;
   gridSpacing?: number;
   layout?: GridLayout;

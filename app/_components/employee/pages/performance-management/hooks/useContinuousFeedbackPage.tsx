@@ -17,7 +17,7 @@ const useContinuousFeedbackPage = () => {
 
   const continuousFeedbackPageData: PageProps = {
     backText: 'Back to Performance Management',
-    text: 'Continuous Feedback',
+    title: 'Continuous Feedback',
     onBackTextClick: () =>
       router.push(route.employee.performanceManagement.home),
     hasButtons: true,

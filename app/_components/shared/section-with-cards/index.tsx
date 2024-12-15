@@ -4,14 +4,23 @@ import SectionCardContainer from './container';
 import { SectionWithCardsProps } from './types';
 
 const SectionWithCards: React.FC<SectionWithCardsProps> = (props) => {
-  const { title, period, headerDivider = false, cardsData } = props;
+  const {
+    title,
+    period,
+    headerDivider = false,
+    cardsData,
+    cardsGroup,
+    isCard = false,
+  } = props;
   return (
     <SectionCardContainer
       title={title}
+      isCard={isCard}
       period={period}
       headerDivider={headerDivider}
     >
-      <CardGroup data={cardsData} />
+      {cardsData && <CardGroup data={cardsData} />}
+      {cardsGroup && <CardGroup {...cardsGroup} />}
     </SectionCardContainer>
   );
 };

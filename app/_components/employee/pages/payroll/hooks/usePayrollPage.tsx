@@ -8,7 +8,7 @@ import { ModalProps } from '../../../modal/types';
 const usePayrollPage = () => {
   const [openPayrollSlip, setOpenPayrollSlip] = useState(false);
   const pageProps: PageProps = {
-    text: 'Employee Payroll Dashboard',
+    title: 'Employee Payroll Dashboard',
     subtitle: 'Access your Employee Payroll Dashboard',
     hasButtons: true,
     leftButton: {

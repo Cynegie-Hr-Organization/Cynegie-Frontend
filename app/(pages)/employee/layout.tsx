@@ -1,7 +1,7 @@
 'use client';
 
 import Header from '@/app/_components/shared/header';
-import Sidebar from '@/app/_components/shared/sidebar';
+import Sidebar from '@/app/_components/shared/sidebar/employee';
 import { ReactNode, useState } from 'react';
 
 const AdminLayout = ({ children }: { children: ReactNode }) => {

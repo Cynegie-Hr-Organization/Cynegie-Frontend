@@ -3,7 +3,7 @@ import { TableAction } from '../../../table/types';
 export type PageHeadingProps = {
   type?: HeadingType;
   smallHeading?: boolean;
-  text?: string;
+  title?: string;
   backText?: string;
   subtitle?: string;
   hasButtons?: boolean;

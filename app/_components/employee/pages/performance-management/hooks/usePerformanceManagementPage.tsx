@@ -20,7 +20,7 @@ const usePerformanceManagementPage = () => {
   ];
 
   const performanceManagementPageData: PageProps = {
-    text: 'Performance Management',
+    title: 'Performance Management',
     hasButtons: true,
     leftButton: {
       text: 'Actions',

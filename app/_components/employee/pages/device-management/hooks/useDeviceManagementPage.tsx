@@ -10,7 +10,7 @@ const useDeviceManagementPage = () => {
   const [openReturnModal, setOpenReturnModal] = useState(false);
 
   const pageProps: PageProps = {
-    text: 'Employee Device Management',
+    title: 'Employee Device Management',
     subtitle: 'Access your Employee Device Dashboard',
   };
 

@@ -9,7 +9,7 @@ const useDevelopmentPlanPage = () => {
     backText: 'Back to Performance Management',
     onBackTextClick: () =>
       router.push(route.employee.performanceManagement.home),
-    text: 'Development Plan',
+    title: 'Development Plan',
     smallHeading: true,
   };
 

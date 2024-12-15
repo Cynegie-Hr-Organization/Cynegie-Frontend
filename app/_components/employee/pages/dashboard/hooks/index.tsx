@@ -11,7 +11,7 @@ import { route } from '@/constants';
 const useEmployeeDashboardPage = () => {
   const router = useRouter();
   const pageProps: PageProps = {
-    text: 'Dashboard',
+    title: 'Dashboard',
     hasButtons: true,
     leftButton: {
       type: ButtonType.outlinedBlue,

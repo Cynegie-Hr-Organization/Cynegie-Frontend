@@ -13,7 +13,7 @@ const useLeaveManagementPage = () => {
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
 
   const pageData: PageProps = {
-    text: 'Leave Management',
+    title: 'Leave Management',
     subtitle: 'Access your Leave Management',
     hasButtons: true,
     rightButton: {

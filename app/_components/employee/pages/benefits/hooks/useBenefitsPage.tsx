@@ -16,7 +16,7 @@ const useBenefitsPage = () => {
   const router = useRouter();
 
   const pageProps: PageProps = {
-    text: 'Benefits',
+    title: 'Benefits',
     subtitle: 'All your benefits below',
     hasButtons: true,
     leftButton: {

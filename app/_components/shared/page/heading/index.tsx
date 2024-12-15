@@ -10,7 +10,7 @@ const PageHeading: React.FC<PageHeadingProps> = (props) => {
       {props.backText && (
         <div
           onClick={props.onBackTextClick}
-          className={`${props.text ? 'mb-6' : 'mb-[-10]'}`}
+          className={`${props.title ? 'mb-6' : 'mb-[-10]'}`}
         >
           <HeadingBack text={props.backText} />
         </div>
@@ -24,7 +24,7 @@ const PageHeading: React.FC<PageHeadingProps> = (props) => {
                 : 'section-heading'
             }
           >
-            {props.text}
+            {props.title}
           </div>
           {props.subtitle && (
             <div

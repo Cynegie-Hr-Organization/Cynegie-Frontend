@@ -47,7 +47,7 @@ const Modal: React.FC<ModalProps> = (props) => {
           <Stack gap={reduceVerticalGap ? 2 : 4} padding={3}>
             {hasHeading && (
               <Heading
-                text={title}
+                title={title}
                 subtitle={subtitle}
                 type='modal'
                 onCloseClick={onClose}
