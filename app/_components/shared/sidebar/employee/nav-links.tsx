@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { FaChevronDown } from 'react-icons/fa6';
 import { RxDashboard } from 'react-icons/rx';
-import { HiOutlineChartBar, HiOutlineUserPlus } from 'react-icons/hi2';
-import { TbFileUpload } from 'react-icons/tb';
-import { LiaMoneyBillWaveSolid } from 'react-icons/lia';
+import { /*HiOutlineChartBar,*/ HiOutlineUserPlus } from 'react-icons/hi2';
+// import { TbFileUpload } from 'react-icons/tb';
+// import { LiaMoneyBillWaveSolid } from 'react-icons/lia';
 import { addNavItemEllipsis } from '@/utils';
 
 const NavLinks = ({
