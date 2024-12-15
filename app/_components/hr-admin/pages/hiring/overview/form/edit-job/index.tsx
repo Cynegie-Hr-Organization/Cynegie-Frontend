@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
@@ -136,14 +135,12 @@ export default function EditJobForm({
 
       const updatedData = Array.from(modifiedFields).reduce((acc, key) => {
         const value = formData[key as keyof CreateJobProps];
-
         // Normalize array fields to ensure type consistency
         if (Array.isArray(value)) {
           acc[key as keyof CreateJobProps] = value as any;
         } else if (value !== undefined) {
           acc[key as keyof CreateJobProps] = value as any;
         }
-
         return acc;
       }, {} as Partial<CreateJobProps>);
 

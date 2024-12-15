@@ -47,11 +47,11 @@ const HrAdminGeneratePayrollReport = () => {
   console.log(dateRange);
 
   return (
-    <Stack gap={3} mx={5} mb={10} mt={6}>
+    <Stack gap={3} mb={10} mt={6}>
       <div className="section-heading">Payroll Report Generator</div>
       <div
         className="common-card"
-        style={{ padding: "50px", paddingBottom: "80px" }}
+        style={{ paddingBottom: "80px" }}
       >
         <Stack gap={4}>
           <Grid2 spacing={2} container>

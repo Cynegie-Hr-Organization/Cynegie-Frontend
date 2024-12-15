@@ -140,27 +140,6 @@ const DesktopTask = () => {
   );
 };
 
-// const ActionMenu = ({ trigger }: { trigger: ReactNode }) => {
-//   const router = useRouter();
-//   return (
-//     <AppMenubar
-//       menuItems={
-//         <ul className='flex flex-col items-start w-full'>
-//           <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-//             <button className=''>Edit Template</button>
-//           </li>
-//           <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-//             <button onClick={() => router.push(`/hr-admin/onboarding/template/new-template/templateId`)}>Preview Template</button>
-//           </li>
-//           <li className='w-full hover:bg-gray-100 px-4 py-2 rounded-md'>
-//             <button className='text-red-500'>Delete Task</button>
-//           </li>
-//         </ul>
-//       }>
-//       {trigger}
-//     </AppMenubar>
-//   )
-// };
 
 function PopoverMenu() {
   return (

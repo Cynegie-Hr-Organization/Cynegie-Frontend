@@ -9,7 +9,11 @@ import { RiSearchLine } from "react-icons/ri";
 import { useRouter } from "next/dist/client/components/navigation";
 import AppMenubar from "@/app/_components/shared/menubar";
 
-const NewHireList = () => {
+
+
+
+
+const TemplateTable = () => {
   const [templates, setTemplates] = useState([
     {
       id: 1,
@@ -132,34 +136,28 @@ const ActionMenu = ({ onDelete }: { onDelete: () => void }) => {
   const router = useRouter();
   return (
     <AppMenubar
-      overrideClassName="border-none"
-      menuItems={
-        <ul className="flex flex-col items-start w-full">
-          <li className="w-full hover:bg-gray-100 px-4 py-2 rounded-md">
-            <button className="">Edit Template</button>
-          </li>
-          <li className="w-full hover:bg-gray-100 px-4 py-2 rounded-md">
-            <button
-              onClick={() =>
-                router.push(
-                  `/hr-admin/onboarding/template/new-template/templateId`,
-                )
-              }
-            >
-              Preview Template
-            </button>
-          </li>
-          <li className="w-full hover:bg-gray-100 px-4 py-2 rounded-md">
-            <button onClick={onDelete} className="text-red-500">
-              Delete Task
-            </button>
-          </li>
-        </ul>
-      }
-    >
+      menuItems={[
+        {
+          key: 'edit',
+          label: 'Edit Template',
+          className: 'text-left'
+        },
+        {
+          key: 'preview',
+          label: 'Preview Template',
+          onClick: () => router.push(`/hr-admin/onboarding/template/new-template/templateId`),
+          className: 'text-left'
+        },
+        {
+          key: 'delete',
+          label: 'Delete Task',
+          onClick: onDelete,
+          className: 'text-left text-red-500'
+        }
+      ]}>
       <PiDotsThreeVerticalBold />
     </AppMenubar>
   );
 };
 
-export default NewHireList;
+export default TemplateTable;

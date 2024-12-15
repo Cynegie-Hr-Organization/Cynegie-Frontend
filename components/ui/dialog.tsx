@@ -43,8 +43,8 @@ const DialogContent = React.forwardRef<
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-        <div className="border-none rounded-full h-10 w-10 bg-gray-200 flex items-center justify-center">
+      <DialogPrimitive.Close className="absolute right-4 top-4 opacity-70 ring-offset-background rounded-full focus:ring-1 focus:ring-primary border-none outline-none transition-opacity hover:opacity-100 focus:outline-none focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-primary">
+        <div className='border-none rounded-full h-10 w-10 bg-gray-200 flex items-center justify-center'>
           <IoCloseOutline />
         </div>
         <span className="sr-only">Close</span>

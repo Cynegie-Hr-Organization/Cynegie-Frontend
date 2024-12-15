@@ -1,12 +1,12 @@
-"use client";
+"use client"
 
-import AppButton from "@/app/_components/shared/button";
-import CardLayout from "@/app/_components/shared/cards";
-import { AppDatePicker } from "@/app/_components/shared/date-picker";
-import InputText from "@/app/_components/shared/input-text";
-import { AppSelect } from "@/app/_components/shared/select";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import AppButton from "@/app/_components/shared/button"
+import CardLayout from "@/app/_components/shared/cards"
+import { AppDatePicker } from "@/app/_components/shared/date-picker"
+import InputText from "@/app/_components/shared/input-text"
+import { AppSelect } from "@/app/_components/shared/select"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 const NewSelfAssessmentPage = () => {
   const router = useRouter();
@@ -17,7 +17,7 @@ const NewSelfAssessmentPage = () => {
     employees: [""],
     dueDate: "",
     template: "",
-  });
+  })
 
   return (
     <div className="space-y-8">
@@ -34,9 +34,7 @@ const NewSelfAssessmentPage = () => {
                 placeholder="Enter Name"
                 value={formData.assessmentName}
                 id="assessment-name"
-                onChange={(e) =>
-                  setFormData({ ...formData, assessmentName: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, assessmentName: e.target.value })}
               />
 
               <AppSelect
@@ -47,9 +45,7 @@ const NewSelfAssessmentPage = () => {
                 ]}
                 label="Department"
                 placeholder="Department"
-                onChange={(value) =>
-                  setFormData({ ...formData, department: value })
-                }
+                onChange={(value) => setFormData({ ...formData, department: value })}
               />
             </div>
 
@@ -62,26 +58,14 @@ const NewSelfAssessmentPage = () => {
                 ]}
                 label="Employees"
                 placeholder="Select Employees"
-                onChange={(value) =>
-                  setFormData({
-                    ...formData,
-                    employees: [...formData.employees, value],
-                  })
-                }
+                onChange={(value) => setFormData({ ...formData, employees: [...formData.employees, value] })}
               />
 
               <AppDatePicker
                 label="Due Date"
                 placeholder="Select Date"
-                selectedDate={
-                  formData.dueDate ? new Date(formData.dueDate) : new Date()
-                }
-                setSelectedDate={(value) =>
-                  setFormData({
-                    ...formData,
-                    dueDate: value?.toISOString() ?? "",
-                  })
-                }
+                selectedDate={formData.dueDate ? new Date(formData.dueDate) : new Date()}
+                setSelectedDate={(value) => setFormData({ ...formData, dueDate: value?.toISOString() ?? "" })}
               />
             </div>
 
@@ -93,20 +77,14 @@ const NewSelfAssessmentPage = () => {
               ]}
               label="Template"
               placeholder="Select Template"
-              onChange={(value) =>
-                setFormData({ ...formData, template: value })
-              }
+              onChange={(value) => setFormData({ ...formData, template: value })}
             />
           </div>
 
           <AppButton
             label="Preview"
             className="font-bold py-0 px-0 w-max md:w-max disabled:text-gray-500 text-primary"
-            onClick={() => {
-              router.push(
-                "/hr-admin/performance/self-assessment/template-preview",
-              );
-            }}
+            onClick={() => { router.push("/hr-admin/performance/self-assessment/template-preview") }}
           />
         </div>
       </CardLayout>
@@ -115,18 +93,16 @@ const NewSelfAssessmentPage = () => {
         <AppButton
           label="Save & Continue Later"
           className="btn-secondary"
-          onClick={() => {}}
+          onClick={() => { }}
         />
         <AppButton
           label="Submit"
           className="disabled:btn-inactive btn-primary"
-          onClick={() => {
-            router.push("/hr-admin/performance/self-assessment");
-          }}
+          onClick={() => { router.push("/hr-admin/performance/self-assessment") }}
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default NewSelfAssessmentPage;
+export default NewSelfAssessmentPage

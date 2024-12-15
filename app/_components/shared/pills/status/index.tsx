@@ -1,7 +1,8 @@
-import { Box } from "@mui/material";
+import { ColorVariant } from '@/types';
+import { Box } from '@mui/material';
 
 const StatusPill: React.FC<{
-  variant: "success" | "error" | "warning";
+  variant?: ColorVariant;
   text: string;
   large?: boolean;
 }> = ({ variant, text }) => {

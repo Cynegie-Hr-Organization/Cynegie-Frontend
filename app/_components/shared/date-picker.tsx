@@ -12,25 +12,23 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function AppDatePicker({
-  label,
-  requiredField = false,
-  selectedDate,
-  setSelectedDate,
-  placeholder = "Pick a date",
-}: {
-  label?: string;
-  requiredField?: boolean;
-  selectedDate?: Date;
-  setSelectedDate: (date?: Date) => void;
-  placeholder?: string;
+export function AppDatePicker({ label, requiredField = false, selectedDate, setSelectedDate, placeholder = "Pick a date" }: {
+  label?: string,
+  requiredField?: boolean,
+  selectedDate?: Date,
+  setSelectedDate: (date?: Date) => void,
+  placeholder?: string
 }) {
+
+  const [open, setOpen] = React.useState(false)
+
   const handleDateChange = (date?: Date) => {
-    setSelectedDate(date);
-  };
+    setSelectedDate(date)
+    setOpen(false)
+  }
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <div className="flex flex-col gap-2 w-full">
           {label && (
@@ -48,12 +46,7 @@ export function AppDatePicker({
               !selectedDate && "text-muted-foreground",
             )}
           >
-            {selectedDate ? (
-              format(selectedDate, "MMM d, yyyy")
-            ) : (
-              <span className="text-gray-400">{placeholder}</span>
-            )}{" "}
-            <Calendar1 />
+            {selectedDate ? format(selectedDate, "MMM d, yyyy") : <span className="text-gray-400">{placeholder}</span>} <Calendar1 />
           </button>
         </div>
       </PopoverTrigger>

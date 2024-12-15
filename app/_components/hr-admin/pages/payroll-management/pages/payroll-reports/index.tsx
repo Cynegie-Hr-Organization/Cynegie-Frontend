@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 const HrAdminPayrollReportsPage = () => {
   const router = useRouter();
   return (
-    <Stack gap={3} mx={5} mb={10} mt={6}>
+    <Stack gap={3} mb={10} mt={6}>
       <Stack direction="row" alignItems="center">
         <div style={{ flexGrow: 1 }} className="section-heading">
           Payroll Reports

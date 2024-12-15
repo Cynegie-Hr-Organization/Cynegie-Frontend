@@ -1,4 +1,8 @@
-import { ChevronLeft, ChevronRight, FilterList } from "@mui/icons-material";
+import {
+  ChevronLeft,
+  ChevronRight,
+  FilterList,
+} from "@mui/icons-material";
 import {
   Avatar,
   Box,

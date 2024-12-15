@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import { PageHeader } from "@/app/_components/hr-admin/performance/page-header";
-import PerformanceTemplateTable from "./table";
+import { PageHeader } from "@/app/_components/hr-admin/performance/page-header"
+import PerformanceTemplateTable from "./table"
 
 const PerformanceTemplatePage = () => {
   return (
@@ -14,7 +14,7 @@ const PerformanceTemplatePage = () => {
       />
       <PerformanceTemplateTable />
     </div>
-  );
-};
+  )
+}
 
-export default PerformanceTemplatePage;
+export default PerformanceTemplatePage

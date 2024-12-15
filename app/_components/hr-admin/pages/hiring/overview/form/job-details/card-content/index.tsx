@@ -29,11 +29,7 @@ const JobCardContent: React.FC<JobCardContentProps> = ({ job }) => {
       <div>
         <p className="mb-1 font-sans text-sm font-semibold">Required Skills</p>
         <div
-          dangerouslySetInnerHTML={{
-            __html: Array.isArray(job.requiredSkills)
-              ? job.requiredSkills.join(", ")
-              : job.requiredSkills || "",
-          }}
+          dangerouslySetInnerHTML={{ __html: Array.isArray(job.requiredSkills) ? job.requiredSkills.join(", ") : job.requiredSkills || "" }}
           className="mt-1 text-xs block py-2"
         />
       </div>

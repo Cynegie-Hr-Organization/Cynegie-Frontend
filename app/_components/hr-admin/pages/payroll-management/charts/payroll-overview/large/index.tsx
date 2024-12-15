@@ -32,33 +32,26 @@ const CustomLegend = (props: {
 }) => {
   const { payload } = props;
   return (
-    <div style={{ display: "flex", justifyContent: "flex-end", gap: "20px" }}>
-      {payload.map(
-        (
-          entry: {
-            value: string;
-            color: string;
-          },
-          index: number,
-        ) => (
+    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px' }}>
+      {payload.map((entry: {
+        value: string;
+        color: string;
+      }, index: number) => (
+        <div
+          key={`item-${index}`}
+          style={{ display: "flex", alignItems: "center", gap: "8px" }}
+        >
           <div
-            key={`item-${index}`}
-            style={{ display: "flex", alignItems: "center", gap: "8px" }}
-          >
-            <div
-              style={{
-                width: "12px",
-                height: "12px",
-                backgroundColor: entry.color,
-                borderRadius: "50%",
-              }}
-            />
-            <span style={{ fontSize: "14px", color: "#333" }}>
-              {entry.value}
-            </span>
-          </div>
-        ),
-      )}
+            style={{
+              width: "12px",
+              height: "12px",
+              backgroundColor: entry.color,
+              borderRadius: "50%",
+            }}
+          />
+          <span style={{ fontSize: "14px", color: "#333" }}>{entry.value}</span>
+        </div>
+      ))}
     </div>
   );
 };

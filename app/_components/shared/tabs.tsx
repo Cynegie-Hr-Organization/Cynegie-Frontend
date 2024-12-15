@@ -27,14 +27,9 @@ const AppTabs: React.FC<TabsProps> = ({ tabs }) => {
         {tabs.map((tab, index) => (
           <button
             key={index}
-            ref={(el) => {
-              tabRefs.current[index] = el;
-            }}
-            className={`transition-all duration-300 relative p-2 ${
-              activeTab === index
-                ? "text-primary font-semibold"
-                : "text-gray-500"
-            }`}
+            ref={(el) => { tabRefs.current[index] = el }}
+            className={`transition-all duration-300 relative p-2 ${activeTab === index ? "text-primary font-semibold" : "text-gray-500"
+              }`}
             onClick={() => {
               setActiveTab(index);
               tab.onClick();

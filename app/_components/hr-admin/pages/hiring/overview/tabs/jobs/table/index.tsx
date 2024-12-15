@@ -182,28 +182,26 @@ const JobsTabTable = ({
                   </td>
                   <td className="p-2 text-center">
                     <AppMenubar
-                      menuItems={
-                        <ul className="flex flex-col w-full text-sm">
-                          <li
-                            className="p-2 hover:bg-gray-100 cursor-pointer"
-                            onClick={() => handleViewDetails(job.id)}
-                          >
-                            View Details
-                          </li>
-                          <li
-                            className="p-2 hover:bg-gray-100 cursor-pointer"
-                            onClick={() => handleEditDetails(job.id)}
-                          >
-                            Edit
-                          </li>
-                          <li
-                            className="p-2 hover:bg-gray-100 cursor-pointer text-red-500"
-                            onClick={() => handleDeleteClick(job.id)}
-                          >
-                            Delete
-                          </li>
-                        </ul>
-                      }
+                     menuItems={[
+      {
+        key: "view-details",
+        label: "View Details",
+        onClick: () => handleViewDetails(job.id),
+      },
+                        {
+                key: "edit",
+
+        label: "Edit",
+        onClick: () => handleEditDetails(job.id),
+      },
+                        {
+                key: "delete",
+
+        label: "Delete",
+        onClick: () => handleDeleteClick(job.id),
+        className: "text-red-500",
+      },
+    ]}
                     >
                       <MdMoreVert size={24} className="text-gray-800" />
                     </AppMenubar>

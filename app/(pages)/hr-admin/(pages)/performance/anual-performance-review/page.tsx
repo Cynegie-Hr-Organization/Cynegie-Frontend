@@ -164,6 +164,7 @@ const PerformanceReviewCard = () => {
 };
 
 const EmployeesTable = () => {
+  const router = useRouter();
   return (
     <div className="space-y-4">
       <h3 className="text-xl font-bold text-black">Employees </h3>

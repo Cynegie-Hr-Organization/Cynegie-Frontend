@@ -92,7 +92,7 @@ const CandidatesTable = () => {
                 ].map((field, columnIndex) =>
                   columnIndex == 0 ? (
                     <TableCell key={field}>
-                      <Stack direction="row" alignItems="center" gap={2}>
+                      <Stack direction='row' alignItems='center' gap={2}>
                         <Box>{field}</Box>
                       </Stack>
                     </TableCell>

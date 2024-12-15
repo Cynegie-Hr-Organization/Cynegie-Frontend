@@ -1,3 +1,6 @@
+import { color } from '@/constants';
+import { ColorVariant } from '@/types';
+
 export function getMonthRange(monthIndex: number, year: number): string {
   const monthNames = [
     { name: "Jan", days: 31 },
@@ -24,4 +27,54 @@ export function getMonthRange(monthIndex: number, year: number): string {
 
   const month = monthNames[monthIndex];
   return `1 - ${month.days} ${month.name} ${year}`;
+}
+
+export const getColorVariant = (variant?: ColorVariant) => {
+  switch (variant) {
+    case 'success':
+      return {
+        fill: color.success.dark,
+        backgroundColor: color.success.light,
+      };
+    case 'info':
+      return {
+        fill: color.info.dark,
+        backgroundColor: color.info.light,
+      };
+    case 'warning':
+      return {
+        fill: color.warning.dark,
+        backgroundColor: color.warning.light,
+      };
+    case 'error':
+      return {
+        fill: color.error.dark,
+        backgroundColor: color.error.light,
+      };
+    case 'grey':
+      return {
+        fill: color.grey.dark,
+        backgroundColor: color.grey.light,
+      };
+    default:
+      return {
+        fill: '',
+        backgroundColor: '',
+      };
+  }
+};
+
+export function formatFileSize(bytes: number): string {
+  const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+  if (bytes === 0) return '0 B';
+
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  const size = (bytes / Math.pow(1024, i)).toFixed(2);
+
+  return `${size} ${units[i]}`;
+}
+
+export function addNavItemEllipsis(text: string) {
+  const limit = 20;
+  return text.length > limit ? `${text.slice(0, limit) + '...'}` : text;
 }

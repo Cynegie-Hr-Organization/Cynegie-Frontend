@@ -1,8 +1,12 @@
 import { Avatar, Stack } from "@mui/material";
 
+
 const Todo = () => {
   return (
-    <Stack gap={3} className="flex border border-[#E4E7EC] rounded-xl p-[15px]">
+    <Stack
+      gap={3}
+      className="flex border border-[#E4E7EC] rounded-xl p-[15px]"
+    >
       <div className="flex justify-between items-center">
         <div className="flex relative h-max">
           <div className="w-1 bg-red-500 rounded-full mr-2"></div>
@@ -46,7 +50,9 @@ const Todo = () => {
       </div>
       <div className="flex">
         <div className="flex-grow">
-          <span className="font-normal text-[10px] text-[#909090]">Due:</span>{" "}
+          <span className="font-normal text-[10px] text-[#909090]">
+            Due:
+          </span>{" "}
           <span className="font-semibold text-[#1B1B1B] text-[11px]">
             January 21st, 2024
           </span>

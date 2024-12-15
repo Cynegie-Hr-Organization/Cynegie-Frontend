@@ -1,0 +1,13 @@
+app/_components/hr-admin/pages/payroll-management/* merge=accept-current
+app/_components/hr-admin/pages/hiring/* merge=accept-current
+app/*/hr-admin/*/**/* merge=accept-current
+# app/(pages)/hr-admin/(pages)/**/* merge=accept-current
+# app/(pages)/hr-admin/(pages)/*/**/* merge=accept-current
+app/\(pages\)/hr-admin/\(pages\)/**/* merge=accept-current
+
+yarn.lock merge=accept-current
+.eslintrc.json merge=accept-current
+.gitconfig merge=accept-current
+
+
+

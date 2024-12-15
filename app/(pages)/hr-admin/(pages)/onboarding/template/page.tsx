@@ -1,7 +1,7 @@
 "use client";
 
 import Appbutton from "@/app/_components/shared/buttons";
-import NewHireList from "./new-hire-list";
+import TemplateTable from "./new-hire-list";
 import { useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { Spinner } from "@/app/_components/shared/buttons";
@@ -35,7 +35,7 @@ const TemplatePage = () => {
       </div>
 
       <Suspense fallback={<Spinner />}>
-        <NewHireList />
+        <TemplateTable />
       </Suspense>
     </div>
   );

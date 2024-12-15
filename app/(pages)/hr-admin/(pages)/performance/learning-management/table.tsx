@@ -1,10 +1,10 @@
-"use client";
+'use client'
 
-import { AppSelect } from "@/app/_components/shared/select";
-import { LuListFilter } from "react-icons/lu";
-import { RiSearchLine } from "react-icons/ri";
-import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
-import AppButton from "@/app/_components/shared/button";
+import { AppSelect } from "@/app/_components/shared/select"
+import { LuListFilter } from "react-icons/lu"
+import { RiSearchLine } from "react-icons/ri"
+import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu"
+import AppButton from "@/app/_components/shared/button"
 
 const LearningManagementTable = () => {
   return (
@@ -12,22 +12,14 @@ const LearningManagementTable = () => {
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
         <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
           <RiSearchLine className="text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search here..."
-            className="w-full h-9 px-2 outline-none"
-          />
+          <input type="text" placeholder="Search here..." className="w-full h-9 px-2 outline-none" />
         </div>
 
-        <AppDropdownMenu
-          trigger={
-            <button
-              type="button"
-              className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2"
-            >
-              <LuListFilter /> Filter
-            </button>
-          }
+        <AppDropdownMenu trigger={
+          <button type="button" className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
+            <LuListFilter /> Filter
+          </button>
+        }
           menuItems={
             <div className="p-4 space-y-10">
               <div className="space-y-4">
@@ -39,7 +31,7 @@ const LearningManagementTable = () => {
                   ]}
                   label="Status"
                   placeholder="Pending"
-                  onChange={() => {}}
+                  onChange={() => { }}
                 />
 
                 <AppSelect
@@ -51,7 +43,7 @@ const LearningManagementTable = () => {
                   ]}
                   label="Date"
                   placeholder="Today"
-                  onChange={() => {}}
+                  onChange={() => { }}
                 />
               </div>
 
@@ -60,38 +52,36 @@ const LearningManagementTable = () => {
                 <AppButton label="Filter" className="btn-primary w-[90px]" />
               </div>
             </div>
-          }
-        />
+          } />
       </div>
 
-      <div className="-mx-5 mt-4">
-        <table className="w-full border-collapse">
-          <thead className="bg-[#F7F9FC]">
+      <div className='-mx-5 mt-4'>
+        <table className='w-full border-collapse'>
+          <thead className='bg-[#F7F9FC]'>
             <tr>
-              <th className="px-4 py-3 text-left">Employee Name</th>
-              <th className="px-4 py-3 text-left">Course Title</th>
-              <th className="px-4 py-3 text-left">Completion Date</th>
-              <th className="px-4 py-3 text-left">Progress</th>
+              <th className='px-4 py-3 text-left'>Employee Name</th>
+              <th className='px-4 py-3 text-left'>Course Title</th>
+              <th className='px-4 py-3 text-left'>Completion Date</th>
+              <th className='px-4 py-3 text-left'>Progress</th>
             </tr>
           </thead>
           <tbody>
             {Array.from(Array(5)).map((_, idx) => {
               return (
-                <tr
-                  key={idx}
-                  className="border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]"
-                >
-                  <td className="px-4 py-4">
-                    <p className="text-sm">Mark Johnson</p>
+                <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
+                  <td className='px-4 py-4'>
+                    <p className='text-sm'>Mark Johnson</p>
                   </td>
-                  <td className="px-4 py-4">
-                    <p className="text-sm">Advanced UX Design</p>
+                  <td className='px-4 py-4'>
+                    <p className='text-sm'>Advanced UX Design</p>
                   </td>
-                  <td className="px-4 py-4">
-                    <p className="text-sm">12 Jul 2024</p>
+                  <td className='px-4 py-4'>
+                    <p className='text-sm'>12  Jul  2024</p>
                   </td>
-                  <td className="px-4 py-4">
-                    <Progress percentage={60} />
+                  <td className='px-4 py-4'>
+                    <Progress
+                      percentage={60}
+                    />
                   </td>
                 </tr>
               );
@@ -100,21 +90,19 @@ const LearningManagementTable = () => {
         </table>
       </div>
     </div>
-  );
-};
+  )
+}
+
 
 const Progress = ({ percentage }: { percentage: number }) => {
   return (
     <div className="text-xs space-y-1 text-gray-700">
       <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-        <span
-          className="bg-primary h-full block transition-all duration-300"
-          style={{ width: `${percentage}%` }}
-        ></span>
+        <span className='bg-primary h-full block transition-all duration-300' style={{ width: `${percentage}%` }}></span>
       </div>
       <p className="w-full text-right">{percentage}%</p>
     </div>
-  );
-};
+  )
+}
 
-export default LearningManagementTable;
+export default LearningManagementTable
