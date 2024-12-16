@@ -167,13 +167,21 @@ const basePath = {
   appRequest: 'app-request/',
   employeeManagement: 'employee-management/',
   approvalManagement: 'approval/',
+  attendanceManagement: 'attendance/',
 };
 
 export const route = {
   hrAdmin: {
     employeeManagement: {
-      approvalManagement: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.approvalManagement}`,
-      requestDetails: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.approvalManagement}request-details`,
+      approvalManagement: {
+        home: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.approvalManagement}`,
+        requestDetails: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.approvalManagement}request-details`,
+      },
+      attendanceManagement: {
+        home: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.attendanceManagement}`,
+        bulkReport: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.attendanceManagement}bulk-report`,
+        individualReport: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.attendanceManagement}individual-report`,
+      },
     },
   },
   employee: {

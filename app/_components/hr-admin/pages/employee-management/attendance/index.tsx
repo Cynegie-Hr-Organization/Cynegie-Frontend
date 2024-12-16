@@ -5,10 +5,12 @@ import { ButtonType } from '@/app/_components/shared/page/heading/types';
 import TabFormat from '@/app/_components/shared/tab-format';
 import Table from '@/app/_components/shared/table';
 import { FieldType } from '@/app/_components/shared/table/types';
-import { APRStatusMap, AttendanceStatusMap } from '@/constants';
+import { AttendanceStatusMap, route } from '@/constants';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const HrAdminEmployeeAttendanceManagement = () => {
+  const router = useRouter();
   const [openAdjustAttendanceModal, setOpenAdjustAttendanceModal] =
     useState(false);
   const [openGenerateReportModal, setOpenGenerateReportModal] = useState(false);
@@ -19,7 +21,10 @@ const HrAdminEmployeeAttendanceManagement = () => {
       rightButton={{
         type: ButtonType.contained,
         text: 'Generate Attendance Report',
-        onClick: () => setOpenGenerateReportModal(true),
+        onClick: () =>
+          router.push(
+            route.hrAdmin.employeeManagement.attendanceManagement.bulkReport
+          ),
       }}
     >
       <TabFormat
@@ -82,7 +87,11 @@ const HrAdminEmployeeAttendanceManagement = () => {
                   },
                   {
                     name: 'Generate Report',
-                    onClick: () => {},
+                    onClick: () =>
+                      router.push(
+                        route.hrAdmin.employeeManagement.attendanceManagement
+                          .individualReport
+                      ),
                   },
                 ]}
               />
