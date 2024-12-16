@@ -31,7 +31,7 @@ const HrAdminEmployeeDirectory = () => {
       }}
     >
       <CardGroup
-        data={[
+        cards={[
           {
             labelText: 'Total Headcount',
             value: 190,
@@ -65,7 +65,7 @@ const HrAdminEmployeeDirectory = () => {
           period='See all'
           cardsGroup={{
             gridItemSize: { xs: 12, sm: 6 },
-            data: [
+            cards: [
               {
                 value: 190,
                 labelText: 'Total Working Hours',

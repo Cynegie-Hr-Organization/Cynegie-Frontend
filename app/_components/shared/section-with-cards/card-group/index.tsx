@@ -4,7 +4,7 @@ import SvgIcon from '@/app/_components/icons/container';
 import { icon } from '@/constants';
 import { CardGroupProps } from '../types';
 
-const CardGroup: React.FC<CardGroupProps> = ({ data, gridItemSize }) => {
+const CardGroup: React.FC<CardGroupProps> = ({ cards: data, gridItemSize }) => {
   return (
     <Grid2 container spacing={2}>
       {data?.map((card, index) => (

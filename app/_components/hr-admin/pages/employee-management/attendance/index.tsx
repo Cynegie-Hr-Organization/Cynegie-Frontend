@@ -13,7 +13,12 @@ const HrAdminEmployeeAttendanceManagement = () => {
   const router = useRouter();
   const [openAdjustAttendanceModal, setOpenAdjustAttendanceModal] =
     useState(false);
-  const [openGenerateReportModal, setOpenGenerateReportModal] = useState(false);
+  const [openBulkGenerateReportModal, setOpenBulkGenerateReportModal] =
+    useState(false);
+  const [
+    openIndividualGenerateReportModal,
+    setOpenIndividualGenerateReportModal,
+  ] = useState(false);
   return (
     <Page
       title='Attendance Managment'
@@ -21,10 +26,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
       rightButton={{
         type: ButtonType.contained,
         text: 'Generate Attendance Report',
-        onClick: () =>
-          router.push(
-            route.hrAdmin.employeeManagement.attendanceManagement.bulkReport
-          ),
+        onClick: () => setOpenBulkGenerateReportModal(true),
       }}
     >
       <TabFormat
@@ -87,11 +89,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
                   },
                   {
                     name: 'Generate Report',
-                    onClick: () =>
-                      router.push(
-                        route.hrAdmin.employeeManagement.attendanceManagement
-                          .individualReport
-                      ),
+                    onClick: () => setOpenIndividualGenerateReportModal(true),
                   },
                 ]}
               />
@@ -200,10 +198,10 @@ const HrAdminEmployeeAttendanceManagement = () => {
           }}
         />
       )}
-      {openGenerateReportModal && (
+      {openBulkGenerateReportModal && (
         <Modal
-          open={openGenerateReportModal}
-          onClose={() => setOpenGenerateReportModal(false)}
+          open={openBulkGenerateReportModal}
+          onClose={() => setOpenBulkGenerateReportModal(false)}
           title='Generate Attendance Report'
           subtitle='Select filters for the report'
           form={{
@@ -232,12 +230,59 @@ const HrAdminEmployeeAttendanceManagement = () => {
               leftButton: {
                 type: ButtonType.outlined,
                 text: 'Cancel',
-                onClick: () => setOpenGenerateReportModal(false),
+                onClick: () => setOpenBulkGenerateReportModal(false),
               },
               rightButton: {
                 type: ButtonType.contained,
                 text: 'Generate Report',
-                onClick: () => setOpenGenerateReportModal(false),
+                onClick: () =>
+                  router.push(
+                    route.hrAdmin.employeeManagement.attendanceManagement
+                      .bulkReport
+                  ),
+              },
+              position: 'center',
+            },
+          }}
+        />
+      )}
+      {openIndividualGenerateReportModal && (
+        <Modal
+          open={openIndividualGenerateReportModal}
+          onClose={() => setOpenIndividualGenerateReportModal(false)}
+          title='Generate Attendance Report'
+          subtitle='Customize the report details for Emmanuel Okpara'
+          form={{
+            gridSpacing: 3,
+            inputFields: [
+              {
+                name: 'Start Date',
+                type: 'date',
+              },
+              {
+                name: 'End Date',
+                type: 'date',
+              },
+              {
+                name: 'Attendance Status',
+                type: 'multi-select',
+                placeholder: 'Select',
+              },
+            ],
+            buttonGroup: {
+              leftButton: {
+                type: ButtonType.outlined,
+                text: 'Cancel',
+                onClick: () => setOpenIndividualGenerateReportModal(false),
+              },
+              rightButton: {
+                type: ButtonType.contained,
+                text: 'Generate Report',
+                onClick: () =>
+                  router.push(
+                    route.hrAdmin.employeeManagement.attendanceManagement
+                      .individualReport
+                  ),
               },
               position: 'center',
             },

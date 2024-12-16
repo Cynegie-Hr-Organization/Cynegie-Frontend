@@ -35,7 +35,7 @@ const useBenefitsPage = () => {
 
   const cardGroupProps: CardGroupProps = {
     gridItemSize: { xs: 12, sm: 6, md: 3 },
-    data: [
+    cards: [
       {
         labelText: 'Total Benefits Enrolled',
         value: '10',

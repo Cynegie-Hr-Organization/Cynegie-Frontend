@@ -78,7 +78,7 @@ export type SectionCardContainerProps = {
 };
 
 export type CardGroupProps = {
-  data?: CardProps[];
+  cards?: CardProps[];
   hasIcon?: boolean;
   gridItemSize?: GridItemSize;
 };

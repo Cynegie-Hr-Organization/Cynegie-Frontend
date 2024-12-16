@@ -30,7 +30,7 @@ const useSalaryAdvancePage = () => {
 
   const cardGroupProps: CardGroupProps = {
     gridItemSize: { xs: 12, sm: 6, md: 4 },
-    data: [
+    cards: [
       {
         labelText: 'Approved Requests',
         value: '10',

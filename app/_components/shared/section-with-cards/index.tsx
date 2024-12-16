@@ -19,7 +19,7 @@ const SectionWithCards: React.FC<SectionWithCardsProps> = (props) => {
       period={period}
       headerDivider={headerDivider}
     >
-      {cardsData && <CardGroup data={cardsData} />}
+      {cardsData && <CardGroup cards={cardsData} />}
       {cardsGroup && <CardGroup {...cardsGroup} />}
     </SectionCardContainer>
   );
