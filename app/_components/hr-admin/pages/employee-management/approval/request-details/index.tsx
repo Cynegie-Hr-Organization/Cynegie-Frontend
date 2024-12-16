@@ -17,7 +17,7 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
     <Page
       backText='Back to Approval Management'
       onBackTextClick={() =>
-        router.push(route.hrAdmin.employeeManagement.approvalManagement)
+        router.push(route.hrAdmin.employeeManagement.approvalManagement.home)
       }
     >
       <SectionCardContainer isCard title='Leave Request Details'>
@@ -112,7 +112,9 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
             type: ButtonType.contained,
             text: 'Confirm Approval',
             onClick: () =>
-              router.push(route.hrAdmin.employeeManagement.approvalManagement),
+              router.push(
+                route.hrAdmin.employeeManagement.approvalManagement.home
+              ),
           }}
         />
       )}
