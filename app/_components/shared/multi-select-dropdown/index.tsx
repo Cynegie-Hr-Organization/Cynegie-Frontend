@@ -215,22 +215,24 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
   }
 
   return (
-    <ReactSelect
-      {...props}
-      inputValue={selectInput}
-      onInputChange={onInputChange}
-      onChange={handleChange}
-      filterOption={customFilterOption}
-      components={{
-        Input: Input,
-        ...props.components,
-      }}
-      menuPlacement={props.menuPlacement ?? 'auto'}
-      onKeyDown={onKeyDown}
-      tabSelectsValue={false}
-      hideSelectedOptions={true}
-      backspaceRemovesValue={false}
-      blurInputOnSelect={true}
-    />
+    <div style={{ width: '100%' }}>
+      <ReactSelect
+        {...props}
+        inputValue={selectInput}
+        onInputChange={onInputChange}
+        onChange={handleChange}
+        filterOption={customFilterOption}
+        components={{
+          Input: Input,
+          ...props.components,
+        }}
+        menuPlacement={props.menuPlacement ?? 'auto'}
+        onKeyDown={onKeyDown}
+        tabSelectsValue={false}
+        hideSelectedOptions={true}
+        backspaceRemovesValue={false}
+        blurInputOnSelect={true}
+      />
+    </div>
   );
 };
