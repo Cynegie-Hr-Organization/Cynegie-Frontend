@@ -13,7 +13,7 @@ const TemplatePage = () => {
     <div>
       <div className=" flex items-center justify-between mb-11">
         <div>
-          <h3 className="text-lg font-semibold">Onboarding Templates</h3>
+          <h3 className="text-[18px] font-semibold">Onboarding Templates</h3>
           <p className="text-sm">Create and use templates</p>
         </div>
 
@@ -26,9 +26,11 @@ const TemplatePage = () => {
         />
 
         <Appbutton
-          buttonText='New Template'
-          className='bg-primary block md:hidden'
-          onClick={() => route.push("/hr-admin/onboarding/template/new-template")}
+          buttonText="New Template"
+          className="bg-primary block md:hidden"
+          onClick={() =>
+            route.push("/hr-admin/onboarding/template/new-template")
+          }
         />
       </div>
 

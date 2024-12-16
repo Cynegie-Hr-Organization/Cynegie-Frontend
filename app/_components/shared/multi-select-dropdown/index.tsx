@@ -21,18 +21,18 @@ export type MultiSelectProps<T> = {
   onChange: (selected: T[]) => void;
   isSelectAll?: boolean;
   components?: typeof components;
-  menuPlacement?: 'auto' | 'top' | 'bottom';
+  menuPlacement?: "auto" | "top" | "bottom";
 };
 
 export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
-  const [selectInput, setSelectInput] = useState<string>('');
+  const [selectInput, setSelectInput] = useState<string>("");
   const isAllSelected = useRef<boolean>(false);
-  const selectAllLabel = useRef<string>('Select all');
-  const allOption = { value: '*', label: selectAllLabel.current } as T;
+  const selectAllLabel = useRef<string>("Select all");
+  const allOption = { value: "*", label: selectAllLabel.current } as T;
 
   const filterOptions = (options: T[], input: string) =>
     options?.filter(({ label }: T) =>
-      label.toLowerCase().includes(input.toLowerCase())
+      label.toLowerCase().includes(input.toLowerCase()),
     );
 
   const comparator = (v1: T, v2: T) =>
@@ -48,7 +48,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
       filteredSelectedOptions?.length > 0 ? (
         <input
           key={optionProps.data.value}
-          type='checkbox'
+          type="checkbox"
           ref={(input) => {
             if (input) input.indeterminate = true;
           }}
@@ -56,12 +56,12 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
       ) : (
         <input
           key={optionProps.data.value}
-          type='checkbox'
+          type="checkbox"
           checked={optionProps.isSelected || isAllSelected.current}
           onChange={() => {}}
         />
       )}
-      <label style={{ marginLeft: '5px' }}>{optionProps.label}</label>
+      <label style={{ marginLeft: "5px" }}>{optionProps.label}</label>
     </components.Option>
   );
 
@@ -94,15 +94,15 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
 
   const onInputChange = (
     inputValue: string,
-    event: { action: InputAction }
+    event: { action: InputAction },
   ) => {
-    if (event.action === 'input-change') setSelectInput(inputValue);
-    else if (event.action === 'menu-close' && selectInput !== '')
-      setSelectInput('');
+    if (event.action === "input-change") setSelectInput(inputValue);
+    else if (event.action === "menu-close" && selectInput !== "")
+      setSelectInput("");
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-    if ((e.key === ' ' || e.key === 'Enter') && !selectInput)
+    if ((e.key === " " || e.key === "Enter") && !selectInput)
       e.preventDefault();
   };
 
@@ -122,9 +122,9 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
             ({ label }: T) =>
               label.toLowerCase().includes(selectInput?.toLowerCase()) &&
               (props.value ?? []).filter((opt: T) => opt.label === label)
-                .length === 0
+                .length === 0,
           ),
-        ].sort(comparator)
+        ].sort(comparator),
       );
     else if (
       selected.length > 0 &&
@@ -137,7 +137,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
       return props.onChange([
         ...props.value?.filter(
           ({ label }: T) =>
-            !label.toLowerCase().includes(selectInput?.toLowerCase())
+            !label.toLowerCase().includes(selectInput?.toLowerCase()),
         ),
       ]);
   };
@@ -145,16 +145,16 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
   const customStyles: StylesConfig<Option, true> = {
     multiValueLabel: (def) => ({
       ...def,
-      backgroundColor: 'lightgray',
+      backgroundColor: "lightgray",
     }),
     multiValueRemove: (def) => ({
       ...def,
-      backgroundColor: 'lightgray',
+      backgroundColor: "lightgray",
     }),
     valueContainer: (base) => ({
       ...base,
-      maxHeight: '30px',
-      overflow: 'auto',
+      maxHeight: "30px",
+      overflow: "auto",
       paddingTop: 0,
     }),
     option: (styles, { isSelected, isFocused }) => {
@@ -162,7 +162,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
         ...styles,
         backgroundColor:
           isSelected && !isFocused
-            ? 'transparent'
+            ? "transparent"
             : isFocused && !isSelected
             ? styles.backgroundColor
             : isFocused && isSelected
@@ -184,7 +184,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
         selectAllLabel.current = `All (${filteredOptions.length}) selected`;
       else
         selectAllLabel.current = `${filteredSelectedOptions?.length} / ${filteredOptions.length} selected`;
-    } else selectAllLabel.current = 'Select all';
+    } else selectAllLabel.current = "Select all";
 
     allOption.label = selectAllLabel.current;
 
@@ -202,7 +202,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
           ...props.components,
         }}
         filterOption={customFilterOption}
-        menuPlacement={props.menuPlacement ?? 'auto'}
+        menuPlacement={props.menuPlacement ?? "auto"}
         styles={customStyles}
         isMulti
         closeMenuOnSelect={false}
@@ -225,7 +225,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
         Input: Input,
         ...props.components,
       }}
-      menuPlacement={props.menuPlacement ?? 'auto'}
+      menuPlacement={props.menuPlacement ?? "auto"}
       onKeyDown={onKeyDown}
       tabSelectsValue={false}
       hideSelectedOptions={true}

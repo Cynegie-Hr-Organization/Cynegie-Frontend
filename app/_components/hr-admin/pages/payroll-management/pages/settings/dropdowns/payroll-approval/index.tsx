@@ -1,10 +1,10 @@
-import {Stack, Switch } from '@mui/material';
-import { useState } from 'react';
+import { Stack, Switch } from "@mui/material";
+import { useState } from "react";
 import {
   MultiSelect,
   Option,
-} from '@/app/_components/shared/multi-select-dropdown';
-import { newIndex } from '@/lib/utils';
+} from "@/app/_components/shared/multi-select-dropdown";
+import { newIndex } from "@/lib/utils";
 
 const PayrollApprovalDropdownSettings = () => {
   const [approvalLevelsSelected, setapprovalLevelsSelected] = useState<

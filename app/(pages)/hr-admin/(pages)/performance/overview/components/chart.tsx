@@ -1,32 +1,37 @@
-"use client"
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
+"use client";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-
+} from "@/components/ui/chart";
 
 const formatLargeNumber = (value: number) => {
   if (value >= 1_000_000_000) {
-    return new Intl.NumberFormat('en-US', {
-      style: 'decimal',
-      maximumFractionDigits: 1,
-    }).format(value / 1_000_000_000) + 'B';
+    return (
+      new Intl.NumberFormat("en-US", {
+        style: "decimal",
+        maximumFractionDigits: 1,
+      }).format(value / 1_000_000_000) + "B"
+    );
   } else if (value >= 1_000_000) {
-    return new Intl.NumberFormat('en-US', {
-      style: 'decimal',
-      maximumFractionDigits: 1,
-    }).format(value / 1_000_000) + 'M';
+    return (
+      new Intl.NumberFormat("en-US", {
+        style: "decimal",
+        maximumFractionDigits: 1,
+      }).format(value / 1_000_000) + "M"
+    );
   } else if (value >= 1_000) {
-    return new Intl.NumberFormat('en-US', {
-      style: 'decimal',
-      maximumFractionDigits: 1,
-    }).format(value / 1_000) + 'k';
+    return (
+      new Intl.NumberFormat("en-US", {
+        style: "decimal",
+        maximumFractionDigits: 1,
+      }).format(value / 1_000) + "k"
+    );
   } else {
-    return new Intl.NumberFormat('en-US').format(value);
+    return new Intl.NumberFormat("en-US").format(value);
   }
 };
 
@@ -37,23 +42,29 @@ export function GradientLineChart<T extends { completed: number }>({
     id: "chartGradient",
     stops: [
       { offset: "0%", stopColor: "#0035C3", stopOpacity: 0.4 },
-      { offset: "100%", stopColor: "#ffffff", stopOpacity: 0 }
-    ]
+      { offset: "100%", stopColor: "#ffffff", stopOpacity: 0 },
+    ],
   },
   areas = [
     {
       dataKey: "completed",
-      stroke: "#0035C3"
-    }
-  ]
+      stroke: "#0035C3",
+    },
+  ],
 }: {
-  chartConfig: ChartConfig,
-  chartData: T[],
-  gradient?: { id: string, stops: { offset: string, stopColor: string, stopOpacity: number }[] },
-  areas?: { dataKey: string, stroke: string }[]
+  chartConfig: ChartConfig;
+  chartData: T[];
+  gradient?: {
+    id: string;
+    stops: { offset: string; stopColor: string; stopOpacity: number }[];
+  };
+  areas?: { dataKey: string; stroke: string }[];
 }) {
   return (
-    <ChartContainer className="h-[300px] w-full mt-6 -ml-6" config={chartConfig}>
+    <ChartContainer
+      className="h-[300px] w-full mt-6 -ml-6"
+      config={chartConfig}
+    >
       <AreaChart
         accessibilityLayer
         data={chartData}
@@ -91,7 +102,7 @@ export function GradientLineChart<T extends { completed: number }>({
         />
         <YAxis
           type="number"
-          domain={['auto', 'auto']}
+          domain={["auto", "auto"]}
           tickLine={false}
           axisLine={false}
           tickFormatter={formatLargeNumber}
@@ -121,5 +132,5 @@ export function GradientLineChart<T extends { completed: number }>({
         ))}
       </AreaChart>
     </ChartContainer>
-  )
+  );
 }

@@ -9,12 +9,15 @@ import { useRouter } from "next/navigation";
 
 type CreateTemplateStep = "task" | "document" | "training-module";
 
-const TEMPLATE_STEPS: CreateTemplateStep[] = ["task", "document", "training-module"];
+const TEMPLATE_STEPS: CreateTemplateStep[] = [
+  "task",
+  "document",
+  "training-module",
+];
 
 const CreateNewTemplate = () => {
   const router = useRouter();
   const [activeStep, setActiveStep] = useState<CreateTemplateStep>("task");
-
 
   const taskRef = useRef<HTMLButtonElement>(null);
   const documentRef = useRef<HTMLButtonElement>(null);
@@ -24,9 +27,11 @@ const CreateNewTemplate = () => {
 
   useEffect(() => {
     const currentRef =
-      activeStep === "task" ? taskRef :
-        activeStep === "document" ? documentRef :
-          trainingModuleRef;
+      activeStep === "task"
+        ? taskRef
+        : activeStep === "document"
+          ? documentRef
+          : trainingModuleRef;
 
     if (currentRef.current && containerRef.current && sliderRef.current) {
       const buttonRect = currentRef.current.getBoundingClientRect();
@@ -91,16 +96,22 @@ const CreateNewTemplate = () => {
         </div>
       </CardLayout>
 
-      <CardLayout className='mt-8 space-y-6 lg:p-6' bg='bg-none lg:bg-white border-none p-0'>
-        <div ref={containerRef} className='flex gap-4 text-sm mb-4 pl-4 relative w-max'>
-          <div className='absolute bottom-0 w-full h-[1px] bg-gray-200' />
+      <CardLayout
+        className="mt-8 space-y-6 lg:p-6"
+        bg="bg-none lg:bg-white border-none p-0"
+      >
+        <div
+          ref={containerRef}
+          className="flex gap-4 text-sm mb-4 pl-4 relative w-max"
+        >
+          <div className="absolute bottom-0 w-full h-[1px] bg-gray-200" />
           <div
             ref={sliderRef}
             className={`absolute bottom-0 h-[2px] bg-primary transition-all duration-300 ease-in-out`}
           />
           <button
             ref={taskRef}
-            type='button'
+            type="button"
             data-step="task"
             className={`p-4 ${activeStep === "task" ? "text-primary" : "text-gray-500"}`}
             onClick={() => setActiveStep("task")}
@@ -109,7 +120,7 @@ const CreateNewTemplate = () => {
           </button>
           <button
             ref={documentRef}
-            type='button'
+            type="button"
             data-step="document"
             className={`p-4 ${activeStep === "document" ? "text-primary" : "text-gray-500"}`}
             onClick={() => setActiveStep("document")}
@@ -118,7 +129,7 @@ const CreateNewTemplate = () => {
           </button>
           <button
             ref={trainingModuleRef}
-            type='button'
+            type="button"
             data-step="training-module"
             className={`p-4 ${activeStep === "training-module" ? "text-primary" : "text-gray-500"}`}
             onClick={() => setActiveStep("training-module")}
@@ -127,22 +138,20 @@ const CreateNewTemplate = () => {
           </button>
         </div>
 
-        <div className='mt-6'>
-          {renderActiveComponent()}
-        </div>
+        <div className="mt-6">{renderActiveComponent()}</div>
       </CardLayout>
 
-      <div className='flex flex-col md:flex-row items-center justify-end gap-4 mt-10'>
+      <div className="flex flex-col md:flex-row items-center justify-end gap-4 mt-10">
         <button
           type="button"
-          className='capitalize w-full md:w-[230px] flex items-center justify-center gap-x-2 outline-none border border-gray-400 bg-white rounded-lg px-[12.33px] py-[9px] font-bold'
+          className="capitalize w-full md:w-[230px] flex items-center justify-center gap-x-2 outline-none border border-gray-400 bg-white rounded-lg px-[12.33px] py-[9px] font-bold"
         >
           Save & Continue Later
         </button>
         <button
           type="button"
           onClick={handleNextStep}
-          className='capitalize w-full md:w-[230px] gap-x-2 outline-none border border-gray-400 bg-gray-300 rounded-lg px-[12.33px] py-[9px] font-bold'
+          className="capitalize w-full md:w-[230px] gap-x-2 outline-none border border-gray-400 bg-gray-300 rounded-lg px-[12.33px] py-[9px] font-bold"
         >
           {isLastStep ? "Publish" : "Next"}
         </button>

@@ -28,7 +28,7 @@ const CustomLegend = (props: {
   payload: {
     value: string;
     color: string;
-  }[]
+  }[];
 }) => {
   const { payload } = props;
   return (
@@ -67,7 +67,14 @@ const toolTipItemContentStyle = {
   fontWeight: 500,
 };
 
-const CustomTooltip = <T extends { salary: number, deductions: number, benefits: number, value: number }>({
+const CustomTooltip = <
+  T extends {
+    salary: number;
+    deductions: number;
+    benefits: number;
+    value: number;
+  },
+>({
   active,
   payload,
 }: {
@@ -94,7 +101,9 @@ const CustomTooltip = <T extends { salary: number, deductions: number, benefits:
           {["Gross Salary", "Deductions", "Benefits"].map((item, index) => (
             <p key={index}>
               <span style={toolTipItemLabelStyle}>{`${item}: `}</span>
-              <span style={toolTipItemContentStyle}>{`₦${payload[index].value.toLocaleString()}`}</span>
+              <span
+                style={toolTipItemContentStyle}
+              >{`₦${payload[index].value.toLocaleString()}`}</span>
             </p>
           ))}
         </div>

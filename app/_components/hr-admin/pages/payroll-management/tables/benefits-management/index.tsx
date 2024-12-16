@@ -21,11 +21,11 @@ import {
   TableHead,
   TableRow,
   TextField,
-} from '@mui/material';
-import Image from 'next/image';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import benefitsManagementTableData from './data';
+} from "@mui/material";
+import Image from "next/image";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import benefitsManagementTableData from "./data";
 
 const PayrollBenefitsManagementTable = () => {
   const [, setSelectedRowIndex] = useState(0);

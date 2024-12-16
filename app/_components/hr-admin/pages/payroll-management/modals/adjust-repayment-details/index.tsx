@@ -1,9 +1,9 @@
-import { newIndex } from '@/lib/utils';
-import { Close } from '@mui/icons-material';
-import { Dialog, DialogContent, MenuItem, Select, Stack } from '@mui/material';
-import React from 'react';
-import { Input } from 'rsuite';
-import 'rsuite/dist/rsuite.min.css';
+import { newIndex } from "@/lib/utils";
+import { Close } from "@mui/icons-material";
+import { Dialog, DialogContent, MenuItem, Select, Stack } from "@mui/material";
+import React from "react";
+import { Input } from "rsuite";
+import "rsuite/dist/rsuite.min.css";
 
 const AdjustRepaymentDetailsModal: React.FC<{
   open: boolean;
@@ -92,7 +92,9 @@ const AdjustRepaymentDetailsModal: React.FC<{
                         {item.placeholder}
                       </MenuItem>
                       {item.options?.map((option, index) => (
-                        <MenuItem key={newIndex(index)} value={option}>{option}</MenuItem>
+                        <MenuItem key={newIndex(index)} value={option}>
+                          {option}
+                        </MenuItem>
                       ))}
                     </Select>
                   ) : (

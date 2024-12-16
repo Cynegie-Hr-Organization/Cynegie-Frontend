@@ -1,0 +1,92 @@
+import React, { useState } from "react";
+import Image from "next/image";
+import { archiveTemplate } from "@/app/api/services/performance/template";
+
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  id: string;
+  onDeleteSuccess: () => void;
+}
+
+const DeleteTemplateModal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  id,
+  onDeleteSuccess,
+}) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  if (!isOpen) return null;
+
+  const handleDelete = async () => {
+    try {
+      setIsDeleting(true);
+      const response = await archiveTemplate(id);
+
+      if (response.status === 200) {
+        onDeleteSuccess();
+        onClose();
+      } else {
+        console.error("Failed to delete the template.");
+      }
+    } catch (error) {
+      console.error("Error deleting Template:", error);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white w-[90%] max-w-md p-6 rounded-lg shadow-lg relative text-center"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Icon */}
+        <div className="flex items-center justify-center mb-4">
+          <Image
+            src="/icons/modal-delete.svg"
+            width={100}
+            height={100}
+            alt="Delete"
+          />
+        </div>
+
+        {/* Message */}
+        <h2 className="text-lg font-semibold text-gray-900 mb-2">
+          Delete Template
+        </h2>
+        <p className="text-sm text-gray-600 mb-6">
+          If you delete this template, it will be removed from the template
+          management and it will be inaccessible.
+        </p>
+
+        {/* Buttons */}
+        <div className="mt-6 w-full md:w-[90%] md:mx-auto flex flex-col md:flex-row gap-2 items-center justify-center">
+          <button
+            className="w-full flex justify-center items-center px-4 py-2 border-2 border-gray-300 text-base font-semibold bg-white text-gray-700 rounded-lg hover:border-gray-600 cursor-pointer"
+            onClick={onClose}
+            disabled={isDeleting}
+          >
+            Cancel
+          </button>
+          <button
+            className={`w-full px-4 py-2 text-white bg-red-700 rounded-lg hover:opacity-85 ${
+              isDeleting ? "cursor-not-allowed opacity-70" : ""
+            }`}
+            onClick={handleDelete}
+            disabled={isDeleting}
+          >
+            {isDeleting ? "Deleting..." : "Delete Template"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DeleteTemplateModal;

@@ -135,14 +135,12 @@ export default function EditJobForm({
 
       const updatedData = Array.from(modifiedFields).reduce((acc, key) => {
         const value = formData[key as keyof CreateJobProps];
-        
         // Normalize array fields to ensure type consistency
         if (Array.isArray(value)) {
           acc[key as keyof CreateJobProps] = value as any;
         } else if (value !== undefined) {
           acc[key as keyof CreateJobProps] = value as any;
         }
-        
         return acc;
       }, {} as Partial<CreateJobProps>);
 
@@ -303,8 +301,9 @@ export default function EditJobForm({
           {
             label: "Required Skills",
             key: "requiredSkills",
-            placeholder:
-              Array.isArray(job?.requiredSkills) ? job?.requiredSkills.join(", ") : job?.requiredSkills || "Enter required skills here...",
+            placeholder: Array.isArray(job?.requiredSkills)
+              ? job?.requiredSkills.join(", ")
+              : job?.requiredSkills || "Enter required skills here...",
           },
           {
             label: "Experience",

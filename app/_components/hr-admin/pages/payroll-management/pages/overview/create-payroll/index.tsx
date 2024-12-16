@@ -34,8 +34,8 @@ const HrAdminCreatePayrollPage = () => {
         sx={{ display: { xs: "none", sm: "flex" }, cursor: "pointer" }}
         onClick={() => router.push("/hr-admin/payroll/overview")}
       >
-        <ChevronLeft sx={{ color: '#8D8484', height: '36px', width: '36px' }} />
-        <div style={{ color: '#667185', fontWeight: 400, fontSize: '16px' }}>
+        <ChevronLeft sx={{ color: "#8D8484", height: "36px", width: "36px" }} />
+        <div style={{ color: "#667185", fontWeight: 400, fontSize: "16px" }}>
           Back to Payroll Management
         </div>
       </Stack>
@@ -49,8 +49,11 @@ const HrAdminCreatePayrollPage = () => {
               { label: "Payment Date", placeholder: "Select date" },
             ].map((item, index) => (
               <Grid2 key={index} size={{ xs: 12, md: 4 }}>
-                <div className='flex flex-col gap-5'>
-                  <div className='text-[#101928] font-semibold text-sm'> {item.label}</div>
+                <div className="flex flex-col gap-5">
+                  <div className="text-[#101928] font-semibold text-sm">
+                    {" "}
+                    {item.label}
+                  </div>
                   {index == 0 ? (
                     // <TextField
                     //   key={index}

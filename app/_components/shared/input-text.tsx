@@ -1,20 +1,25 @@
-
-
-
-const InputText = ({ label, id, placeholder, requiredField = false, type = 'text', onChange, value }: {
-  label: string,
-  id: string,
-  placeholder: string,
-  requiredField?: boolean,
-  type?: string,
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  value: string
+const InputText = ({
+  label,
+  id,
+  placeholder,
+  requiredField = false,
+  type = "text",
+  onChange,
+  value,
+}: {
+  label: string;
+  id: string;
+  placeholder: string;
+  requiredField?: boolean;
+  type?: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string | number;
 }) => {
   return (
     <div className="space-y-1 w-full">
       <label
         htmlFor={id}
-        className={`text-sm font-semibold text-gray-700 ${requiredField ? 'after:content-["*"] after:text-red-500 after:ml-1 after:font-bold' : ''}`}
+        className={`text-sm font-semibold text-gray-700 ${requiredField ? 'after:content-["*"] after:text-red-500 after:ml-1 after:font-bold' : ""}`}
       >
         {label}
       </label>

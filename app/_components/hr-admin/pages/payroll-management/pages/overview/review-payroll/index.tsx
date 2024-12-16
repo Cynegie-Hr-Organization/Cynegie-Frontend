@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { ChevronLeft } from '@mui/icons-material';
-import { Box, Grid2, Stack } from '@mui/material';
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import ReviewPayrollTable from '../../../tables/review-payroll';
-import { DatePicker, DateRangePicker, Input } from 'rsuite';
-import 'rsuite/dist/rsuite.min.css';
-import dayjs from 'dayjs';
-import Image from 'next/image';
+import { ChevronLeft } from "@mui/icons-material";
+import { Box, Grid2, Stack } from "@mui/material";
+import React from "react";
+import { useRouter } from "next/navigation";
+import ReviewPayrollTable from "../../../tables/review-payroll";
+import { DatePicker, DateRangePicker, Input } from "rsuite";
+import "rsuite/dist/rsuite.min.css";
+import dayjs from "dayjs";
+import Image from "next/image";
 
 const HrAdminReviewPayrollPage = () => {
   const router = useRouter();
@@ -157,7 +157,8 @@ const HrAdminReviewPayrollPage = () => {
                         format="dd MMM yyyy"
                         placeholder={item.placeholder}
                         onChange={(e) => {
-                          if (e) setDateRange({ startDate: e[0], endDate: e[1] });
+                          if (e)
+                            setDateRange({ startDate: e[0], endDate: e[1] });
                         }}
                         character=" – "
                         caretAs={CalendarIcon}

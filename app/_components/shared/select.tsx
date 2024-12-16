@@ -10,7 +10,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 
 export function AppSelect({ listLabel, label, requiredField = false, listItems, placeholder, onChange, width = 'w-full', triggerStyle = 'border-gray-300' }: {
@@ -48,5 +48,5 @@ export function AppSelect({ listLabel, label, requiredField = false, listItems, 
         </SelectContent>
       </div>
     </Select>
-  )
+  );
 }

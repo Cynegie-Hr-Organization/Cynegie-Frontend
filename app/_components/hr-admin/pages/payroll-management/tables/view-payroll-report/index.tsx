@@ -17,10 +17,10 @@ import {
   TableHead,
   TableRow,
   TextField,
-} from '@mui/material';
-import Image from 'next/image';
-import { useState, ChangeEvent } from 'react';
-import { viewPayrollReportTable } from './data';
+} from "@mui/material";
+import Image from "next/image";
+import { useState, ChangeEvent } from "react";
+import { viewPayrollReportTable } from "./data";
 
 const ViewPayrollReportTable = () => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);

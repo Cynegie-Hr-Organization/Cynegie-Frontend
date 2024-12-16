@@ -1,92 +1,169 @@
-'use client'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// Updated feedback component and types
+"use client";
 
+import AppButton from "@/app/_components/shared/button";
 import CardLayout from "@/app/_components/shared/cards";
 import { AppFileUpload } from "@/app/_components/shared/file-upload";
 import { InputTextArea } from "@/app/_components/shared/input-text";
 import AppRadio from "@/app/_components/shared/radio";
 import { AppSelect } from "@/app/_components/shared/select";
+import { AppSelectWithSearch } from "@/app/_components/shared/select-with-search";
+import { giveFeedback } from "@/app/api/services/performance/continous-feedback";
+import useFetchEmployees from "@/utils/usefetchEmployees";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import Skeleton from "react-loading-skeleton";
 
-const GiveFeeedback = () => {
-  const [formData, setFormData] = useState({
-    recipient: '',
-    feedbackType: {
-      positive: false,
-      constructive: false,
-    },
-    comment: '',
-    rating: '',
-  });
-
-  return (
-    <CardLayout className="space-y-6" bg="bg-white p-4 md:p-6 lg:p-8">
-      <AppSelect
-        listItems={[
-          { label: "Employee", value: "employee" },
-          { label: "Manager", value: "manager" },
-          { label: "Peer", value: "peer" },
-        ]}
-        label="Recipient"
-        placeholder="Select Recipient"
-        onChange={(value) => { setFormData({ ...formData, recipient: value }) }}
-      />
-
-      <div className="space-y-2">
-        <p className="text-sm font-semibold">Feedback Type</p>
-        <div className="space-y-3">
-          <AppRadio
-            id="positive"
-            label="Positive"
-            checked={formData.feedbackType.positive}
-            onChange={(value) => {
-              setFormData(prev => ({
-                ...prev,
-                feedbackType: {
-                  ...prev.feedbackType,
-                  positive: value
-                }
-              }))
-            }} />
-          <AppRadio
-            id="constructive"
-            label="Constructive"
-            checked={formData.feedbackType.constructive}
-            onChange={(value) => { 
-              setFormData(prev => ({ 
-                ...prev, 
-                feedbackType: { 
-                  ...prev.feedbackType, 
-                  constructive: value 
-                } 
-              })) 
-            }} />
-        </div>
-      </div>
-
-      <InputTextArea
-        label="Comment"
-        id="comment"
-        placeholder="Enter your feedback here"
-        value={formData.comment}
-        onChange={(e) => { setFormData({ ...formData, comment: e.target.value }) }}
-      />
-
-      <div className="flex flex-col lg:flex-row gap-6">
-        <AppSelect
-          listItems={[]}
-          label="Rating"
-          placeholder="Select Rating"
-          onChange={(value) => { setFormData({ ...formData, rating: value }) }}
-        />
-        <AppFileUpload
-          label="Attachment"
-          className="w-full"
-          onChange={(files) => { console.log(files) }}
-        />
-      </div>
-
-    </CardLayout>
-  )
+// Define the type for the feedback payload
+export interface FeedbackPayload {
+  recipient: string[]; // Array to accommodate multiple recipients if needed
+  feedbackType: "positive" | "negative" | "neutral";
+  comment: string;
+  rating: number;
+  attachment: string;
 }
 
-export default GiveFeeedback;
+const DEFAULT_ATTACHMENT = "https://example.com/attachment.jpg";
+
+const GiveFeedback = () => {
+  const router = useRouter();
+  const { employees, isFetching, handleSearch } = useFetchEmployees();
+
+  const [formData, setFormData] = useState<FeedbackPayload>({
+    recipient: [],
+    feedbackType: "positive",
+    comment: "",
+    rating: 0,
+    attachment: DEFAULT_ATTACHMENT,
+  });
+
+  const handleSubmit = async () => {
+    try {
+      console.log(formData);
+      const response = await giveFeedback(formData);
+      console.log(response);
+
+      if (response.status === 201) {
+        toast.success("Feedback submitted successfully:");
+        router.push("/hr-admin/performance/continuous-feedback");
+      } else {
+        toast.error("Failed to submit feedback. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      toast.error("An error occurred. Please try again.");
+    }
+  };
+  return (
+    <>
+      <CardLayout className="space-y-6" bg="bg-white p-4 md:p-6 lg:p-8">
+        {isFetching ? (
+          <Skeleton count={5} />
+        ) : (
+          <>
+            <AppSelectWithSearch
+              label="Recipient"
+              placeholder="Select Recipient"
+              selectedItems={formData.recipient}
+              onChange={(value) =>
+                setFormData({
+                  ...formData,
+                  recipient: [...new Set(value)],
+                })
+              }
+              listItems={employees.map((emp) => ({
+                label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
+                value: emp.id as string,
+              }))}
+              isLoading={isFetching}
+              onSearch={handleSearch}
+            />
+
+            <div className="space-y-2">
+              <p className="text-sm font-semibold">Feedback Type</p>
+              <div className="space-y-3">
+                <AppRadio
+                  id="positive"
+                  label="Positive"
+                  checked={formData.feedbackType === "positive"}
+                  onChange={() => {
+                    setFormData({ ...formData, feedbackType: "positive" });
+                  }}
+                />
+                <AppRadio
+                  id="negative"
+                  label="Negative"
+                  checked={formData.feedbackType === "negative"}
+                  onChange={() => {
+                    setFormData({ ...formData, feedbackType: "negative" });
+                  }}
+                />
+                <AppRadio
+                  id="neutral"
+                  label="Neutral"
+                  checked={formData.feedbackType === "neutral"}
+                  onChange={() => {
+                    setFormData({ ...formData, feedbackType: "neutral" });
+                  }}
+                />
+              </div>
+            </div>
+
+            <InputTextArea
+              label="Comment"
+              id="comment"
+              placeholder="Enter your feedback here"
+              value={formData.comment}
+              onChange={(e) => {
+                setFormData({ ...formData, comment: e.target.value });
+              }}
+            />
+
+            <div className="flex flex-col lg:flex-row gap-6">
+              <AppSelect
+                listItems={[
+                  { label: "1", value: "1" },
+                  { label: "2", value: "2" },
+                  { label: "3", value: "3" },
+                  { label: "4", value: "4" },
+                  { label: "5", value: "5" },
+                ]}
+                label="Rating"
+                placeholder="Select Rating"
+                onChange={(value) => {
+                  setFormData({ ...formData, rating: Number(value) });
+                }}
+              />
+              <AppFileUpload
+                label="Attachment"
+                className="w-full"
+                onChange={(files) => {
+                  const fileUrl = files[0]
+                    ? (files[0] as any).url || DEFAULT_ATTACHMENT
+                    : DEFAULT_ATTACHMENT;
+                  setFormData({ ...formData, attachment: fileUrl });
+                }}
+              />
+            </div>
+          </>
+        )}
+      </CardLayout>
+
+      <div className="flex flex-col md:flex-row justify-end gap-4">
+        <AppButton
+          label="Save & Continue Later"
+          className="btn-secondary w-full md:w-[230px]"
+        />
+        <AppButton
+          label="Give Feedback"
+          className="btn-primary w-full md:w-[230px]"
+          onClick={handleSubmit}
+        />
+      </div>
+    </>
+  );
+};
+
+export default GiveFeedback;
