@@ -153,6 +153,7 @@ export const tableFilter = {
 
 const basePath = {
   employee: '/employee/',
+  hrAdmin: '/hr-admin/',
   performanceManagement: 'performance-management/',
   learningDevelopment: 'learning-development/',
   benefits: 'benefits/',
@@ -163,10 +164,18 @@ const basePath = {
   leave: 'leave-management/',
   profile: 'profile/',
   device: 'device-management/',
-  appRequest: 'app-request',
+  appRequest: 'app-request/',
+  employeeManagement: 'employee-management/',
+  approvalManagement: 'approval/',
 };
 
 export const route = {
+  hrAdmin: {
+    employeeManagement: {
+      approvalManagement: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.approvalManagement}`,
+      requestDetails: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.approvalManagement}request-details`,
+    },
+  },
   employee: {
     performanceManagement: {
       home: `${basePath.employee}${basePath.performanceManagement}`,
