@@ -203,7 +203,7 @@ const Table: React.FC<TableProps> = ({
                   )}
                   {displayedFields.map((field, columnIndex) => (
                     <TableCell
-                      className='whitespace-nowrap py-6'
+                      className='whitespace-nowrap !py-6'
                       sx={{ ...(!hasCheckboxes && { pl: 3 }) }}
                       key={columnIndex}
                     >

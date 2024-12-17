@@ -75,13 +75,42 @@ const HrAdminEmployeeAttendanceManagement = () => {
                   overtimeHours: '8',
                 })}
                 statusMap={AttendanceStatusMap}
-                filters={[
-                  { name: 'Name', items: ['Emmanuel Okpara'] },
-                  { name: 'Department', items: ['Sales'] },
-                  { name: 'Job Title', items: ['Regional Manager'] },
-                  { name: 'Status', items: ['Present'] },
-                  { name: 'Date', items: ['Select Date'] },
-                ]}
+                formFilter={{
+                  inputFields: [
+                    {
+                      name: 'Name',
+                      type: 'select',
+                      placeholder: 'Select',
+                      options: [{ label: 'Emmanuel Okpara', value: 0 }],
+                    },
+                    {
+                      name: 'Department',
+                      type: 'select',
+                      placeholder: 'Select',
+                      options: [{ label: 'Sales', value: 0 }],
+                    },
+                    {
+                      name: 'Job Title',
+                      type: 'select',
+                      placeholder: 'Select',
+                      options: [{ label: 'Regional Manager', value: 0 }],
+                    },
+                    {
+                      name: 'Status',
+                      type: 'select',
+                      placeholder: 'Select',
+                      options: [
+                        { label: 'Approved', value: 2 },
+                        { label: 'Rejected', value: 1 },
+                        { label: 'Pending', value: 0 },
+                      ],
+                    },
+                    {
+                      name: 'JobTitle',
+                      type: 'date',
+                    },
+                  ],
+                }}
                 actions={[
                   {
                     name: 'Adjust Attendance',
