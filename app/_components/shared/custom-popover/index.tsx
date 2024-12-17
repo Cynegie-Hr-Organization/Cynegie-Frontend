@@ -48,7 +48,10 @@ const Popover: React.FC<PopoverProps> = (props) => {
             dataToReturnOnItemClick={props.dataToReturnOnItemClick}
           />
         ) : (
-          <FilterPopoverContent filters={filters} />
+          <FilterPopoverContent
+            filters={filters}
+            formFilters={props.formFilter}
+          />
         )}
       </MuiPopover>
     </>

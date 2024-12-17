@@ -1,4 +1,5 @@
 import { ColorVariant } from '@/types';
+import { FormProps } from '../../form/types';
 
 export type TableProps<T = DefaultGenericTableType> = {
   title?: string;
@@ -10,6 +11,7 @@ export type TableProps<T = DefaultGenericTableType> = {
   hasActionsColumn?: boolean;
   getCheckedRows?: (arg: T[]) => void;
   filters?: Filter[];
+  formFilter?: FormProps;
   onFilterClick?: () => void;
   onResetClick?: () => void;
   /** actions refer to the items that appear when the more actions button is clicked. When actions and getActionsBasedOnField are specified, the latter takes precedence over the former */

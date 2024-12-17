@@ -71,12 +71,36 @@ const HrAdminEmployeeManagementApproval = () => {
           requestDate: 'Oct 12, 2024',
           status: 'Pending',
         })}
-        filters={[
-          { name: 'Request Type', items: ['Leave Request'] },
-          { name: 'Department', items: ['HR'] },
-          { name: 'Date', items: [] },
-          { name: 'Status', items: ['Approved', 'Rejected', 'Pending'] },
-        ]}
+        formFilter={{
+          inputFields: [
+            {
+              name: 'Request Type',
+              type: 'select',
+              placeholder: 'Select',
+              options: [{ label: 'Leave Request', value: 0 }],
+            },
+            {
+              name: 'Department',
+              type: 'select',
+              placeholder: 'Select',
+              options: [{ label: 'HR', value: 0 }],
+            },
+            {
+              name: 'Date',
+              type: 'date',
+            },
+            {
+              name: 'Status',
+              type: 'select',
+              placeholder: 'Select',
+              options: [
+                { label: 'Approved', value: 2 },
+                { label: 'Rejected', value: 1 },
+                { label: 'Pending', value: 0 },
+              ],
+            },
+          ],
+        }}
         statusMap={{
           Approved: 'success',
           Pending: 'warning',

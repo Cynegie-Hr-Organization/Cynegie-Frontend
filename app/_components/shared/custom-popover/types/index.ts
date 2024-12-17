@@ -1,3 +1,4 @@
+import { FormProps } from '../../form/types';
 import { Filter, TableAction } from '../../table/types';
 
 export type PopoverProps = {
@@ -6,6 +7,7 @@ export type PopoverProps = {
   getTriggerButtonClick?: () => void;
   moreOptions?: TableAction[];
   filters?: Filter[];
+  formFilter?: FormProps;
   dataToReturnOnItemClick?: string | number;
 };
 
@@ -22,4 +24,5 @@ export type MoreOptionsPopoverContentProps = {
 
 export type FilterPopoverContentProps = {
   filters?: Filter[];
+  formFilters?: FormProps;
 };

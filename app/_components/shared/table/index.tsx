@@ -46,6 +46,7 @@ const Table: React.FC<TableProps> = ({
   actions: actionsFromProps,
   getCheckedRows,
   clearChecks,
+  formFilter,
 }) => {
   const pathname = usePathname();
   const [actions, setActions] = useState<TableAction[] | undefined>(undefined);
@@ -142,7 +143,7 @@ const Table: React.FC<TableProps> = ({
                 <SearchField />
               </div>
             </div>
-            {filters && (
+            {(filters || formFilter) && (
               <div>
                 <Popover
                   type={PopoverType.filter}
@@ -154,6 +155,7 @@ const Table: React.FC<TableProps> = ({
                     />
                   }
                   filters={filters}
+                  formFilter={formFilter}
                 />
               </div>
             )}
