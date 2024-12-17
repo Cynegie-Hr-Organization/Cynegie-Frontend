@@ -1,13 +1,14 @@
 import { ColorVariant } from '@/types';
 
-export type TableProps = {
+export type TableProps<T = Record<string, string | number>> = {
   title?: string;
   headerRowData: string[];
-  bodyRowData: Record<string, string | number>[];
+  bodyRowData: T[];
   displayedFields: string[];
   fieldTypes: FieldType[];
   hasCheckboxes?: boolean;
   hasActionsColumn?: boolean;
+  getCheckedRows?: (arg: T[]) => void;
   filters?: Filter[];
   onFilterClick?: () => void;
   onResetClick?: () => void;
@@ -18,7 +19,7 @@ export type TableProps = {
   getActionsBasedOnField?: (arg: string | number) => TableAction[] | undefined;
   pageCount?: number;
   page?: number;
-  fieldAsSlug?: string;
+  fieldToGetSlug?: string;
   statusMap?: StatusMap;
   statusActionMap?: StatusActionMap;
   fieldToReturnOnActionItemClick?: string;

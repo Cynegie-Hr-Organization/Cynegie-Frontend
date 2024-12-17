@@ -6,6 +6,19 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ModalProps } from '../../../modal/types';
 
+type Goal = {
+  description: string;
+  startDate: string;
+  endDate: string;
+  progress: number;
+};
+
+type Assessment = {
+  name: string;
+  dueDate: string;
+  status: string;
+};
+
 const usePerformanceManagementPage = () => {
   const router = useRouter();
   const [showCompleteModal, setShowCompleteModal] = useState(false);
@@ -43,7 +56,7 @@ const usePerformanceManagementPage = () => {
     ],
   };
 
-  const goalsTableData: TableProps = {
+  const goalsTableData: TableProps<Goal> = {
     hasActionsColumn: true,
     hasCheckboxes: true,
     headerRowData: ['Goal Description', 'Start Date', 'End Date', 'Progress'],
@@ -113,7 +126,7 @@ const usePerformanceManagementPage = () => {
     ],
   };
 
-  const selfAssessmentsTableData: TableProps = {
+  const selfAssessmentsTableData: TableProps<Assessment> = {
     hasActionsColumn: true,
     headerRowData: ['Assessment Name', 'Due Date', 'Status'],
     bodyRowData: [

@@ -1,85 +1,145 @@
 'use client';
 import {
-  Box,
   Checkbox,
   Table as MuiTable,
-  Stack,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  LinearProgress,
 } from '@mui/material';
 import React, { ChangeEvent, useState } from 'react';
 import { FieldType, TableProps, TableAction } from './types';
-import StatusPill from '../pills/status';
 import { FilterList } from '@mui/icons-material';
 import { PopoverType } from '../custom-popover/types';
 import Button from '../button-group/button';
 import { ButtonType } from '../page/heading/types';
 import TablePagination from './pagination';
-import { color } from '@/constants';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Popover from '../custom-popover';
 import SearchField from '../../employee/input-fields/search';
 import MoreOptionsButton from '../more-options-button';
+import TableProgressCell from './cell/variants/progress';
+import TableLessonCell from './cell/variants/lesson';
+import TableLinkCell from './cell/variants/link';
+import TableAttendanceStatusCell from './cell/variants/status/attendance';
+import TableStatusCell from './cell/variants/status';
 
-const Table: React.FC<TableProps> = (props) => {
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+const Table: React.FC<TableProps> = ({
+  title,
+  fieldTypes,
+  fieldToGetSlug: fieldToGetSlug,
+  hasSearchFilter = true,
+  hasPagination = true,
+  hasCheckboxes,
+  statusMap,
+  filters,
+  fieldToGetAction,
+  fieldToReturnOnActionItemClick,
+  headerRowData,
+  hasActionsColumn,
+  displayedFields,
+  statusActionMap,
+  bodyRowData,
+  page,
+  pageCount,
+  actions: actionsFromProps,
+  getCheckedRows,
+}) => {
+  const pathname = usePathname();
+  const [actions, setActions] = useState<TableAction[] | undefined>(undefined);
+  const [selectedRowsIndexes, setSelectedRowsIndexes] = useState<number[]>([]);
+
+  const headerRow = hasActionsColumn
+    ? [...headerRowData, 'Actions']
+    : headerRowData;
+
+  const handleCheckboxChangeAll = (event: ChangeEvent<HTMLInputElement>) => {
+    let rowsIndexes: number[] = [];
+    if (event.target.checked) {
+      rowsIndexes = generateRange(0, bodyRowData.length - 1);
+      setSelectedRowsIndexes(rowsIndexes);
+    } else {
+      setSelectedRowsIndexes(rowsIndexes);
+    }
+    getCheckedRows?.(rowsIndexes.map((index) => bodyRowData[index]));
+  };
+
   const handleCheckboxChange = (
     event: ChangeEvent<HTMLInputElement>,
     rowIndex: number
   ) => {
-    setSelectedRows((prevSelectedRows) => {
+    let rowsIndexes: number[] = [];
+    setSelectedRowsIndexes((prevSelectedRows) => {
       if (event.target.checked) {
-        return [...prevSelectedRows, rowIndex];
+        rowsIndexes = [...prevSelectedRows, rowIndex];
+        return rowsIndexes;
       } else {
-        return prevSelectedRows.filter((index) => index !== rowIndex);
+        rowsIndexes = prevSelectedRows.filter((index) => index !== rowIndex);
+        return rowsIndexes;
       }
     });
+    getCheckedRows?.(rowsIndexes.map((index) => bodyRowData[index]));
   };
 
-  const [actions, setActions] = useState<TableAction[] | undefined>([
-    {
-      name: '',
-      onClick: () => {},
-    },
-  ]);
+  function generateRange(start: number, end: number): number[] {
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }
 
-  const router = useRouter();
-  const pathname = usePathname();
+  const getTableCell = (
+    fieldType: FieldType,
+    row: (typeof bodyRowData)[0],
+    field: string,
+    fieldToGetSlug?: string
+  ) => {
+    const rowVal = row[field ?? ''];
 
-  const { hasSearchFilter = true, hasPagination = true } = props;
+    switch (fieldType) {
+      case FieldType.text:
+        return rowVal;
+
+      case FieldType.progress:
+        if (typeof rowVal === 'number')
+          return <TableProgressCell value={rowVal} />;
+
+      case FieldType.nextLesson:
+        if (typeof rowVal === 'number')
+          return <TableLessonCell value={rowVal} />;
+
+      case FieldType.link:
+        return (
+          <TableLinkCell
+            value={rowVal}
+            path={`${pathname}/${row?.[fieldToGetSlug ?? '']}`}
+          />
+        );
+
+      case FieldType.attendanceStatus:
+        if (typeof rowVal === 'string')
+          return <TableAttendanceStatusCell value={rowVal} />;
+
+      case FieldType.status:
+        if (typeof rowVal === 'string')
+          return <TableStatusCell value={rowVal} statusMap={statusMap ?? {}} />;
+    }
+  };
 
   return (
-    <Stack {...(props.title && { gap: 2 })}>
-      {props.title && <div className='card-title-small'>{props.title}</div>}
-      <Stack
-        gap={3}
-        style={{ paddingTop: !hasSearchFilter ? '0px' : '' }}
-        className='common-card'
-        px={0}
+    <div className={`flex flex-col ${title && 'gap-4'}`}>
+      {title && <div className='card-title-small'>{title}</div>}
+      <div
+        className={`common-card gap-6 !px-0 flex flex-col ${
+          !hasSearchFilter && '!pt-0'
+        }`}
       >
         {hasSearchFilter && (
-          <Stack
-            sx={{
-              flexDirection: { xs: 'column', md: 'row' },
-              alignItems: { xs: 'flex-start', md: 'center' },
-              px: 3,
-            }}
-          >
-            <Box sx={{ width: '100%' }} flexGrow={1}>
-              <Box
-                sx={{
-                  width: { xs: '90%', sm: '70%', md: '70%' },
-                  mb: { xs: '15px', md: '0px' },
-                }}
-              >
+          <div className='flex flex-col items-start md:flex-row md:items-center px-6'>
+            <div className='w-full flex-grow'>
+              <div className='w-[90%] sm:w-[70%] md:w-[70%] mb-[15] md:mb-0'>
                 <SearchField />
-              </Box>
-            </Box>
-            {props.filters && (
+              </div>
+            </div>
+            {filters && (
               <div>
                 <Popover
                   type={PopoverType.filter}
@@ -90,48 +150,35 @@ const Table: React.FC<TableProps> = (props) => {
                       text='Filter'
                     />
                   }
-                  filters={props.filters}
-                ></Popover>
+                  filters={filters}
+                />
               </div>
             )}
-          </Stack>
+          </div>
         )}
         <TableContainer>
           <MuiTable>
-            <TableHead
-              sx={{
-                backgroundColor: '#F7F9FC',
-              }}
-            >
+            <TableHead className='bg-[#F7F9FC]'>
               <TableRow>
-                {props.hasCheckboxes && (
-                  <TableCell sx={{ whiteSpace: 'nowrap', py: 1 }}>
+                {hasCheckboxes && (
+                  <TableCell className='whitespace-nowrap' sx={{ py: 1 }}>
                     <Checkbox
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setSelectedRows([0, 1, 2, 3, 4]);
-                        } else {
-                          setSelectedRows([]);
-                        }
-                      }}
-                      checked={selectedRows.length === 5}
+                      onChange={handleCheckboxChangeAll}
+                      checked={
+                        selectedRowsIndexes.length === bodyRowData.length
+                      }
                       indeterminate={
-                        selectedRows.length > 0 && selectedRows.length < 5
+                        selectedRowsIndexes.length > 0 &&
+                        selectedRowsIndexes.length < bodyRowData.length
                       }
                     />
                   </TableCell>
                 )}
-                {[
-                  ...props.headerRowData,
-                  props.hasActionsColumn ? 'Actions' : undefined,
-                ].map((field, index) => (
+                {headerRow.map((field, index) => (
                   <TableCell
                     key={index}
-                    sx={{
-                      whiteSpace: 'nowrap',
-                      py: 2,
-                      ...(!props.hasCheckboxes && { pl: 3 }),
-                    }}
+                    className='whitespace-nowrap py-4'
+                    sx={{ ...(!hasCheckboxes && { pl: 3 }) }}
                   >
                     {field}
                   </TableCell>
@@ -139,124 +186,45 @@ const Table: React.FC<TableProps> = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.bodyRowData.map((row, rowIndex) => (
+              {bodyRowData.map((row, rowIndex) => (
                 <TableRow key={rowIndex}>
-                  {props.hasCheckboxes && (
-                    <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                  {hasCheckboxes && (
+                    <TableCell className='whitespace-nowrap'>
                       <Checkbox
-                        checked={selectedRows.includes(rowIndex)}
+                        checked={selectedRowsIndexes.includes(rowIndex)}
                         onChange={(e) => handleCheckboxChange(e, rowIndex)}
                       />
                     </TableCell>
                   )}
-                  {props.displayedFields.map((field, columnIndex) =>
-                    props.fieldTypes[columnIndex] == FieldType.status &&
-                    typeof row[field] === 'string' ? (
-                      <TableCell
-                        sx={{ whiteSpace: 'nowrap', py: 3 }}
-                        key={columnIndex}
-                      >
-                        <StatusPill
-                          variant={props.statusMap?.[row[field]] || 'grey'}
-                          text={row[field]}
-                        />
-                      </TableCell>
-                    ) : props.fieldTypes[columnIndex] == FieldType.progress &&
-                      typeof row[field] === 'number' ? (
-                      <TableCell
-                        sx={{ whiteSpace: 'nowrap' }}
-                        key={columnIndex}
-                      >
-                        <div
-                          style={{ position: 'relative', width: 'fit-content' }}
-                        >
-                          <LinearProgress
-                            variant='determinate'
-                            value={row[field]}
-                            sx={{
-                              height: '8px',
-                              borderRadius: '12px',
-                              width: '411px',
-                            }}
-                          />
-                          <div
-                            style={{
-                              position: 'absolute',
-                              top: 12,
-                              right: 0,
-                              color: color.progress.filled,
-                              fontWeight: 700,
-                            }}
-                          >{`${row[field]}%`}</div>
-                        </div>
-                      </TableCell>
-                    ) : (
-                      <TableCell
-                        sx={{
-                          whiteSpace: 'nowrap',
-                          py: 3,
-                          ...(!props.hasCheckboxes && { pl: 3 }),
-                          ...(props.fieldTypes[columnIndex] ==
-                            FieldType.link && {
-                            color: color.info.dark,
-                            cursor: 'pointer',
-                          }),
-                          ...(props.fieldTypes[columnIndex] ===
-                            FieldType.attendanceStatus &&
-                            props.statusMap?.[row[field]] === 'grey' && {
-                              color: '',
-                            }),
-                          ...(props.fieldTypes[columnIndex] ===
-                            FieldType.attendanceStatus &&
-                            props.statusMap?.[row[field]] === 'info' && {
-                              color: color.info.dark,
-                            }),
-                          ...(props.fieldTypes[columnIndex] ===
-                            FieldType.attendanceStatus &&
-                            props.statusMap?.[row[field]] === 'error' && {
-                              color: color.error.dark,
-                            }),
-                        }}
-                        key={columnIndex}
-                        {...(props.fieldTypes[columnIndex] ==
-                          FieldType.link && {
-                          onClick: () =>
-                            router.push(
-                              `${pathname}/${props.fieldAsSlug ?? ''}`
-                            ),
-                        })}
-                      >
-                        {props.fieldTypes[columnIndex] ===
-                        FieldType.nextLesson ? (
-                          <>
-                            Lesson{' '}
-                            <span style={{ color: color.info.dark }}>
-                              {row[field]}
-                            </span>
-                          </>
-                        ) : (
-                          row[field]
-                        )}
-                      </TableCell>
-                    )
-                  )}
-                  {props.hasActionsColumn && (
-                    <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                  {displayedFields.map((field, columnIndex) => (
+                    <TableCell
+                      className='whitespace-nowrap py-6'
+                      sx={{ ...(!hasCheckboxes && { pl: 3 }) }}
+                      key={columnIndex}
+                    >
+                      {getTableCell(
+                        fieldTypes[columnIndex],
+                        row,
+                        field,
+                        fieldToGetSlug
+                      )}
+                    </TableCell>
+                  ))}
+                  {hasActionsColumn && (
+                    <TableCell className='whitespace-nowrap'>
                       <Popover
                         type={PopoverType.moreOptions}
                         triggerButton={<MoreOptionsButton />}
                         getTriggerButtonClick={() =>
                           setActions(
-                            props.statusActionMap?.[
-                              row[props.fieldToGetAction ?? '']
-                            ]
+                            statusActionMap?.[row[fieldToGetAction ?? '']]
                           )
                         }
                         moreOptions={
-                          props.statusActionMap ? actions : props.actions ?? []
+                          statusActionMap ? actions : actionsFromProps ?? []
                         }
                         dataToReturnOnItemClick={
-                          row[props.fieldToReturnOnActionItemClick ?? '']
+                          row[fieldToReturnOnActionItemClick ?? '']
                         }
                       />
                     </TableCell>
@@ -268,11 +236,11 @@ const Table: React.FC<TableProps> = (props) => {
         </TableContainer>
         {hasPagination && (
           <div className='mx-3'>
-            <TablePagination pageCount={props.pageCount} page={props.page} />
+            <TablePagination pageCount={pageCount} page={page} />
           </div>
         )}
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };
 
