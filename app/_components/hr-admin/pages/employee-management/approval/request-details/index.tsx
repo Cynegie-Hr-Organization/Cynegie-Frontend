@@ -6,13 +6,18 @@ import Form from '@/app/_components/shared/form';
 import Page from '@/app/_components/shared/page';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';
 import SectionCardContainer from '@/app/_components/shared/section-with-cards/container';
-import { route } from '@/constants';
+import { icon, route } from '@/constants';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import useApprovalConfirmationModal from '../hooks/useApprovalConfirmationModal';
 
 const HrAdminEmployeeManagementApprovalRequestDetails = () => {
   const router = useRouter();
-  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const {
+    openConfirmationModal,
+    setOpenConfirmationModal,
+    confirmationModalProps,
+  } = useApprovalConfirmationModal();
+
   return (
     <Page
       backText='Back to Approval Management'
@@ -43,6 +48,8 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
             {
               name: 'Status',
               value: 'Pending',
+              type: 'status',
+              statusMap: { Pending: 'warning' },
             },
             {
               name: 'Leave Type',
@@ -66,7 +73,9 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
             },
             {
               name: 'Supporting Document',
+              type: 'document',
               value: 'Download medical certificate.pdf',
+              icon: icon.download,
             },
           ]}
         />
@@ -98,19 +107,9 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
       />
       {openConfirmationModal && (
         <Modal
-          open={openConfirmationModal}
-          onClose={() => setOpenConfirmationModal(false)}
-          hasHeading={false}
-          centerTitle='Approve Request'
-          centerMessage='Are you sure you want to approve the request'
-          buttonOne={{
-            type: ButtonType.outlined,
-            text: 'Cancel',
-            onClick: () => setOpenConfirmationModal(false),
-          }}
+          {...confirmationModalProps}
           buttonTwo={{
-            type: ButtonType.contained,
-            text: 'Confirm Approval',
+            ...confirmationModalProps.buttonTwo,
             onClick: () =>
               router.push(
                 route.hrAdmin.employeeManagement.approvalManagement.home

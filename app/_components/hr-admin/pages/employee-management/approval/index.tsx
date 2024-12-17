@@ -2,19 +2,43 @@
 import Page from '@/app/_components/shared/page';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';
 import Table from '@/app/_components/shared/table';
+import useHandleRowChecks from '@/app/_components/shared/table/hooks/useHandleRowChecks';
 import { FieldType } from '@/app/_components/shared/table/types';
-import { route } from '@/constants';
+import { icon, route } from '@/constants';
 import { useRouter } from 'next/navigation';
+import useApprovalConfirmationModal from './hooks/useApprovalConfirmationModal';
+import Modal from '@/app/_components/employee/modal';
+import { useState } from 'react';
+import Toast from '@/app/_components/shared/toast';
 
 const HrAdminEmployeeManagementApproval = () => {
   const router = useRouter();
+  const { checkedRows, setCheckedRows, clearChecks, resetChecks } =
+    useHandleRowChecks();
+  const {
+    openConfirmationModal,
+    setOpenConfirmationModal,
+    confirmationModalProps,
+  } = useApprovalConfirmationModal();
+  const [openToast, setOpenToast] = useState(false);
+
   return (
     <Page
       title='Approval Management'
       subtitle='Manage and Approve all requests pending HR review'
       hasButtons
-      leftButton={{ type: ButtonType.disabled, text: 'Reject All' }}
-      rightButton={{ type: ButtonType.disabled, text: 'Approve All' }}
+      leftButton={{
+        type:
+          checkedRows.length > 0 ? ButtonType.outlined : ButtonType.disabled,
+        text: 'Reject All',
+        onClick: () => resetChecks(),
+      }}
+      rightButton={{
+        type:
+          checkedRows.length > 0 ? ButtonType.contained : ButtonType.disabled,
+        text: 'Approve All',
+        onClick: () => setOpenConfirmationModal(true),
+      }}
     >
       <Table
         hasCheckboxes
@@ -26,8 +50,9 @@ const HrAdminEmployeeManagementApproval = () => {
           'Department',
           'Request Details',
           'Request Date',
+          'Status',
         ]}
-        fieldTypes={Array(6).fill(FieldType.text)}
+        fieldTypes={[...Array(6).fill(FieldType.text), FieldType.status]}
         displayedFields={[
           'requestType',
           'employeeName',
@@ -35,6 +60,7 @@ const HrAdminEmployeeManagementApproval = () => {
           'department',
           'requestDetails',
           'requestDate',
+          'status',
         ]}
         bodyRowData={Array(5).fill({
           requestType: 'Leave Request',
@@ -43,32 +69,66 @@ const HrAdminEmployeeManagementApproval = () => {
           department: 'Product',
           requestDetails: 'Annual Leave (5 days)',
           requestDate: 'Oct 12, 2024',
+          status: 'Pending',
         })}
-        actions={[
-          {
-            name: 'View Details',
-            onClick: () =>
-              router.push(
-                route.hrAdmin.employeeManagement.approvalManagement
-                  .requestDetails
-              ),
-          },
-          {
-            name: 'Approve',
-            onClick: () => {},
-          },
-          {
-            name: 'Reject',
-            onClick: () => {},
-          },
-        ]}
         filters={[
           { name: 'Request Type', items: ['Leave Request'] },
           { name: 'Department', items: ['HR'] },
           { name: 'Date', items: [] },
           { name: 'Status', items: ['Approved', 'Rejected', 'Pending'] },
         ]}
+        statusMap={{
+          Approved: 'success',
+          Pending: 'warning',
+          Rejected: 'error',
+        }}
+        statusActionMap={{
+          Pending: [
+            {
+              name: 'View Details',
+              onClick: () =>
+                router.push(
+                  route.hrAdmin.employeeManagement.approvalManagement
+                    .requestDetails
+                ),
+            },
+            {
+              name: 'Approve',
+              onClick: () => setOpenToast(true),
+            },
+            {
+              name: 'Reject',
+              onClick: () => {},
+            },
+          ],
+        }}
+        fieldToGetAction='status'
+        getCheckedRows={setCheckedRows}
+        clearChecks={clearChecks}
       />
+      {openConfirmationModal && (
+        <Modal
+          {...confirmationModalProps}
+          buttonTwo={{
+            ...confirmationModalProps.buttonTwo,
+            onClick: () => {
+              resetChecks();
+              setOpenConfirmationModal(false);
+              setOpenToast(true);
+            },
+          }}
+        />
+      )}
+      {openToast && (
+        <Toast
+          open={openToast}
+          icon={icon.checkCircle}
+          type='success'
+          onClose={() => setOpenToast(false)}
+          status='Successful'
+          message='Request(s) approved successfully!'
+        />
+      )}
     </Page>
   );
 };

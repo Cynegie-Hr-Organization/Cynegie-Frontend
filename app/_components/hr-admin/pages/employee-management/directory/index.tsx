@@ -8,8 +8,15 @@ import Table from '@/app/_components/shared/table';
 import { FieldType } from '@/app/_components/shared/table/types';
 import PendingApprovalRequests from './pending-approval-requests';
 import Modal from '@/app/_components/employee/modal';
+import SvgIcon from '@/app/_components/icons/container';
+import { icon } from '@/constants';
+import { ColorVariant } from '@/types';
 
 const HrAdminEmployeeDirectory = () => {
+  const cardIcon = (
+    <SvgIcon path={icon.userGroup} width={13.56} height={13.56} />
+  );
+  const cardIconColorVariant: ColorVariant = 'grey';
   return (
     <Page
       title='Employee Management'
@@ -55,7 +62,7 @@ const HrAdminEmployeeDirectory = () => {
         ]}
         gridItemSize={{ xs: 12, sm: 6, md: 3 }}
       />
-      <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
         <SectionCardContainer isCard title='Employment Type Distribution'>
           <></>
         </SectionCardContainer>
@@ -67,43 +74,53 @@ const HrAdminEmployeeDirectory = () => {
             gridItemSize: { xs: 12, sm: 6 },
             cards: [
               {
-                value: 190,
+                value: `${190} hours`,
                 labelText: 'Total Working Hours',
+                icon: cardIcon,
+                iconColorVariant: cardIconColorVariant,
               },
               {
-                value: 190,
-                labelText: 'Total Working Hours',
+                value: `${8} hours`,
+                labelText: 'Avg working hrs per Employee',
+                icon: cardIcon,
+                iconColorVariant: cardIconColorVariant,
               },
               {
-                value: 190,
-                labelText: 'Total Working Hours',
+                value: `${4}%`,
+                labelText: 'Absenteeism Rate',
+                icon: cardIcon,
+                iconColorVariant: cardIconColorVariant,
               },
               {
-                value: 190,
+                value: 26,
                 labelText: 'Total Working Hours',
+                icon: cardIcon,
+                iconColorVariant: cardIconColorVariant,
               },
             ],
           }}
         />
-        <SectionCardContainer
-          isCard
-          title='Pending Approval Requests'
-          period='View all'
-        >
-          <PendingApprovalRequests
-            requests={[
-              { title: 'Leave Request', from: 'John Emmanuel - HR' },
-              { title: 'Job Offer', from: 'Kingsley Donals - HR' },
-              { title: 'Promotion Request', from: 'Femi David - IT' },
-              { title: 'Expense Approval', from: 'Marketing Campaign' },
-            ]}
-            actions={[
-              { name: 'View Details', onClick: () => {} },
-              { name: 'Approve', onClick: () => {} },
-              { name: 'Reject', onClick: () => {} },
-            ]}
-          />
-        </SectionCardContainer>
+        <div className='col-span-1 md:col-span-2 lg:col-span-1'>
+          <SectionCardContainer
+            isCard
+            title='Pending Approval Requests'
+            period='View all'
+          >
+            <PendingApprovalRequests
+              requests={[
+                { title: 'Leave Request', from: 'John Emmanuel - HR' },
+                { title: 'Job Offer', from: 'Kingsley Donals - HR' },
+                { title: 'Promotion Request', from: 'Femi David - IT' },
+                { title: 'Expense Approval', from: 'Marketing Campaign' },
+              ]}
+              actions={[
+                { name: 'View Details', onClick: () => {} },
+                { name: 'Approve', onClick: () => {} },
+                { name: 'Reject', onClick: () => {} },
+              ]}
+            />
+          </SectionCardContainer>
+        </div>
       </div>
       <Table
         title='Employee Directory'

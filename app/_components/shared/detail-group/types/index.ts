@@ -11,7 +11,8 @@ export type DetailGroupProps = {
 export type SingleDetail = {
   name: string;
   value: string;
+  icon?: string;
   spaceBetweenLayout?: boolean;
-  type?: 'status';
+  type?: 'status' | 'document';
   statusMap?: StatusMap;
 };

@@ -29,6 +29,9 @@ export const icon = {
   workstation: `${iconBaseUrl}workstation.svg`,
   cube: `${iconBaseUrl}cube.svg`,
   thunderbolt: `${iconBaseUrl}thunderbolt.svg`,
+  userGroup: `${iconBaseUrl}user-group.svg`,
+  checkCircle: `${iconBaseUrl}check-circle.svg`,
+  download: `${iconBaseUrl}download.svg`,
 };
 
 export const color = {

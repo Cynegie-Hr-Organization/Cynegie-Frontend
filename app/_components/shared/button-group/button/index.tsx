@@ -88,6 +88,7 @@ const Button: React.FC<ButtonProps> = (props) => {
   const button = (
     <button
       onClick={onClick}
+      {...(type === ButtonType.disabled && { disabled: true })}
       style={{
         ...(type === ButtonType.outlined && outlinedStyle),
         ...(type === ButtonType.contained && containedStyle),

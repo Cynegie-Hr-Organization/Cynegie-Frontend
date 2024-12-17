@@ -12,16 +12,18 @@ const spaceBetweenLayout: SxProps = {
 
 const Detail: React.FC<SingleDetail> = (props) => {
   return (
-    <Stack {...(props.spaceBetweenLayout && spaceBetweenLayout)}>
+    <Stack {...(props.spaceBetweenLayout ? spaceBetweenLayout : { gap: 0.5 })}>
       <DetailName name={props.name} />
-      {props.type === 'status' ? (
+      {props.type === 'status' && (
         <StatusPill
           variant={props.statusMap?.[props.value]}
           text={props.value}
         />
-      ) : (
-        <DetailValue value={props.value} />
       )}
+      {props.type === 'document' && (
+        <StatusPill variant='info' text={props.value} icon={props.icon} />
+      )}
+      {!props.type && <DetailValue value={props.value} />}
     </Stack>
   );
 };

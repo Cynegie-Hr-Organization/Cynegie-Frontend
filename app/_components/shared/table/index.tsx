@@ -8,7 +8,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FieldType, TableProps, TableAction } from './types';
 import { FilterList } from '@mui/icons-material';
 import { PopoverType } from '../custom-popover/types';
@@ -45,6 +45,7 @@ const Table: React.FC<TableProps> = ({
   pageCount,
   actions: actionsFromProps,
   getCheckedRows,
+  clearChecks,
 }) => {
   const pathname = usePathname();
   const [actions, setActions] = useState<TableAction[] | undefined>(undefined);
@@ -123,6 +124,8 @@ const Table: React.FC<TableProps> = ({
           return <TableStatusCell value={rowVal} statusMap={statusMap ?? {}} />;
     }
   };
+
+  useEffect(() => setSelectedRowsIndexes([]), [clearChecks]);
 
   return (
     <div className={`flex flex-col ${title && 'gap-4'}`}>

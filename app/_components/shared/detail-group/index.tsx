@@ -16,7 +16,8 @@ const DetailGroup: React.FC<DetailGroupProps> = (props) => {
                 name={item.name}
                 value={item.value}
                 type={item.type}
-                statusMap={statusMap}
+                statusMap={item.statusMap}
+                icon={item.icon}
               />
             </Grid2>
           ))}

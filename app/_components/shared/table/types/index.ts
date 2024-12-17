@@ -1,6 +1,6 @@
 import { ColorVariant } from '@/types';
 
-export type TableProps<T = Record<string, string | number>> = {
+export type TableProps<T = DefaultGenericTableType> = {
   title?: string;
   headerRowData: string[];
   bodyRowData: T[];
@@ -25,7 +25,10 @@ export type TableProps<T = Record<string, string | number>> = {
   fieldToReturnOnActionItemClick?: string;
   hasSearchFilter?: boolean;
   hasPagination?: boolean;
+  clearChecks?: boolean;
 };
+
+export type DefaultGenericTableType = Record<string, string | number>;
 
 export type Filter = {
   name: string;

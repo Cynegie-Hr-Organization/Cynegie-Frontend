@@ -1,11 +1,14 @@
+import SvgIcon from '@/app/_components/icons/container';
+import { color } from '@/constants';
 import { ColorVariant } from '@/types';
 import { Box } from '@mui/material';
 
 const StatusPill: React.FC<{
   variant?: ColorVariant;
   text: string;
+  icon?: string;
   large?: boolean;
-}> = ({ variant, text }) => {
+}> = ({ variant, text, icon }) => {
   return (
     <Box
       sx={{
@@ -16,16 +19,25 @@ const StatusPill: React.FC<{
         ...(variant === 'success' && { color: '#036B26' }),
         ...(variant === 'error' && { color: '#9E0A05' }),
         ...(variant === 'warning' && { color: '#B56D00' }),
-        textTransform: 'capitalize',
+        ...(variant === 'info' && {
+          color: color.info.dark,
+          fill: color.info.dark,
+          bgcolor: color.info.light,
+        }),
         fontSize: '12px',
-        width: '80px',
+        width: 'fit-content',
         display: 'flex',
+        px: '10px',
         justifyContent: 'center',
         fontWeight: 600,
         paddingY: '4px',
+        textWrap: 'nowrap',
+        gap: '5px',
+        alignItems: 'center',
       }}
     >
       {text}
+      {icon && <SvgIcon path={icon} width={20} height={20} />}
     </Box>
   );
 };
