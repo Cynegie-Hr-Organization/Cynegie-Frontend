@@ -113,6 +113,7 @@ const HrAdminEmployeeDirectory = () => {
                 { title: 'Promotion Request', from: 'Femi David - IT' },
                 { title: 'Expense Approval', from: 'Marketing Campaign' },
               ]}
+              type='actions'
               actions={[
                 { name: 'View Details', onClick: () => {} },
                 { name: 'Approve', onClick: () => {} },

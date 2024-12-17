@@ -32,6 +32,8 @@ export const icon = {
   userGroup: `${iconBaseUrl}user-group.svg`,
   checkCircle: `${iconBaseUrl}check-circle.svg`,
   download: `${iconBaseUrl}download.svg`,
+  deleteX: `${iconBaseUrl}delete-x.svg`,
+  successTick: `${iconBaseUrl}success-tick.svg`,
 };
 
 export const color = {
@@ -177,6 +179,7 @@ const basePath = {
   employeeManagement: 'employee-management/',
   approvalManagement: 'approval/',
   attendanceManagement: 'attendance/',
+  roleManagement: 'role/',
 };
 
 export const route = {
@@ -190,6 +193,11 @@ export const route = {
         home: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.attendanceManagement}`,
         bulkReport: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.attendanceManagement}bulk-report`,
         individualReport: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.attendanceManagement}individual-report`,
+      },
+      roleManagement: {
+        home: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.roleManagement}`,
+        create: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.roleManagement}/create`,
+        edit: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.roleManagement}/edit`,
       },
     },
   },

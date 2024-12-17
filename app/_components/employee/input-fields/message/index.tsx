@@ -15,6 +15,7 @@ const MessageField: React.FC<Omit<InputFieldProps, 'type'>> = ({
       minRows={5}
       value={value}
       onChange={(e) => setValue?.(e.target.value)}
+      className='bg-white'
     />
   );
 };

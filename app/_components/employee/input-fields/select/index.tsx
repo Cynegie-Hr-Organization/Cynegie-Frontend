@@ -22,7 +22,7 @@ const SelectField: React.FC<SelectFieldProps> = (props) => {
   return (
     <Select
       className='!rounded-md'
-      style={{ height: '42px', width: '100%' }}
+      style={{ height: '42px', width: '100%', background: 'white' }}
       defaultValue=''
       {...(valueControlledFromOutside ? { value: value ?? '' } : {})}
       displayEmpty

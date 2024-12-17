@@ -2,7 +2,8 @@ import { TableAction } from '@/app/_components/shared/table/types';
 
 export type PendingApprovalRequestsProps = {
   requests: PendingApprovalRequestsItemProps[];
-  actions: TableAction[];
+  type: 'actions' | 'switch';
+  actions?: TableAction[];
 };
 
 export type PendingApprovalRequestsItemProps = {
