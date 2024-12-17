@@ -36,6 +36,7 @@ export type InputFieldProps = {
   setValue?: Dispatch<SetStateAction<string | number | undefined>>;
   selectValControlledFromOutside?: boolean;
   sideButton?: ButtonProps;
+  disabled?: boolean;
 };
 
 export type InputFieldOption = { label: string; value: string | number };

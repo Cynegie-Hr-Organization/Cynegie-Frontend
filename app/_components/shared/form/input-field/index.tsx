@@ -20,6 +20,7 @@ const InputField: React.FC<InputFieldProps> = ({
   value,
   setValue,
   sideButton,
+  disabled,
 }) => {
   return (
     <div className='flex flex-col gap-2'>
@@ -30,6 +31,7 @@ const InputField: React.FC<InputFieldProps> = ({
             placeholder={placeholder}
             value={value}
             setValue={setValue}
+            disabled={disabled}
           />
         )}
         {type == 'message' && (

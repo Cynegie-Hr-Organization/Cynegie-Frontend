@@ -83,6 +83,12 @@ export const color = {
     filled: '#475367',
     unfilled: '#F0F2F5',
   },
+  inputfield: {
+    disabled: {
+      backgroundColor: '#F0F2F5',
+      color: '#98A2B3',
+    },
+  },
 };
 
 export const defaultDonutChartData = {

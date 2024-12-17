@@ -1,5 +1,6 @@
 import { TextField as MuiTextField } from '@mui/material';
 import { InputFieldProps } from '../../modal/types';
+import { color } from '@/constants';
 
 const textFieldStyle = {
   '& .MuiInputBase-root': {
@@ -12,10 +13,15 @@ const TextField: React.FC<Omit<InputFieldProps, 'type'>> = ({
   placeholder,
   value,
   setValue,
+  disabled,
 }) => {
   return (
     <MuiTextField
-      sx={textFieldStyle}
+      sx={{
+        ...textFieldStyle,
+        ...(disabled && color.inputfield.disabled),
+      }}
+      disabled={disabled}
       fullWidth
       placeholder={placeholder}
       value={value}

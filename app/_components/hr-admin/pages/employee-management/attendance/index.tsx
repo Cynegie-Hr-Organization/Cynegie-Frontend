@@ -182,21 +182,25 @@ const HrAdminEmployeeAttendanceManagement = () => {
                 name: 'Employee Name',
                 type: 'text',
                 value: 'John Emmanuel',
+                disabled: true,
               },
               {
                 name: 'Staff ID',
                 type: 'text',
                 value: 'CYN00117',
+                disabled: true,
               },
               {
                 name: 'Department',
                 type: 'text',
                 value: 'Finance',
+                disabled: true,
               },
               {
                 name: 'Date of Adjustment',
                 type: 'text',
                 value: 'November 12, 2024',
+                disabled: true,
               },
               {
                 name: 'Check - in Time',
@@ -209,6 +213,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
               {
                 name: 'Adjusted By',
                 type: 'text',
+                placeholder: 'Enter name',
               },
             ],
             buttonGroup: {
