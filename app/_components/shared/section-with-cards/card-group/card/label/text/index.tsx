@@ -1,8 +1,15 @@
 import React from 'react';
 
-const CardLabelText: React.FC<{ text: string }> = ({ text }) => {
+const CardLabelText: React.FC<{ text: string; large?: boolean }> = ({
+  text,
+  large = false,
+}) => {
   return (
-    <div style={{ fontSize: '12px', color: '#1B1B1B', fontWeight: 400 }}>
+    <div
+      className={`${
+        large ? 'card-title-small' : 'text-[12px] text-[#1B1B1B] font-[400]'
+      }`}
+    >
       {text}
     </div>
   );

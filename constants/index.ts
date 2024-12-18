@@ -30,10 +30,13 @@ export const icon = {
   cube: `${iconBaseUrl}cube.svg`,
   thunderbolt: `${iconBaseUrl}thunderbolt.svg`,
   userGroup: `${iconBaseUrl}user-group.svg`,
+  userGroupTwo: `${iconBaseUrl}user-group-two.svg`,
   checkCircle: `${iconBaseUrl}check-circle.svg`,
   download: `${iconBaseUrl}download.svg`,
   deleteX: `${iconBaseUrl}delete-x.svg`,
   successTick: `${iconBaseUrl}success-tick.svg`,
+  pdf: `${iconBaseUrl}pdf.svg`,
+  excel: `${iconBaseUrl}excel.svg`,
 };
 
 export const color = {
@@ -59,6 +62,14 @@ export const color = {
   grey: {
     dark: '#000000',
     light: '#E6EBF9',
+  },
+  purple: {
+    dark: '#000000',
+    light: '#EADAFF',
+  },
+  ash: {
+    dark: '#000000',
+    light: '#DEE3FF',
   },
   button: {
     contained: {

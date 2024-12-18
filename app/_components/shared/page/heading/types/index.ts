@@ -1,3 +1,4 @@
+import React from 'react';
 import { TableAction } from '../../../table/types';
 
 export type PageHeadingProps = {
@@ -19,10 +20,16 @@ export type ButtonProps = {
   type?: ButtonType;
   text?: string;
   icon?: React.ReactElement;
-  onClick?: () => void;
-  popoverOptions?: { name: string; onClick: () => void }[];
+  onClick?: (e: React.SyntheticEvent) => void;
+  popoverOptions?: PopoverOption[];
   fullWidth?: boolean;
   small?: boolean;
+};
+
+export type PopoverOption = {
+  name: string;
+  onClick: (e: React.SyntheticEvent) => void;
+  onDataReturned?: (arg: string | number) => void;
 };
 
 export type ContainedButtonProps = {
@@ -39,6 +46,8 @@ export enum ButtonType {
   deleteWithIcon,
   disabled,
   black,
+  download,
+  actions,
 }
 
 export type HeadingType = 'page' | 'modal' | 'card';

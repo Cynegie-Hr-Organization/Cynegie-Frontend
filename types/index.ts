@@ -1,4 +1,11 @@
-export type ColorVariant = 'info' | 'success' | 'warning' | 'error' | 'grey';
+export type ColorVariant =
+  | 'info'
+  | 'success'
+  | 'warning'
+  | 'error'
+  | 'grey'
+  | 'purple'
+  | 'ash';
 
 export type SummaryCard = {
   value: number;
@@ -83,7 +90,7 @@ export interface Device {
 export interface DeviceRequest {
   userId: User;
   deviceId: Device;
-  status: "PENDING" | "APPROVED" | "DENIED";
+  status: 'PENDING' | 'APPROVED' | 'DENIED';
   requestedDate: string; // ISO date format
   createdAt: string; // ISO date format
   updatedAt: string; // ISO date format
@@ -104,7 +111,7 @@ export interface Software {
     name: string;
     status: string;
   };
-  status: "ACTIVE" | "INACTIVE";
+  status: 'ACTIVE' | 'INACTIVE';
   deletedAt: string | null;
   createdAt: string;
   updatedAt: string;
@@ -115,11 +122,11 @@ export interface SecurityAlert {
   alertTitle: string;
   description: string;
   date: string;
-  severity: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL"; // Enum for severity levels
+  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'; // Enum for severity levels
   company: {
     id: string;
     name: string;
-    status: "active" | "inactive";
+    status: 'active' | 'inactive';
     createdAt: string;
     updatedAt: string;
   };

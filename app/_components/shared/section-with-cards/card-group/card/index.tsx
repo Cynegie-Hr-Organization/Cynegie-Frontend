@@ -18,6 +18,7 @@ const Card: React.FC<CardProps> = (props) => {
     hasIcon = false,
     denominator,
     isPercentage = false,
+    largeLabelText = false,
   } = props;
   return (
     <Stack
@@ -38,6 +39,7 @@ const Card: React.FC<CardProps> = (props) => {
         iconContainerHeight={iconContainerHeight}
         iconContainerWidth={iconContainerWidth}
         text={labelText}
+        largeText={largeLabelText}
         hasIcon={hasIcon}
       />
     </Stack>

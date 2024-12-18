@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, Stack } from '@mui/material';
+import { Checkbox, Dialog, DialogContent, Stack } from '@mui/material';
 import React from 'react';
 import Heading from '../../shared/page/heading';
 import { ModalProps } from './types';
@@ -9,6 +9,7 @@ import DetailGroup from '@/app/_components/shared/detail-group';
 import PayrollSlip from '../pages/payroll/payroll-slip';
 import ButtonGroup from '../../shared/button-group';
 import ViewTask from '../pages/task/view-task';
+import { icon } from '@/constants';
 
 const dialogStyle = {
   '& .MuiDialog-paper': {
@@ -36,6 +37,7 @@ const Modal: React.FC<ModalProps> = (props) => {
     isPayrollSlip = false,
     buttonGroupPosition = 'center',
     viewTaskProps,
+    hasDocSelect,
   } = props;
 
   return (
@@ -70,6 +72,22 @@ const Modal: React.FC<ModalProps> = (props) => {
               </div>
             )}
             {detailGroup && <DetailGroup {...detailGroup} />}
+            {hasDocSelect && (
+              <div className='flex justify-center gap-10'>
+                {[
+                  { name: 'PDF', icon: icon.pdf },
+                  { name: 'Excel', icon: icon.excel },
+                ].map((doc) => (
+                  <div key={doc.name} className='flex items-center gap-1'>
+                    <Checkbox />
+                    <Image src={doc.icon} width={20} height={20} alt='' />
+                    <div className='text-[#475367] text-[14px] font-bold'>
+                      {doc.name}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
             {form && <Form {...form} />}
             {!buttonTwo && (
               <div className={`flex ${centerButton && 'justify-center'}`}>

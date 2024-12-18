@@ -1,7 +1,7 @@
 import { ColorVariant } from '@/types';
 import { FormProps } from '../../form/types';
 
-export type TableProps<T = DefaultGenericTableType> = {
+export type TableProps<T = Record<string, any>> = {
   title?: string;
   headerRowData: string[];
   bodyRowData: T[];
@@ -30,8 +30,6 @@ export type TableProps<T = DefaultGenericTableType> = {
   clearChecks?: boolean;
 };
 
-export type DefaultGenericTableType = Record<string, string | number>;
-
 export type Filter = {
   name: string;
   items: string[];
@@ -39,7 +37,8 @@ export type Filter = {
 
 export type TableAction = {
   name: string;
-  onClick: (arg?: string | number) => void;
+  onClick: (arg?: React.SyntheticEvent | string | number) => void;
+  onDataReturned?: (arg: string | number) => void;
 };
 
 export enum FieldType {

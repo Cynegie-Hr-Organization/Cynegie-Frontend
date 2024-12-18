@@ -20,6 +20,7 @@ export type ModalProps = {
   centerMessage?: string;
   reduceVerticalGap?: boolean;
   form?: FormProps;
+  hasDocSelect?: boolean;
   isPayrollSlip?: boolean;
   buttonGroupPosition?: ButtonGroupPosition;
   viewTaskProps?: ViewTaskProps;

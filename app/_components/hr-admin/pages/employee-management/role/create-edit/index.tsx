@@ -1,4 +1,3 @@
-import { InputFieldProps } from '@/app/_components/employee/modal/types';
 import Form from '@/app/_components/shared/form';
 import Page from '@/app/_components/shared/page';
 import Permissions from '../../directory/pending-approval-requests';

@@ -11,6 +11,7 @@ const CardLabel: React.FC<CardLabelProps> = (props) => {
     iconContainerHeight,
     iconContainerWidth,
     text,
+    largeText = false,
     hasIcon = false,
   } = props;
   return (
@@ -23,7 +24,7 @@ const CardLabel: React.FC<CardLabelProps> = (props) => {
           colorVariant={iconColorVariant}
         />
       )}
-      <CardLabelText text={text} />
+      <CardLabelText text={text} large={largeText} />
     </Stack>
   );
 };

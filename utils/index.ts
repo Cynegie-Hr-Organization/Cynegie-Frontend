@@ -56,6 +56,16 @@ export const getColorVariant = (variant?: ColorVariant) => {
         fill: color.grey.dark,
         backgroundColor: color.grey.light,
       };
+    case 'purple':
+      return {
+        fill: color.purple.dark,
+        backgroundColor: color.purple.light,
+      };
+    case 'ash':
+      return {
+        fill: color.ash.dark,
+        backgroundColor: color.ash.light,
+      };
     default:
       return {
         fill: '',

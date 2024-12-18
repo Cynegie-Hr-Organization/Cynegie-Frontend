@@ -29,6 +29,7 @@ const Button: React.FC<ButtonProps> = (props) => {
     ...fontSizeStyle,
     ...fontWeightStyle,
     ...borderRadiusStyle,
+    fill: '#FFF',
   };
 
   const outlinedStyle = {
@@ -51,9 +52,8 @@ const Button: React.FC<ButtonProps> = (props) => {
 
   const outlinedBlueStyle = {
     ...outlinedStyle,
-    borderColor: color.info.dark,
     color: color.info.dark,
-    borderWidth: '2px',
+    border: `2px solid ${color.info.dark}`,
   };
 
   const deleteContainedStyle = {
@@ -92,14 +92,16 @@ const Button: React.FC<ButtonProps> = (props) => {
       style={{
         ...(type === ButtonType.outlined && outlinedStyle),
         ...(type === ButtonType.contained && containedStyle),
+        ...(type === ButtonType.download && containedStyle),
         ...(type === ButtonType.filter && filterStyle),
         ...(type === ButtonType.outlinedBlue && outlinedBlueStyle),
         ...(type === ButtonType.deleteContained && deleteContainedStyle),
         ...(type === ButtonType.deleteWithIcon && deleteWithIconStyle),
         ...(type === ButtonType.disabled && disabledStyle),
         ...(type === ButtonType.black && blackStyle),
+        ...(type === ButtonType.actions && outlinedStyle),
         borderRadius: '8px',
-        ...(iconProp && {
+        ...((iconProp || type === ButtonType.download) && {
           display: 'flex',
           alignItems: 'center',
           gap: 5,
@@ -114,8 +116,11 @@ const Button: React.FC<ButtonProps> = (props) => {
       {type === ButtonType.deleteWithIcon && (
         <SvgIcon path={icon.bin} width={20} height={20} />
       )}
+      {type === ButtonType.download && (
+        <SvgIcon path='/icons/download.svg' width={24} height={24} />
+      )}
       {text}
-      {popoverOptions && (
+      {(popoverOptions || type === ButtonType.actions) && (
         <ChevronDown style={{ display: 'inline', marginLeft: 5 }} />
       )}
     </button>

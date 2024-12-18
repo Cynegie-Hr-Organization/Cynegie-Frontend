@@ -19,6 +19,7 @@ export type CardProps = {
   iconContainerHeight?: number;
   iconContainerWidth?: number;
   labelText: string;
+  largeLabelText?: boolean;
   hasIcon?: boolean;
   denominator?: number;
   isPercentage?: boolean;
@@ -38,6 +39,7 @@ export type CardLabelProps = {
   iconContainerHeight?: number;
   iconContainerWidth?: number;
   text: string;
+  largeText?: boolean;
   hasIcon?: boolean;
 };
 
