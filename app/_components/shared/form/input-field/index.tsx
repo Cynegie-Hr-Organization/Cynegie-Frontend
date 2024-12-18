@@ -44,7 +44,7 @@ const InputField: React.FC<InputFieldProps> = ({
         {type == 'select' && (
           <SelectField
             options={options}
-            placeholder={placeholder}
+            placeholder={placeholder ?? 'Select'}
             value={value}
             setValue={setValue}
             valueControlledFromOutside={selectValControlledFromOutside}
@@ -67,7 +67,11 @@ const InputField: React.FC<InputFieldProps> = ({
             }}
           />
         )}
-        {type == 'drag-upload' && <DragUpload />}
+        {type == 'drag-upload' && (
+          <div>
+            <DragUpload />
+          </div>
+        )}
         {sideButton && <Button {...sideButton} />}
         {type == 'multi-select' && (
           <MultiSelect options={[]} value={[]} onChange={() => {}} />

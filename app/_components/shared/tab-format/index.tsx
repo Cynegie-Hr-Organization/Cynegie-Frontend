@@ -4,6 +4,7 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { TabFormatProps } from './types';
 import { ButtonType } from '../page/heading/types';
 import Button from '../button-group/button';
+import ButtonGroup from '../button-group';
 
 const TabFormat: React.FC<TabFormatProps> = ({ tabs, type, actionButton }) => {
   const [value, setValue] = useState(0);
@@ -78,6 +79,18 @@ const TabFormat: React.FC<TabFormatProps> = ({ tabs, type, actionButton }) => {
           ))}
         </div>
       </TabContext>
+      {type === 'multi-step-form' && (
+        <div className='mt-4'>
+          <ButtonGroup
+            leftButton={{
+              type: ButtonType.outlined,
+              text: 'Save & Continue Later',
+            }}
+            rightButton={{ type: ButtonType.disabled, text: 'Add Employee' }}
+            position='end'
+          />
+        </div>
+      )}
     </div>
   );
 };

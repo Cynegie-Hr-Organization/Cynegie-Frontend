@@ -192,6 +192,7 @@ const basePath = {
   approvalManagement: 'approval/',
   attendanceManagement: 'attendance/',
   roleManagement: 'role/',
+  directory: 'directory/',
 };
 
 export const route = {
@@ -208,8 +209,13 @@ export const route = {
       },
       roleManagement: {
         home: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.roleManagement}`,
-        create: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.roleManagement}/create`,
-        edit: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.roleManagement}/edit`,
+        create: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.roleManagement}create`,
+        edit: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.roleManagement}edit`,
+      },
+      directory: {
+        home: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.directory}`,
+        addEmployee: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.directory}add-employee`,
+        editEmployee: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.directory}edit-employee`,
       },
     },
   },

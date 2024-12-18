@@ -9,10 +9,12 @@ import { FieldType } from '@/app/_components/shared/table/types';
 import PendingApprovalRequests from './pending-approval-requests';
 import Modal from '@/app/_components/employee/modal';
 import SvgIcon from '@/app/_components/icons/container';
-import { icon } from '@/constants';
+import { icon, route } from '@/constants';
 import { ColorVariant } from '@/types';
+import { useRouter } from 'next/navigation';
 
 const HrAdminEmployeeDirectory = () => {
+  const router = useRouter();
   const cardIcon = (
     <SvgIcon path={icon.userGroup} width={13.56} height={13.56} />
   );
@@ -34,7 +36,8 @@ const HrAdminEmployeeDirectory = () => {
       rightButton={{
         type: ButtonType.contained,
         text: 'Add Employee',
-        onClick: () => {},
+        onClick: () =>
+          router.push(route.hrAdmin.employeeManagement.directory.addEmployee),
       }}
     >
       <CardGroup
