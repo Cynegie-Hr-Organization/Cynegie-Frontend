@@ -37,6 +37,7 @@ export const icon = {
   successTick: `${iconBaseUrl}success-tick.svg`,
   pdf: `${iconBaseUrl}pdf.svg`,
   excel: `${iconBaseUrl}excel.svg`,
+  plus: `${iconBaseUrl}plus.svg`,
 };
 
 export const color = {

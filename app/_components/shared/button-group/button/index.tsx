@@ -15,6 +15,7 @@ const Button: React.FC<ButtonProps> = (props) => {
     popoverOptions,
     fullWidth,
     small,
+    iconOnly,
   } = props;
 
   const borderStyle = { border: '1.5px solid' };
@@ -119,7 +120,7 @@ const Button: React.FC<ButtonProps> = (props) => {
       {type === ButtonType.download && (
         <SvgIcon path='/icons/download.svg' width={24} height={24} />
       )}
-      {text}
+      {!iconOnly && text}
       {(popoverOptions || type === ButtonType.actions) && (
         <ChevronDown style={{ display: 'inline', marginLeft: 5 }} />
       )}

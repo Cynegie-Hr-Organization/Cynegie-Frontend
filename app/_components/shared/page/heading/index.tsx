@@ -3,6 +3,7 @@ import { ButtonType, PageHeadingProps } from './types';
 import Button from '../../button-group/button';
 import { Close } from '@mui/icons-material';
 import HeadingBack from './back';
+import SvgIcon from '@/app/_components/icons/container';
 
 const PageHeading: React.FC<PageHeadingProps> = (props) => {
   return (
@@ -55,7 +56,20 @@ const PageHeading: React.FC<PageHeadingProps> = (props) => {
         )}
         {props.rightButtonSm && props.rightButton && (
           <div className='block md:hidden ml-3'>
-            <Button small={props.rightButtonSm} {...props.rightButton} />
+            <Button
+              small={props.rightButtonSm}
+              iconOnly={props.rightButtonIconOnlySm}
+              {...props.rightButton}
+              {...(props.rightButtonIconSm && {
+                icon: (
+                  <SvgIcon
+                    path={props.rightButtonIconSm}
+                    width={15}
+                    height={15}
+                  />
+                ),
+              })}
+            />
           </div>
         )}
         {props.type === 'modal' && (

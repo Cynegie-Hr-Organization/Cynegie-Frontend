@@ -14,6 +14,8 @@ export type PageHeadingProps = {
   onCloseClick?: (arg: boolean) => void;
   smActions?: TableAction[];
   rightButtonSm?: boolean;
+  rightButtonIconSm?: string;
+  rightButtonIconOnlySm?: boolean;
 };
 
 export type ButtonProps = {
@@ -24,6 +26,7 @@ export type ButtonProps = {
   popoverOptions?: PopoverOption[];
   fullWidth?: boolean;
   small?: boolean;
+  iconOnly?: boolean;
 };
 
 export type PopoverOption = {
