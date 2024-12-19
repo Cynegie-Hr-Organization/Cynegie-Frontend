@@ -4,6 +4,7 @@ export type SectionWithCardsProps = {
   title: string;
   isCard?: boolean;
   period?: string;
+  periodClick?: () => void;
   headerDivider?: boolean;
   cardsData?: CardProps[];
   cardsGroup?: CardGroupProps;

@@ -11,12 +11,14 @@ const SectionWithCards: React.FC<SectionWithCardsProps> = (props) => {
     cardsData,
     cardsGroup,
     isCard = false,
+    periodClick,
   } = props;
   return (
     <SectionCardContainer
       title={title}
       isCard={isCard}
       period={period}
+      periodClick={periodClick}
       headerDivider={headerDivider}
     >
       {cardsData && <CardGroup cards={cardsData} />}

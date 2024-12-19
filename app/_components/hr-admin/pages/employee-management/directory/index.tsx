@@ -9,9 +9,26 @@ import { FieldType } from '@/app/_components/shared/table/types';
 import PendingApprovalRequests from './pending-approval-requests';
 import Modal from '@/app/_components/employee/modal';
 import SvgIcon from '@/app/_components/icons/container';
-import { icon, route } from '@/constants';
+import { color, icon, route } from '@/constants';
 import { ColorVariant } from '@/types';
 import { useRouter } from 'next/navigation';
+import PieChart from '@/app/_components/shared/charts/pie-chart';
+
+const chartLabels = [
+  'Full Time',
+  'Part Time',
+  'Contract',
+  'Intern',
+  'Freelancer',
+];
+const chartValues = [50, 20, 10, 15, 5];
+const chartColors = [
+  color.pieChart.info,
+  color.pieChart.success,
+  color.pieChart.warning,
+  color.pieChart.error,
+  color.pieChart.grey,
+];
 
 const HrAdminEmployeeDirectory = () => {
   const router = useRouter();
@@ -67,12 +84,21 @@ const HrAdminEmployeeDirectory = () => {
       />
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
         <SectionCardContainer isCard title='Employment Type Distribution'>
-          <></>
+          <PieChart
+            chartLabels={chartLabels}
+            chartValues={chartValues}
+            chartColors={chartColors}
+          />
         </SectionCardContainer>
         <SectionWithCards
           isCard
           title='Attendance Overview'
           period='See all'
+          periodClick={() =>
+            router.push(
+              route.hrAdmin.employeeManagement.attendanceManagement.home
+            )
+          }
           cardsGroup={{
             gridItemSize: { xs: 12, sm: 6 },
             cards: [
@@ -108,6 +134,11 @@ const HrAdminEmployeeDirectory = () => {
             isCard
             title='Pending Approval Requests'
             period='View all'
+            periodClick={() =>
+              router.push(
+                route.hrAdmin.employeeManagement.approvalManagement.home
+              )
+            }
           >
             <PendingApprovalRequests
               requests={[

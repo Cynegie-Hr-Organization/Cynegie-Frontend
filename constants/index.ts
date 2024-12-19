@@ -103,6 +103,16 @@ export const color = {
       color: '#98A2B3',
     },
   },
+  pieChart: {
+    info: '#8AA2E3',
+    success: '#5FC381',
+    error: '#E26E6A',
+    warning: '#FFBB54',
+    grey: '#CDC4C4',
+  },
+  barChart: {
+    lightBlue: '#B0C0EC',
+  },
 };
 
 export const defaultDonutChartData = {

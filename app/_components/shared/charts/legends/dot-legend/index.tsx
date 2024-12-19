@@ -6,12 +6,14 @@ type DotLegend = {
   label?: string;
   value?: number;
   countedItemName?: string;
+  isPercentage?: boolean;
+  boldValue?: boolean;
 };
 
 const DotLegend: React.FC<DotLegend> = (props) => {
   const isMeetingIndicator = props.type === 'meeting-indicator';
   return (
-    <div className='flex justify-between items-center font-normal text-sm text-[#1A1919] '>
+    <div className='flex justify-between gap-5 items-center font-normal text-sm text-[#1A1919] '>
       <div className='flex items-center gap-2'>
         <Dot
           color={props.dotColor}
@@ -22,11 +24,12 @@ const DotLegend: React.FC<DotLegend> = (props) => {
           {props.label}
         </div>
       </div>
-      {props.countedItemName && (
-        <div>{`${props.value ?? ''} ${
-          props.countedItemName + (props.value == 1 ? '' : 's')
-        }`}</div>
-      )}
+      <div className={`${props.boldValue && 'font-bold'}`}>{`${
+        props.value ?? ''
+      }${props.isPercentage ? '%' : ''} ${
+        props.countedItemName &&
+        props.countedItemName + (props.value == 1 ? '' : 's')
+      }`}</div>
     </div>
   );
 };

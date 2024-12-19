@@ -1,14 +1,62 @@
 'use client';
 import Modal from '@/app/_components/employee/modal';
+import BarChart from '@/app/_components/employee/pages/attendance-and-time-tracking/total-hours-worked/chart';
 import SvgIcon from '@/app/_components/icons/container';
+import PieChart from '@/app/_components/shared/charts/pie-chart';
 import Page from '@/app/_components/shared/page';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';
 import CardGroup from '@/app/_components/shared/section-with-cards/card-group';
+import SectionCardContainer from '@/app/_components/shared/section-with-cards/container';
 import TabFormat from '@/app/_components/shared/tab-format';
 import Table from '@/app/_components/shared/table';
 import { FieldType } from '@/app/_components/shared/table/types';
-import { icon } from '@/constants';
+import { color, icon } from '@/constants';
 import { useState } from 'react';
+
+const chart1 = {
+  chartLabels: ['Male', 'Female'],
+  chartValues: [55, 45],
+  chartColors: [color.pieChart.info, color.pieChart.warning],
+};
+
+const chart2 = {
+  chartLabels: ['Full Time', 'Part Time', 'Contract', 'Intern', 'Freelancer'],
+  chartValues: [50, 5, 10, 10, 25],
+  chartColors: [
+    color.pieChart.info,
+    color.pieChart.success,
+    color.pieChart.grey,
+    color.pieChart.warning,
+    color.pieChart.error,
+  ],
+};
+
+const chart3 = {
+  chartLabels: ['Active', 'On Leave', 'Probation', 'Resigned', 'Terminated'],
+  chartValues: [50, 5, 10, 10, 25],
+  chartColors: [
+    color.pieChart.info,
+    color.pieChart.success,
+    color.pieChart.grey,
+    color.pieChart.warning,
+    color.pieChart.error,
+  ],
+};
+
+const employeeTurnoverChartData = [
+  { item: 'Jan', value: 23 },
+  { item: 'Feb', value: 27 },
+  { item: 'Mar', value: 18 },
+  { item: 'Apr', value: 18 },
+  { item: 'May', value: 22 },
+  { item: 'Jun', value: 13 },
+  { item: 'Jul', value: 25 },
+  { item: 'Aug', value: 17 },
+  { item: 'Sep', value: 11 },
+  { item: 'Oct', value: 17 },
+  { item: 'Nov', value: 12 },
+  { item: 'Dec', value: 25 },
+];
 
 const HrAdminEmployeeComplianceReporting = () => {
   const [openExportModal, setOpenExportModal] = useState(false);
@@ -102,59 +150,90 @@ const HrAdminEmployeeComplianceReporting = () => {
                   {
                     name: 'Employee Demography',
                     component: (
-                      <div>
-                        <Table
-                          title='Employee Breakdown'
-                          hasCheckboxes
-                          headerRowData={[
-                            'Department',
-                            'Total Employee Number',
-                            'Male',
-                            'Female',
-                          ]}
-                          fieldTypes={[...Array(4).fill(FieldType.text)]}
-                          displayedFields={[
-                            'department',
-                            'noOfEmployees',
-                            'noOfMales',
-                            'noOfFemales',
-                          ]}
-                          bodyRowData={[
-                            ...Array(5).fill({
-                              department: 'Product',
-                              noOfEmployees: '32',
-                              noOfMales: '20',
-                              noOfFemales: '12',
-                            }),
-                            {
-                              department: 'Total Number',
-                              noOfEmployees: 18,
-                              noOfMales: 4,
-                              noOfFemales: 6,
-                            },
-                          ]}
-                          formFilter={{
-                            inputFields: [
+                      <>
+                        <div className='card-title-large my-4'>
+                          Employee Demography
+                        </div>
+                        <div className='flex flex-col gap-8'>
+                          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+                            <SectionCardContainer isCard title='By Gender'>
+                              <PieChart {...chart1} />
+                            </SectionCardContainer>
+                            <SectionCardContainer
+                              isCard
+                              title='By Employment Type'
+                            >
+                              <PieChart {...chart2} />
+                            </SectionCardContainer>
+                            <SectionCardContainer
+                              isCard
+                              title='By Employment Status'
+                            >
+                              <PieChart {...chart3} />
+                            </SectionCardContainer>
+                          </div>
+                          <Table
+                            title='Employee Breakdown'
+                            hasCheckboxes
+                            headerRowData={[
+                              'Department',
+                              'Total Employee Number',
+                              'Male',
+                              'Female',
+                            ]}
+                            fieldTypes={[...Array(4).fill(FieldType.text)]}
+                            displayedFields={[
+                              'department',
+                              'noOfEmployees',
+                              'noOfMales',
+                              'noOfFemales',
+                            ]}
+                            bodyRowData={[
+                              ...Array(5).fill({
+                                department: 'Product',
+                                noOfEmployees: '32',
+                                noOfMales: '20',
+                                noOfFemales: '12',
+                              }),
                               {
-                                name: 'Status',
-                                type: 'select',
-                                placeholder: 'Select',
-                                options: [
-                                  { label: 'Completed', value: 2 },
-                                  { label: 'In Progress', value: 1 },
-                                  { label: 'Not Started', value: 0 },
-                                ],
+                                department: 'Total Number',
+                                noOfEmployees: 18,
+                                noOfMales: 4,
+                                noOfFemales: 6,
                               },
-                            ],
-                          }}
-                        />
-                      </div>
+                            ]}
+                            formFilter={{
+                              inputFields: [
+                                {
+                                  name: 'Status',
+                                  type: 'select',
+                                  placeholder: 'Select',
+                                  options: [
+                                    { label: 'Completed', value: 2 },
+                                    { label: 'In Progress', value: 1 },
+                                    { label: 'Not Started', value: 0 },
+                                  ],
+                                },
+                              ],
+                            }}
+                          />
+                        </div>
+                      </>
                     ),
                   },
                   {
                     name: 'Turnover',
                     component: (
-                      <div>
+                      <div className='flex flex-col gap-8'>
+                        <SectionCardContainer isCard title='Employee Turnover'>
+                          <BarChart
+                            barSize={35}
+                            data={employeeTurnoverChartData}
+                            barFill={color.barChart.lightBlue}
+                            yAxisLabel='(% of Employees)'
+                            isPercentage
+                          />
+                        </SectionCardContainer>
                         <Table
                           title='Turnover Breakdown'
                           headerRowData={[
