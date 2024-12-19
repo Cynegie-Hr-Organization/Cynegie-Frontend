@@ -228,6 +228,7 @@ export const route = {
         home: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.directory}`,
         addEmployee: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.directory}add-employee`,
         editEmployee: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.directory}edit-employee`,
+        viewEmployee: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.directory}view-employee`,
       },
     },
   },
