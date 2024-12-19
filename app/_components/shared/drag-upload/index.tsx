@@ -103,7 +103,7 @@ const DragUpload = ({
           )}
         </div>
       </Container>
-      <div>
+      <div className='mt-2'>
         <UploadFieldInfo text='Attach any relevant file. Max file size allowed is 3MB' />
       </div>
     </>

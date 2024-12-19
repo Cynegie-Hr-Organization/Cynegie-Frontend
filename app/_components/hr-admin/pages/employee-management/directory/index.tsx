@@ -13,6 +13,8 @@ import { color, icon, route } from '@/constants';
 import { ColorVariant } from '@/types';
 import { useRouter } from 'next/navigation';
 import PieChart from '@/app/_components/shared/charts/pie-chart';
+import { useState } from 'react';
+import Toast from '@/app/_components/shared/toast';
 
 const chartLabels = [
   'Full Time',
@@ -36,6 +38,11 @@ const HrAdminEmployeeDirectory = () => {
     <SvgIcon path={icon.userGroup} width={13.56} height={13.56} />
   );
   const cardIconColorVariant: ColorVariant = 'grey';
+
+  const [openTerminateEmployeeModal, setOpenTerminateEmployeeModal] =
+    useState(false);
+  const [openTerminationToast, setOpenTerminationToast] = useState(false);
+
   return (
     <Page
       title='Employee Management'
@@ -203,44 +210,55 @@ const HrAdminEmployeeDirectory = () => {
         actions={[
           { name: 'Edit Employee Details', onClick: () => {} },
           { name: 'View Employee Details', onClick: () => {} },
-          { name: 'Terminate Employee', onClick: () => {} },
+          {
+            name: 'Terminate Employee',
+            onClick: () => setOpenTerminateEmployeeModal(true),
+          },
         ]}
       />
-      <Modal
-        open={false}
-        onClose={() => {}}
-        title='Terminate Employee'
-        subtitle='If you terminate employee, they will no longer show on your employee list'
-        form={{
-          gridSpacing: 3,
-          inputFields: [
-            {
-              name: 'Employee Name',
-              type: 'text',
+      {openTerminateEmployeeModal && (
+        <Modal
+          open={openTerminateEmployeeModal}
+          onClose={() => setOpenTerminateEmployeeModal(false)}
+          title='Terminate Employee'
+          subtitle='If you terminate employee, they will no longer show on your employee list'
+          form={{
+            gridSpacing: 3,
+            inputFields: [
+              {
+                name: 'Employee Name',
+                type: 'text',
+                disabled: true,
+                placeholder: 'Salem Moses',
+              },
+              {
+                name: 'Termination Date',
+                type: 'date',
+              },
+              {
+                name: 'Reason for Termination',
+                type: 'text',
+              },
+              {
+                name: 'Exit Interview Notes',
+                type: 'drag-upload',
+              },
+            ],
+          }}
+          buttonOne={{
+            type: ButtonType.outlined,
+            text: 'Cancel',
+          }}
+          buttonTwo={{
+            type: ButtonType.deleteContained,
+            text: 'Terminate',
+            onClick: () => {
+              setOpenTerminateEmployeeModal(false);
+              setOpenTerminationToast(true);
             },
-            {
-              name: 'Termination Date',
-              type: 'date',
-            },
-            {
-              name: 'Reason for Termination',
-              type: 'text',
-            },
-            {
-              name: 'Exit Interview Notes',
-              type: 'drag-upload',
-            },
-          ],
-        }}
-        buttonOne={{
-          type: ButtonType.outlined,
-          text: 'Cancel',
-        }}
-        buttonTwo={{
-          type: ButtonType.deleteContained,
-          text: 'Terminate',
-        }}
-      />
+          }}
+        />
+      )}
       <Modal
         open={false}
         onClose={() => {}}
@@ -266,6 +284,16 @@ const HrAdminEmployeeDirectory = () => {
         }}
         centerButton
       />
+      {openTerminationToast && (
+        <Toast
+          open={openTerminationToast}
+          onClose={() => setOpenTerminationToast(false)}
+          status='Successful'
+          message='Employee has been terminated successfully'
+          icon={icon.checkCircle}
+          type='success'
+        />
+      )}
     </Page>
   );
 };
