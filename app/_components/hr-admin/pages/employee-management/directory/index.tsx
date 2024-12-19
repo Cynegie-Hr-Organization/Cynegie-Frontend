@@ -32,6 +32,11 @@ const chartColors = [
   color.pieChart.grey,
 ];
 
+const cardIconSize = {
+  width: 13.56,
+  height: 13.56,
+};
+
 const HrAdminEmployeeDirectory = () => {
   const router = useRouter();
   const cardIcon = (
@@ -73,21 +78,47 @@ const HrAdminEmployeeDirectory = () => {
             labelText: 'Total Headcount',
             value: 190,
             valueBelow: true,
+            largeLabelText: true,
+            icon: <SvgIcon path={icon.userGroup} {...cardIconSize} />,
+            iconColorVariant: 'purple',
           },
           {
             labelText: 'New Hires',
             value: 32,
             valueBelow: true,
+            largeLabelText: true,
+            icon: (
+              <div className='fill-black'>
+                <SvgIcon path={icon.userFilled} {...cardIconSize} />
+              </div>
+            ),
+            iconColorVariant: 'success',
+            additionalInfo: { right: { text: 'Last 30 days' } },
           },
           {
             labelText: 'Open Positions',
             value: 2,
             valueBelow: true,
+            largeLabelText: true,
+            icon: (
+              <div className='fill-black'>
+                <SvgIcon path={icon.box} {...cardIconSize} />
+              </div>
+            ),
+            iconColorVariant: 'ash',
           },
           {
             labelText: 'Departure',
             value: 7,
             valueBelow: true,
+            largeLabelText: true,
+            icon: (
+              <div className='fill-black'>
+                <SvgIcon path={icon.exit} {...cardIconSize} />
+              </div>
+            ),
+            iconColorVariant: 'ash',
+            additionalInfo: { right: { text: 'Last 30 days' } },
           },
         ]}
         gridItemSize={{ xs: 12, sm: 6, md: 3 }}
@@ -109,6 +140,11 @@ const HrAdminEmployeeDirectory = () => {
               route.hrAdmin.employeeManagement.attendanceManagement.home
             )
           }
+          selectFilterProps={{
+            type: 'select',
+            defaultValue: 0,
+            options: [{ label: 'Today', value: 0 }],
+          }}
           cardsGroup={{
             gridItemSize: { xs: 12, sm: 6 },
             cards: [

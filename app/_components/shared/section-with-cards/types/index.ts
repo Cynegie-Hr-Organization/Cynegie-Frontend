@@ -1,3 +1,4 @@
+import { InputFieldProps } from '@/app/_components/employee/modal/types';
 import { ColorVariant } from '@/types';
 
 export type SectionWithCardsProps = {
@@ -6,6 +7,7 @@ export type SectionWithCardsProps = {
   period?: string;
   periodClick?: () => void;
   headerDivider?: boolean;
+  selectFilterProps?: InputFieldProps;
   cardsData?: CardProps[];
   cardsGroup?: CardGroupProps;
 };
@@ -24,6 +26,12 @@ export type CardProps = {
   hasIcon?: boolean;
   denominator?: number;
   isPercentage?: boolean;
+  additionalInfo?: CardAdditionalInfo;
+};
+
+export type CardAdditionalInfo = {
+  left?: { text: string; color?: string };
+  right?: { text: string; color?: string };
 };
 
 export type CardValueProps = {
@@ -32,6 +40,7 @@ export type CardValueProps = {
   lineColor?: string;
   denominator?: number;
   isPercentage?: boolean;
+  additionalInfo?: CardAdditionalInfo;
 };
 
 export type CardLabelProps = {

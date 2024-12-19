@@ -19,6 +19,7 @@ export const icon = {
   clock: `${iconBaseUrl}clock.svg`,
   clockTwo: `${iconBaseUrl}clock-two.svg`,
   user: `${iconBaseUrl}user.svg`,
+  userFilled: `${iconBaseUrl}user-filled.svg`,
   signOut: `${iconBaseUrl}sign-out.svg`,
   receipt: `${iconBaseUrl}receipt.svg`,
   key: `${iconBaseUrl}key.svg`,
@@ -38,6 +39,8 @@ export const icon = {
   pdf: `${iconBaseUrl}pdf.svg`,
   excel: `${iconBaseUrl}excel.svg`,
   plus: `${iconBaseUrl}plus.svg`,
+  box: `${iconBaseUrl}box.svg`,
+  exit: `${iconBaseUrl}exit.svg`,
 };
 
 export const color = {

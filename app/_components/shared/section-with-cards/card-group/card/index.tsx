@@ -19,6 +19,7 @@ const Card: React.FC<CardProps> = (props) => {
     denominator,
     isPercentage = false,
     largeLabelText = false,
+    additionalInfo,
   } = props;
   return (
     <Stack
@@ -32,6 +33,7 @@ const Card: React.FC<CardProps> = (props) => {
         value={value}
         denominator={denominator}
         isPercentage={isPercentage}
+        additionalInfo={additionalInfo}
       />
       <CardLabel
         icon={icon}

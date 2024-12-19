@@ -23,6 +23,7 @@ const CardGroup: React.FC<CardGroupProps> = ({ cards: data, gridItemSize }) => {
             hasIcon={card.hasIcon || card.icon ? true : false}
             denominator={card.denominator}
             isPercentage={card.isPercentage}
+            additionalInfo={card.additionalInfo}
           />
         </Grid2>
       ))}

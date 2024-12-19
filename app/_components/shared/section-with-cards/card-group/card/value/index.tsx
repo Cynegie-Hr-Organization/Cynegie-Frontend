@@ -7,6 +7,7 @@ const Value: React.FC<CardValueProps> = (props) => {
     lineColor,
     denominator,
     isPercentage = false,
+    additionalInfo,
   } = props;
   return (
     <div
@@ -19,13 +20,43 @@ const Value: React.FC<CardValueProps> = (props) => {
           textUnderlineOffset: 11,
           textDecorationColor: lineColor,
         }),
+        ...(additionalInfo && {
+          display: 'flex',
+          alignItems: 'center',
+        }),
       }}
     >
-      {value}
+      {<span style={{ flexGrow: 1 }}>{value}</span>}
       {isPercentage && '%'}
       {denominator && (
-        <span style={{ fontSize: '18px', color: '#475367', fontWeight: 600 }}>
+        <span
+          style={{
+            fontSize: '18px',
+            color: '#475367',
+            fontWeight: 600,
+          }}
+        >
           /{denominator}
+        </span>
+      )}
+      {additionalInfo && (
+        <span className='tiny-text self-end'>
+          <span
+            className={`${
+              additionalInfo.left?.color &&
+              `text-[${additionalInfo.left.color}]`
+            }`}
+          >
+            {additionalInfo.left?.text ?? ''}
+          </span>
+          <span
+            className={`${
+              additionalInfo.right?.color &&
+              `text-[${additionalInfo.right.color}]`
+            }`}
+          >
+            {additionalInfo.right?.text ?? ''}
+          </span>
         </span>
       )}
     </div>
