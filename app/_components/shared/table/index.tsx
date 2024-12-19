@@ -24,6 +24,8 @@ import TableLessonCell from './cell/variants/lesson';
 import TableLinkCell from './cell/variants/link';
 import TableAttendanceStatusCell from './cell/variants/status/attendance';
 import TableStatusCell from './cell/variants/status';
+import { isArray } from 'lodash';
+import TablePermissionsCell from './cell/variants/permissions';
 
 const Table: React.FC<TableProps> = ({
   title,
@@ -47,6 +49,7 @@ const Table: React.FC<TableProps> = ({
   getCheckedRows,
   clearChecks,
   formFilter,
+  onPermissionsClick,
 }) => {
   const pathname = usePathname();
   const [actions, setActions] = useState<TableAction[] | undefined>(undefined);
@@ -123,6 +126,15 @@ const Table: React.FC<TableProps> = ({
       case FieldType.status:
         if (typeof rowVal === 'string')
           return <TableStatusCell value={rowVal} statusMap={statusMap ?? {}} />;
+
+      case FieldType.permissions:
+        if (isArray(rowVal))
+          return (
+            <TablePermissionsCell
+              permissions={rowVal}
+              onClick={onPermissionsClick}
+            />
+          );
     }
   };
 

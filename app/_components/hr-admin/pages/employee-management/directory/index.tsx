@@ -51,6 +51,8 @@ const HrAdminEmployeeDirectory = () => {
   const [openEditRequestModal, setOpenEditRequestModal] = useState(false);
   const [openEditRequestToast, setOpenEditRequestToast] = useState(false);
 
+  const [openPermissionsModal, setOpenPermissionsModal] = useState(false);
+
   return (
     <Page
       title='Employee Management'
@@ -222,13 +224,16 @@ const HrAdminEmployeeDirectory = () => {
             email: 'ayoalibaba@cynegie.com',
             jobTitle: 'Sales Director',
             department: 'Sales',
-            permissions: 'Mailchimp',
+            permissions: [
+              { name: 'Mailchimp', value: 'simbi.mailchimp.com' },
+              { name: 'Behance ID', value: 'simbi.behance.com' },
+            ],
           })
           .map((row, index) => ({ ...row, index: index }))}
         fieldTypes={[
           ...Array(4).fill(FieldType.text),
           FieldType.status,
-          FieldType.text,
+          FieldType.permissions,
         ]}
         displayedFields={[
           'name',
@@ -238,6 +243,7 @@ const HrAdminEmployeeDirectory = () => {
           'department',
           'permissions',
         ]}
+        statusMap={{ Sales: 'warning' }}
         filters={[
           {
             name: 'Deparment',
@@ -275,6 +281,9 @@ const HrAdminEmployeeDirectory = () => {
           },
         ]}
         fieldToReturnOnActionItemClick='index'
+        onPermissionsClick={(permissions) => {
+          setOpenPermissionsModal(true);
+        }}
       />
       {openTerminateEmployeeModal && (
         <Modal
@@ -349,31 +358,28 @@ const HrAdminEmployeeDirectory = () => {
           }}
         />
       )}
-      <Modal
-        open={false}
-        onClose={() => {}}
-        title='Permissions'
-        subtitle='See assigned permissions below'
-        buttonOne={{
-          type: ButtonType.outlined,
-          text: 'Save Permissions',
-        }}
-        form={{
-          gridSpacing: 3,
-          inputFields: [
-            {
-              name: 'Work Email Address',
-              type: 'text',
-              sideButton: { type: ButtonType.deleteWithIcon, text: '' },
-            },
-            {
-              name: 'Work Email Address',
-              type: 'multi-select',
-            },
-          ],
-        }}
-        centerButton
-      />
+      {openPermissionsModal && (
+        <Modal
+          open={openPermissionsModal}
+          onClose={() => setOpenPermissionsModal(false)}
+          title='Permissions'
+          subtitle='See assigned permissions below'
+          buttonOne={{
+            type: ButtonType.outlined,
+            text: 'Save Permissions',
+          }}
+          permissions={{
+            userEmail: 'simbi@cynergie.com',
+            permissions: [
+              {
+                name: 'Mailchimp',
+                value: 'simbi@mailchimp.com',
+              },
+            ],
+          }}
+          centerButton
+        />
+      )}
       {openTerminationToast && (
         <Toast
           open={openTerminationToast}

@@ -14,6 +14,7 @@ const TextField: React.FC<Omit<InputFieldProps, 'type'>> = ({
   value,
   setValue,
   disabled,
+  defaultValue,
 }) => {
   return (
     <MuiTextField
@@ -23,6 +24,7 @@ const TextField: React.FC<Omit<InputFieldProps, 'type'>> = ({
       }}
       disabled={disabled}
       fullWidth
+      defaultValue={defaultValue}
       placeholder={placeholder}
       value={value}
       onChange={(e) => setValue?.(e.target.value)}

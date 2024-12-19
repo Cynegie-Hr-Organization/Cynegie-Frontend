@@ -27,12 +27,13 @@ const InputField: React.FC<InputFieldProps> = ({
     <div className='flex flex-col gap-2'>
       <FieldLabel wrapText value={name ?? ''} />
       <div className='flex items-center gap-2'>
-        {type == 'text' && (
+        {type === 'text' && (
           <TextField
             placeholder={placeholder}
             value={value}
             setValue={setValue}
             disabled={disabled}
+            defaultValue={defaultValue}
           />
         )}
         {type == 'message' && (

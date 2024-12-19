@@ -1,5 +1,6 @@
 import { ColorVariant } from '@/types';
 import { FormProps } from '../../form/types';
+import { Permission } from '../cell/variants/permissions';
 
 export type TableProps<T = Record<string, any>> = {
   title?: string;
@@ -28,6 +29,7 @@ export type TableProps<T = Record<string, any>> = {
   hasSearchFilter?: boolean;
   hasPagination?: boolean;
   clearChecks?: boolean;
+  onPermissionsClick?: (permissions: Permission[]) => void;
 };
 
 export type Filter = {
@@ -48,6 +50,7 @@ export enum FieldType {
   status = 'status',
   attendanceStatus = 'attendance-status',
   nextLesson = 'lesson',
+  permissions = 'permissions',
 }
 
 export type TablePaginationProps = {
