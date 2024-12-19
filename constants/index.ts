@@ -234,6 +234,15 @@ export const route = {
         viewEmployee: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.directory}view-employee`,
       },
     },
+    deviceManagement: {
+      overview: {
+        home: `${basePath.hrAdmin}${basePath.device}overview`,
+        inventory: `${basePath.hrAdmin}${basePath.device}inventory`,
+        assignment: `${basePath.hrAdmin}${basePath.device}assignment`,
+        report: `${basePath.hrAdmin}${basePath.device}report`,
+        request: `${basePath.hrAdmin}${basePath.device}request`,
+      },
+    },
   },
   employee: {
     performanceManagement: {

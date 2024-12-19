@@ -6,6 +6,8 @@ import { RxDashboard } from 'react-icons/rx';
 import { HiOutlineChartBar, HiOutlineUserPlus } from 'react-icons/hi2';
 import { TbFileUpload } from 'react-icons/tb';
 import { LiaMoneyBillWaveSolid } from 'react-icons/lia';
+import SvgIcon from '../../icons/container';
+import { icon, route } from '@/constants';
 
 const NavLinks = ({
   onNavLinkClick,
@@ -120,6 +122,33 @@ const NavLinks = ({
         { name: 'KPI', path: '/hr-admin/performance/kpi' },
       ],
     },
+    {
+      name: 'Device Management',
+      icon: <SvgIcon path={icon.devices} width={17.5} height={17.5} />,
+      path: route.hrAdmin.deviceManagement.overview.home,
+      subMenu: [
+        {
+          name: 'Overview',
+          path: route.hrAdmin.deviceManagement.overview.home,
+        },
+        {
+          name: 'Device Invetory',
+          path: route.hrAdmin.deviceManagement.overview.inventory,
+        },
+        {
+          name: 'Device Assignment',
+          path: route.hrAdmin.deviceManagement.overview.assignment,
+        },
+        {
+          name: 'Device Report',
+          path: route.hrAdmin.deviceManagement.overview.report,
+        },
+        {
+          name: 'Device Request',
+          path: route.hrAdmin.deviceManagement.overview.request,
+        },
+      ],
+    },
   ];
 
   const isPathActive = (
@@ -171,7 +200,7 @@ const NavLinks = ({
                 className={`flex items-center justify-between cursor-pointer p-3 w-full rounded-[4px] 
                                     ${
                                       isActive
-                                        ? 'bg-primary text-white'
+                                        ? 'bg-primary text-white fill-white'
                                         : 'text-black'
                                     } transition duration-100`}
               >
