@@ -9,16 +9,20 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import DownloadReportModal from '../../../payroll-management/modals/download-report';
 import { CardProps } from '@/app/_components/shared/section-with-cards/types';
+import BarChart, {
+  BarChartProps,
+} from '@/app/_components/employee/pages/attendance-and-time-tracking/total-hours-worked/chart';
 
 type HrAdminEmployeeAttendanceManagementReportProps = {
   title: string;
   cards: CardProps[];
   tableProps: Omit<TableProps, 'statusMap'>;
+  barChart?: BarChartProps;
 };
 
 const HrAdminEmployeeAttendanceManagementReport: React.FC<
   HrAdminEmployeeAttendanceManagementReportProps
-> = ({ title, cards, tableProps }) => {
+> = ({ title, cards, tableProps, barChart }) => {
   const router = useRouter();
   const [openDownloadModal, setOpenDownloadModal] = useState(false);
   return (
@@ -36,6 +40,11 @@ const HrAdminEmployeeAttendanceManagementReport: React.FC<
       }}
     >
       <CardGroup cards={cards} gridItemSize={{ xs: 12, sm: 6, md: 3 }} />
+      {barChart && (
+        <div className='common-card'>
+          <BarChart {...barChart} />
+        </div>
+      )}
       <Table {...tableProps} statusMap={AttendanceStatusMap} />
       {openDownloadModal && (
         <DownloadReportModal

@@ -8,6 +8,7 @@ export type SelectFieldProps = {
   placeholder?: string;
   options?: InputFieldOption[];
   valueControlledFromOutside?: boolean;
+  defaultValue?: string | number;
 };
 
 export const InputFieldPlaceholder: React.FC<{ placeholder: string }> = ({
@@ -17,13 +18,19 @@ export const InputFieldPlaceholder: React.FC<{ placeholder: string }> = ({
 };
 
 const SelectField: React.FC<SelectFieldProps> = (props) => {
-  const { options, placeholder, value, setValue, valueControlledFromOutside } =
-    props;
+  const {
+    options,
+    placeholder,
+    value,
+    setValue,
+    valueControlledFromOutside,
+    defaultValue,
+  } = props;
   return (
     <Select
       className='!rounded-md'
       style={{ height: '42px', width: '100%', background: 'white' }}
-      defaultValue=''
+      defaultValue={defaultValue ?? ''}
       {...(valueControlledFromOutside ? { value: value ?? '' } : {})}
       displayEmpty
       onChange={(e) => setValue?.(e.target.value)}

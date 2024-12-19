@@ -8,7 +8,10 @@ const TotalHoursWorked = () => {
     <Stack gap={2}>
       <Header title='Total Hours Worked' period='This week' titleSize='large' />
       <Box ml={-5}>
-        <BarChart data={totalHoursWorkedChartData} />
+        <BarChart
+          data={totalHoursWorkedChartData}
+          bars={[{ dataKey: 'value' }]}
+        />
       </Box>
     </Stack>
   );

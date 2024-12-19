@@ -21,6 +21,7 @@ const InputField: React.FC<InputFieldProps> = ({
   setValue,
   sideButton,
   disabled,
+  defaultValue,
 }) => {
   return (
     <div className='flex flex-col gap-2'>
@@ -46,6 +47,7 @@ const InputField: React.FC<InputFieldProps> = ({
             options={options}
             placeholder={placeholder ?? 'Select'}
             value={value}
+            defaultValue={defaultValue}
             setValue={setValue}
             valueControlledFromOutside={selectValControlledFromOutside}
           />

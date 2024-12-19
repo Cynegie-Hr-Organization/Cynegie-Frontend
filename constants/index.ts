@@ -112,6 +112,8 @@ export const color = {
   },
   barChart: {
     lightBlue: '#B0C0EC',
+    midBlue: '#335DCF',
+    darkBlue: '#0030B1',
   },
 };
 

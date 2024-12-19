@@ -226,13 +226,15 @@ const HrAdminEmployeeComplianceReporting = () => {
                     component: (
                       <div className='flex flex-col gap-8'>
                         <SectionCardContainer isCard title='Employee Turnover'>
-                          <BarChart
-                            barSize={35}
-                            data={employeeTurnoverChartData}
-                            barFill={color.barChart.lightBlue}
-                            yAxisLabel='(% of Employees)'
-                            isPercentage
-                          />
+                          <div className='mt-4'>
+                            <BarChart
+                              barSize={35}
+                              data={employeeTurnoverChartData}
+                              bars={[{ dataKey: 'value' }]}
+                              yAxisLabel='(% of Employees)'
+                              isPercentage
+                            />
+                          </div>
                         </SectionCardContainer>
                         <Table
                           title='Turnover Breakdown'

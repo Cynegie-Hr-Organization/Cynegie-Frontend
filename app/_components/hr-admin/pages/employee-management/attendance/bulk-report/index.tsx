@@ -1,11 +1,41 @@
 'use client';
 import { FieldType } from '@/app/_components/shared/table/types';
 import HrAdminEmployeeAttendanceManagementReport from '../report';
+import { color } from '@/constants';
+
+const attendanceRateChartData = [
+  { item: 'Monday', present: 580, absent: 750 },
+  { item: 'Tuesday', present: 300, absent: 400 },
+  { item: 'Wednesday', present: 630, absent: 200 },
+  { item: 'Thursday', present: 450, absent: 300 },
+  { item: 'Friday', present: 580, absent: 400 },
+  { item: 'Saturday', present: 450, absent: 400 },
+  { item: 'Sunday', present: 400, absent: 500 },
+];
 
 const HrAdminEmployeeAttendanceManagementBulkReport = () => {
   return (
     <HrAdminEmployeeAttendanceManagementReport
       title='Attendance Report (HR & IT Department: Oct 1 - Oct 15, 2024)'
+      barChart={{
+        title: 'Attendance Rate',
+        inputFields: [
+          {
+            type: 'select',
+            defaultValue: 0,
+            options: [{ label: 'All Departments', value: 0 }],
+          },
+        ],
+        hasLegend: true,
+        data: attendanceRateChartData,
+        yAxisLabel: '(Num of Employees)',
+        xAxisLabel: 'Days',
+        barSize: 60,
+        bars: [
+          { dataKey: 'present', fill: color.barChart.darkBlue },
+          { dataKey: 'absent', fill: color.barChart.midBlue },
+        ],
+      }}
       cards={[
         {
           labelText: 'Total Employees',

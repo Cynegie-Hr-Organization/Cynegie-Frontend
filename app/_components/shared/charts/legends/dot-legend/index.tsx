@@ -20,16 +20,18 @@ const DotLegend: React.FC<DotLegend> = (props) => {
           width={isMeetingIndicator ? 8 : 18.29}
           height={isMeetingIndicator ? 8 : 18.36}
         />
-        <div className={`${isMeetingIndicator && 'text-[#5C6675]'}`}>
+        <div className={`${isMeetingIndicator && 'text-[#5C6675]'} capitalize`}>
           {props.label}
         </div>
       </div>
-      <div className={`${props.boldValue && 'font-bold'}`}>{`${
-        props.value ?? ''
-      }${props.isPercentage ? '%' : ''} ${
-        props.countedItemName &&
-        props.countedItemName + (props.value == 1 ? '' : 's')
-      }`}</div>
+      {props.value && (
+        <div className={`${props.boldValue && 'font-bold'}`}>{`${
+          props.value ?? ''
+        }${props.isPercentage ? '%' : ''} ${
+          props.countedItemName &&
+          props.countedItemName + (props.value == 1 ? '' : 's')
+        }`}</div>
+      )}
     </div>
   );
 };

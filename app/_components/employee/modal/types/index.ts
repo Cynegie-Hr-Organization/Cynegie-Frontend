@@ -38,6 +38,7 @@ export type InputFieldProps = {
   selectValControlledFromOutside?: boolean;
   sideButton?: ButtonProps;
   disabled?: boolean;
+  defaultValue?: string | number;
 };
 
 export type InputFieldOption = { label: string; value: string | number };

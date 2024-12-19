@@ -1,13 +1,24 @@
 'use client';
 import Modal from '@/app/_components/employee/modal';
+import BarChart from '@/app/_components/employee/pages/attendance-and-time-tracking/total-hours-worked/chart';
 import Page from '@/app/_components/shared/page';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';
 import TabFormat from '@/app/_components/shared/tab-format';
 import Table from '@/app/_components/shared/table';
 import { FieldType } from '@/app/_components/shared/table/types';
-import { AttendanceStatusMap, route } from '@/constants';
+import { AttendanceStatusMap, color, route } from '@/constants';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+
+const attendanceRateChartData = [
+  { item: 'Monday', present: 580, absent: 750, 'on leave': 500 },
+  { item: 'Tuesday', present: 300, absent: 400, 'on leave': 350 },
+  { item: 'Wednesday', present: 630, absent: 200, 'on leave': 380 },
+  { item: 'Thursday', present: 450, absent: 300, 'on leave': 400 },
+  { item: 'Friday', present: 580, absent: 400, 'on leave': 600 },
+  { item: 'Saturday', present: 450, absent: 400, 'on leave': 420 },
+  { item: 'Sunday', present: 400, absent: 500, 'on leave': 800 },
+];
 
 const HrAdminEmployeeAttendanceManagement = () => {
   const router = useRouter();
@@ -29,6 +40,31 @@ const HrAdminEmployeeAttendanceManagement = () => {
         onClick: () => setOpenBulkGenerateReportModal(true),
       }}
     >
+      <BarChart
+        title='Attendance Rate'
+        hasLegend
+        data={attendanceRateChartData}
+        yAxisLabel='(Num of Employees)'
+        xAxisLabel='Days'
+        barSize={40}
+        bars={[
+          { dataKey: 'present' },
+          { dataKey: 'absent', fill: color.barChart.midBlue },
+          { dataKey: 'on leave', fill: color.barChart.lightBlue },
+        ]}
+        inputFields={[
+          {
+            type: 'select',
+            defaultValue: 0,
+            options: [{ label: 'Weekly', value: 0 }],
+          },
+          {
+            type: 'select',
+            defaultValue: 0,
+            options: [{ label: 'All Departments', value: 0 }],
+          },
+        ]}
+      />
       <TabFormat
         tabs={[
           {
