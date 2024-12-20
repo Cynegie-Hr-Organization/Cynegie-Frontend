@@ -42,6 +42,7 @@ export const icon = {
   box: `${iconBaseUrl}box.svg`,
   exit: `${iconBaseUrl}exit.svg`,
   circlePlus: `${iconBaseUrl}circle-plus.svg`,
+  app: `${iconBaseUrl}app.svg`,
 };
 
 export const color = {
@@ -209,6 +210,7 @@ const basePath = {
   attendanceManagement: 'attendance/',
   roleManagement: 'role/',
   directory: 'directory/',
+  appManagement: 'app-management/',
 };
 
 export const route = {
@@ -245,6 +247,12 @@ export const route = {
         viewRequest: `${basePath.hrAdmin}${basePath.device}request/view-request`,
         viewDeviceInfo: `${basePath.hrAdmin}${basePath.device}inventory/view-device-info`,
       },
+    },
+    appManagement: {
+      overview: `${basePath.hrAdmin}${basePath.appManagement}overview`,
+      inventory: `${basePath.hrAdmin}${basePath.appManagement}inventory`,
+      accessTracking: `${basePath.hrAdmin}${basePath.appManagement}access-tracking`,
+      request: `${basePath.hrAdmin}${basePath.appManagement}request`,
     },
   },
   employee: {

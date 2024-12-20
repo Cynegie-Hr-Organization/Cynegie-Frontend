@@ -149,6 +149,29 @@ const NavLinks = ({
         // },
       ],
     },
+    {
+      name: 'App Management',
+      icon: <SvgIcon path={icon.app} width={17.5} height={17.5} />,
+      path: route.hrAdmin.appManagement.overview,
+      subMenu: [
+        {
+          name: 'Overview',
+          path: route.hrAdmin.appManagement.overview,
+        },
+        {
+          name: 'App Inventory',
+          path: route.hrAdmin.appManagement.inventory,
+        },
+        {
+          name: 'App Access Tracking',
+          path: route.hrAdmin.appManagement.accessTracking,
+        },
+        {
+          name: 'App Request',
+          path: route.hrAdmin.appManagement.request,
+        },
+      ],
+    },
   ];
 
   const isPathActive = (
