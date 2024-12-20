@@ -242,6 +242,8 @@ export const route = {
         assignment: `${basePath.hrAdmin}${basePath.device}assignment`,
         report: `${basePath.hrAdmin}${basePath.device}report`,
         request: `${basePath.hrAdmin}${basePath.device}request`,
+        viewRequest: `${basePath.hrAdmin}${basePath.device}request/view-request`,
+        viewDeviceInfo: `${basePath.hrAdmin}${basePath.device}inventory/view-device-info`,
       },
     },
   },

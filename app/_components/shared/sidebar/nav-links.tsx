@@ -135,18 +135,18 @@ const NavLinks = ({
           name: 'Device Invetory',
           path: route.hrAdmin.deviceManagement.overview.inventory,
         },
-        {
-          name: 'Device Assignment',
-          path: route.hrAdmin.deviceManagement.overview.assignment,
-        },
+        // {
+        //   name: 'Device Assignment',
+        //   path: route.hrAdmin.deviceManagement.overview.assignment,
+        // },
         {
           name: 'Device Report',
           path: route.hrAdmin.deviceManagement.overview.report,
         },
-        {
-          name: 'Device Request',
-          path: route.hrAdmin.deviceManagement.overview.request,
-        },
+        // {
+        //   name: 'Device Request',
+        //   path: route.hrAdmin.deviceManagement.overview.request,
+        // },
       ],
     },
   ];

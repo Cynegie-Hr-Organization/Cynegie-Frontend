@@ -16,8 +16,12 @@ import {
   defaultDonutChartData,
   defaultDonutChartOptions,
   icon,
+  route,
 } from '@/constants';
 import DeviceActivity from './device-activity';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import Modal from '@/app/_components/employee/modal';
 
 const cardIcon = (
   <SvgIcon path={icon.workstation} width={13.56} height={13.56} />
@@ -29,6 +33,9 @@ const chartColors = [color.warning.dark, color.info.dark];
 const chartValues = [127, 200];
 
 const HrAdminDeviceOverview = () => {
+  const router = useRouter();
+  const [openAssignmentModal, setOpenAssignmentModal] = useState(false);
+  const [openSuccessModal, setOpenSuccessModal] = useState(false);
   return (
     <Page
       title='Device Dashboard'
@@ -129,6 +136,7 @@ const HrAdminDeviceOverview = () => {
         rightButton={{
           type: ButtonType.outlinedBlue,
           text: 'Request Device Assignment',
+          onClick: () => setOpenAssignmentModal(true),
         }}
       />
       <Table
@@ -145,13 +153,35 @@ const HrAdminDeviceOverview = () => {
         })}
         statusMap={APRStatusMap}
         fieldActionMap={{
-          Approved: [{ name: 'View Details', onClick: () => {} }],
+          Approved: [
+            {
+              name: 'View Details',
+              onClick: () =>
+                router.push(
+                  route.hrAdmin.deviceManagement.overview.viewRequest
+                ),
+            },
+          ],
           Pending: [
-            { name: 'View Details', onClick: () => {} },
+            {
+              name: 'View Details',
+              onClick: () =>
+                router.push(
+                  route.hrAdmin.deviceManagement.overview.viewRequest
+                ),
+            },
             { name: 'Approve Request', onClick: () => {} },
             { name: 'Reject Request', onClick: () => {} },
           ],
-          Rejected: [{ name: 'View Details', onClick: () => {} }],
+          Rejected: [
+            {
+              name: 'View Details',
+              onClick: () =>
+                router.push(
+                  route.hrAdmin.deviceManagement.overview.viewRequest
+                ),
+            },
+          ],
         }}
         fieldToGetAction='status'
         formFilter={{
@@ -177,6 +207,71 @@ const HrAdminDeviceOverview = () => {
           ],
         }}
       />
+      {openAssignmentModal && (
+        <Modal
+          open={openAssignmentModal}
+          onClose={() => setOpenAssignmentModal(false)}
+          title='Request Device Assignment'
+          subtitle='To request device assignment, fill in the details below'
+          form={{
+            gridSpacing: 3,
+            inputFields: [
+              {
+                name: 'Employee Name',
+                type: 'select',
+              },
+              {
+                name: 'Department',
+                type: 'select',
+              },
+              {
+                name: 'Device Type',
+                type: 'select',
+              },
+              {
+                name: 'Justification for Device',
+                type: 'message',
+              },
+            ],
+          }}
+          buttonOne={{
+            type: ButtonType.outlined,
+            text: 'Save and Continue',
+            onClick: () => setOpenAssignmentModal(false),
+          }}
+          buttonTwo={{
+            type: ButtonType.contained,
+            text: 'Submit Request',
+            onClick: () => {
+              setOpenAssignmentModal(false), setOpenSuccessModal(true);
+            },
+          }}
+        />
+      )}
+      {openSuccessModal && (
+        <Modal
+          open={openSuccessModal}
+          onClose={() => {}}
+          hasHeading={false}
+          centerImage={icon.successTick}
+          centerTitle='You have successfully approved this device request'
+          centerMessage='You can now proceed to the dashboard to continue'
+          buttonOne={{
+            type: ButtonType.outlined,
+            text: 'Request Another Device',
+            onClick: () => {
+              setOpenSuccessModal(false);
+              setOpenAssignmentModal(true);
+            },
+          }}
+          buttonTwo={{
+            type: ButtonType.contained,
+            text: 'Back to Dashboard',
+            onClick: () => setOpenSuccessModal(false),
+          }}
+          reduceVerticalGap
+        />
+      )}
     </Page>
   );
 };
