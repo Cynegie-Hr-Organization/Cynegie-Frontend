@@ -364,18 +364,33 @@ const HrAdminEmployeeDirectory = () => {
           onClose={() => setOpenPermissionsModal(false)}
           title='Permissions'
           subtitle='See assigned permissions below'
+          form={{
+            gridSpacing: 2,
+            inputFields: [
+              {
+                name: 'Work Email',
+                type: 'text',
+                value: 'simbi@cynergie.com',
+                disabled: true,
+              },
+              {
+                type: 'add-items',
+                addItemsProps: {
+                  addText: 'Add More Permissions',
+                  addedItems: [
+                    {
+                      name: 'Mailchimp',
+                      value: 'simbi@mailchimp.com',
+                    },
+                  ],
+                  allItems: ['Behance', 'Mailchimp', 'Figma', 'Slack'],
+                },
+              },
+            ],
+          }}
           buttonOne={{
             type: ButtonType.outlined,
             text: 'Save Permissions',
-          }}
-          permissions={{
-            userEmail: 'simbi@cynergie.com',
-            permissions: [
-              {
-                name: 'Mailchimp',
-                value: 'simbi@mailchimp.com',
-              },
-            ],
           }}
           centerButton
         />

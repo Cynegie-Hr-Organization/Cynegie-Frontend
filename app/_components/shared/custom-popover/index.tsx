@@ -5,8 +5,15 @@ import MoreOptionsPopoverContent from './content/more-options';
 import FilterPopoverContent from './content/filter';
 
 const Popover: React.FC<PopoverProps> = (props) => {
-  const { type, getTriggerButtonClick, triggerButton, moreOptions, filters } =
-    props;
+  const {
+    type,
+    getTriggerButtonClick,
+    triggerButton,
+    moreOptions,
+    filters,
+    addItemsSelectContent,
+    onCloseAction,
+  } = props;
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -16,6 +23,7 @@ const Popover: React.FC<PopoverProps> = (props) => {
   };
 
   const handleClose = () => {
+    onCloseAction?.();
     setAnchorEl(null);
   };
 
@@ -47,6 +55,8 @@ const Popover: React.FC<PopoverProps> = (props) => {
             itemClick={handleClose}
             dataToReturnOnItemClick={props.dataToReturnOnItemClick}
           />
+        ) : type === PopoverType.addItems ? (
+          <>{addItemsSelectContent}</>
         ) : (
           <FilterPopoverContent
             filters={filters}

@@ -1,7 +1,12 @@
 import Image from 'next/image';
+import React from 'react';
 import { Input, InputGroup } from 'rsuite';
+import { InputFieldProps } from '../../modal/types';
 
-const SearchField = () => {
+const SearchField: React.FC<Pick<InputFieldProps, 'value' | 'setValue'>> = ({
+  value,
+  setValue,
+}) => {
   return (
     <InputGroup>
       <InputGroup.Addon style={{ backgroundColor: 'transparent' }}>
@@ -16,6 +21,8 @@ const SearchField = () => {
       <Input
         style={{ paddingLeft: '0px', height: '30px' }}
         placeholder='Search here...'
+        value={value}
+        onChange={(newValue) => setValue?.(newValue)}
       />
     </InputGroup>
   );

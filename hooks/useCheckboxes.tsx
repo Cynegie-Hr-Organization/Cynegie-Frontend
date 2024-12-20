@@ -11,6 +11,7 @@ const useCheckboxes = <T,>(
   const [selectedItemsIndexes, setSelectedItemsIndexes] = useState<number[]>(
     []
   );
+  const [checkedItems, setCheckedItems] = useState<T[]>([]);
 
   const handleCheckboxChangeAll = (event: ChangeEvent<HTMLInputElement>) => {
     let itemsIndexes: number[] = [];
@@ -21,6 +22,7 @@ const useCheckboxes = <T,>(
       setSelectedItemsIndexes(itemsIndexes);
     }
     const selectedItems = itemsIndexes.map((index) => rows[index]);
+    setCheckedItems(selectedItems);
     getCheckedItems?.(selectedItems);
   };
 
@@ -39,6 +41,7 @@ const useCheckboxes = <T,>(
       }
     });
     const selectedItems = itemsIndexes.map((index) => rows[index]);
+    setCheckedItems(selectedItems);
     getCheckedItems?.(selectedItems);
   };
 
@@ -59,10 +62,11 @@ const useCheckboxes = <T,>(
   };
 
   const removeChecks = () => {
+    setCheckedItems([]);
     setSelectedItemsIndexes([]);
   };
 
-  return { checkAllBoxProps, checkBoxProps, removeChecks };
+  return { checkAllBoxProps, checkBoxProps, checkedItems, removeChecks };
 };
 
 export default useCheckboxes;

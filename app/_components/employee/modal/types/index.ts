@@ -4,7 +4,7 @@ import { FormProps } from '@/app/_components/shared/form/types';
 import { ButtonProps } from '@/app/_components/shared/page/heading/types';
 import { ButtonGroupPosition } from '@/app/_components/shared/button-group/types';
 import { ViewTaskProps } from '../../pages/task/view-task/types';
-import { PermissionModalContentProps } from '../content/permissions';
+import { AddItemsProps } from '@/app/_components/shared/custom-popover/content/add-items';
 
 export type ModalProps = {
   open: boolean;
@@ -25,7 +25,6 @@ export type ModalProps = {
   isPayrollSlip?: boolean;
   buttonGroupPosition?: ButtonGroupPosition;
   viewTaskProps?: ViewTaskProps;
-  permissions?: PermissionModalContentProps;
 };
 
 export type ModalData = Omit<ModalProps, 'open' | 'onClose'>;
@@ -41,6 +40,7 @@ export type InputFieldProps = {
   sideButton?: ButtonProps;
   disabled?: boolean;
   defaultValue?: string | number;
+  addItemsProps?: AddItemsProps;
 };
 
 export type InputFieldOption = { label: string; value: string | number };
@@ -55,4 +55,5 @@ export type InputFieldType =
   | 'time'
   | 'editor'
   | 'drag-upload'
-  | 'multi-select';
+  | 'multi-select'
+  | 'add-items';

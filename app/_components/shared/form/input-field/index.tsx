@@ -10,6 +10,7 @@ import { Dayjs } from 'dayjs';
 import DragUpload from '../../drag-upload';
 import Button from '../../button-group/button';
 import { MultiSelect } from '../../multi-select-dropdown';
+import AddItems from '../../custom-popover/content/add-items';
 
 const InputField: React.FC<InputFieldProps> = ({
   name,
@@ -22,6 +23,7 @@ const InputField: React.FC<InputFieldProps> = ({
   sideButton,
   disabled,
   defaultValue,
+  addItemsProps,
 }) => {
   return (
     <div className='flex flex-col gap-2'>
@@ -78,6 +80,9 @@ const InputField: React.FC<InputFieldProps> = ({
         {sideButton && <Button {...sideButton} />}
         {type == 'multi-select' && (
           <MultiSelect options={[]} value={[]} onChange={() => {}} />
+        )}
+        {type === 'add-items' && addItemsProps && (
+          <AddItems {...addItemsProps} />
         )}
       </div>
     </div>

@@ -10,7 +10,6 @@ import PayrollSlip from '../pages/payroll/payroll-slip';
 import ButtonGroup from '../../shared/button-group';
 import ViewTask from '../pages/task/view-task';
 import { icon } from '@/constants';
-import PermissionsModalContent from './content/permissions';
 
 const dialogStyle = {
   '& .MuiDialog-paper': {
@@ -39,7 +38,6 @@ const Modal: React.FC<ModalProps> = (props) => {
     buttonGroupPosition = 'center',
     viewTaskProps,
     hasDocSelect,
-    permissions,
   } = props;
 
   return (
@@ -91,7 +89,6 @@ const Modal: React.FC<ModalProps> = (props) => {
               </div>
             )}
             {form && <Form {...form} />}
-            {permissions && <PermissionsModalContent {...permissions} />}
             {!buttonTwo && (
               <div className={`flex ${centerButton && 'justify-center'}`}>
                 <Button {...buttonOne} />

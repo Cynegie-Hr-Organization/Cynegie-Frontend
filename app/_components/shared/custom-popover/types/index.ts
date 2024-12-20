@@ -1,3 +1,4 @@
+import React from 'react';
 import { FormProps } from '../../form/types';
 import { PopoverOption } from '../../page/heading/types';
 import { Filter, TableAction } from '../../table/types';
@@ -10,11 +11,14 @@ export type PopoverProps = {
   filters?: Filter[];
   formFilter?: FormProps;
   dataToReturnOnItemClick?: string | number;
+  addItemsSelectContent?: React.ReactElement;
+  onCloseAction?: () => void;
 };
 
 export enum PopoverType {
   moreOptions = 'more-options',
   filter = 'filter',
+  addItems = 'add-items',
 }
 
 export type MoreOptionsPopoverContentProps = {

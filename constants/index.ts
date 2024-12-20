@@ -41,6 +41,7 @@ export const icon = {
   plus: `${iconBaseUrl}plus.svg`,
   box: `${iconBaseUrl}box.svg`,
   exit: `${iconBaseUrl}exit.svg`,
+  circlePlus: `${iconBaseUrl}circle-plus.svg`,
 };
 
 export const color = {
