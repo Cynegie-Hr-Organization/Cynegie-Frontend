@@ -24,7 +24,7 @@ export type TableProps<T = Record<string, any>> = {
   page?: number;
   fieldToGetSlug?: string;
   statusMap?: StatusMap;
-  statusActionMap?: StatusActionMap;
+  fieldActionMap?: StatusActionMap;
   fieldToReturnOnActionItemClick?: string;
   hasSearchFilter?: boolean;
   hasPagination?: boolean;

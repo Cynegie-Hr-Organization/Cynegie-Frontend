@@ -54,7 +54,7 @@ const useContinuousFeedbackPage = () => {
     displayedFields: ['requester', 'type', 'date', 'status'],
     statusMap: CPStatusMap,
     fieldToGetAction: 'status',
-    statusActionMap: {
+    fieldActionMap: {
       Completed: [
         {
           name: 'No Actions',

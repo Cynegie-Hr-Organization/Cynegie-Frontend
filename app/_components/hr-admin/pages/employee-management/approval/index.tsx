@@ -106,7 +106,7 @@ const HrAdminEmployeeManagementApproval = () => {
           Pending: 'warning',
           Rejected: 'error',
         }}
-        statusActionMap={{
+        fieldActionMap={{
           Pending: [
             {
               name: 'View Details',

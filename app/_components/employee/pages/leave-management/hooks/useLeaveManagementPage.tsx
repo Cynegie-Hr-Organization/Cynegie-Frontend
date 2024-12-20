@@ -79,7 +79,7 @@ const useLeaveManagementPage = () => {
     displayedFields: ['date', 'type', 'duration', 'status'],
     statusMap: APRStatusMap,
     fieldToGetAction: 'status',
-    statusActionMap: {
+    fieldActionMap: {
       Approved: [
         {
           name: 'View Request Details',

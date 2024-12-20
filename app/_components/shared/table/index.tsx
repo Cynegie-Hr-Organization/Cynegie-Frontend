@@ -26,6 +26,7 @@ import TableAttendanceStatusCell from './cell/variants/status/attendance';
 import TableStatusCell from './cell/variants/status';
 import { isArray } from 'lodash';
 import TablePermissionsCell from './cell/variants/permissions';
+import useCheckboxes from '@/hooks/useCheckboxes';
 
 const Table: React.FC<TableProps> = ({
   title,
@@ -41,7 +42,7 @@ const Table: React.FC<TableProps> = ({
   headerRowData,
   hasActionsColumn,
   displayedFields,
-  statusActionMap,
+  fieldActionMap: statusActionMap,
   bodyRowData,
   page,
   pageCount,
@@ -53,43 +54,14 @@ const Table: React.FC<TableProps> = ({
 }) => {
   const pathname = usePathname();
   const [actions, setActions] = useState<TableAction[] | undefined>(undefined);
-  const [selectedRowsIndexes, setSelectedRowsIndexes] = useState<number[]>([]);
+  const { checkAllBoxProps, checkBoxProps, removeChecks } = useCheckboxes(
+    bodyRowData,
+    getCheckedRows
+  );
 
   const headerRow = hasActionsColumn
     ? [...headerRowData, 'Actions']
     : headerRowData;
-
-  const handleCheckboxChangeAll = (event: ChangeEvent<HTMLInputElement>) => {
-    let rowsIndexes: number[] = [];
-    if (event.target.checked) {
-      rowsIndexes = generateRange(0, bodyRowData.length - 1);
-      setSelectedRowsIndexes(rowsIndexes);
-    } else {
-      setSelectedRowsIndexes(rowsIndexes);
-    }
-    getCheckedRows?.(rowsIndexes.map((index) => bodyRowData[index]));
-  };
-
-  const handleCheckboxChange = (
-    event: ChangeEvent<HTMLInputElement>,
-    rowIndex: number
-  ) => {
-    let rowsIndexes: number[] = [];
-    setSelectedRowsIndexes((prevSelectedRows) => {
-      if (event.target.checked) {
-        rowsIndexes = [...prevSelectedRows, rowIndex];
-        return rowsIndexes;
-      } else {
-        rowsIndexes = prevSelectedRows.filter((index) => index !== rowIndex);
-        return rowsIndexes;
-      }
-    });
-    getCheckedRows?.(rowsIndexes.map((index) => bodyRowData[index]));
-  };
-
-  function generateRange(start: number, end: number): number[] {
-    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-  }
 
   const getTableCell = (
     fieldType: FieldType,
@@ -138,7 +110,7 @@ const Table: React.FC<TableProps> = ({
     }
   };
 
-  useEffect(() => setSelectedRowsIndexes([]), [clearChecks]);
+  useEffect(() => removeChecks(), [clearChecks]);
 
   return (
     <div className={`flex flex-col ${title && 'gap-4'}`}>
@@ -179,16 +151,7 @@ const Table: React.FC<TableProps> = ({
               <TableRow>
                 {hasCheckboxes && (
                   <TableCell className='whitespace-nowrap' sx={{ py: 1 }}>
-                    <Checkbox
-                      onChange={handleCheckboxChangeAll}
-                      checked={
-                        selectedRowsIndexes.length === bodyRowData.length
-                      }
-                      indeterminate={
-                        selectedRowsIndexes.length > 0 &&
-                        selectedRowsIndexes.length < bodyRowData.length
-                      }
-                    />
+                    <Checkbox {...checkAllBoxProps} />
                   </TableCell>
                 )}
                 {headerRow.map((field, index) => (
@@ -207,10 +170,7 @@ const Table: React.FC<TableProps> = ({
                 <TableRow key={rowIndex}>
                   {hasCheckboxes && (
                     <TableCell className='whitespace-nowrap'>
-                      <Checkbox
-                        checked={selectedRowsIndexes.includes(rowIndex)}
-                        onChange={(e) => handleCheckboxChange(e, rowIndex)}
-                      />
+                      <Checkbox {...checkBoxProps(rowIndex)} />
                     </TableCell>
                   )}
                   {displayedFields.map((field, columnIndex) => (

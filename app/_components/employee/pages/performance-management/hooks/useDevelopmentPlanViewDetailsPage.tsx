@@ -48,7 +48,7 @@ const useDevelopmentPlanViewDetailsPage = () => {
     displayedFields: ['actionStep', 'status'],
     statusMap: CISStatusMap,
     fieldToGetAction: 'status',
-    statusActionMap: {
+    fieldActionMap: {
       'In Progress': [
         {
           name: 'Mark as Complete',

@@ -146,7 +146,7 @@ const usePerformanceManagementPage = () => {
     fieldTypes: [FieldType.text, FieldType.text, FieldType.status],
     displayedFields: ['name', 'dueDate', 'status'],
     statusMap: CISStatusMap,
-    statusActionMap: {
+    fieldActionMap: {
       'In Progress': [
         {
           name: 'Continue',
