@@ -6,6 +6,7 @@ const SectionCardContainer: React.FC<SectionCardContainerProps> = (props) => {
   const {
     headerIcon,
     title,
+    titleSize,
     isCard,
     period,
     children,
@@ -15,13 +16,14 @@ const SectionCardContainer: React.FC<SectionCardContainerProps> = (props) => {
   } = props;
   return (
     <Stack
-      className={`${isCard && 'common-card'}`}
+      className={`${isCard && 'common-card'} h-full`}
       sx={{ minHeight: '100%' }}
       gap={2}
     >
       <Header
         headerIcon={headerIcon}
         title={title}
+        titleSize={titleSize}
         period={period}
         periodFont={periodFont}
         periodClick={periodClick}

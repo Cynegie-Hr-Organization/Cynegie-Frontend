@@ -41,6 +41,7 @@ export type InputFieldProps = {
   disabled?: boolean;
   defaultValue?: string | number;
   addItemsProps?: AddItemsProps;
+  getCurrentValue?: (arg: string | number) => void;
 };
 
 export type InputFieldOption = { label: string; value: string | number };

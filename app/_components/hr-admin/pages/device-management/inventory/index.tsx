@@ -3,8 +3,7 @@
 import Page from '@/app/_components/shared/page';
 import Table from '@/app/_components/shared/table';
 import { FieldType } from '@/app/_components/shared/table/types';
-import { APRStatusMap, route } from '@/constants';
-import { Router } from 'lucide-react';
+import { route } from '@/constants';
 import { useRouter } from 'next/navigation';
 
 const HrAdminDeviceInventory = () => {

@@ -81,6 +81,7 @@ export type CardHeaderProps = {
 export type SectionCardContainerProps = {
   headerIcon?: React.ReactElement;
   title: string;
+  titleSize?: 'small' | 'large';
   period?: string;
   periodFont?: { size?: number; weight?: number; color?: string };
   periodClick?: () => void;

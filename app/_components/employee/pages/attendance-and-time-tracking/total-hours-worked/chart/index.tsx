@@ -10,6 +10,7 @@ import {
   YAxis,
   ResponsiveContainer,
   CartesianGrid,
+  Cell,
 } from 'recharts';
 
 export type BarChartProps = {
@@ -22,6 +23,26 @@ export type BarChartProps = {
   inputFields?: InputFieldProps[];
   title?: string;
   hasLegend?: boolean;
+  isCard?: boolean;
+  chartLayout?: 'horizontal' | 'vertical';
+  xAxisType?: 'number' | 'category';
+  xAxisDataKey?: string;
+  yAxisType?: 'number' | 'category';
+  yAxisDataKey?: string;
+  hideXAxis?: boolean;
+  removeCartesianGrid?: boolean;
+  barRadius?: number | [number, number, number, number];
+  barColors?: string[];
+  chartLeftMargin?: number;
+  chartMargin?: {
+    top?: number;
+    bottom?: number;
+    left?: number;
+    right?: number;
+  };
+  yAxisTickMargin?: number;
+  useCustomTick?: boolean;
+  fitContent?: boolean;
 };
 
 const defaultHeight = 260;
@@ -36,13 +57,28 @@ const BarChart: React.FC<BarChartProps> = ({
   inputFields: selectFields,
   title,
   hasLegend,
+  isCard,
+  chartLayout = 'horizontal',
+  xAxisType = 'category',
+  xAxisDataKey = 'item',
+  yAxisType = 'number',
+  yAxisDataKey,
+  hideXAxis = false,
+  removeCartesianGrid = false,
+  barRadius = [6, 6, 0, 0],
+  barColors,
+  chartMargin,
+  yAxisTickMargin = 10,
+  useCustomTick = false,
+  fitContent = false,
 }) => {
   return (
     <div
       style={{
         position: 'relative',
+        ...(fitContent && { height: 'fit-content' }),
       }}
-      className={`${
+      className={`${isCard && 'common-card'} ${
         title
           ? hasLegend
             ? 'h-[470px] sm:h-[450px]'
@@ -69,18 +105,20 @@ const BarChart: React.FC<BarChartProps> = ({
               ))}
             </div>
           </div>
-          <div className='flex justify-end'>
-            <div className='flex gap-5'>
-              {bars?.map((bar) => (
-                <DotLegend
-                  key={bar.dataKey}
-                  dotColor={bar.fill ?? color.info.dark}
-                  label={bar.dataKey}
-                  type='meeting-indicator'
-                />
-              ))}
+          {hasLegend && (
+            <div className='flex justify-end'>
+              <div className='flex gap-5'>
+                {bars?.map((bar) => (
+                  <DotLegend
+                    key={bar.dataKey}
+                    dotColor={bar.fill ?? color.info.dark}
+                    label={bar.dataKey}
+                    type='meeting-indicator'
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
       <ResponsiveContainer
@@ -100,18 +138,23 @@ const BarChart: React.FC<BarChartProps> = ({
           barSize={barSize ?? 12}
           barGap={0}
           data={data}
+          layout={chartLayout}
+          margin={chartMargin}
         >
-          <CartesianGrid vertical={false} />
+          {!removeCartesianGrid && <CartesianGrid vertical={false} />}
           <XAxis
-            dataKey='item'
+            dataKey={xAxisDataKey}
+            type={xAxisType}
             axisLine={false}
             tickSize={0}
             tickMargin={10}
             interval={0}
             fontSize={10}
-            className='hidden sm:block'
+            className={`hidden sm:block ${hideXAxis && 'sm:hidden'}`}
           />
           <YAxis
+            dataKey={yAxisDataKey}
+            type={yAxisType}
             label={{
               value: yAxisLabel,
               angle: 90,
@@ -126,16 +169,45 @@ const BarChart: React.FC<BarChartProps> = ({
             tickFormatter={(value) => `${value}${isPercentage ? '%' : ''}`}
             axisLine={false}
             tickSize={0}
-            tickMargin={10}
+            tickMargin={yAxisTickMargin}
             fontSize={12}
+            {...(useCustomTick && {
+              tick: ({ payload, x, y, textAnchor }) => (
+                <text
+                  x={x}
+                  y={y}
+                  dy={3.5}
+                  textAnchor={textAnchor}
+                  width={90} // Prevents wrapping
+                  overflow='hidden'
+                  style={{
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
+                    textAnchor: 'start',
+                    paddingTop: '10px',
+                  }}
+                  className='tiny-text'
+                >
+                  {payload.value}
+                </text>
+              ),
+            })}
           />
           {bars?.map((bar) => (
             <Bar
               key={bar.dataKey}
               dataKey={bar.dataKey}
               fill={bar.fill ?? color.info.dark}
-              radius={[6, 6, 0, 0]}
-            />
+              radius={barRadius}
+            >
+              {barColors &&
+                data.map((_, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={barColors?.[index % barColors?.length]}
+                  />
+                ))}
+            </Bar>
           ))}
         </RechartsBarChart>
       </ResponsiveContainer>

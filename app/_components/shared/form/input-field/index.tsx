@@ -24,6 +24,7 @@ const InputField: React.FC<InputFieldProps> = ({
   disabled,
   defaultValue,
   addItemsProps,
+  getCurrentValue,
 }) => {
   return (
     <div className='flex flex-col gap-2'>
@@ -53,6 +54,7 @@ const InputField: React.FC<InputFieldProps> = ({
             defaultValue={defaultValue}
             setValue={setValue}
             valueControlledFromOutside={selectValControlledFromOutside}
+            getCurrentValue={getCurrentValue}
           />
         )}
         {type == 'radio' && <RadioField options={options ?? []} />}

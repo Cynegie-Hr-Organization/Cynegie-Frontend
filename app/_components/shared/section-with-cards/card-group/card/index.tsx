@@ -22,10 +22,10 @@ const Card: React.FC<CardProps> = (props) => {
     additionalInfo,
   } = props;
   return (
-    <Stack
-      flexDirection={valueBelow ? 'column-reverse' : 'column'}
-      className=' common-card'
-      gap={2}
+    <div
+      className={`flex ${
+        valueBelow ? 'flex-col-reverse' : 'flex-col'
+      } gap-4 common-card h-full`}
     >
       <Value
         lineBelow={lineBelowValue}
@@ -44,7 +44,7 @@ const Card: React.FC<CardProps> = (props) => {
         largeText={largeLabelText}
         hasIcon={hasIcon}
       />
-    </Stack>
+    </div>
   );
 };
 

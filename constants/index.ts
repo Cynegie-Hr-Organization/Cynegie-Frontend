@@ -43,6 +43,11 @@ export const icon = {
   exit: `${iconBaseUrl}exit.svg`,
   circlePlus: `${iconBaseUrl}circle-plus.svg`,
   app: `${iconBaseUrl}app.svg`,
+  taskSquare: `${iconBaseUrl}task-square.svg`,
+  statusUp: `${iconBaseUrl}status-up.svg`,
+  documentCode: `${iconBaseUrl}document-code.svg`,
+  figma: `${iconBaseUrl}figma.svg`,
+  zoom: `${iconBaseUrl}excel.svg`,
 };
 
 export const color = {
@@ -54,6 +59,7 @@ export const color = {
     light: '#E7F6EC',
   },
   info: {
+    extraDark: '#00268A',
     dark: '#0035C3',
     light: '#E6EBF9',
   },
@@ -119,6 +125,9 @@ export const color = {
     lightBlue: '#B0C0EC',
     midBlue: '#335DCF',
     darkBlue: '#0030B1',
+  },
+  icon: {
+    grey: '#667185',
   },
 };
 

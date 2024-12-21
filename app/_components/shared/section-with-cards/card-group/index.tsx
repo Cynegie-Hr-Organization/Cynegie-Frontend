@@ -6,9 +6,15 @@ import { CardGroupProps } from '../types';
 
 const CardGroup: React.FC<CardGroupProps> = ({ cards: data, gridItemSize }) => {
   return (
-    <Grid2 container spacing={2}>
+    <Grid2 className='h-full' container spacing={2}>
       {data?.map((card, index) => (
-        <Grid2 key={index} size={gridItemSize ?? { xs: 12, sm: 6 }}>
+        <Grid2
+          key={index}
+          size={gridItemSize ?? { xs: 12, sm: 6 }}
+          sx={{
+            height: { xs: 'fit-content', sm: `${/*100%*/ 'fit-content'}` },
+          }}
+        >
           <Card
             value={card.value}
             valueBelow={card.valueBelow ?? false}

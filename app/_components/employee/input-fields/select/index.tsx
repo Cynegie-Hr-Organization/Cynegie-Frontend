@@ -9,6 +9,7 @@ export type SelectFieldProps = {
   options?: InputFieldOption[];
   valueControlledFromOutside?: boolean;
   defaultValue?: string | number;
+  getCurrentValue?: (arg: string | number) => void;
 };
 
 export const InputFieldPlaceholder: React.FC<{ placeholder: string }> = ({
@@ -25,6 +26,7 @@ const SelectField: React.FC<SelectFieldProps> = (props) => {
     setValue,
     valueControlledFromOutside,
     defaultValue,
+    getCurrentValue,
   } = props;
   return (
     <Select
@@ -33,7 +35,9 @@ const SelectField: React.FC<SelectFieldProps> = (props) => {
       defaultValue={defaultValue ?? ''}
       {...(valueControlledFromOutside ? { value: value ?? '' } : {})}
       displayEmpty
-      onChange={(e) => setValue?.(e.target.value)}
+      onChange={(e) => {
+        setValue?.(e.target.value), getCurrentValue?.(e.target.value);
+      }}
       renderValue={(selected) => {
         if (selected === '') {
           return <InputFieldPlaceholder placeholder={placeholder ?? ''} />;
