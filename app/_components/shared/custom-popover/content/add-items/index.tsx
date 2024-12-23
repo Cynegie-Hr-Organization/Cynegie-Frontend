@@ -17,12 +17,16 @@ export type AddItemsProps = {
   allItems?: string[];
   type?: 'no-select' | 'select' | 'multi-select';
   inputFieldType?: InputFieldType;
+  secondaryFieldType?: InputFieldType;
   inputFieldPlacehdoler?: string;
   showFieldLabels?: boolean;
   hasSecondaryField?: boolean;
   secondaryFieldPlaceholder?: string;
-  hideActionOnFirstItem?: boolean;
+  startIndexToShowDelete?: number;
   secondaryFieldStartAdornment?: React.ReactElement;
+  secondaryFieldName?: string;
+  inputFieldName?: string;
+  hasSelectOptions?: boolean;
 };
 
 export type AddedItem = {
@@ -40,8 +44,12 @@ const AddItems: React.FC<AddItemsProps> = ({
   hasSecondaryField,
   inputFieldPlacehdoler,
   secondaryFieldPlaceholder,
-  hideActionOnFirstItem = false,
+  startIndexToShowDelete = 0,
   secondaryFieldStartAdornment,
+  secondaryFieldName,
+  inputFieldName,
+  secondaryFieldType,
+  hasSelectOptions,
 }) => {
   const getAvailableItems = (items: string[]) => {
     return allItems?.filter((item) => !items.includes(item));
@@ -59,6 +67,12 @@ const AddItems: React.FC<AddItemsProps> = ({
   const [searchQuery, setSearchQuery] = useState<string | number | undefined>(
     ''
   );
+
+  const [showAddField, setShowAddField] = useState(false);
+
+  const [addFieldValue, setAddFieldValue] = useState<
+    string | number | undefined
+  >('');
 
   const displayedAvailableItems = availableItems.filter(
     (item) => typeof searchQuery === 'string' && item.includes(searchQuery)
@@ -95,7 +109,20 @@ const AddItems: React.FC<AddItemsProps> = ({
   };
 
   const handleNoSelectAddItem = () => {
-    setLocalAddedItems([...localAddedItems, { name: '', value: '' }]);
+    setLocalAddedItems([
+      ...localAddedItems,
+      { name: inputFieldName ?? '', value: '' },
+    ]);
+  };
+
+  const handleAddDoc = () => {
+    setShowAddField(false);
+    if (typeof addFieldValue == 'string')
+      setLocalAddedItems([
+        ...localAddedItems,
+        { name: addFieldValue, value: '' },
+      ]);
+    setAddFieldValue('');
   };
 
   const deleteButton = (item: AddedItem) => {
@@ -111,12 +138,12 @@ const AddItems: React.FC<AddItemsProps> = ({
   };
 
   const showDeleteButton = (
-    hideActionOnFirstItem: boolean,
+    startIndexToShowDelete: number,
     index: number,
     item: AddedItem
   ) => {
-    return hideActionOnFirstItem ? (
-      index == 0 ? (
+    return startIndexToShowDelete ? (
+      index < startIndexToShowDelete ? (
         <></>
       ) : (
         deleteButton(item)
@@ -127,38 +154,78 @@ const AddItems: React.FC<AddItemsProps> = ({
   };
 
   return (
-    <div className='flex flex-col gap-6 w-full'>
+    <div className={`flex flex-col gap-6 w-full`}>
       {localAddedItems.map((item, index) => (
-        <div key={index} className='flex items-center gap-3'>
-          <InputField
-            type={inputFieldType}
-            name={showFieldLabels ? item.name : undefined}
-            defaultValue={hasSecondaryField ? item.name : item.value}
-            placeholder={inputFieldPlacehdoler}
-          />
-          {hasSecondaryField && (
+        <div key={index} className='flex items-center gap-3 flex-wrap'>
+          <div>
             <InputField
               type={inputFieldType}
-              defaultValue={item.value}
-              placeholder={secondaryFieldPlaceholder}
-              startAdornment={
-                <div style={{ marginRight: 5 }}>
-                  {secondaryFieldStartAdornment}
-                </div>
+              name={inputFieldName ?? showFieldLabels ? item.name : undefined}
+              defaultValue={
+                hasSecondaryField && inputFieldType !== 'select'
+                  ? item.name
+                  : item.value
               }
+              {...(inputFieldPlacehdoler && {
+                placeholder: inputFieldPlacehdoler,
+              })}
+              {...(hasSelectOptions && {
+                options: allItems?.map((item, index) => ({
+                  label: item,
+                  value: index,
+                })),
+              })}
             />
+          </div>
+          {hasSecondaryField && (
+            <div>
+              <InputField
+                {...(secondaryFieldName && { name: secondaryFieldName })}
+                type={secondaryFieldType ?? inputFieldType}
+                defaultValue={item.value}
+                placeholder={secondaryFieldPlaceholder}
+                startAdornment={
+                  <div style={{ marginRight: 5 }}>
+                    {secondaryFieldStartAdornment}
+                  </div>
+                }
+              />
+            </div>
           )}
           <div
-            className={`${
-              hasSecondaryField ? 'mt-2' : 'mt-6'
-            } w-[5px] h-[20px]`}
+            className={`mt-6 ${hasSecondaryField && 'mt-2'} w-[5px] h-[20px] ${
+              inputFieldType === 'drag-upload' ? 'mt-[5]' : ''
+            }`}
           >
-            {showDeleteButton(hideActionOnFirstItem, index, item)}
+            {showDeleteButton(startIndexToShowDelete, index, item)}
           </div>
         </div>
       ))}
       {type == 'no-select' && (
-        <AddItemsLabel text={addText} onClick={handleNoSelectAddItem} />
+        <AddItemsLabel
+          text={addText}
+          onClick={
+            inputFieldType == 'drag-upload'
+              ? () => setShowAddField(true)
+              : handleNoSelectAddItem
+          }
+        />
+      )}
+      {showAddField && (
+        <div className='flex gap-4 items-center'>
+          <InputField
+            type='text'
+            placeholder='Name of Document'
+            setValue={setAddFieldValue}
+          />
+          <div className='mt-2'>
+            <Button
+              type={ButtonType.outlined}
+              text='Add'
+              onClick={handleAddDoc}
+            />
+          </div>
+        </div>
       )}
       {type !== 'no-select' && (
         <Popover

@@ -16,6 +16,8 @@ type HrAdminEmployeeDirectoryAddEditEmployeeProps = {
   nextOfKin: InputFieldProps[];
   employment: InputFieldProps[];
   compensation: InputFieldProps[];
+  allowances: InputFieldProps[];
+  deductions: InputFieldProps[];
   documents: InputFieldProps[];
   equipment: InputFieldProps[];
   access: InputFieldProps[];
@@ -29,6 +31,8 @@ const HrAdminEmployeeDirectoryAddEditEmployee: React.FC<
   nextOfKin,
   employment,
   compensation,
+  allowances,
+  deductions,
   documents,
   equipment,
   access,
@@ -79,6 +83,10 @@ const HrAdminEmployeeDirectoryAddEditEmployee: React.FC<
                 gridSpacing={formGridSpacing}
                 inputFields={compensation}
               />
+              <div className='grid md:grid-cols-2 gap-4'>
+                <Form gridSpacing={formGridSpacing} inputFields={allowances} />
+                <Form gridSpacing={formGridSpacing} inputFields={deductions} />
+              </div>
             </div>
           ),
         },
@@ -106,7 +114,6 @@ const HrAdminEmployeeDirectoryAddEditEmployee: React.FC<
                 inputFields={equipment}
               />
               <Form
-                layout='3-columns'
                 title='Employee Access'
                 gridSpacing={formGridSpacing}
                 inputFields={access}
