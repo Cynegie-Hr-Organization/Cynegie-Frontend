@@ -75,7 +75,7 @@ const HrAdminAppManagementRequest = () => {
           },
           {
             name: 'Approve Request',
-            onClick: () => setOpenEditModal(true),
+            onClick: () => {},
           },
           {
             name: 'Reject Request',
