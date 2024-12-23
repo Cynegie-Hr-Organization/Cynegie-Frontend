@@ -9,4 +9,5 @@ export type FormProps = {
   gridSpacing?: number;
   layout?: GridLayout;
   buttonGroup?: ButtonGroupProps;
+  gridItemSize?: { xs?: number; sm?: number; md?: number; lg?: number };
 };

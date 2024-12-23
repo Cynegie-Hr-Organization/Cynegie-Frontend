@@ -220,6 +220,7 @@ const HrAdminEmployeeDirectoryAddEmployee = () => {
             secondaryFieldStartAdornment: (
               <SvgIcon path={icon.naira} width={15} height={13.33} />
             ),
+            gridCols: { xs: 3, lg: 3 },
           },
         },
       ]}
@@ -240,6 +241,7 @@ const HrAdminEmployeeDirectoryAddEmployee = () => {
             secondaryFieldStartAdornment: (
               <SvgIcon path={icon.naira} width={15} height={13.33} />
             ),
+            gridCols: { xs: 3, lg: 3 },
           },
         },
       ]}
@@ -259,6 +261,7 @@ const HrAdminEmployeeDirectoryAddEmployee = () => {
             secondaryFieldStartAdornment: (
               <SvgIcon path={icon.naira} width={15} height={13.33} />
             ),
+            gridCols: { xs: 1 },
           },
         },
       ]}
@@ -283,6 +286,7 @@ const HrAdminEmployeeDirectoryAddEmployee = () => {
             startIndexToShowDelete: 1,
             hasSecondaryField: true,
             secondaryFieldName: 'ID',
+            gridCols: { xs: 1, lg: 3 },
           },
         },
       ]}

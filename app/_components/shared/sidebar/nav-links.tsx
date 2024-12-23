@@ -172,6 +172,11 @@ const NavLinks = ({
         },
       ],
     },
+    {
+      name: 'Settings',
+      icon: <SvgIcon path={icon.settings} width={17.5} height={17.5} />,
+      path: route.hrAdmin.settings,
+    },
   ];
 
   const isPathActive = (

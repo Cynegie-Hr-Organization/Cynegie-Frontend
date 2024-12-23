@@ -8,7 +8,10 @@ import { color, icon } from '@/constants';
 import Popover from '../..';
 import { PopoverType } from '../../types';
 import SearchField from '@/app/_components/employee/input-fields/search';
-import { InputFieldType } from '@/app/_components/employee/modal/types';
+import {
+  InputFieldProps,
+  InputFieldType,
+} from '@/app/_components/employee/modal/types';
 import Button from '../../../button-group/button';
 
 export type AddItemsProps = {
@@ -27,11 +30,15 @@ export type AddItemsProps = {
   secondaryFieldName?: string;
   inputFieldName?: string;
   hasSelectOptions?: boolean;
+  middleField?: InputFieldProps;
+  disabled?: boolean;
+  disabledValue?: string;
+  gridCols?: { xs?: number; sm?: number; md?: number; lg?: number };
 };
 
 export type AddedItem = {
   name: string;
-  value: string;
+  value: string | number;
 };
 
 const AddItems: React.FC<AddItemsProps> = ({
@@ -48,8 +55,12 @@ const AddItems: React.FC<AddItemsProps> = ({
   secondaryFieldStartAdornment,
   secondaryFieldName,
   inputFieldName,
+  disabled,
   secondaryFieldType,
   hasSelectOptions,
+  middleField,
+  disabledValue,
+  gridCols,
 }) => {
   const getAvailableItems = (items: string[]) => {
     return allItems?.filter((item) => !items.includes(item));
@@ -153,17 +164,25 @@ const AddItems: React.FC<AddItemsProps> = ({
     );
   };
 
+  //flex items-center gap-3 flex-wrap
+
   return (
     <div className={`flex flex-col gap-6 w-full`}>
       {localAddedItems.map((item, index) => (
-        <div key={index} className='flex items-center gap-3 flex-wrap'>
+        <div
+          key={index}
+          className={`grid grid-cols-${gridCols?.xs} sm:grid-cols-${gridCols?.sm} md:grid-cols-${gridCols?.md} lg:grid-cols-${gridCols?.lg} gap-4 items-center`}
+        >
           <div>
             <InputField
               type={inputFieldType}
               name={inputFieldName ?? showFieldLabels ? item.name : undefined}
+              disabled={disabled}
               defaultValue={
                 hasSecondaryField && inputFieldType !== 'select'
                   ? item.name
+                  : disabled
+                  ? `${disabledValue} ${index + 1}`
                   : item.value
               }
               {...(inputFieldPlacehdoler && {
@@ -177,6 +196,7 @@ const AddItems: React.FC<AddItemsProps> = ({
               })}
             />
           </div>
+          {middleField && <InputField {...middleField} />}
           {hasSecondaryField && (
             <div>
               <InputField
@@ -193,8 +213,10 @@ const AddItems: React.FC<AddItemsProps> = ({
             </div>
           )}
           <div
-            className={`mt-6 ${hasSecondaryField && 'mt-2'} w-[5px] h-[20px] ${
-              inputFieldType === 'drag-upload' ? 'mt-[5]' : ''
+            className={`sm:mt-6 ${
+              hasSecondaryField && 'mt-2'
+            } w-[5px] h-[20px] ${
+              inputFieldType === 'drag-upload' ? 'sm:mt-[5]' : ''
             }`}
           >
             {showDeleteButton(startIndexToShowDelete, index, item)}

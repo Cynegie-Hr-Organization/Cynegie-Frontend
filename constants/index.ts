@@ -49,6 +49,7 @@ export const icon = {
   figma: `${iconBaseUrl}figma.svg`,
   zoom: `${iconBaseUrl}excel.svg`,
   naira: `${iconBaseUrl}naira.svg`,
+  settings: `${iconBaseUrl}settings.svg`,
 };
 
 export const color = {
@@ -264,6 +265,7 @@ export const route = {
       accessTracking: `${basePath.hrAdmin}${basePath.appManagement}access-tracking`,
       request: `${basePath.hrAdmin}${basePath.appManagement}request`,
     },
+    settings: `${basePath.hrAdmin}settings`,
   },
   employee: {
     performanceManagement: {

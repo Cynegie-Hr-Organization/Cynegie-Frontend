@@ -6,8 +6,15 @@ import { FormProps } from './types';
 import InputField from './input-field';
 
 const Form: React.FC<FormProps> = (props) => {
-  const { title, inputFields, isCard, gridSpacing, layout, buttonGroup } =
-    props;
+  const {
+    title,
+    inputFields,
+    isCard,
+    gridSpacing,
+    layout,
+    buttonGroup,
+    gridItemSize,
+  } = props;
   return (
     <div>
       {title && <div className='card-title-small mb-8'>{title}</div>}
@@ -18,7 +25,10 @@ const Form: React.FC<FormProps> = (props) => {
         >
           <Grid2 container spacing={gridSpacing}>
             {inputFields?.map((field, index) => (
-              <Grid2 key={index} size={getGridLayout(index, layout)}>
+              <Grid2
+                key={index}
+                size={gridItemSize ?? getGridLayout(index, layout)}
+              >
                 <InputField {...field} />
               </Grid2>
             ))}
