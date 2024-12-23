@@ -20,73 +20,69 @@ const InputField: React.FC<InputFieldProps> = ({
   selectValControlledFromOutside,
   value,
   setValue,
-  sideButton,
   disabled,
   defaultValue,
   addItemsProps,
   getCurrentValue,
+  startAdornment,
 }) => {
   return (
     <div className='flex flex-col gap-2'>
       <FieldLabel wrapText value={name ?? ''} />
-      <div className='flex items-center gap-2'>
-        {type === 'text' && (
-          <TextField
-            placeholder={placeholder}
-            value={value}
-            setValue={setValue}
-            disabled={disabled}
-            defaultValue={defaultValue}
-          />
-        )}
-        {type == 'message' && (
-          <MessageField
-            placeholder={placeholder}
-            value={value}
-            setValue={setValue}
-          />
-        )}
-        {type == 'select' && (
-          <SelectField
-            options={options}
-            placeholder={placeholder ?? 'Select'}
-            value={value}
-            defaultValue={defaultValue}
-            setValue={setValue}
-            valueControlledFromOutside={selectValControlledFromOutside}
-            getCurrentValue={getCurrentValue}
-          />
-        )}
-        {type == 'radio' && <RadioField options={options ?? []} />}
-        {type == 'date' && (
-          <CustomDatePicker
-            value={null}
-            onChange={function (newValue: Dayjs | null): void {
-              console.log(newValue);
-            }}
-          />
-        )}
-        {type == 'time' && (
-          <CustomTimePicker
-            value={null}
-            onChange={function (newValue: Dayjs | null): void {
-              console.log(newValue);
-            }}
-          />
-        )}
-        {type == 'drag-upload' && (
-          <div>
-            <DragUpload />
-          </div>
-        )}
-        {sideButton && <Button {...sideButton} />}
-        {type == 'multi-select' && (
-          <MultiSelect options={[]} value={[]} onChange={() => {}} />
-        )}
-        {type === 'add-items' && addItemsProps && (
-          <AddItems {...addItemsProps} />
-        )}
-      </div>
+      {type === 'text' && (
+        <TextField
+          placeholder={placeholder}
+          value={value}
+          setValue={setValue}
+          disabled={disabled}
+          defaultValue={defaultValue}
+          startAdornment={startAdornment}
+        />
+      )}
+      {type == 'message' && (
+        <MessageField
+          placeholder={placeholder}
+          value={value}
+          setValue={setValue}
+        />
+      )}
+      {type == 'select' && (
+        <SelectField
+          options={options}
+          placeholder={placeholder ?? 'Select'}
+          value={value}
+          defaultValue={defaultValue}
+          setValue={setValue}
+          valueControlledFromOutside={selectValControlledFromOutside}
+          getCurrentValue={getCurrentValue}
+        />
+      )}
+      {type == 'radio' && <RadioField options={options ?? []} />}
+      {type == 'date' && (
+        <CustomDatePicker
+          value={null}
+          onChange={function (newValue: Dayjs | null): void {
+            console.log(newValue);
+          }}
+        />
+      )}
+      {type == 'time' && (
+        <CustomTimePicker
+          value={null}
+          onChange={function (newValue: Dayjs | null): void {
+            console.log(newValue);
+          }}
+        />
+      )}
+      {type == 'drag-upload' && (
+        <div>
+          <DragUpload />
+        </div>
+      )}
+      {type == 'multi-select' && (
+        <MultiSelect options={[]} value={[]} onChange={() => {}} />
+      )}
+      {type === 'add-items' && addItemsProps && <AddItems {...addItemsProps} />}
     </div>
   );
 };

@@ -15,6 +15,7 @@ const TextField: React.FC<Omit<InputFieldProps, 'type'>> = ({
   setValue,
   disabled,
   defaultValue,
+  startAdornment,
 }) => {
   return (
     <MuiTextField
@@ -28,6 +29,11 @@ const TextField: React.FC<Omit<InputFieldProps, 'type'>> = ({
       placeholder={placeholder}
       value={value}
       onChange={(e) => setValue?.(e.target.value)}
+      slotProps={{
+        input: {
+          startAdornment: startAdornment,
+        },
+      }}
     />
   );
 };

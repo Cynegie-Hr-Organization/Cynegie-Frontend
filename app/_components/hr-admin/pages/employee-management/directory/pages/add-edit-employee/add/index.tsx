@@ -1,5 +1,7 @@
 'use client';
 import HrAdminEmployeeDirectoryAddEditEmployee from '..';
+import SvgIcon from '@/app/_components/icons/container';
+import { icon } from '@/constants';
 
 const HrAdminEmployeeDirectoryAddEmployee = () => {
   return (
@@ -202,13 +204,39 @@ const HrAdminEmployeeDirectoryAddEmployee = () => {
         },
         {
           name: 'Allowances',
-          type: 'text',
-          placeholder: 'Enter name of allowance',
+          type: 'add-items',
+          addItemsProps: {
+            addText: 'Include More Allowance',
+            type: 'no-select',
+            addedItems: [{ name: '', value: '' }],
+            inputFieldType: 'text',
+            showFieldLabels: false,
+            hasSecondaryField: true,
+            inputFieldPlacehdoler: 'Enter name of allowance',
+            secondaryFieldPlaceholder: 'Amount',
+            hideActionOnFirstItem: true,
+            secondaryFieldStartAdornment: (
+              <SvgIcon path={icon.naira} width={15} height={13.33} />
+            ),
+          },
         },
         {
           name: 'Deductions',
-          type: 'text',
-          placeholder: 'Enter name of deduction',
+          type: 'add-items',
+          addItemsProps: {
+            addText: 'Include More Deductions',
+            type: 'no-select',
+            addedItems: [{ name: '', value: '' }],
+            inputFieldType: 'text',
+            showFieldLabels: false,
+            hasSecondaryField: true,
+            inputFieldPlacehdoler: 'Enter name of deduction',
+            secondaryFieldPlaceholder: 'Amount',
+            hideActionOnFirstItem: true,
+            secondaryFieldStartAdornment: (
+              <SvgIcon path={icon.naira} width={15} height={13.33} />
+            ),
+          },
         },
       ]}
       documents={[

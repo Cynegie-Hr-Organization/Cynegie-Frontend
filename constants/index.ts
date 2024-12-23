@@ -48,6 +48,7 @@ export const icon = {
   documentCode: `${iconBaseUrl}document-code.svg`,
   figma: `${iconBaseUrl}figma.svg`,
   zoom: `${iconBaseUrl}excel.svg`,
+  naira: `${iconBaseUrl}naira.svg`,
 };
 
 export const color = {

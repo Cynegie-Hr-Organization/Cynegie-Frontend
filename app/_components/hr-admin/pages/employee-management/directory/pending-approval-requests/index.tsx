@@ -15,7 +15,6 @@ const PendingApprovalRequests: React.FC<PendingApprovalRequestsProps> = ({
       {requests.map((request, index) => (
         <>
           <div
-            key={index}
             className={`flex flex-1 items-center justify-between ${
               index !== 0 && 'mt-[-40]'
             }`}

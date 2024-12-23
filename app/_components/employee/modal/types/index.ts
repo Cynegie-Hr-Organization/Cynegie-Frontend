@@ -37,11 +37,11 @@ export type InputFieldProps = {
   value?: string | number;
   setValue?: Dispatch<SetStateAction<string | number | undefined>>;
   selectValControlledFromOutside?: boolean;
-  sideButton?: ButtonProps;
   disabled?: boolean;
   defaultValue?: string | number;
   addItemsProps?: AddItemsProps;
   getCurrentValue?: (arg: string | number) => void;
+  startAdornment?: React.ReactElement;
 };
 
 export type InputFieldOption = { label: string; value: string | number };
@@ -57,4 +57,5 @@ export type InputFieldType =
   | 'editor'
   | 'drag-upload'
   | 'multi-select'
-  | 'add-items';
+  | 'add-items'
+  | 'two-fields';
