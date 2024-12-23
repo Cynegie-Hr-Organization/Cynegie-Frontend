@@ -122,8 +122,8 @@ const HrAdminDeviceOverview = () => {
                   'Charles Ifemide',
                   'Ayomide Alibaba',
                   'Ayomide Alibaba',
-                ].map((name) => (
-                  <DeviceActivity name={name} date='14 June 2024' />
+                ].map((name, index) => (
+                  <DeviceActivity key={index} name={name} date='14 June 2024' />
                 )),
               ]}
             </div>
