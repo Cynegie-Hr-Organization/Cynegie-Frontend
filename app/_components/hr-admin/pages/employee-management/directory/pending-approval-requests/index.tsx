@@ -11,15 +11,17 @@ const PendingApprovalRequests: React.FC<PendingApprovalRequestsProps> = ({
   type,
 }) => {
   return (
-    <div className='flex flex-col h-full gap-4'>
+    <div className='flex flex-col h-full pt-5'>
       {requests.map((request, index) => (
-        <>
-          <div
-            className={`flex flex-1 items-center justify-between ${
-              index !== 0 && 'mt-[-40]'
-            }`}
-          >
-            <PendingApprovalRequestsItem {...request} />
+        <div key={index} className='flex flex-col h-full'>
+          <div className='flex-grow flex items-center h-full'>
+            <div
+              className={`flex-grow ${
+                index === requests.length - 1 && 'mt-[-15]'
+              }`}
+            >
+              <PendingApprovalRequestsItem {...request} />
+            </div>
             {type === 'actions' && (
               <Popover
                 type={PopoverType.moreOptions}
@@ -29,8 +31,8 @@ const PendingApprovalRequests: React.FC<PendingApprovalRequestsProps> = ({
             )}
             {type === 'switch' && <Switch />}
           </div>
-          {index !== requests.length - 1 && <hr className='mt-[-20]' />}
-        </>
+          {index !== requests.length - 1 && <hr />}
+        </div>
       ))}
     </div>
   );
