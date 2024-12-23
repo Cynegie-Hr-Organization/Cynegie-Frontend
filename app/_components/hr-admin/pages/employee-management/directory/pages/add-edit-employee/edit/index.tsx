@@ -1,5 +1,7 @@
 'use client';
+import SvgIcon from '@/app/_components/icons/container';
 import HrAdminEmployeeDirectoryAddEditEmployee from '..';
+import { icon } from '@/constants';
 
 const HrAdminEmployeeDirectoryEditEmployee = () => {
   return (
@@ -200,24 +202,67 @@ const HrAdminEmployeeDirectoryEditEmployee = () => {
           name: 'Overtime',
           type: 'select',
         },
+      ]}
+      allowances={[
         {
           name: 'Allowances',
-          type: 'text',
-          placeholder: 'Enter name of allowance',
+          type: 'add-items',
+          addItemsProps: {
+            addText: 'Include More Allowance',
+            type: 'no-select',
+            addedItems: [{ name: '', value: '' }],
+            inputFieldType: 'text',
+            showFieldLabels: false,
+            hasSecondaryField: true,
+            inputFieldPlacehdoler: 'Enter name of allowance',
+            secondaryFieldPlaceholder: 'Amount',
+            startIndexToShowDelete: 1,
+            secondaryFieldStartAdornment: (
+              <SvgIcon path={icon.naira} width={15} height={13.33} />
+            ),
+            gridCols: { xs: 3, lg: 3 },
+          },
         },
+      ]}
+      deductions={[
         {
           name: 'Deductions',
-          type: 'text',
-          placeholder: 'Enter name of deduction',
+          type: 'add-items',
+          addItemsProps: {
+            addText: 'Include More Deductions',
+            type: 'no-select',
+            addedItems: [{ name: '', value: '' }],
+            inputFieldType: 'text',
+            showFieldLabels: false,
+            hasSecondaryField: true,
+            inputFieldPlacehdoler: 'Enter name of deduction',
+            secondaryFieldPlaceholder: 'Amount',
+            startIndexToShowDelete: 1,
+            secondaryFieldStartAdornment: (
+              <SvgIcon path={icon.naira} width={15} height={13.33} />
+            ),
+            gridCols: { xs: 3, lg: 3 },
+          },
         },
       ]}
       documents={[
-        { name: 'ID Upload', type: 'drag-upload' },
-        { name: 'Proof of Contract', type: 'drag-upload' },
         {
-          name: 'Name of document',
-          type: 'text',
-          placeholder: 'Enter name of document',
+          type: 'add-items',
+          addItemsProps: {
+            addText: 'Add More Documents',
+            type: 'no-select',
+            addedItems: [
+              { name: 'ID Upload', value: '' },
+              { name: 'Proof of Contract', value: '' },
+            ],
+            inputFieldType: 'drag-upload',
+            showFieldLabels: true,
+            startIndexToShowDelete: 2,
+            secondaryFieldStartAdornment: (
+              <SvgIcon path={icon.naira} width={15} height={13.33} />
+            ),
+            gridCols: { xs: 1 },
+          },
         },
       ]}
       equipment={[
@@ -225,8 +270,25 @@ const HrAdminEmployeeDirectoryEditEmployee = () => {
         { name: 'Device Type', type: 'select' },
       ]}
       access={[
-        { name: 'Tool', type: 'select' },
-        { name: 'ID', type: 'text', placeholder: 'Enter ID' },
+        {
+          type: 'add-items',
+          addItemsProps: {
+            addText: 'Add More Access',
+            type: 'no-select',
+            addedItems: [{ name: 'Tool', value: '' }],
+            allItems: ['Behance', 'Figma', 'Maichimp', 'Slack'],
+            hasSelectOptions: true,
+            inputFieldType: 'select',
+            inputFieldName: 'Tool',
+            secondaryFieldType: 'text',
+            secondaryFieldPlaceholder: 'Enter ID',
+            showFieldLabels: true,
+            startIndexToShowDelete: 1,
+            hasSecondaryField: true,
+            secondaryFieldName: 'ID',
+            gridCols: { xs: 1, lg: 3 },
+          },
+        },
       ]}
     />
   );
