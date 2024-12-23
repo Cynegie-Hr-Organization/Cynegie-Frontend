@@ -13,6 +13,7 @@ import {
   InputFieldType,
 } from '@/app/_components/employee/modal/types';
 import Button from '../../../button-group/button';
+import SvgIcon from '@/app/_components/icons/container';
 
 export type AddItemsProps = {
   addText: string;
@@ -138,13 +139,9 @@ const AddItems: React.FC<AddItemsProps> = ({
 
   const deleteButton = (item: AddedItem) => {
     return (
-      <Button
-        {...{
-          type: ButtonType.deleteWithIcon,
-          text: '',
-          onClick: () => handleDeleteClick(item),
-        }}
-      />
+      <button onClick={() => handleDeleteClick(item)}>
+        <SvgIcon path={icon.bin} width={24} height={24} />
+      </button>
     );
   };
 
@@ -163,8 +160,6 @@ const AddItems: React.FC<AddItemsProps> = ({
       deleteButton(item)
     );
   };
-
-  //flex items-center gap-3 flex-wrap
 
   return (
     <div className={`flex flex-col gap-6 w-full`}>
@@ -213,10 +208,16 @@ const AddItems: React.FC<AddItemsProps> = ({
             </div>
           )}
           <div
-            className={`sm:mt-6 ${
-              hasSecondaryField && 'mt-2'
-            } w-[5px] h-[20px] ${
-              inputFieldType === 'drag-upload' ? 'sm:mt-[5]' : ''
+            className={`${
+              hasSecondaryField
+                ? middleField
+                  ? 'mt-8'
+                  : inputFieldType === 'select'
+                  ? 'mt-8'
+                  : 'mt-2'
+                : inputFieldType == 'drag-upload'
+                ? 'mt-0'
+                : 'mt-6'
             }`}
           >
             {showDeleteButton(startIndexToShowDelete, index, item)}

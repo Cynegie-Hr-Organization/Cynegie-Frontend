@@ -78,12 +78,12 @@ const HrAdminEmployeeDirectoryAddEditEmployee: React.FC<
           component: (
             <div className={formSectionContainer}>
               <Form
-                layout='3-columns'
+                gridItemSize={{ xs: 12, sm: 12, md: 6, lg: 4 }}
                 title='Compensation Breakdown'
                 gridSpacing={formGridSpacing}
                 inputFields={compensation}
               />
-              <div className='grid md:grid-cols-2 gap-4'>
+              <div className='grid md:grid-cols-2'>
                 <Form gridSpacing={formGridSpacing} inputFields={allowances} />
                 <Form gridSpacing={formGridSpacing} inputFields={deductions} />
               </div>
@@ -95,7 +95,8 @@ const HrAdminEmployeeDirectoryAddEditEmployee: React.FC<
           component: (
             <div className={formSectionContainer}>
               <Form
-                layout='3-columns'
+                // layout='3-columns'
+                gridItemSize={{ xs: 12, sm: 6 }}
                 title='Add Documents'
                 gridSpacing={formGridSpacing}
                 inputFields={documents}

@@ -376,6 +376,7 @@ const HrAdminEmployeeDirectory = () => {
               {
                 type: 'add-items',
                 addItemsProps: {
+                  gridCols: { xs: 1, sm: 2, md: 2, lg: 2 },
                   addText: 'Add More Permissions',
                   addedItems: [
                     {
