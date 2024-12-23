@@ -14,6 +14,7 @@ import {
 } from '@/app/_components/employee/modal/types';
 import Button from '../../../button-group/button';
 import SvgIcon from '@/app/_components/icons/container';
+import AddItemsLabel from './label';
 
 export type AddItemsProps = {
   addText: string;
@@ -289,23 +290,6 @@ const AddItems: React.FC<AddItemsProps> = ({
         />
       )}
     </div>
-  );
-};
-
-const AddItemsLabel: React.FC<{ text: string; onClick: () => void }> = ({
-  text,
-  onClick,
-}) => {
-  return (
-    <button>
-      <div onClick={onClick}>
-        <IconWithData
-          icon={icon.circlePlus}
-          data={text}
-          color={color.info.dark}
-        />
-      </div>
-    </button>
   );
 };
 
