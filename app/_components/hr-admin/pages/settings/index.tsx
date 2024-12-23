@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 const HrAdminSettings = () => {
   const dropdownComponents = [
     <AddItems
+      key={0}
       addText='Add Leave Type'
       addedItems={[{ name: 'Annual Value', value: 0 }]}
       allItems={[
@@ -32,6 +33,7 @@ const HrAdminSettings = () => {
       gridCols={{ xs: 1, sm: 4, md: 4, lg: 4 }}
     />,
     <AddItems
+      key={1}
       addText='Add Stage'
       addedItems={[{ name: 'Candidate Pipeline Stage', value: 'Stage 1' }]}
       type='no-select'
@@ -49,6 +51,7 @@ const HrAdminSettings = () => {
       gridCols={{ xs: 1, sm: 3, md: 3, lg: 3 }}
     />,
     <Form
+      key={2}
       gridItemSize={{ xs: 12, sm: 6 }}
       gridSpacing={3}
       inputFields={[
@@ -82,7 +85,7 @@ const HrAdminSettings = () => {
   const dropdowns = [useState(false), useState(false), useState(false)];
 
   const dropdownComponents2 = [
-    <div>
+    <div key={0}>
       <Form
         gridSpacing={3}
         gridItemSize={{ xs: 12, sm: 6 }}

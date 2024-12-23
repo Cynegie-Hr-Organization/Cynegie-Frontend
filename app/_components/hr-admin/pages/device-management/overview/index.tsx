@@ -243,7 +243,8 @@ const HrAdminDeviceOverview = () => {
             type: ButtonType.contained,
             text: 'Submit Request',
             onClick: () => {
-              setOpenAssignmentModal(false), setOpenSuccessModal(true);
+              setOpenAssignmentModal(false);
+              setOpenSuccessModal(true);
             },
           }}
         />

@@ -1,7 +1,5 @@
 import React from 'react';
 import { Checkbox } from '@mui/material';
-import DetailValue from '@/app/_components/shared/detail-group/detail/value';
-import DetailName from '@/app/_components/shared/detail-group/detail/name';
 
 type CheckboxFieldProps = {
   items: string[];

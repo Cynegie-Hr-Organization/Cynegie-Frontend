@@ -5,12 +5,9 @@ import Page from '@/app/_components/shared/page';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';
 import Table from '@/app/_components/shared/table';
 import { FieldType } from '@/app/_components/shared/table/types';
-import { icon, route } from '@/constants';
-
-import { useRouter } from 'next/navigation';
+import { icon } from '@/constants';
 
 const HrAdminDeviceReport = () => {
-  const router = useRouter();
   return (
     <Page
       title='Device Assignment Report'

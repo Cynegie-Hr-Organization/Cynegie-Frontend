@@ -36,7 +36,8 @@ const SelectField: React.FC<SelectFieldProps> = (props) => {
       {...(valueControlledFromOutside ? { value: value ?? '' } : {})}
       displayEmpty
       onChange={(e) => {
-        setValue?.(e.target.value), getCurrentValue?.(e.target.value);
+        setValue?.(e.target.value);
+        getCurrentValue?.(e.target.value);
       }}
       renderValue={(selected) => {
         if (selected === '') {

@@ -5,7 +5,7 @@ import Page from '@/app/_components/shared/page';
 import { ButtonType } from '@/app/_components/shared/page/heading/types';
 import Table from '@/app/_components/shared/table';
 import { FieldType } from '@/app/_components/shared/table/types';
-import { icon, route } from '@/constants';
+import { route } from '@/constants';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 

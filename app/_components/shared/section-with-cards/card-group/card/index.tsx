@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import Value from './value';
 import CardLabel from './label';
 import React from 'react';

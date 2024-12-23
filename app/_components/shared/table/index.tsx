@@ -8,7 +8,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FieldType, TableProps, TableAction } from './types';
 import { FilterList } from '@mui/icons-material';
 import { PopoverType } from '../custom-popover/types';

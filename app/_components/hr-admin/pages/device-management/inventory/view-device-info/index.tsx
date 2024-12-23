@@ -2,7 +2,7 @@
 import DetailGroup from '@/app/_components/shared/detail-group';
 import Page from '@/app/_components/shared/page';
 import SectionCardContainer from '@/app/_components/shared/section-with-cards/container';
-import { APRStatusMap, route } from '@/constants';
+import { route } from '@/constants';
 import { useRouter } from 'next/navigation';
 
 const HrAdminDeviceManagementViewDeviceInfo = () => {

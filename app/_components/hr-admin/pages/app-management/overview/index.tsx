@@ -114,11 +114,10 @@ const HrAdminAppManagementOverview = () => {
                   { label: 'Most Used', value: 0 },
                   { label: 'Least Used', value: 1 },
                 ],
-                getCurrentValue: (value) => {
-                  value === 0
-                    ? setBarColors(mostUsedBarColors)
-                    : setBarColors(leastUsedBarColors);
-                },
+                getCurrentValue: (value) =>
+                  setBarColors(
+                    value === 0 ? mostUsedBarColors : leastUsedBarColors
+                  ),
               },
             ]}
             data={appUsageChartData}
@@ -312,7 +311,8 @@ const HrAdminAppManagementOverview = () => {
             type: ButtonType.contained,
             text: 'Submit Request',
             onClick: () => {
-              setOpenRequestModal(false), setOpenSuccessModal(true);
+              setOpenRequestModal(false);
+              setOpenSuccessModal(true);
             },
           }}
         />

@@ -281,9 +281,11 @@ const HrAdminEmployeeDirectory = () => {
           },
         ]}
         fieldToReturnOnActionItemClick='index'
-        onPermissionsClick={(permissions) => {
-          setOpenPermissionsModal(true);
-        }}
+        onPermissionsClick={
+          (/*permissions*/) => {
+            setOpenPermissionsModal(true);
+          }
+        }
       />
       {openTerminateEmployeeModal && (
         <Modal
@@ -353,7 +355,8 @@ const HrAdminEmployeeDirectory = () => {
             type: ButtonType.contained,
             text: 'Request Edit Access',
             onClick: () => {
-              setOpenEditRequestModal(false), setOpenEditRequestToast(true);
+              setOpenEditRequestModal(false);
+              setOpenEditRequestToast(true);
             },
           }}
         />
