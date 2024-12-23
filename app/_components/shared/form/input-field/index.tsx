@@ -11,6 +11,7 @@ import DragUpload from '../../drag-upload';
 import Button from '../../button-group/button';
 import { MultiSelect } from '../../multi-select-dropdown';
 import AddItems from '../../custom-popover/content/add-items';
+import CheckboxField from '@/app/_components/employee/input-fields/checkbox-group';
 
 const InputField: React.FC<InputFieldProps> = ({
   name,
@@ -25,6 +26,7 @@ const InputField: React.FC<InputFieldProps> = ({
   addItemsProps,
   getCurrentValue,
   startAdornment,
+  checkboxItems,
 }) => {
   return (
     <div className='flex flex-col gap-2'>
@@ -58,6 +60,7 @@ const InputField: React.FC<InputFieldProps> = ({
         />
       )}
       {type == 'radio' && <RadioField options={options ?? []} />}
+      {type == 'checkbox' && <CheckboxField items={checkboxItems ?? []} />}
       {type == 'date' && (
         <CustomDatePicker
           value={null}

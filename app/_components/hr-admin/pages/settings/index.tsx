@@ -99,10 +99,10 @@ const HrAdminSettings = () => {
           },
           {
             name: '',
-            type: 'radio',
-            options: [
-              { label: 'Enable Email Notifications', value: 0 },
-              { label: 'Enable in App Notifications', value: 1 },
+            type: 'checkbox',
+            checkboxItems: [
+              'Enable Email Notifications',
+              'Enable in App Notifications',
             ],
           },
         ]}

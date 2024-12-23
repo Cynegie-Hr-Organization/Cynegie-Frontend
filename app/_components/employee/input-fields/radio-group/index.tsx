@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, Radio, RadioGroup } from '@mui/material';
+import { Radio, RadioGroup } from '@mui/material';
 import DetailValue from '@/app/_components/shared/detail-group/detail/value';
 import { InputFieldOption } from '../../modal/types';
 
@@ -13,8 +13,7 @@ const RadioField: React.FC<RadioFieldProps> = (props) => {
     <RadioGroup className='ml-[-10]'>
       {options.map((option) => (
         <div key={option.value} className='flex gap-0 items-center'>
-          {/* <Radio value={option.value} /> */} {/** Highly Temporary */}
-          <Checkbox />
+          <Radio value={option.value} />
           <DetailValue value={option.label} />
         </div>
       ))}

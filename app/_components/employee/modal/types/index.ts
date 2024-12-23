@@ -42,6 +42,7 @@ export type InputFieldProps = {
   addItemsProps?: AddItemsProps;
   getCurrentValue?: (arg: string | number) => void;
   startAdornment?: React.ReactElement;
+  checkboxItems?: string[];
 };
 
 export type InputFieldOption = { label: string; value: string | number };
@@ -58,4 +59,4 @@ export type InputFieldType =
   | 'drag-upload'
   | 'multi-select'
   | 'add-items'
-  | 'two-fields';
+  | 'checkbox';
