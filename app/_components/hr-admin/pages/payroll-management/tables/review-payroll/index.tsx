@@ -22,10 +22,10 @@ import {
   TableHead,
   TableRow,
   TextField,
-} from '@mui/material';
-import Image from 'next/image';
-import { useState } from 'react';
-import { reviewPayrollTableData } from './data';
+} from "@mui/material";
+import Image from "next/image";
+import { useState } from "react";
+import { reviewPayrollTableData } from "./data";
 
 const ReviewPayrollTable = () => {
   const [filterAnchorEl, setFilterAnchorEl] =
@@ -295,7 +295,7 @@ const ReviewPayrollTable = () => {
           ].map((item) => (
             <ListItem
               key={item.name}
-              component='button'
+              component="button"
               sx={{
                 "&:hover": { color: "#0035C3" },
               }}

@@ -18,7 +18,7 @@ const data = [
   { item: "Benefits", value: 250000 },
 ];
 
-const CustomTooltip = <T extends { value: number, payload: { item: string } }>({
+const CustomTooltip = <T extends { value: number; payload: { item: string } }>({
   active,
   payload,
 }: {

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import CustomDatePicker from "../../../../../../ui/date-picker";
@@ -19,8 +18,6 @@ const Editor = dynamic(
 );
 
 const CreateJobOfferForm: React.FC = () => {
-
-
   // const [candidateName] = useState("Precious Henry");
   // const [jobTitle] = useState("Front End Developer");
   // const [department] = useState("Engineering");
@@ -46,13 +43,9 @@ const CreateJobOfferForm: React.FC = () => {
     setBenefits(editorState);
   };
 
-
-
   // const handleSubmitClick = () => {
   //   setIsModalOpen(true);
   // };
-
-
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {

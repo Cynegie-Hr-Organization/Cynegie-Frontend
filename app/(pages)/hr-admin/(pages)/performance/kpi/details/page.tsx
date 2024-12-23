@@ -80,7 +80,6 @@ const KpiDetailsPage = () => {
                   <p className="">78%</p>
                 </div>
 
-
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
                     <GoDotFill className=" text-[#FF9900]" />

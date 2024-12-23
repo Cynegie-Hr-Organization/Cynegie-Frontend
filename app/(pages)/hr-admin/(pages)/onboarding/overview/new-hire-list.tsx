@@ -5,26 +5,30 @@ import { PiDotsThreeVerticalBold } from "react-icons/pi";
 import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 
-
-
 const NewHireList = () => {
   return (
-    <CardLayout className='bg-white overflow-x-scroll space-y-8'>
+    <CardLayout className="bg-white overflow-x-scroll space-y-8">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
         <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
           <RiSearchLine className="text-gray-400" />
-          <input type="text" placeholder="Search here..." className="w-full h-9 px-2 outline-none" />
+          <input
+            type="text"
+            placeholder="Search here..."
+            className="w-full h-9 px-2 outline-none"
+          />
         </div>
 
-        <button type="button" className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
+        <button
+          type="button"
+          className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2"
+        >
           <LuListFilter /> Filter
         </button>
       </div>
 
-
-      <div className='-mx-6'>
-        <table className='w-full border-collapse'>
-          <thead className='bg-[#F7F9FC]'>
+      <div className="-mx-6">
+        <table className="w-full border-collapse">
+          <thead className="bg-[#F7F9FC]">
             <tr>
               <th className="px-4 py-3 text-left">
                 <input type="checkbox" />

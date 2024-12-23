@@ -1,5 +1,5 @@
-import { newIndex } from '@/lib/utils';
-import { Close } from '@mui/icons-material';
+import { newIndex } from "@/lib/utils";
+import { Close } from "@mui/icons-material";
 import {
   Dialog,
   DialogContent,
@@ -7,12 +7,12 @@ import {
   MenuItem,
   Select,
   Stack,
-} from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import React from 'react';
-import { Input } from 'rsuite';
-import 'rsuite/dist/rsuite.min.css';
+} from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import React from "react";
+import { Input } from "rsuite";
+import "rsuite/dist/rsuite.min.css";
 
 const AddBenefitModal: React.FC<{
   open: boolean;
@@ -87,7 +87,9 @@ const AddBenefitModal: React.FC<{
                           {item.placeholder}
                         </MenuItem>
                         {item.options?.map((option, index) => (
-                          <MenuItem key={newIndex(index)} value={option}>{option}</MenuItem>
+                          <MenuItem key={newIndex(index)} value={option}>
+                            {option}
+                          </MenuItem>
                         ))}
                       </Select>
                     ) : (
@@ -186,7 +188,9 @@ const AddBenefitModal: React.FC<{
                             {item.placeholder}
                           </MenuItem>
                           {item.options?.map((option, index) => (
-                            <MenuItem key={newIndex(index)} value={option}>{option}</MenuItem>
+                            <MenuItem key={newIndex(index)} value={option}>
+                              {option}
+                            </MenuItem>
                           ))}
                         </Select>
                       ) : (
@@ -244,7 +248,7 @@ const AddBenefitModal: React.FC<{
                       <Input
                         placeholder={item.placeholder}
                         key={newIndex(index)}
-                        style={{ borderRadius: '6px' }}
+                        style={{ borderRadius: "6px" }}
                       />
                     </div>
                   </Grid2>

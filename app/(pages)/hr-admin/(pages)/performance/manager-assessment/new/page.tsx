@@ -1,95 +1,213 @@
-"use client"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 
-import AppButton from "@/app/_components/shared/button"
-import CardLayout from "@/app/_components/shared/cards"
-import { AppDatePicker } from "@/app/_components/shared/date-picker"
-import InputText from "@/app/_components/shared/input-text"
-import { AppSelect } from "@/app/_components/shared/select"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
+import React, { useEffect, useState } from "react";
+import AppButton from "@/app/_components/shared/button";
+import CardLayout from "@/app/_components/shared/cards";
+import { AppDatePicker } from "@/app/_components/shared/date-picker";
+import InputText from "@/app/_components/shared/input-text";
+import { AppSelectWithSearch } from "@/app/_components/shared/select-with-search";
+import useFetchEmployees from "@/utils/usefetchEmployees";
+import { useRouter } from "next/navigation";
+import { getTemplates } from "@/app/api/services/performance/template";
+import { toast } from "react-toastify";
+import { createAssessment } from "@/app/api/services/performance/assessments";
 
-const NewSelfAssessmentPage = () => {
+const SkeletonLoader = () => (
+  <div className="animate-pulse space-y-4">
+    <div className="h-6 bg-gray-300 rounded w-3/4"></div>
+    <div className="h-6 bg-gray-300 rounded w-1/2"></div>
+    <div className="h-6 bg-gray-300 rounded w-full"></div>
+  </div>
+);
+
+const ManagerAssessmentPage = () => {
   const router = useRouter();
 
-  const [formData, setFormData] = useState({
+  const {
+    employees,
+    isFetching: isFetchingEmp,
+    handleSearch: handleSearchEmp,
+  } = useFetchEmployees();
+
+  const [templates, setTemplates] = useState<any[]>([]);
+  const [loadingTemplates, setLoadingTemplates] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [formData, setFormData] = useState<{
+    assessmentName: string;
+    manager: string;
+    employees: string[];
+    dueDate: string;
+    template: string;
+    type: string;
+  }>({
     assessmentName: "",
-    employees: [""],
+    manager: "",
+    employees: [],
     dueDate: "",
     template: "",
-    manager: "",
-  })
+    type: "MANAGER",
+  });
+
+  const validateForm = () => {
+    const { assessmentName, employees, dueDate, template, type } = formData;
+    return (
+      assessmentName && employees.length > 0 && dueDate && template && type
+    );
+  };
+
+  useEffect(() => {
+    const fetchTemplates = async () => {
+      try {
+        const response = await getTemplates();
+        if (response.status === 200) {
+          setTemplates(response.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch templates:", error);
+      } finally {
+        setLoadingTemplates(false);
+      }
+    };
+
+    fetchTemplates();
+  }, []);
+
+  const handleTemplateChange = (selected: string[]) => {
+    if (selected.length > 0) {
+      setFormData({ ...formData, template: selected[0] });
+    } else {
+      setFormData({ ...formData, template: "" });
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) {
+      toast("Please fill out all required fields.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const response = await createAssessment(formData);
+      if (response.status === 200 || response.status === 201) {
+        toast.success("Assessment created successfully!");
+        router.push("/hr-admin/performance/manager-assessment");
+      } else {
+        toast.error("Failed to create assessment. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error creating assessment:", error);
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const previewTemplate = () => {
+    if (!formData.template) {
+      toast.error("Please select a template to preview.");
+      return;
+    }
+    router.push(`/hr-admin/performance/template-preview/${formData.template}`);
+  };
 
   return (
     <div className="space-y-8">
-      <h3 className="text-lg font-semibold">New Assessment</h3>
+      <h1 className="text-lg font-semibold">New Assessment</h1>
 
       <CardLayout bg="bg-white p-4 md:p-6">
         <div className="flex flex-col gap-6">
-          <h3 className="text-lg font-semibold">Manager Assessment</h3>
+          <h2 className="font-semibold">Assessment Details</h2>
 
-          <div className="grid gap-6">
-            <div className="flex flex-col md:flex-row gap-6">
-              <InputText
-                label="Assessment Name"
-                placeholder="Enter Name"
-                value={formData.assessmentName}
-                id="assessment-name"
-                onChange={(e) => setFormData({ ...formData, assessmentName: e.target.value })}
-              />
+          {loadingTemplates || isFetchingEmp ? (
+            <SkeletonLoader />
+          ) : (
+            <div className="grid gap-6">
+              <div className="flex flex-col md:flex-row gap-6">
+                <InputText
+                  label="Assessment Name"
+                  placeholder="Enter Name"
+                  value={formData.assessmentName}
+                  id="assessment-name"
+                  onChange={(e) =>
+                    setFormData({ ...formData, assessmentName: e.target.value })
+                  }
+                />
+                <AppSelectWithSearch
+                  label="Manager"
+                  placeholder="Select Manager"
+                  selectedItems={formData.manager ? [formData.manager] : []}
+                  onChange={(value) =>
+                    setFormData({
+                      ...formData,
+                      manager: value[0],
+                    })
+                  }
+                  listItems={employees.map((emp) => ({
+                    label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
+                    value: emp.id as string,
+                  }))}
+                  isLoading={isFetchingEmp}
+                  onSearch={handleSearchEmp}
+                />
+              </div>
 
-              <AppSelect
-                listItems={[
-                  { label: "Manager 1", value: "manager-1" },
-                  { label: "Manager 2", value: "manager-2" },
-                  { label: "Manager 3", value: "manager-3" },
-                ]}
-                label="Manager"
-                placeholder="Select Manager"
-                onChange={(value) => setFormData({ ...formData, manager: value })}
-              />
-            </div>
+              <div className="flex flex-col md:flex-row gap-6">
+                <AppSelectWithSearch
+                  label="Assign Employees"
+                  placeholder="Assign Employees"
+                  selectedItems={formData.employees}
+                  onChange={(value) =>
+                    setFormData({
+                      ...formData,
+                      employees: [...new Set(value)],
+                    })
+                  }
+                  listItems={employees.map((emp) => ({
+                    label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
+                    value: emp.id as string,
+                  }))}
+                  isLoading={isFetchingEmp}
+                  onSearch={handleSearchEmp}
+                />
 
-            <div className="flex flex-col md:flex-row gap-6">
-              <AppSelect
-                listItems={[
-                  { label: "Employee 1", value: "employee-1" },
-                  { label: "Employee 2", value: "employee-2" },
-                  { label: "Employee 3", value: "employee-3" },
-                ]}
-                label="Employees"
-                placeholder="Select Employees"
-                onChange={(value) => setFormData({ ...formData, employees: [...formData.employees, value] })}
-              />
+                <AppDatePicker
+                  label="Due Date"
+                  placeholder="Select Date"
+                  selectedDate={
+                    formData.dueDate ? new Date(formData.dueDate) : new Date()
+                  }
+                  setSelectedDate={(value) =>
+                    setFormData({
+                      ...formData,
+                      dueDate: value?.toISOString() ?? "",
+                    })
+                  }
+                />
+              </div>
 
-              <AppDatePicker
-                label="Due Date"
-                placeholder="Select Date"
-                selectedDate={formData.dueDate ? new Date(formData.dueDate) : new Date()}
-                setSelectedDate={(value) => setFormData({ ...formData, dueDate: value?.toISOString() ?? "" })}
-              />
-            </div>
-
-            <div className="">
-              <AppSelect
-                listItems={[
-                  { label: "Template 1", value: "template-1" },
-                  { label: "Template 2", value: "template-2" },
-                  { label: "Template 3", value: "template-3" },
-                ]}
+              <AppSelectWithSearch
                 label="Template"
                 placeholder="Select Template"
-                onChange={(value) => setFormData({ ...formData, template: value })}
-              />
-              <AppButton
-                label="Preview"
-                className="font-bold py-0 px-0 w-max md:w-max disabled:text-gray-500 text-primary"
-                onClick={() => { router.push("/hr-admin/performance/self-assessment/template-preview") }}
+                selectedItems={formData.template ? [formData.template] : []}
+                onChange={handleTemplateChange}
+                listItems={templates.map((template) => ({
+                  label: template.templateName,
+                  value: template.id,
+                }))}
+                isLoading={loadingTemplates}
+                onSearch={() => {}}
               />
             </div>
+          )}
 
-          </div>
-
-
+          <AppButton
+            label="Preview"
+            className="font-bold py-0 px-0 w-max md:w-max disabled:text-gray-500 text-primary"
+            onClick={previewTemplate}
+          />
         </div>
       </CardLayout>
 
@@ -97,16 +215,18 @@ const NewSelfAssessmentPage = () => {
         <AppButton
           label="Save & Continue Later"
           className="btn-secondary"
-          onClick={() => { }}
+          onClick={() => {}}
         />
         <AppButton
           label="Submit"
-          className="disabled:btn-inactive btn-primary"
-          onClick={() => { router.push("/hr-admin/performance/manager-assessment") }}
+          className={`disabled:btn-inactive btn-primary ${
+            isSubmitting ? "opacity-50 pointer-events-none" : ""
+          }`}
+          onClick={handleSubmit}
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default NewSelfAssessmentPage
+export default ManagerAssessmentPage;

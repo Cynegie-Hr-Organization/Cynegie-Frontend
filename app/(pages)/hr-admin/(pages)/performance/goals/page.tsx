@@ -1,14 +1,14 @@
-'use client'
+"use client";
 
-import {LuPlusCircle, LuTrash } from "react-icons/lu"
-import { IoIosArrowDown } from "react-icons/io"
-import AppButton from "../../../../../_components/shared/button"
-import ReviewTable from "./table"
-import { DrawerDialog } from "@/components/drawer/modal"
-import { DialogTitle } from "@/components/ui/dialog"
-import { AppDropdownMenu } from "../../../../../_components/shared/dropdown-menu"
-import { useRouter } from "next/navigation"
-import { DeleteSvg } from "@/app/_components/icons/delete"
+import { LuPlusCircle, LuTrash } from "react-icons/lu";
+import { IoIosArrowDown } from "react-icons/io";
+import AppButton from "../../../../../_components/shared/button";
+import ReviewTable from "./table";
+import { DrawerDialog } from "@/components/drawer/modal";
+import { DialogTitle } from "@/components/ui/dialog";
+import { AppDropdownMenu } from "../../../../../_components/shared/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { DeleteSvg } from "@/app/_components/icons/delete";
 
 const PerformanceGoalsPage = () => {
   return (
@@ -16,8 +16,8 @@ const PerformanceGoalsPage = () => {
       <PageHeader />
       <ReviewTable />
     </div>
-  )
-}
+  );
+};
 
 const PageHeader = () => {
   const router = useRouter();
@@ -25,7 +25,9 @@ const PageHeader = () => {
     <div className="flex items-center justify-between gap-y-4">
       <div>
         <h3 className="text-xl font-bold text-black">Goals Management </h3>
-        <p className="text-sm text-gray-500">Manage and track goals in your organization</p>
+        <p className="text-sm text-gray-500">
+          Manage and track goals in your organization
+        </p>
       </div>
 
       <div className="flex items-center gap-x-2">
@@ -55,14 +57,23 @@ const PageHeader = () => {
               </div>
 
               <div className="flex items-center gap-x-2 cursor-pointer hover:bg-gray-100 rounded-lg px-2 py-1">
-                <button onClick={() => router.push("/hr-admin/performance/goals/goal-detail")} className="">View Details</button>
+                <button
+                  onClick={() =>
+                    router.push("/hr-admin/performance/goals/goal-detail")
+                  }
+                  className=""
+                >
+                  View Details
+                </button>
               </div>
 
-              <DeleteModal trigger={
-                <div className="flex items-center gap-x-2 cursor-pointer hover:bg-gray-100 rounded-lg px-2 py-1 text-red-500">
-                  <span>Delete Goal</span>
-                </div>
-              } />
+              <DeleteModal
+                trigger={
+                  <div className="flex items-center gap-x-2 cursor-pointer hover:bg-gray-100 rounded-lg px-2 py-1 text-red-500">
+                    <span>Delete Goal</span>
+                  </div>
+                }
+              />
             </div>
           }
         />
@@ -75,36 +86,44 @@ const PageHeader = () => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
 const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
     <DrawerDialog
       trigger={trigger}
-      header={<DialogTitle className="text-lg font-bold text-center">
-        <span className="flex flex-col items-center justify-center gap-y-6">
-          <DeleteSvg />
-          <span className="flex flex-col items-center justify-center gap-y-2">
-            <span>Are you sure you want to delete this goal?</span>
-            <span className="text-sm text-gray-400 max-w-[367px] text-center">
-              Deleting this goal will remove all associated reviews, feedback, and data permanently
+      header={
+        <DialogTitle className="text-lg font-bold text-center">
+          <span className="flex flex-col items-center justify-center gap-y-6">
+            <DeleteSvg />
+            <span className="flex flex-col items-center justify-center gap-y-2">
+              <span>Are you sure you want to delete this goal?</span>
+              <span className="text-sm text-gray-400 max-w-[367px] text-center">
+                Deleting this goal will remove all associated reviews, feedback,
+                and data permanently
+              </span>
             </span>
           </span>
-        </span>
-      </DialogTitle>}
+        </DialogTitle>
+      }
       footer={
         <div className="flex flex-col md:flex-row items-center justify-center gap-2">
-          <AppButton label="Cancel" className="bg-white border-2 border-gray-400 text-gray-500 md:w-[150px] w-full" />
-          <AppButton label="Delete Goal" className="bg-red-700 text-white md:w-max w-full border border-red-700" leftIcon={<LuTrash />} />
+          <AppButton
+            label="Cancel"
+            className="bg-white border-2 border-gray-400 text-gray-500 md:w-[150px] w-full"
+          />
+          <AppButton
+            label="Delete Goal"
+            className="bg-red-700 text-white md:w-max w-full border border-red-700"
+            leftIcon={<LuTrash />}
+          />
         </div>
       }
     >
       <></>
     </DrawerDialog>
-  )
-}
-
-
+  );
+};
 
 export default PerformanceGoalsPage;

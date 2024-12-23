@@ -34,6 +34,7 @@ const StatusPill: React.FC<{
         textWrap: 'nowrap',
         gap: '5px',
         alignItems: 'center',
+        textTransform: 'capitalize',
       }}
     >
       {text}

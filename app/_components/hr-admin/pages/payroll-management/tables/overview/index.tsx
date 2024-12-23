@@ -24,12 +24,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from '@mui/material';
-import Image from 'next/image';
-import { useState, ChangeEvent } from 'react';
-import { payrollOverviewTableData } from './data';
-import { useRouter } from 'next/navigation';
-import { Input, InputGroup } from 'rsuite';
+} from "@mui/material";
+import Image from "next/image";
+import { useState, ChangeEvent } from "react";
+import { payrollOverviewTableData } from "./data";
+import { useRouter } from "next/navigation";
+import { Input, InputGroup } from "rsuite";
 
 const PayrollTable = () => {
   const router = useRouter();

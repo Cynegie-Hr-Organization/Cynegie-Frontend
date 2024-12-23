@@ -281,7 +281,7 @@ const HrAdminPayrollOverviewPage = () => {
                   ranges={[]}
                   format="dd MMM yyyy"
                   onChange={(e) => {
-                    if (e) setDateRange({ startDate: e[0], endDate: e[1] })
+                    if (e) setDateRange({ startDate: e[0], endDate: e[1] });
                   }}
                   caretAs={CalendarIcon}
                 />

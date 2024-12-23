@@ -95,7 +95,7 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
         </select>
       </div>
 
-      <h3 className='xl:hidden font-semibold text-lg'>Overview</h3>
+      <h3 className="xl:hidden font-semibold text-lg">Overview</h3>
 
       <div className='z-50 flex items-center gap-5 xl:hidden'>
         <IoIosNotificationsOutline

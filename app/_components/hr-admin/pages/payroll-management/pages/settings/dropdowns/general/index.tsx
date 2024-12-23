@@ -1,7 +1,7 @@
-import { newIndex } from '@/lib/utils';
-import { Grid2, MenuItem, Select } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { newIndex } from "@/lib/utils";
+import { Grid2, MenuItem, Select } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const GeneralDropdownSettings = () => {
   return (
@@ -21,7 +21,7 @@ const GeneralDropdownSettings = () => {
         { label: "Pay Date", placeholder: "Select Date" },
       ].map((item, index) => (
         <Grid2 key={newIndex(index)} size={{ xs: 12, md: 6 }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             <div
               style={{
                 color: "#101928",
@@ -44,7 +44,9 @@ const GeneralDropdownSettings = () => {
                   {item.options[0]}
                 </MenuItem>
                 {item.options?.slice(1)?.map((option, index) => (
-                  <MenuItem key={newIndex(index)} value={option}>{option}</MenuItem>
+                  <MenuItem key={newIndex(index)} value={option}>
+                    {option}
+                  </MenuItem>
                 ))}
               </Select>
             ) : (

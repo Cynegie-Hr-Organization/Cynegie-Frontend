@@ -1,5 +1,4 @@
 "use client";
-
 import Appbutton from "@/app/_components/shared/buttons";
 import { Stack, Box, Grid2 } from "@mui/material";
 import Image from "next/image";

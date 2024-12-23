@@ -19,10 +19,10 @@ import {
   TableHead,
   TableRow,
   TextField,
-} from '@mui/material';
-import Image from 'next/image';
-import { useState, ChangeEvent } from 'react';
-import enrolledEmployeesTableData from './data';
+} from "@mui/material";
+import Image from "next/image";
+import { useState, ChangeEvent } from "react";
+import enrolledEmployeesTableData from "./data";
 // import { selectEmployeesForPayrollTableData } from './data';
 
 const EnrolledEmployeesTable = () => {

@@ -6,13 +6,13 @@ const ManagerAssessmentPage = () => {
     <div className="flex flex-col gap-6 py-6">
       <PageHeader
         title="Manager Assessment"
-        description='Employess requiring assessment'
+        description="Employess requiring assessment"
         buttonLabel="New Assessment"
         to={"/hr-admin/performance/manager-assessment/new"}
       />
       <ManagerAssessmentTable />
     </div>
-  )
+  );
 };
 
 export default ManagerAssessmentPage;
