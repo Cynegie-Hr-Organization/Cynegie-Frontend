@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import React from 'react';
+import Image from "next/image";
+import React from "react";
 
 type IconWithDataProps = {
   icon: string;
@@ -32,9 +32,9 @@ export const IconWithAction: React.FC<ItemWithActionProps> = ({
 
 const IconWithData: React.FC<IconWithDataProps> = ({ icon, data }) => {
   return (
-    <div className='flex items-center gap-1'>
+    <div className="flex items-center gap-1">
       <div>
-        <Image src={icon} alt='Message' width={16} height={16} />
+        <Image src={icon} alt="Message" width={16} height={16} />
       </div>
       <div>{data}</div>
     </div>

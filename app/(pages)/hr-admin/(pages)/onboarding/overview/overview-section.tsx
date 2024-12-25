@@ -8,13 +8,8 @@ import { PiChartLineUp } from "react-icons/pi";
 import { FaCheck } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
-
-
-
-
-
 const OverViewSection = () => {
-const router = useRouter();
+  const router = useRouter();
 
   const overviewContents = [
     {
@@ -42,7 +37,6 @@ const router = useRouter();
       icon: <FaCheck />,
     },
   ];
-
 
   return (
     <Stack gap={3}>

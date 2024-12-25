@@ -31,23 +31,22 @@ const credentialsProviderOptions = {
     const { email, password } = credentials || {};
     if (!email || !password) return null;
 
+    console.log("Credentials received:", { email, password });
+
     try {
       const json = await request("POST", `${authUrl}`, {
         data: { email, password },
       });
 
-      // Log the response for debugging
-      console.log("Login response:", json);
-
-      if (!json || json.error || !json.data || !json.data.data) {
+      if (!json || json.error || !json.data || !json.data.user) {
         console.error(
           "Invalid credentials or server error:",
-          json?.error || "No response data",
+          json?.error || "No user data in response",
         );
-        throw new Error("Invalid credentials or server error");
+        return null;
       }
 
-      const { accessToken, refreshToken, user } = json.data.data;
+      const { accessToken, refreshToken, user } = json.data;
 
       if (!user || !user.id) {
         console.error("User data is missing or incomplete:", user);

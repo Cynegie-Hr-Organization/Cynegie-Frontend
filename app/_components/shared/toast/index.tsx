@@ -1,5 +1,5 @@
-import { color } from '@/constants';
-import { Close } from '@mui/icons-material';
+import { color } from "@/constants";
+import { Close } from "@mui/icons-material";
 
 type ToastProps = {
   open: boolean;
@@ -16,9 +16,9 @@ const Toast: React.FC<ToastProps> = ({ open, onClose, status, message }) => {
           zIndex: 10000,
           borderLeft: `8px solid ${color.success.dark}`,
         }}
-        className='common-card !rounded-lg absolute top-0 right-0 md:top-20 md:right-40'
+        className="common-card !rounded-lg absolute top-0 right-0 md:top-20 md:right-40"
       >
-        <div className='flex gap-2'>
+        <div className="flex gap-2">
           <div>
             <h6>{status}</h6>
             <p>{message}</p>
@@ -26,7 +26,7 @@ const Toast: React.FC<ToastProps> = ({ open, onClose, status, message }) => {
           <div>
             <Close
               onClick={onClose}
-              className='cursor-pointer'
+              className="cursor-pointer"
               sx={{ width: 20, height: 20 }}
             />
           </div>

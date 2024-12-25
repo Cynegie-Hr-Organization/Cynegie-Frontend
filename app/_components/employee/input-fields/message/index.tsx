@@ -1,8 +1,8 @@
-import React from 'react';
-import { InputFieldProps } from '../../modal/types';
-import { TextField } from '@mui/material';
+import React from "react";
+import { InputFieldProps } from "../../modal/types";
+import { TextField } from "@mui/material";
 
-const MessageField: React.FC<Omit<InputFieldProps, 'type'>> = ({
+const MessageField: React.FC<Omit<InputFieldProps, "type">> = ({
   placeholder,
   value,
   setValue,

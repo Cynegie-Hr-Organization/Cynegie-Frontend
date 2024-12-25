@@ -1,5 +1,5 @@
-import { GridLayout } from '@/utils/grid-layout';
-import { StatusMap } from '../../table/types';
+import { GridLayout } from "@/utils/grid-layout";
+import { StatusMap } from "../../table/types";
 
 export type DetailGroupProps = {
   details?: SingleDetail[];
@@ -12,6 +12,6 @@ export type SingleDetail = {
   name: string;
   value: string;
   spaceBetweenLayout?: boolean;
-  type?: 'status';
+  type?: "status";
   statusMap?: StatusMap;
 };

@@ -1,8 +1,8 @@
-import { Stack } from '@mui/material';
-import Value from './value';
-import CardLabel from './label';
-import React from 'react';
-import { CardProps } from '../../types';
+import { Stack } from "@mui/material";
+import Value from "./value";
+import CardLabel from "./label";
+import React from "react";
+import { CardProps } from "../../types";
 
 const Card: React.FC<CardProps> = (props) => {
   const {
@@ -21,8 +21,8 @@ const Card: React.FC<CardProps> = (props) => {
   } = props;
   return (
     <Stack
-      flexDirection={valueBelow ? 'column-reverse' : 'column'}
-      className=' common-card'
+      flexDirection={valueBelow ? "column-reverse" : "column"}
+      className=" common-card"
       gap={2}
     >
       <Value

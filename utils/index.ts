@@ -1,5 +1,5 @@
-import { color } from '@/constants';
-import { ColorVariant } from '@/types';
+import { color } from "@/constants";
+import { ColorVariant } from "@/types";
 
 export function getMonthRange(monthIndex: number, year: number): string {
   const monthNames = [
@@ -31,42 +31,42 @@ export function getMonthRange(monthIndex: number, year: number): string {
 
 export const getColorVariant = (variant?: ColorVariant) => {
   switch (variant) {
-    case 'success':
+    case "success":
       return {
         fill: color.success.dark,
         backgroundColor: color.success.light,
       };
-    case 'info':
+    case "info":
       return {
         fill: color.info.dark,
         backgroundColor: color.info.light,
       };
-    case 'warning':
+    case "warning":
       return {
         fill: color.warning.dark,
         backgroundColor: color.warning.light,
       };
-    case 'error':
+    case "error":
       return {
         fill: color.error.dark,
         backgroundColor: color.error.light,
       };
-    case 'grey':
+    case "grey":
       return {
         fill: color.grey.dark,
         backgroundColor: color.grey.light,
       };
     default:
       return {
-        fill: '',
-        backgroundColor: '',
+        fill: "",
+        backgroundColor: "",
       };
   }
 };
 
 export function formatFileSize(bytes: number): string {
-  const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-  if (bytes === 0) return '0 B';
+  const units = ["B", "KB", "MB", "GB", "TB", "PB"];
+  if (bytes === 0) return "0 B";
 
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   const size = (bytes / Math.pow(1024, i)).toFixed(2);
@@ -76,5 +76,5 @@ export function formatFileSize(bytes: number): string {
 
 export function addNavItemEllipsis(text: string) {
   const limit = 20;
-  return text.length > limit ? `${text.slice(0, limit) + '...'}` : text;
+  return text.length > limit ? `${text.slice(0, limit) + "..."}` : text;
 }

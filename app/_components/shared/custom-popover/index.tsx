@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Popover as MuiPopover } from '@mui/material';
-import { PopoverProps, PopoverType } from './types';
-import MoreOptionsPopoverContent from './content/more-options';
-import FilterPopoverContent from './content/filter';
+import React, { useState } from "react";
+import { Popover as MuiPopover } from "@mui/material";
+import { PopoverProps, PopoverType } from "./types";
+import MoreOptionsPopoverContent from "./content/more-options";
+import FilterPopoverContent from "./content/filter";
 
 const Popover: React.FC<PopoverProps> = (props) => {
   const { type, getTriggerButtonClick, triggerButton, moreOptions, filters } =
@@ -20,7 +20,7 @@ const Popover: React.FC<PopoverProps> = (props) => {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? "simple-popover" : undefined;
 
   return (
     <>
@@ -33,12 +33,12 @@ const Popover: React.FC<PopoverProps> = (props) => {
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
+          vertical: "bottom",
+          horizontal: "left",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
+          vertical: "top",
+          horizontal: "left",
         }}
       >
         {type === PopoverType.moreOptions ? (

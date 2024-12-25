@@ -1,7 +1,7 @@
-import { Stack, SxProps } from '@mui/material';
-import Name from './name';
-import ItemCompletionDate from './completion-date';
-import React from 'react';
+import { Stack, SxProps } from "@mui/material";
+import Name from "./name";
+import ItemCompletionDate from "./completion-date";
+import React from "react";
 
 const SummaryItem: React.FC<{
   name: string;

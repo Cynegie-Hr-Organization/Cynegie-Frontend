@@ -1,22 +1,85 @@
-import React from "react";
+import { AppSelect } from "@/app/_components/shared/select";
+import { candidateMoveStage } from "@/app/api/services/candidate";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 
-interface MoveStageModalProps {
+interface MoveStageModalProps<
+  T extends { id: string; stage: string; firstName: string; lastName: string },
+> {
   isOpen: boolean;
+  rowData: T | null;
   onClose: () => void;
+  refetch: () => void;
 }
 
-const MoveStageModal: React.FC<MoveStageModalProps> = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
+const MoveStageModal = <
+  T extends { id: string; stage: string; firstName: string; lastName: string },
+>({
+  isOpen,
+  rowData,
+  onClose,
+  refetch,
+}: MoveStageModalProps<T>) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [nextStage, setNextStage] = useState<string>(""); // Single value for next stage
+  const [notes, setNotes] = useState<string>("");
+
+  const stageOptions = [
+    { label: "Applied", value: "Applied" },
+    { label: "Screened", value: "Screened" },
+    { label: "Interviewed", value: "Interviewed" },
+    { label: "Hired", value: "Hired" },
+  ];
+
+  const handleMoveStage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!rowData || !nextStage) {
+      setError("Next stage is required.");
+      return;
+    }
+
+    if (nextStage === rowData.stage) {
+      setError("Next stage must be different from the current stage.");
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    const payload = {
+      stage: nextStage, // Use the selected next stage
+    };
+
+    try {
+      const response = await candidateMoveStage(rowData.id, payload);
+      if (response.status === 200) {
+        toast.success("Candidate successfully moved to the next stage.");
+        refetch();
+        onClose();
+      } else {
+        setError(response.message || "Failed to move candidate.");
+        toast.error(response.message || "Failed to move candidate.");
+      }
+    } catch (err) {
+      setError("An error occurred while moving the candidate.");
+      toast.error("Failed to move the candidate to the next stage.");
+      console.error("Error:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (!isOpen || !rowData) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
       <div className="bg-white w-[90%] max-w-md md:max-w-3xl p-6 rounded-lg shadow-lg relative">
-        {/* Modal Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-gray-900">Move Stage</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 bg-gray-100 rounded-full p-1 hover:text-gray-800"
+            className="text-gray-500 bg-gray-100 rounded-full p-1 hover:text-gray-800 hover:bg-gray-200 focus:ring-2 focus:ring-blue-300"
             aria-label="Close"
           >
             <svg
@@ -36,13 +99,11 @@ const MoveStageModal: React.FC<MoveStageModalProps> = ({ isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* Modal Content */}
         <p className="text-sm text-gray-600 mb-6">
-          Move candidate to the next stage
+          Move the candidate to the next stage
         </p>
 
-        {/* Form Fields */}
-        <div className="space-y-4">
+        <form onSubmit={handleMoveStage} className="space-y-4">
           <div>
             <label
               htmlFor="candidateName"
@@ -53,9 +114,9 @@ const MoveStageModal: React.FC<MoveStageModalProps> = ({ isOpen, onClose }) => {
             <input
               id="candidateName"
               type="text"
-              value="Precious Henry"
+              value={`${rowData?.firstName || "N/A"} ${rowData?.lastName || ""}`.trim()}
               readOnly
-              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-300"
+              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 focus:outline-none"
             />
           </div>
 
@@ -70,24 +131,19 @@ const MoveStageModal: React.FC<MoveStageModalProps> = ({ isOpen, onClose }) => {
               <input
                 id="currentStage"
                 type="text"
-                value="Screening"
+                value={rowData.stage}
                 readOnly
-                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-300"
+                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 focus:outline-none"
               />
             </div>
 
             <div>
-              <label
-                htmlFor="nextStage"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Next Stage <span className="text-red-500">*</span>
-              </label>
-              <input
-                id="nextStage"
-                type="text"
-                placeholder="Enter next stage"
-                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-300"
+              <AppSelect
+                label="Next Stage"
+                requiredField
+                listItems={stageOptions}
+                onChange={setNextStage}
+                placeholder="Select next stage"
               />
             </div>
           </div>
@@ -101,22 +157,26 @@ const MoveStageModal: React.FC<MoveStageModalProps> = ({ isOpen, onClose }) => {
             </label>
             <textarea
               id="notes"
-              placeholder="Approval Description"
-              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-300"
+              placeholder="Add additional notes (optional)"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
               rows={4}
             ></textarea>
           </div>
-        </div>
 
-        {/* Submit Button */}
-        <div className="mt-6">
-          <button
-            onClick={onClose}
-            className="w-full px-4 py-2 text-white bg-[#0035C3] rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-300"
-          >
-            Move to Next Stage
-          </button>
-        </div>
+          <div className="mt-6">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full px-4 py-2 text-white bg-[#0035C3] rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 disabled:bg-gray-400"
+            >
+              {isLoading ? "Processing..." : "Move to Next Stage"}
+            </button>
+          </div>
+        </form>
+
+        {error && <p className="text-sm text-red-500 mt-4">{error}</p>}
       </div>
     </div>
   );

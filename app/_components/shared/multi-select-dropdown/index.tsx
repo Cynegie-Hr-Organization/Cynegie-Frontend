@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef } from "react";
 import {
   default as ReactSelect,
   components,
@@ -8,7 +8,7 @@ import {
   StylesConfig,
   InputProps,
   OptionProps,
-} from 'react-select';
+} from "react-select";
 
 export type Option = {
   value: number | string;
@@ -43,7 +43,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
 
   const Option = <T extends Option>(optionProps: OptionProps<T, true>) => (
     <components.Option {...optionProps}>
-      {optionProps.data.value === '*' &&
+      {optionProps.data.value === "*" &&
       !isAllSelected.current &&
       filteredSelectedOptions?.length > 0 ? (
         <input
@@ -75,7 +75,7 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
           {inputProps.children}
         </components.Input>
       ) : (
-        <div style={{ border: '1px dotted gray' }}>
+        <div style={{ border: "1px dotted gray" }}>
           <components.Input
             autoFocus={inputProps.selectProps.menuIsOpen}
             {...inputProps}
@@ -88,9 +88,9 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
   );
 
   const customFilterOption = (option: Option, inputValue: string) =>
-    (option.value !== '*' &&
+    (option.value !== "*" &&
       option.label.toLowerCase().includes(inputValue.toLowerCase())) ||
-    (option.value === '*' && filteredOptions?.length > 0);
+    (option.value === "*" && filteredOptions?.length > 0);
 
   const onInputChange = (
     inputValue: string,
@@ -164,11 +164,11 @@ export const MultiSelect = <T extends Option>(props: MultiSelectProps<T>) => {
           isSelected && !isFocused
             ? "transparent"
             : isFocused && !isSelected
-            ? styles.backgroundColor
-            : isFocused && isSelected
-            ? '#DEEBFF'
-            : 'transparent',
-        color: isSelected ? 'inherit' : 'transparent',
+              ? styles.backgroundColor
+              : isFocused && isSelected
+                ? "#DEEBFF"
+                : "transparent",
+        color: isSelected ? "inherit" : "transparent",
       };
     },
     menu: (def) => ({ ...def, zIndex: 9999 }),

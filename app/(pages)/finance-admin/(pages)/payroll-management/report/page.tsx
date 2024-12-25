@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import AppButton from "@/app/_components/shared/button";
 import PayrollReportTable from "./table";
@@ -13,7 +13,7 @@ const PayrollReport = () => {
 
       <PayrollReportTable />
     </div>
-  )
-}
+  );
+};
 
 export default PayrollReport;

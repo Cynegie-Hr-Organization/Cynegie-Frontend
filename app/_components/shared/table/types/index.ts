@@ -1,4 +1,4 @@
-import { ColorVariant } from '@/types';
+import { ColorVariant } from "@/types";
 
 export type TableProps = {
   title?: string;
@@ -37,12 +37,12 @@ export type TableAction = {
 };
 
 export enum FieldType {
-  text = 'text',
-  link = 'link',
-  progress = 'progress',
-  status = 'status',
-  attendanceStatus = 'attendance-status',
-  nextLesson = 'lesson',
+  text = "text",
+  link = "link",
+  progress = "progress",
+  status = "status",
+  attendanceStatus = "attendance-status",
+  nextLesson = "lesson",
 }
 
 export type TablePaginationProps = {

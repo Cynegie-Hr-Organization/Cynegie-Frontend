@@ -26,7 +26,7 @@ const ManagerAssessmentTable = () => {
       const response = await getAssessments(
         1,
         10,
-        "asc",
+        "desc",
         "MANAGER",
         search,
         undefined,

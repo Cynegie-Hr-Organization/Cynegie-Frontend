@@ -1,4 +1,14 @@
-const AppRadio = ({ label, id, checked, onChange }: { label: string, id: string, checked: boolean, onChange: (value: boolean) => void }) => {
+const AppRadio = ({
+  label,
+  id,
+  checked,
+  onChange,
+}: {
+  label: string;
+  id: string;
+  checked: boolean;
+  onChange: (value: boolean) => void;
+}) => {
   return (
     <div className="flex items-center gap-x-3 text-sm text-gray-500 cursor-pointer capitalize">
       <input
@@ -10,17 +20,32 @@ const AppRadio = ({ label, id, checked, onChange }: { label: string, id: string,
       />
       <label htmlFor={id}>{label}</label>
     </div>
-  )
-}
+  );
+};
 
-
-export const AppCheckbox = ({ label, id, checked, onChange }: { label: string, id: string, checked: boolean, onChange: (value: boolean) => void }) => {
+export const AppCheckbox = ({
+  label,
+  id,
+  checked,
+  onChange,
+}: {
+  label: string;
+  id: string;
+  checked: boolean;
+  onChange: (value: boolean) => void;
+}) => {
   return (
     <div className="flex items-center gap-x-3 text-sm text-gray-500 cursor-pointer capitalize">
-      <input type="checkbox" name="feedback-type" id={id} onChange={(e) => onChange(e.target.checked)} checked={checked} />
+      <input
+        type="checkbox"
+        name="feedback-type"
+        id={id}
+        onChange={(e) => onChange(e.target.checked)}
+        checked={checked}
+      />
       <label htmlFor={id}>{label}</label>
     </div>
-  )
-}
+  );
+};
 
 export default AppRadio;

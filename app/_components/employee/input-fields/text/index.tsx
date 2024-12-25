@@ -1,14 +1,14 @@
-import { TextField as MuiTextField } from '@mui/material';
-import { InputFieldProps } from '../../modal/types';
+import { TextField as MuiTextField } from "@mui/material";
+import { InputFieldProps } from "../../modal/types";
 
 const textFieldStyle = {
-  '& .MuiInputBase-root': {
-    height: '45px',
-    borderRadius: '8px',
+  "& .MuiInputBase-root": {
+    height: "45px",
+    borderRadius: "8px",
   },
 };
 
-const TextField: React.FC<Omit<InputFieldProps, 'type'>> = ({
+const TextField: React.FC<Omit<InputFieldProps, "type">> = ({
   placeholder,
   value,
   setValue,

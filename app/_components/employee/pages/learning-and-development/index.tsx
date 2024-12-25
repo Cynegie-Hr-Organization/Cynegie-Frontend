@@ -1,15 +1,15 @@
-'use client';
-import { Grid2, Stack } from '@mui/material';
-import SummaryCards from './summary-cards';
-import SummaryOfCompletedTraining from './summary-of-completed-training';
-import Table from '@/app/_components/shared/table';
-import useMyCoursesTable from './hooks/table/useMyCoursesTable';
-import Page from '@/app/_components/shared/page';
+"use client";
+import { Grid2, Stack } from "@mui/material";
+import SummaryCards from "./summary-cards";
+import SummaryOfCompletedTraining from "./summary-of-completed-training";
+import Table from "@/app/_components/shared/table";
+import useMyCoursesTable from "./hooks/table/useMyCoursesTable";
+import Page from "@/app/_components/shared/page";
 
 const EmployeeLearningAndDevelopment = () => {
   const { myCourseTableData } = useMyCoursesTable();
   return (
-    <Page title='Learning and Development'>
+    <Page title="Learning and Development">
       <Grid2 container spacing={3}>
         {[<SummaryCards key={0} />, <SummaryOfCompletedTraining key={1} />].map(
           (component, index) => (
@@ -23,7 +23,7 @@ const EmployeeLearningAndDevelopment = () => {
             >
               {component}
             </Grid2>
-          )
+          ),
         )}
       </Grid2>
       <Stack gap={2}>

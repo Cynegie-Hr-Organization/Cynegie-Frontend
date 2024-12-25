@@ -1,12 +1,12 @@
 const leaveBalanceLegendData = [
   {
-    color: '#0035C3',
-    label: 'Total Leave Days',
+    color: "#0035C3",
+    label: "Total Leave Days",
     value: 15,
   },
   {
-    color: '#099137',
-    label: 'Leave Days Taken',
+    color: "#099137",
+    label: "Leave Days Taken",
     value: 10,
   },
 ];

@@ -1,5 +1,5 @@
-import StatusPill from '@/app/_components/shared/pills/status';
-import { APRStatusMap } from '@/constants';
+import StatusPill from "@/app/_components/shared/pills/status";
+import { APRStatusMap } from "@/constants";
 
 const TimeOffRequest: React.FC<{
   dotColor: string;
@@ -8,21 +8,21 @@ const TimeOffRequest: React.FC<{
   status: string;
 }> = ({ dotColor, date, type, status }) => {
   return (
-    <div className='flex items-center flex-wrap'>
+    <div className="flex items-center flex-wrap">
       <div
         style={{
-          width: '15px',
-          height: '15px',
-          borderRadius: '50%',
+          width: "15px",
+          height: "15px",
+          borderRadius: "50%",
           backgroundColor: dotColor,
-          marginRight: '10px',
+          marginRight: "10px",
         }}
       ></div>
-      <div className='flex-grow'>
+      <div className="flex-grow">
         <span
-          style={{ fontWeight: 600, fontSize: '14px', color: '#1A1919' }}
-        >{`${date}`}</span>{' '}
-        <span style={{ fontWeight: 400, fontSize: '10px', color: '#1A1919' }}>
+          style={{ fontWeight: 600, fontSize: "14px", color: "#1A1919" }}
+        >{`${date}`}</span>{" "}
+        <span style={{ fontWeight: 400, fontSize: "10px", color: "#1A1919" }}>
           {`(${type})`}
         </span>
       </div>

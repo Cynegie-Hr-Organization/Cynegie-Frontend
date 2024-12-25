@@ -1,8 +1,8 @@
-import React from 'react';
-import { FilterPopoverContentProps } from '../../types';
-import { MenuItem, Select, Stack } from '@mui/material';
-import Button from '../../../button-group/button';
-import { ButtonType } from '@/app/_components/shared/page/heading/types';
+import React from "react";
+import { FilterPopoverContentProps } from "../../types";
+import { MenuItem, Select, Stack } from "@mui/material";
+import Button from "../../../button-group/button";
+import { ButtonType } from "@/app/_components/shared/page/heading/types";
 
 const FilterPopoverContent: React.FC<FilterPopoverContentProps> = (props) => {
   const { filters } = props;
@@ -15,15 +15,15 @@ const FilterPopoverContent: React.FC<FilterPopoverContentProps> = (props) => {
             <div
               style={{
                 fontWeight: 400,
-                fontSize: '12px',
-                color: '#303030',
+                fontSize: "12px",
+                color: "#303030",
               }}
             >
               {filter.name}
             </div>
             <Select
               defaultValue={filter.items[0]}
-              sx={{ height: '40px', borderRadius: '5px', width: '200px' }}
+              sx={{ height: "40px", borderRadius: "5px", width: "200px" }}
             >
               {filter.items.map((item) => (
                 <MenuItem key={item} value={item}>
@@ -34,9 +34,9 @@ const FilterPopoverContent: React.FC<FilterPopoverContentProps> = (props) => {
           </Stack>
         ))}
       </Stack>
-      <Stack direction='row' justifyContent='space-between'>
-        <Button text='Reset' />
-        <Button type={ButtonType.contained} text='Filter' />
+      <Stack direction="row" justifyContent="space-between">
+        <Button text="Reset" />
+        <Button type={ButtonType.contained} text="Filter" />
       </Stack>
     </Stack>
   );

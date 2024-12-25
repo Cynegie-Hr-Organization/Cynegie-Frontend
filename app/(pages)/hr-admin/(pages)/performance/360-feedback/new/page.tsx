@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import AppButton from "@/app/_components/shared/button";
 import CardLayout from "@/app/_components/shared/cards";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
+import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import InputText from "@/app/_components/shared/input-text";
-import { AppSelectWithSearch } from "@/app/_components/shared/select-with-search";
 import { create360Feedback } from "@/app/api/services/performance/360-feedback";
 import { getTemplates } from "@/app/api/services/performance/template";
 import useFetchDepartment from "@/utils/usefetchDepartment";
@@ -17,6 +18,7 @@ import { toast } from "react-toastify";
 const MultiStepFeedbackForm = () => {
   const router = useRouter();
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     assessmentName: "",
     employees: [],
@@ -33,6 +35,7 @@ const MultiStepFeedbackForm = () => {
   const prevStep = () => setStep((prev) => prev - 1);
 
   const handleSubmit = async () => {
+    setIsSubmitting(true);
     const payload = {
       feedbackName: formData.assessmentName,
       employees: formData.employees,
@@ -41,10 +44,12 @@ const MultiStepFeedbackForm = () => {
       startDate: formData.startDate,
       endDate: formData.endDate,
       anonymousCycle: formData.anonymousCycle,
-      feedbackDetails: {
-        feedbackNature: "PEER",
-        template: formData.template,
-      },
+      feedbackDetails: [
+        {
+          feedbackNature: "PEER",
+          template: formData.template,
+        },
+      ],
     };
 
     try {
@@ -60,6 +65,8 @@ const MultiStepFeedbackForm = () => {
     } catch (error) {
       console.error("Error submitting feedback:", error);
       toast.error("Error submitting feedback:");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -85,23 +92,15 @@ const MultiStepFeedbackForm = () => {
 };
 
 const StepOne = ({ formData, setFormData, nextStep }: any) => {
-  const {
-    employees,
-    isFetching: isFetchingEmp,
-    handleSearch: handleSearchEmp,
-  } = useFetchEmployees();
-  const {
-    department,
-    isFetching: isFetchingDept,
-    handleSearch: handleSearchDep,
-  } = useFetchDepartment();
+  const { employees } = useFetchEmployees();
+  const { department } = useFetchDepartment();
 
   return (
     <>
       <h1 className="text-lg font-semibold">New 360 Feedback Cycle</h1>
       <CardLayout bg="bg-white p-4 md:p-6">
         <div className="flex flex-col gap-6">
-          <h2 className="font-semibold">Feedback Cycle Details</h2>
+          <p className="text-lg font-semibold">Feedback Cycle Details</p>
           <div className="grid gap-6">
             <div className="flex flex-col md:flex-row gap-6">
               <InputText
@@ -113,53 +112,61 @@ const StepOne = ({ formData, setFormData, nextStep }: any) => {
                   setFormData({ ...formData, assessmentName: e.target.value })
                 }
               />
-              <AppSelectWithSearch
+              <AppMultipleSelect
                 label="Department"
                 placeholder="Select Department"
-                onChange={(value) =>
-                  setFormData({
-                    ...formData,
-                    department: [...new Set([...formData.department, value])],
-                  })
-                }
-                listItems={department.map((dept) => ({
+                items={department.map((dept) => ({
                   label: dept.departmentName,
                   value: dept.id as string,
                 }))}
-                isLoading={isFetchingDept}
-                onSearch={handleSearchDep}
+                selectedValues={formData.department}
+                onSelectionChange={(values: string[]) =>
+                  setFormData({
+                    ...formData,
+                    department: [...new Set(values)],
+                  })
+                }
+                width="w-full"
+                noResultsText="No departments found"
               />
             </div>
             <div className="flex flex-col md:flex-row gap-6">
-              <AppSelectWithSearch
+              <AppMultipleSelect
                 label="Employees"
-                placeholder="Select Employee"
-                onChange={(value) =>
-                  setFormData({
-                    ...formData,
-                    employees: [...new Set([...formData.employees, value])],
-                  })
-                }
-                listItems={employees.map((emp) => ({
+                placeholder="Select Employees"
+                items={employees.map((emp) => ({
                   label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
                   value: emp.id as string,
                 }))}
-                isLoading={isFetchingEmp}
-                onSearch={handleSearchEmp}
+                selectedValues={formData.employees}
+                onSelectionChange={(values: string[]) =>
+                  setFormData({
+                    ...formData,
+                    employees: [...new Set(values)],
+                  })
+                }
+                width="w-full"
+                noResultsText="No employees found"
               />
-              <AppSelectWithSearch
+              <AppMultipleSelect
                 label="Feedback Providers"
                 placeholder="Select Feedback Providers"
-                onChange={(value) =>
-                  setFormData({
-                    ...formData,
-                    feedbackProviders: [...formData.feedbackProviders, value],
-                  })
-                }
-                listItems={employees.map((emp) => ({
+                items={employees.map((emp) => ({
                   label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
                   value: emp.id as string,
                 }))}
+                selectedValues={formData.feedbackProviders}
+                onSelectionChange={(values: string[]) =>
+                  setFormData({
+                    ...formData,
+                    feedbackProviders: [
+                      ...formData.feedbackProviders,
+                      ...values,
+                    ],
+                  })
+                }
+                width="w-full"
+                noResultsText="No feedback providers found"
               />
             </div>
             <div className="flex flex-col md:flex-row gap-6">
@@ -222,7 +229,13 @@ const StepOne = ({ formData, setFormData, nextStep }: any) => {
   );
 };
 
-const StepTwo = ({ formData, setFormData, prevStep, handleSubmit }: any) => {
+const StepTwo = ({
+  formData,
+  setFormData,
+  prevStep,
+  handleSubmit,
+  isSubmitting,
+}: any) => {
   const [templates, setTemplates] = useState<any[]>([]);
   const [loadingTemplates, setLoadingTemplates] = useState(true);
 
@@ -252,22 +265,22 @@ const StepTwo = ({ formData, setFormData, prevStep, handleSubmit }: any) => {
           title="Peer Feedback"
           subtitle="Peers will review who they are selected for"
         >
-          <AppSelectWithSearch
+          <AppMultipleSelect
             label="Template"
             placeholder="Select Template"
-            onChange={(value) =>
-              setFormData({
-                ...formData,
-                template: value[0],
-              })
-            }
-            listItems={templates.map((template) => ({
+            items={templates.map((template) => ({
               label: template.templateName,
               value: template.id,
             }))}
-            isLoading={loadingTemplates}
-            onSearch={() => {}}
-            selectedItems={formData.template ? [formData.template] : []}
+            selectedValues={formData.template ? [formData.template] : []}
+            onSelectionChange={(values: string[]) =>
+              setFormData({
+                ...formData,
+                template: values[0],
+              })
+            }
+            width="w-full"
+            noResultsText="No templates found"
           />
         </CriteriaCard>
       </CardLayout>
@@ -275,8 +288,10 @@ const StepTwo = ({ formData, setFormData, prevStep, handleSubmit }: any) => {
         <AppButton label="Back" className="btn-secondary" onClick={prevStep} />
         <AppButton
           label="Submit"
-          className="btn-primary"
+          className="btn-primary w-full md:w-[230px]"
           onClick={handleSubmit}
+          disabled={isSubmitting}
+          isLoading={isSubmitting}
         />
       </div>
     </>

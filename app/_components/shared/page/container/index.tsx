@@ -1,6 +1,6 @@
-import { Stack } from '@mui/material';
-import React from 'react';
-import { PageContainerProps } from '../types';
+import { Stack } from "@mui/material";
+import React from "react";
+import { PageContainerProps } from "../types";
 
 const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
   return (

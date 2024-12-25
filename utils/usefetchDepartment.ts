@@ -7,7 +7,7 @@ const useFetchDepartment = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [itemsPerPage, setItemsPerPage] = React.useState(10);
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [sortOrder, setSortOrder] = React.useState<SortOrder>(SortOrder.Asc);
+  const [sortOrder, setSortOrder] = React.useState<SortOrder>(SortOrder.Des);
   const [statusFilter, setStatusFilter] = React.useState<string | undefined>(
     "",
   );

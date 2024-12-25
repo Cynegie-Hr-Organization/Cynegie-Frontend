@@ -1,4 +1,4 @@
-import { CardValueProps } from '../../../types';
+import { CardValueProps } from "../../../types";
 
 const Value: React.FC<CardValueProps> = (props) => {
   const {
@@ -11,20 +11,20 @@ const Value: React.FC<CardValueProps> = (props) => {
   return (
     <div
       style={{
-        color: '#1B1B1B',
+        color: "#1B1B1B",
         fontWeight: 600,
-        fontSize: '24px',
+        fontSize: "24px",
         ...(lineBelow && {
-          textDecoration: 'underline',
+          textDecoration: "underline",
           textUnderlineOffset: 11,
           textDecorationColor: lineColor,
         }),
       }}
     >
       {value}
-      {isPercentage && '%'}
+      {isPercentage && "%"}
       {denominator && (
-        <span style={{ fontSize: '18px', color: '#475367', fontWeight: 600 }}>
+        <span style={{ fontSize: "18px", color: "#475367", fontWeight: 600 }}>
           /{denominator}
         </span>
       )}

@@ -1,4 +1,4 @@
-import { Filter, TableAction } from '../../table/types';
+import { Filter, TableAction } from "../../table/types";
 
 export type PopoverProps = {
   type: PopoverType;
@@ -10,8 +10,8 @@ export type PopoverProps = {
 };
 
 export enum PopoverType {
-  moreOptions = 'more-options',
-  filter = 'filter',
+  moreOptions = "more-options",
+  filter = "filter",
 }
 
 export type MoreOptionsPopoverContentProps = {

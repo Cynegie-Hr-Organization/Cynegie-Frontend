@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import AppButton from "@/app/_components/shared/button";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
@@ -16,36 +16,31 @@ const FinanceAdminSettings = () => {
           <div className="flex flex-col lg:flex-row items-center justify-center gap-5">
             <AppSelect
               label="Company Bank Account Details"
-              listItems={
-                [
-                  { label: 'Bank Name', value: 'Bank Name' },
-                  { label: 'Account Number', value: 'Account Number' },
-                  { label: 'Account Name', value: 'Account Name' },
-                ]
-              }
+              listItems={[
+                { label: "Bank Name", value: "Bank Name" },
+                { label: "Account Number", value: "Account Number" },
+                { label: "Account Name", value: "Account Name" },
+              ]}
               placeholder="Input details"
-              onChange={() => { }}
+              onChange={() => {}}
             />
             <AppSelect
               label="Default Currency"
-              listItems={
-                [
-                  { label: 'NGN', value: 'NGN' },
-                  { label: 'USD', value: 'USD' },
-                  { label: 'EUR', value: 'EUR' },
-                  { label: 'GBP', value: 'GBP' },
-                ]
-              }
+              listItems={[
+                { label: "NGN", value: "NGN" },
+                { label: "USD", value: "USD" },
+                { label: "EUR", value: "EUR" },
+                { label: "GBP", value: "GBP" },
+              ]}
               placeholder="Input details"
-              onChange={() => { }}
+              onChange={() => {}}
             />
             <AppDatePicker
               label="Fiscal Year Start"
               placeholder="Date"
               selectedDate={new Date()}
-              setSelectedDate={() => { }}
+              setSelectedDate={() => {}}
             />
-
           </div>
           <div className="flex flex-col lg:flex-row items-center justify-center gap-5">
             <InputText
@@ -53,27 +48,24 @@ const FinanceAdminSettings = () => {
               id="tax-settings"
               label="Tax Settings"
               placeholder="Input details"
-              onChange={() => { }}
+              onChange={() => {}}
             />
             <AppSelect
               label="Expense Categories"
-              listItems={
-                [
-                  { label: 'Expense Category1', value: 'Expense Category1' },
-                  { label: 'Expense Category2', value: 'Expense Category2' },
-                  { label: 'Expense Category3', value: 'Expense Category3' },
-                ]
-              }
+              listItems={[
+                { label: "Expense Category1", value: "Expense Category1" },
+                { label: "Expense Category2", value: "Expense Category2" },
+                { label: "Expense Category3", value: "Expense Category3" },
+              ]}
               placeholder="Input details"
-              onChange={() => { }}
+              onChange={() => {}}
             />
             <AppDatePicker
               label="Fiscal Year Start"
               placeholder="Date"
               selectedDate={new Date()}
-              setSelectedDate={() => { }}
+              setSelectedDate={() => {}}
             />
-
           </div>
 
           <div className="space-y-4">
@@ -83,37 +75,39 @@ const FinanceAdminSettings = () => {
                 label="Email"
                 id="notification-email"
                 checked={false}
-                onChange={() => { }}
+                onChange={() => {}}
               />
               <AppCheckbox
                 label="SMS"
                 id="notification-sms"
                 checked={false}
-                onChange={() => { }}
+                onChange={() => {}}
               />
               <AppCheckbox
                 label="In-App"
                 id="notification-in-app"
                 checked={false}
-                onChange={() => { }}
+                onChange={() => {}}
               />
             </div>
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-lg font-bold">Payment Confirmation Notification</h3>
+            <h3 className="text-lg font-bold">
+              Payment Confirmation Notification
+            </h3>
             <div className="space-y-4">
               <AppCheckbox
                 label="Date picker"
                 id="date-picker"
                 checked={false}
-                onChange={() => { }}
+                onChange={() => {}}
               />
               <AppCheckbox
                 label="Time picker"
                 id="time-picker"
                 checked={false}
-                onChange={() => { }}
+                onChange={() => {}}
               />
             </div>
           </div>
@@ -125,34 +119,30 @@ const FinanceAdminSettings = () => {
                 label="Email"
                 id="budget-email"
                 checked={false}
-                onChange={() => { }}
+                onChange={() => {}}
               />
               <AppCheckbox
                 label="SMS"
                 id="budget-sms"
                 checked={false}
-                onChange={() => { }}
+                onChange={() => {}}
               />
               <AppCheckbox
                 label="In-App"
                 id="budget-in-app"
                 checked={false}
-                onChange={() => { }}
+                onChange={() => {}}
               />
             </div>
           </div>
         </div>
 
         <div className="flex justify-end">
-          <AppButton
-            label="Save"
-            className="btn-primary"
-            onClick={() => { }}
-          />
+          <AppButton label="Save" className="btn-primary" onClick={() => {}} />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default FinanceAdminSettings;

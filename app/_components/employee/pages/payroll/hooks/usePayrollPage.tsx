@@ -1,23 +1,23 @@
-import { ButtonType } from '@/app/_components/shared/page/heading/types';
-import { PageProps } from '@/app/_components/shared/page/types';
-import { CardProps } from '@/app/_components/shared/section-with-cards/types';
-import { FieldType, TableProps } from '@/app/_components/shared/table/types';
-import { useState } from 'react';
-import { ModalProps } from '../../../modal/types';
+import { ButtonType } from "@/app/_components/shared/page/heading/types";
+import { PageProps } from "@/app/_components/shared/page/types";
+import { CardProps } from "@/app/_components/shared/section-with-cards/types";
+import { FieldType, TableProps } from "@/app/_components/shared/table/types";
+import { useState } from "react";
+import { ModalProps } from "../../../modal/types";
 
 const usePayrollPage = () => {
   const [openPayrollSlip, setOpenPayrollSlip] = useState(false);
   const pageProps: PageProps = {
-    title: 'Employee Payroll Dashboard',
-    subtitle: 'Access your Employee Payroll Dashboard',
+    title: "Employee Payroll Dashboard",
+    subtitle: "Access your Employee Payroll Dashboard",
     hasButtons: true,
     leftButton: {
       type: ButtonType.outlined,
-      text: 'Download Payslip',
+      text: "Download Payslip",
     },
     rightButton: {
       type: ButtonType.contained,
-      text: 'View Payslip',
+      text: "View Payslip",
       onClick: () => setOpenPayrollSlip(true),
     },
     rightButtonSm: true,
@@ -25,36 +25,36 @@ const usePayrollPage = () => {
 
   const cards: CardProps[] = [
     {
-      labelText: 'Next Payday',
-      value: '28th August',
+      labelText: "Next Payday",
+      value: "28th August",
     },
     {
-      labelText: 'Last Paycheck',
-      value: 'N850,000.00',
+      labelText: "Last Paycheck",
+      value: "N850,000.00",
     },
     {
-      labelText: 'YTD Earnings',
-      value: 'N3,750,000.00',
+      labelText: "YTD Earnings",
+      value: "N3,750,000.00",
       // additionalInfo: { value: '₦7,251,000', description: '28-Jul-2024' },
     },
     {
-      labelText: 'Time in Company',
-      value: '9 months',
+      labelText: "Time in Company",
+      value: "9 months",
     },
   ];
 
   const tableProps: TableProps = {
     hasCheckboxes: true,
-    title: 'Payroll Activities',
-    headerRowData: ['Pay Date', 'Name', 'Total Amount', 'Net Pay'],
+    title: "Payroll Activities",
+    headerRowData: ["Pay Date", "Name", "Total Amount", "Net Pay"],
     bodyRowData: Array(5).fill({
-      date: '28-Jul-2024',
-      name: 'July Salary',
-      totalAmount: 'N925,000.00',
-      netPay: 'N850,000.00',
+      date: "28-Jul-2024",
+      name: "July Salary",
+      totalAmount: "N925,000.00",
+      netPay: "N850,000.00",
     }),
     fieldTypes: Array(5).fill(FieldType.text),
-    displayedFields: ['date', 'name', 'totalAmount', 'netPay'],
+    displayedFields: ["date", "name", "totalAmount", "netPay"],
   };
 
   const payrollSlipModalProps: ModalProps = {
@@ -64,14 +64,14 @@ const usePayrollPage = () => {
     onClose: () => setOpenPayrollSlip(false),
     buttonOne: {
       type: ButtonType.outlined,
-      text: 'Back to Payroll',
+      text: "Back to Payroll",
       onClick: () => setOpenPayrollSlip(false),
     },
     buttonTwo: {
       type: ButtonType.contained,
-      text: 'Download Payslip',
+      text: "Download Payslip",
     },
-    buttonGroupPosition: 'end',
+    buttonGroupPosition: "end",
   };
 
   return { pageProps, tableProps, cards, payrollSlipModalProps };

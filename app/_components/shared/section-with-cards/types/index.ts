@@ -1,4 +1,4 @@
-import { ColorVariant } from '@/types';
+import { ColorVariant } from "@/types";
 
 export type SectionWithCardsProps = {
   title: string;
@@ -48,7 +48,7 @@ export type CardLabelIconProps = {
   containerWidth?: number;
 };
 
-export type CardTitleProps = { text: string; size?: 'small' | 'large' };
+export type CardTitleProps = { text: string; size?: "small" | "large" };
 
 export type CardPeriodProps = {
   text: string;
@@ -62,7 +62,7 @@ export type CardHeaderProps = {
   period?: string;
   hasDivider?: boolean;
   periodFont?: { size?: number; weight?: number; color?: string };
-  titleSize?: 'small' | 'large';
+  titleSize?: "small" | "large";
   periodClick?: () => void;
 };
 

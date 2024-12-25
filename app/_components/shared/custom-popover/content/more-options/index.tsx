@@ -1,20 +1,20 @@
-import { List, ListItem, ListItemText } from '@mui/material';
-import React from 'react';
-import { MoreOptionsPopoverContentProps } from '../../types';
+import { List, ListItem, ListItemText } from "@mui/material";
+import React from "react";
+import { MoreOptionsPopoverContentProps } from "../../types";
 
 const MoreOptionsPopoverContent: React.FC<MoreOptionsPopoverContentProps> = (
-  props
+  props,
 ) => {
   const { options, itemClick } = props;
 
   return (
-    <List sx={{ color: '#475367', fontWeight: 400, fontSize: '14px' }}>
+    <List sx={{ color: "#475367", fontWeight: 400, fontSize: "14px" }}>
       {options?.map((item) => (
         <ListItem
           key={item.name}
-          component='button'
+          component="button"
           sx={{
-            '&:hover': { color: '#0035C3' },
+            "&:hover": { color: "#0035C3" },
           }}
           onClick={() => {
             item.onClick(props?.dataToReturnOnItemClick);

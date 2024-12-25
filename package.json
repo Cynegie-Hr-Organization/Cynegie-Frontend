@@ -42,6 +42,7 @@
     "dayjs": "^1.11.13",
     "dompurify": "^3.2.2",
     "draft-js": "^0.11.7",
+    "draft-js-import-html": "^1.4.1",
     "draftjs-to-html": "^0.9.1",
     "html-to-image": "^1.11.11",
     "lucide-react": "^0.468.0",

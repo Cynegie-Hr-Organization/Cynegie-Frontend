@@ -1,12 +1,12 @@
-import { Grid2 } from '@mui/material';
-import SvgIcon from '@/app/_components/icons/container';
-import summaryCardsData from './data';
-import { icon } from '@/constants';
-import Card from '@/app/_components/shared/section-with-cards/card-group/card';
+import { Grid2 } from "@mui/material";
+import SvgIcon from "@/app/_components/icons/container";
+import summaryCardsData from "./data";
+import { icon } from "@/constants";
+import Card from "@/app/_components/shared/section-with-cards/card-group/card";
 
 const SummaryCards = () => {
   const setCardIcon = (label: string) => {
-    return label === 'Certification Received'
+    return label === "Certification Received"
       ? icon.graduatingCap
       : icon.square;
   };

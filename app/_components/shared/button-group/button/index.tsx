@@ -1,10 +1,10 @@
-import React from 'react';
-import { ChevronDown } from 'lucide-react';
-import { color, icon } from '@/constants';
-import { ButtonProps, ButtonType } from '../../page/heading/types';
-import { PopoverType } from '@/app/_components/shared/custom-popover/types';
-import SvgIcon from '../../../icons/container';
-import Popover from '../../custom-popover';
+import React from "react";
+import { ChevronDown } from "lucide-react";
+import { color, icon } from "@/constants";
+import { ButtonProps, ButtonType } from "../../page/heading/types";
+import { PopoverType } from "@/app/_components/shared/custom-popover/types";
+import SvgIcon from "../../../icons/container";
+import Popover from "../../custom-popover";
 
 const Button: React.FC<ButtonProps> = (props) => {
   const {
@@ -17,11 +17,11 @@ const Button: React.FC<ButtonProps> = (props) => {
     small,
   } = props;
 
-  const borderStyle = { border: '1.5px solid' };
-  const paddingStyle = { padding: '10px 24px' };
-  const fontSizeStyle = { fontSize: '16px' };
+  const borderStyle = { border: "1.5px solid" };
+  const paddingStyle = { padding: "10px 24px" };
+  const fontSizeStyle = { fontSize: "16px" };
   const fontWeightStyle = { fontWeight: 700 };
-  const borderRadiusStyle = { borderRadius: '8px' };
+  const borderRadiusStyle = { borderRadius: "8px" };
 
   const containedStyle = {
     ...color.button.contained,
@@ -43,9 +43,9 @@ const Button: React.FC<ButtonProps> = (props) => {
   const filterStyle = {
     ...color.button.filter,
     ...borderStyle,
-    padding: '6px 14px',
-    borderRadius: '6px',
-    fontSize: '14px',
+    padding: "6px 14px",
+    borderRadius: "6px",
+    fontSize: "14px",
     fontWeight: 600,
   };
 
@@ -53,7 +53,7 @@ const Button: React.FC<ButtonProps> = (props) => {
     ...outlinedStyle,
     borderColor: color.info.dark,
     color: color.info.dark,
-    borderWidth: '2px',
+    borderWidth: "2px",
   };
 
   const deleteContainedStyle = {
@@ -63,15 +63,15 @@ const Button: React.FC<ButtonProps> = (props) => {
 
   const blackStyle = {
     ...containedStyle,
-    backgroundColor: 'black',
+    backgroundColor: "black",
   };
 
   const deleteWithIconStyle = {
     ...containedStyle,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     border: 0,
     color: color.error.dark,
-    display: 'flex',
+    display: "flex",
     gap: 10,
     paddingLeft: 0,
     fontWeight: 400,
@@ -97,17 +97,17 @@ const Button: React.FC<ButtonProps> = (props) => {
         ...(type === ButtonType.deleteWithIcon && deleteWithIconStyle),
         ...(type === ButtonType.disabled && disabledStyle),
         ...(type === ButtonType.black && blackStyle),
-        borderRadius: '8px',
+        borderRadius: "8px",
         ...(iconProp && {
-          display: 'flex',
-          alignItems: 'center',
+          display: "flex",
+          alignItems: "center",
           gap: 5,
         }),
-        ...(small && { fontSize: '14px' }),
-        textWrap: 'nowrap',
+        ...(small && { fontSize: "14px" }),
+        textWrap: "nowrap",
         ...(deleteIconOnly && { padding: 0 }),
       }}
-      className={`w-fit sm:${fullWidth ? 'w-full' : 'w-fit'}`}
+      className={`w-fit sm:${fullWidth ? "w-full" : "w-fit"}`}
     >
       {iconProp}
       {type === ButtonType.deleteWithIcon && (
@@ -115,7 +115,7 @@ const Button: React.FC<ButtonProps> = (props) => {
       )}
       {text}
       {popoverOptions && (
-        <ChevronDown style={{ display: 'inline', marginLeft: 5 }} />
+        <ChevronDown style={{ display: "inline", marginLeft: 5 }} />
       )}
     </button>
   );

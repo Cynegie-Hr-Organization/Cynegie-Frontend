@@ -12,20 +12,25 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function AppDatePicker({ label, requiredField = false, selectedDate, setSelectedDate, placeholder = "Pick a date" }: {
-  label?: string,
-  requiredField?: boolean,
-  selectedDate?: Date,
-  setSelectedDate: (date?: Date) => void,
-  placeholder?: string
+export function AppDatePicker({
+  label,
+  requiredField = false,
+  selectedDate,
+  setSelectedDate,
+  placeholder = "Pick a date",
+}: {
+  label?: string;
+  requiredField?: boolean;
+  selectedDate?: Date;
+  setSelectedDate: (date?: Date) => void;
+  placeholder?: string;
 }) {
-
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
   const handleDateChange = (date?: Date) => {
-    setSelectedDate(date)
-    setOpen(false)
-  }
+    setSelectedDate(date);
+    setOpen(false);
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -46,7 +51,12 @@ export function AppDatePicker({ label, requiredField = false, selectedDate, setS
               !selectedDate && "text-muted-foreground",
             )}
           >
-            {selectedDate ? format(selectedDate, "MMM d, yyyy") : <span className="text-gray-400">{placeholder}</span>} <Calendar1 />
+            {selectedDate ? (
+              format(selectedDate, "MMM d, yyyy")
+            ) : (
+              <span className="text-gray-400">{placeholder}</span>
+            )}{" "}
+            <Calendar1 />
           </button>
         </div>
       </PopoverTrigger>

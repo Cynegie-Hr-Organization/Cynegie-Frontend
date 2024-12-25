@@ -1,7 +1,7 @@
-import { Grid2 } from '@mui/material';
-import { DetailGroupProps } from './types';
-import Detail from './detail';
-import { getGridLayout } from '@/utils/grid-layout';
+import { Grid2 } from "@mui/material";
+import { DetailGroupProps } from "./types";
+import Detail from "./detail";
+import { getGridLayout } from "@/utils/grid-layout";
 
 const DetailGroup: React.FC<DetailGroupProps> = (props) => {
   const { details, gridLayout, spaceBetweenLayout, statusMap } = props;
@@ -23,7 +23,7 @@ const DetailGroup: React.FC<DetailGroupProps> = (props) => {
         </Grid2>
       )}
       {spaceBetweenLayout && (
-        <div className='flex flex-col gap-5'>
+        <div className="flex flex-col gap-5">
           {details?.map((item, index) => (
             <Detail
               key={index}

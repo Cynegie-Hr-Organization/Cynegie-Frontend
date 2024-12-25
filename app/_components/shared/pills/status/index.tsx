@@ -1,5 +1,5 @@
-import { ColorVariant } from '@/types';
-import { Box } from '@mui/material';
+import { ColorVariant } from "@/types";
+import { Box } from "@mui/material";
 
 const StatusPill: React.FC<{
   variant?: ColorVariant;

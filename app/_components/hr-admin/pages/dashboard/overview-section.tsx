@@ -203,7 +203,10 @@ const PriorityCard = () => {
               );
             })}
         </Grid2>
-        <Link href="/hr-admin/onboarding/overview" className="underline text-[#0035C3] cursor-pointer">
+        <Link
+          href="/hr-admin/onboarding/overview"
+          className="underline text-[#0035C3] cursor-pointer"
+        >
           View all tasks
         </Link>
       </Stack>

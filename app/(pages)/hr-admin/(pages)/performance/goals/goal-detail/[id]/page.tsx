@@ -21,6 +21,8 @@ type BreadcrumbProps = {
   goalName: string;
 };
 
+const users = ["u", "p", "d", "e", "o"];
+
 const GoalDetailPage = () => {
   const [goalData, setGoalData] = useState<Goal | null>(null);
   const [isClient, setIsClient] = useState(false);
@@ -78,7 +80,7 @@ const PerformanceReviewCard = ({
               <p className="text-xs text-gray-700">{goalData.description}</p>
             </div>
 
-            <div className="flex gap-x-8 gap-y-2 text-lg flex-wrap max-w-[474px]">
+            <div className="flex items-center justify-between gap-x-8 text-lg max-w-[474px]">
               <GoalHeaderDetail label="Type" value={goalData.goalType} />
               <GoalHeaderDetail
                 label="Due Date"
@@ -89,11 +91,11 @@ const PerformanceReviewCard = ({
 
             <div className="space-y-3">
               <div className="flex">
-                {goalData.employees.map((employeeId: string, index: number) => (
+                {users.map((userId: string, index: number) => (
                   <Avatar
                     key={index}
-                    src={`/image/persons/${employeeId}.png`}
-                    alt="person"
+                    src={`/image/persons/${userId}.png`}
+                    alt={`${userId}`}
                     className="first:ml-0 -ml-4 w-8 h-8"
                   />
                 ))}
@@ -158,9 +160,9 @@ const Breadcrumb = ({ goalName }: BreadcrumbProps) => {
 
 const GoalHeaderDetail = ({ label, value }: GoalHeaderDetailProps) => {
   return (
-    <div className="flex gap-x-2 items-center text-sm">
+    <div className="flex flex-row gap-x-2 items-center text-sm">
       <p className="text-black font-semibold">{label}:</p>
-      <p className="text-gray-700">{value}</p>
+      <span className="text-gray-700">{value}</span>
     </div>
   );
 };

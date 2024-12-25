@@ -164,7 +164,6 @@ const PerformanceReviewCard = () => {
 };
 
 const EmployeesTable = () => {
-  const router = useRouter();
   return (
     <div className="space-y-4">
       <h3 className="text-xl font-bold text-black">Employees </h3>
@@ -234,16 +233,40 @@ const EmployeesTable = () => {
                     </td>
                     <td className="p-4">
                       <AppMenubar
-                        menuItems={
-                          <ul className="flex flex-col w-full text-base">
-                            <li className="cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md w-full">
-                              <button type="button">Edit</button>
-                            </li>
-                            <li className="hover:text-red-600 cursor-pointer text-red-500 hover:bg-gray-100 px-2 py-1 rounded-md w-full">
-                              <button type="button">Delete</button>
-                            </li>
-                          </ul>
-                        }
+                        menuItems={[
+                          {
+                            key: "edit",
+                            label: (
+                              <button
+                                type="button"
+                                className="w-full text-left"
+                              >
+                                Edit
+                              </button>
+                            ),
+                            className:
+                              "cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md w-full",
+                            onClick: () => {
+                              console.log("Edit clicked");
+                            },
+                          },
+                          {
+                            key: "delete",
+                            label: (
+                              <button
+                                type="button"
+                                className="w-full text-left text-red-500 hover:text-red-600"
+                              >
+                                Delete
+                              </button>
+                            ),
+                            className:
+                              "hover:text-red-600 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md w-full",
+                            onClick: () => {
+                              console.log("Delete clicked");
+                            },
+                          },
+                        ]}
                       >
                         <LuMoreVertical />
                       </AppMenubar>

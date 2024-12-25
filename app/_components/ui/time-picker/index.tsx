@@ -25,11 +25,11 @@ const CustomTimePicker: React.FC<CustomTimePickerProps> = ({
             fullWidth: true,
             sx: {
               "& .MuiOutlinedInput-root": {
-                borderRadius: "8px",
+                borderRadius: "6px",
                 borderColor: "#7e57c2",
                 paddingY: 0.6, // Reduce vertical padding
                 height: "auto",
-                marginTop: "4px",
+                marginTop: "8px",
               },
               "& .MuiInputBase-input": {
                 paddingY: 0.6, // Reduce padding inside the input

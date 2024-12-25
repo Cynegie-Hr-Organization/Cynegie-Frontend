@@ -1,8 +1,8 @@
-import Page from '@/app/_components/shared/page';
-import { CourseDetailsProps } from './types';
-import CourseDetails from './item';
-import { ButtonGroupProps } from '@/app/_components/shared/button-group/types';
-import ButtonGroup from '@/app/_components/shared/button-group';
+import Page from "@/app/_components/shared/page";
+import { CourseDetailsProps } from "./types";
+import CourseDetails from "./item";
+import { ButtonGroupProps } from "@/app/_components/shared/button-group/types";
+import ButtonGroup from "@/app/_components/shared/button-group";
 
 type EmployeeLearningAndDevelopmentCourseDetailsProps = {
   heading?: string;
@@ -24,7 +24,7 @@ const EmployeeLearningAndDevelopmentCourseDetails: React.FC<
         backText={props.backText}
         onBackTextClick={props.onBackTextClick}
       >
-        <div className='common-card flex flex-col gap-10 pt-40'>
+        <div className="common-card flex flex-col gap-10 pt-40">
           {props.details?.map((detail) => (
             <CourseDetails key={detail.name} {...detail} />
           ))}

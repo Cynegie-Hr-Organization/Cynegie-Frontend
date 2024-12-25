@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import AppButton from "@/app/_components/shared/button";
 import { AppSelect } from "@/app/_components/shared/select";
@@ -19,9 +19,7 @@ const chartConfig = {
     label: "Mobile",
     color: "#0035C3",
   },
-} satisfies ChartConfig
-
-
+} satisfies ChartConfig;
 
 const FinanceAdminDashboard = () => {
   const pageCards = [
@@ -55,9 +53,6 @@ const FinanceAdminDashboard = () => {
     },
   ];
 
-
-
-
   const chartData = [
     { month: "January", desktop: 150, mobile: 95 },
     { month: "February", desktop: 220, mobile: 180 },
@@ -71,8 +66,7 @@ const FinanceAdminDashboard = () => {
     { month: "October", desktop: 230, mobile: 190 },
     { month: "November", desktop: 280, mobile: 200 },
     { month: "December", desktop: 230, mobile: 190 },
-  ]
-
+  ];
 
   return (
     <div className="space-y-8 py-6">
@@ -89,8 +83,15 @@ const FinanceAdminDashboard = () => {
         {pageCards.map((card, index) => (
           <div className="common-card space-y-5" key={index}>
             <div className="flex items-center gap-2">
-              <div className="rounded-full p-2" style={{ backgroundColor: card.color, color: card.textColor }}>{card.icon}</div>
-              <h3 className="font-roboto lg:text-xs text-sm text-[#848897] font-medium">{card.title}</h3>
+              <div
+                className="rounded-full p-2"
+                style={{ backgroundColor: card.color, color: card.textColor }}
+              >
+                {card.icon}
+              </div>
+              <h3 className="font-roboto lg:text-xs text-sm text-[#848897] font-medium">
+                {card.title}
+              </h3>
             </div>
             <p className="font-roboto text-xl font-bold">{card.description}</p>
           </div>
@@ -108,29 +109,34 @@ const FinanceAdminDashboard = () => {
         </div>
       </div>
 
-
-
       <div className="space-y-4">
-        <h3 className="text-xl font-bold text-black font-roboto">Recent Transactions</h3>
+        <h3 className="text-xl font-bold text-black font-roboto">
+          Recent Transactions
+        </h3>
         <FinanceAdminDashboardTable />
       </div>
     </div>
   );
 };
 
-
-
-const PageHeader = ({ title, description, button1Label, button2Label, link1, link2 }: {
-  title: string,
-  description: string,
-  button1Label: string,
-  button2Label: string,
-  link1: string,
-  link2: string
+const PageHeader = ({
+  title,
+  description,
+  button1Label,
+  button2Label,
+  link1,
+  link2,
+}: {
+  title: string;
+  description: string;
+  button1Label: string;
+  button2Label: string;
+  link1: string;
+  link2: string;
 }) => {
   const router = useRouter();
-  const handleBtn1Click = () => router.push(link1)
-  const handleBtn2Click = () => router.push(link2)
+  const handleBtn1Click = () => router.push(link1);
+  const handleBtn2Click = () => router.push(link2);
   return (
     <div className="flex justify-between items-center">
       <div>
@@ -139,13 +145,20 @@ const PageHeader = ({ title, description, button1Label, button2Label, link1, lin
       </div>
 
       <div className="flex items-center gap-4">
-        <AppButton onClick={handleBtn1Click} label={button1Label} className="btn-secondary w-full hidden md:block" />
-        <AppButton onClick={handleBtn2Click} label={button2Label} className="btn-primary w-full hidden md:block" />
+        <AppButton
+          onClick={handleBtn1Click}
+          label={button1Label}
+          className="btn-secondary w-full hidden md:block"
+        />
+        <AppButton
+          onClick={handleBtn2Click}
+          label={button2Label}
+          className="btn-primary w-full hidden md:block"
+        />
       </div>
     </div>
-  )
-}
-
+  );
+};
 
 const ChartDropdownFilters = () => {
   return (
@@ -159,7 +172,7 @@ const ChartDropdownFilters = () => {
           { label: "Department 2", value: "department-2" },
           { label: "Department 3", value: "department-3" },
         ]}
-        onChange={() => { }}
+        onChange={() => {}}
       />
 
       <AppSelect
@@ -170,10 +183,10 @@ const ChartDropdownFilters = () => {
           { label: "This Year", value: "this-year" },
           { label: "Last Year", value: "last-year" },
         ]}
-        onChange={() => { }}
+        onChange={() => {}}
       />
     </div>
-  )
-}
+  );
+};
 
 export default FinanceAdminDashboard;

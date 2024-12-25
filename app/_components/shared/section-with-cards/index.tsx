@@ -1,7 +1,7 @@
-import React from 'react';
-import CardGroup from './card-group';
-import SectionCardContainer from './container';
-import { SectionWithCardsProps } from './types';
+import React from "react";
+import CardGroup from "./card-group";
+import SectionCardContainer from "./container";
+import { SectionWithCardsProps } from "./types";
 
 const SectionWithCards: React.FC<SectionWithCardsProps> = (props) => {
   const {

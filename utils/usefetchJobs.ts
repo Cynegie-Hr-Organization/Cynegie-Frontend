@@ -6,9 +6,9 @@ import { getJobs } from "@/app/api/services/job";
 
 const useFetchJobs = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [itemsPerPage, setItemsPerPage] = React.useState(10);
+  const [itemsPerPage, setItemsPerPage] = React.useState(5);
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [sortOrder, setSortOrder] = React.useState<SortOrder>(SortOrder.Asc);
+  const [sortOrder, setSortOrder] = React.useState<SortOrder>(SortOrder.Des);
   const [filters, setFilters] = React.useState({
     status: "",
     title: "",

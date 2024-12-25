@@ -365,3 +365,15 @@ export interface Get360FeedbackResponse {
   totalPages: number;
   currentPage: number;
 }
+
+export interface Candidate {
+  firstName: string;
+  lastName: string;
+  job: Job;
+  stage: string;
+  status: string;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}

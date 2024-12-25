@@ -1,4 +1,4 @@
-import { TableAction } from '../../../table/types';
+import { TableAction } from "../../../table/types";
 
 export type PageHeadingProps = {
   type?: HeadingType;
@@ -41,7 +41,7 @@ export enum ButtonType {
   black,
 }
 
-export type HeadingType = 'page' | 'modal' | 'card';
+export type HeadingType = "page" | "modal" | "card";
 
 export type HeadingBackProps = {
   text: string;

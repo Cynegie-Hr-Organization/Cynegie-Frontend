@@ -6,7 +6,7 @@ import { request } from "@/utils/request";
 import { baseUrl } from "@/constants/config";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/options";
-import { GoalsResponse } from "@/types";
+import { GoalResponse } from "@/types";
 
 export const createGoals = async (payload: any) => {
   const session = await getServerSession(authOptions);
@@ -28,7 +28,7 @@ export const getGoals = async (
   sortOrder: string = "asc",
   status?: string,
   search?: string,
-): Promise<GoalsResponse> => {
+): Promise<GoalResponse> => {
   const session = await getServerSession(authOptions);
 
   return request("GET", `${baseUrl}/v1/goals`, {
@@ -43,7 +43,7 @@ export const getGoals = async (
       status,
       search,
     },
-  }) as Promise<GoalsResponse>;
+  }) as Promise<GoalResponse>;
 };
 
 export const deleteGoal = async (id: string) => {

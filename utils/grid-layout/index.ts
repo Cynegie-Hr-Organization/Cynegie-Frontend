@@ -1,36 +1,36 @@
 export type GridLayout =
-  | 'request-correction'
-  | 'request-feedback'
-  | 'view-details'
-  | 'view-details-two'
-  | 'development-plan'
-  | '3-columns'
-  | 'view-task-details';
+  | "request-correction"
+  | "request-feedback"
+  | "view-details"
+  | "view-details-two"
+  | "development-plan"
+  | "3-columns"
+  | "view-task-details";
 
 export const getGridLayout = (index: number, layout?: GridLayout) => {
-  if (layout === 'request-correction') {
+  if (layout === "request-correction") {
     const lg = index === 3 ? 12 : index == 4 ? 6 : 4;
     return { xs: 12, md: lg, lg: lg };
   }
-  if (layout === 'view-details') {
+  if (layout === "view-details") {
     const sm = 6;
     return { xs: 12, sm: sm };
   }
-  if (layout === 'request-feedback') {
+  if (layout === "request-feedback") {
     const sm = index === 4 ? 12 : 6;
     return { xs: 12, sm: sm };
   }
-  if (layout === 'development-plan') {
+  if (layout === "development-plan") {
     return { xs: 12, sm: 3 };
   }
-  if (layout === 'view-details-two') {
+  if (layout === "view-details-two") {
     const sm = index === 3 ? 12 : 4;
     return { xs: 12, sm: sm };
   }
-  if (layout === '3-columns') {
+  if (layout === "3-columns") {
     return { xs: 12, sm: 4 };
   }
-  if (layout === 'view-task-details') {
+  if (layout === "view-task-details") {
     return { xs: 12, sm: 2.4 };
   }
   return { xs: 12 };

@@ -1,8 +1,8 @@
-import Card from './card';
-import { Grid2 } from '@mui/material';
-import SvgIcon from '@/app/_components/icons/container';
-import { icon } from '@/constants';
-import { CardGroupProps } from '../types';
+import Card from "./card";
+import { Grid2 } from "@mui/material";
+import SvgIcon from "@/app/_components/icons/container";
+import { icon } from "@/constants";
+import { CardGroupProps } from "../types";
 
 const CardGroup: React.FC<CardGroupProps> = ({ data, gridItemSize }) => {
   return (

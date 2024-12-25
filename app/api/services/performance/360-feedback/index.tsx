@@ -6,12 +6,59 @@ import { request } from "@/utils/request";
 import { baseUrl } from "@/constants/config";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/options";
-import { Get360FeedbackResponse } from "@/types";
+
+interface FeedbackDetails {
+  feedbackNature: string;
+  template: string;
+}
+
+interface EmployeePersonalInfo {
+  firstName: string;
+  lastName: string;
+  email: string;
+  id: string;
+}
+
+interface Employee {
+  employmentInformation: string;
+  personalInfo: EmployeePersonalInfo;
+  compensation: string;
+  documents: string[];
+  NextOfKin: string[];
+  accessRights: string[];
+  deletedAt: string | null;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}
+
+export interface Feedback {
+  feedbackName: string;
+  employees: Employee[];
+  department: string[];
+  feedbackProviders: string[];
+  startDate: string;
+  endDate: string;
+  feedbackDetails: FeedbackDetails[];
+  anonymousCycle: boolean;
+  status: string;
+  deletedAt: string | null;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}
 
 export interface ApiResponse<T> {
   status: number;
   message: string;
-  data: T;
+  data: {
+    items: T;
+    totalItems: number;
+    totalPages: number;
+    currentPage: number;
+  };
 }
 
 export const create360Feedback = async (payload: any) => {
@@ -31,10 +78,10 @@ export const create360Feedback = async (payload: any) => {
 export const get360Feedback = async (
   page: number,
   limit: number,
-  sortOrder: string = "asc",
+  sortOrder: string = "desc",
   status?: string,
   search?: string,
-): Promise<ApiResponse<Get360FeedbackResponse>> => {
+): Promise<ApiResponse<Feedback[]>> => {
   const session = await getServerSession(authOptions);
 
   return request("GET", `${baseUrl}/v1/feedback360`, {
@@ -49,5 +96,5 @@ export const get360Feedback = async (
       status,
       search,
     },
-  }) as Promise<ApiResponse<Get360FeedbackResponse>>;
+  }) as Promise<ApiResponse<Feedback[]>>;
 };

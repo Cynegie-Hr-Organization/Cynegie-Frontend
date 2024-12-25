@@ -6,11 +6,11 @@ import CardLayout from "@/app/_components/shared/cards";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
 import { AppSelect } from "@/app/_components/shared/select";
 import { AppSwitch } from "@/app/_components/shared/switch";
-import { AppSelectWithSearch } from "@/app/_components/shared/select-with-search";
 import useFetchEmployees from "@/utils/usefetchEmployees";
 import InputText from "@/app/_components/shared/input-text";
 import { createReviewCycle } from "@/app/api/services/performance/review cycle";
 import { toast } from "react-toastify";
+import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 
 interface IReviewCycle {
   reviewCycleName: string;
@@ -27,7 +27,7 @@ interface IReviewCycle {
 
 const NewReviewCycle = () => {
   const router = useRouter();
-  const { employees, isFetching, handleSearch } = useFetchEmployees();
+  const { employees } = useFetchEmployees();
 
   const [formData, setFormData] = useState<IReviewCycle>({
     reviewCycleName: "",
@@ -41,10 +41,6 @@ const NewReviewCycle = () => {
     notifyEmployees: false,
     notifyReviewers: false,
   });
-
-  const handleFormChange = (key: keyof IReviewCycle, value: any) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  };
 
   // Form submit logic
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -143,32 +139,40 @@ const NewReviewCycle = () => {
         </div>
 
         <div className="flex flex-col md:flex-row gap-y-4 md:gap-10 items-center justify-between w-full">
-          <AppSelectWithSearch
+          <AppMultipleSelect
             label="Assign Employees"
-            requiredField
-            placeholder="Search and select employees"
-            listItems={employees.map((emp) => ({
+            placeholder="Assign Employees"
+            items={employees.map((emp) => ({
               label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
               value: emp.id as string,
             }))}
-            onChange={(value) => handleFormChange("assignedEmployees", value)}
-            isLoading={isFetching}
-            onSearch={handleSearch}
-            selectedItems={formData.assignedEmployees}
+            selectedValues={formData.assignedEmployees}
+            onSelectionChange={(values: string[]) =>
+              setFormData({
+                ...formData,
+                assignedEmployees: [...new Set(values)],
+              })
+            }
+            width="w-full"
+            noResultsText="No employees found"
           />
 
-          <AppSelectWithSearch
+          <AppMultipleSelect
             label="Assign Reviewer"
-            requiredField
-            placeholder="Search and select reviewer"
-            listItems={employees.map((emp) => ({
+            placeholder="Assign Reviewer"
+            items={employees.map((emp) => ({
               label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
               value: emp.id as string,
             }))}
-            onChange={(value) => handleFormChange("assignedReviewer", value)}
-            isLoading={isFetching}
-            onSearch={handleSearch}
-            selectedItems={formData.assignedReviewer}
+            selectedValues={formData.assignedReviewer}
+            onSelectionChange={(values: string[]) =>
+              setFormData({
+                ...formData,
+                assignedReviewer: [...new Set(values)],
+              })
+            }
+            width="w-full"
+            noResultsText="No reviewers found"
           />
         </div>
 

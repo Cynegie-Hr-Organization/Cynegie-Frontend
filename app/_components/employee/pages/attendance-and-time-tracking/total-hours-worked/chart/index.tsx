@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   BarChart,
   Bar,
@@ -6,20 +6,20 @@ import {
   YAxis,
   ResponsiveContainer,
   CartesianGrid,
-} from 'recharts';
-import totalHoursWorkedChartData from './data';
+} from "recharts";
+import totalHoursWorkedChartData from "./data";
 
 const TotalHoursWorkedChart: React.FC = () => {
   return (
-    <div style={{ position: 'relative', height: 260 }}>
+    <div style={{ position: "relative", height: 260 }}>
       <ResponsiveContainer
         height={260}
-        style={{ position: 'absolute', top: 20 }}
+        style={{ position: "absolute", top: 20 }}
       >
         <BarChart barSize={12} data={totalHoursWorkedChartData}>
           <CartesianGrid vertical={false} />
           <XAxis
-            dataKey='item'
+            dataKey="item"
             axisLine={false}
             tickSize={0}
             tickMargin={10}
@@ -27,7 +27,7 @@ const TotalHoursWorkedChart: React.FC = () => {
             fontSize={8}
           />
           <YAxis axisLine={false} tickSize={0} tickMargin={10} fontSize={12} />
-          <Bar dataKey='value' fill='#0035C3' radius={[6, 6, 0, 0]} />
+          <Bar dataKey="value" fill="#0035C3" radius={[6, 6, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

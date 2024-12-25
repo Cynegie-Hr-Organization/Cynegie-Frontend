@@ -6,7 +6,6 @@ import CardLayout from "@/app/_components/shared/cards";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
 import { AppSelect } from "@/app/_components/shared/select";
 import { AppSwitch } from "@/app/_components/shared/switch";
-import { AppSelectWithSearch } from "@/app/_components/shared/select-with-search";
 import useFetchEmployees from "@/utils/usefetchEmployees";
 import InputText from "@/app/_components/shared/input-text";
 import {
@@ -14,6 +13,7 @@ import {
   fetchReviewCycleById,
 } from "@/app/api/services/performance/review cycle";
 import { toast } from "react-toastify";
+import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 
 interface IReviewCycle {
   reviewCycleName: string;
@@ -33,7 +33,7 @@ const EditReviewCycle = () => {
   const { id } = useParams();
   const reviewId = typeof id === "string" ? id : "default-id";
 
-  const { employees, isFetching, handleSearch } = useFetchEmployees();
+  const { employees } = useFetchEmployees();
 
   const [formData, setFormData] = useState<IReviewCycle>({
     reviewCycleName: "",
@@ -53,6 +53,14 @@ const EditReviewCycle = () => {
       try {
         const response = await fetchReviewCycleById(reviewId);
         const data = response?.data;
+        console.log(data);
+
+        // Extract employees with `deletedAt` null
+        const availableEmployeeIds = (data.employees || [])
+          .filter((employee: any) => employee.deletedAt === null)
+          .map((employee: any) => employee.id);
+
+        console.log("Available Employee IDs:", availableEmployeeIds);
 
         if (data) {
           setFormData({
@@ -60,7 +68,7 @@ const EditReviewCycle = () => {
             startDate: new Date(data.startDate),
             endDate: new Date(data.endDate),
             daysOfGrace: String(data.daysOfGrace),
-            assignedEmployees: data.employees,
+            assignedEmployees: availableEmployeeIds,
             assignedReviewer: data.reviewers,
             reminderType: data.reminderType,
             reminderFrequency: data.reminderFrequency,
@@ -79,10 +87,6 @@ const EditReviewCycle = () => {
     }
   }, [reviewId]);
 
-  const handleFormChange = (key: keyof IReviewCycle, value: any) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -95,12 +99,13 @@ const EditReviewCycle = () => {
       reviewers: formData.assignedReviewer,
       reminderType: formData.reminderType,
       reminderFrequency: formData.reminderFrequency,
-      notifyEmployees: formData.notifyEmployees,
-      notifyReviewers: formData.notifyReviewers,
     };
+
+    console.log(payload);
 
     try {
       const response = await editReviewCycle(reviewId, payload);
+      console.log(response);
       if (response?.status === 200) {
         toast.success("Review cycle updated successfully.");
         setTimeout(() => {
@@ -175,40 +180,40 @@ const EditReviewCycle = () => {
         </div>
 
         <div className="flex flex-col md:flex-row gap-y-4 md:gap-10 items-center justify-between w-full">
-          <AppSelectWithSearch
+          <AppMultipleSelect
             label="Assign Employees"
-            requiredField
-            placeholder="Search and select employees"
-            listItems={employees.map((emp) => ({
+            placeholder="Assign Employees"
+            items={employees.map((emp) => ({
               label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
               value: emp.id as string,
             }))}
-            onChange={(value) =>
-              handleFormChange("assignedEmployees", [
-                ...formData.assignedEmployees,
-                value,
-              ])
+            selectedValues={formData.assignedEmployees}
+            onSelectionChange={(values: string[]) =>
+              setFormData({
+                ...formData,
+                assignedEmployees: [...new Set(values)],
+              })
             }
-            isLoading={isFetching}
-            onSearch={handleSearch}
+            width="w-full"
+            noResultsText="No employees found"
           />
 
-          <AppSelectWithSearch
+          <AppMultipleSelect
             label="Assign Reviewer"
-            requiredField
-            placeholder="Search and select reviewer"
-            listItems={employees.map((emp) => ({
+            placeholder="Assign Reviewer"
+            items={employees.map((emp) => ({
               label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
               value: emp.id as string,
             }))}
-            onChange={(value) =>
-              handleFormChange("assignedReviewer", [
-                ...formData.assignedReviewer,
-                value,
-              ])
+            selectedValues={formData.assignedReviewer}
+            onSelectionChange={(values: string[]) =>
+              setFormData({
+                ...formData,
+                assignedReviewer: [...new Set(values)],
+              })
             }
-            isLoading={isFetching}
-            onSearch={handleSearch}
+            width="w-full"
+            noResultsText="No reviewers found"
           />
         </div>
 

@@ -2,10 +2,14 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { IoCloseCircle } from "react-icons/io5";
 
-export const AppFileUpload = ({ label, onChange, className }: {
-  label?: string,
-  onChange: (files: File[]) => void,
-  className?: string
+export const AppFileUpload = ({
+  label,
+  onChange,
+  className,
+}: {
+  label?: string;
+  onChange: (files: File[]) => void;
+  className?: string;
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
@@ -25,7 +29,9 @@ export const AppFileUpload = ({ label, onChange, className }: {
 
   const handleFileRemove = (file: File) => {
     setSelectedFiles((prevSelectedFiles) => {
-      const updatedFiles = prevSelectedFiles.filter((f) => f.name !== file.name);
+      const updatedFiles = prevSelectedFiles.filter(
+        (f) => f.name !== file.name,
+      );
       onChange(updatedFiles);
       return updatedFiles;
     });
@@ -35,15 +41,20 @@ export const AppFileUpload = ({ label, onChange, className }: {
     <div className={cn("space-y-2", className)}>
       <p className="text-sm font-semibold text-black">{label}</p>
       <div className="space-y-1">
-        <div className='flex flex-col border-dashed border-2 outline-none rounded-lg p-2 relative'>
-          <div className='flex flex-wrap gap-2'>
+        <div className="flex flex-col border-dashed border-2 outline-none rounded-lg p-2 relative">
+          <div className="flex flex-wrap gap-2">
             {selectedFiles.map((file) => (
-              <div key={file.name} className='flex items-center bg-[#E6EBF9] rounded-full p-1 text-xs'>
-                <span className='mr-2 truncate max-w-[150px] ml-1'>{file.name}</span>
+              <div
+                key={file.name}
+                className="flex items-center bg-[#E6EBF9] rounded-full p-1 text-xs"
+              >
+                <span className="mr-2 truncate max-w-[150px] ml-1">
+                  {file.name}
+                </span>
                 <button
-                  type='button'
+                  type="button"
                   onClick={() => handleFileRemove(file)}
-                  className='text-primary hover:text-primary'
+                  className="text-primary hover:text-primary"
                 >
                   <IoCloseCircle size={20} />
                 </button>
@@ -52,33 +63,31 @@ export const AppFileUpload = ({ label, onChange, className }: {
           </div>
 
           <button
-            type='button'
-            className='flex items-center justify-center text-center cursor-pointer outline-none border-none'
-            onClick={() => document.getElementById('document-upload')?.click()}
+            type="button"
+            className="flex items-center justify-center text-center cursor-pointer outline-none border-none"
+            onClick={() => document.getElementById("document-upload")?.click()}
           >
             {selectedFiles.length === 0 ? (
-              <p className='text-sm text-gray-500'>
-                click to upload
-              </p>
+              <p className="text-sm text-gray-500">click to upload</p>
             ) : (
-              <p className='text-sm text-primary mt-2'>
-                + Add more files
-              </p>
+              <p className="text-sm text-primary mt-2">+ Add more files</p>
             )}
           </button>
 
           <input
-            id='document-upload'
-            name='document-upload'
-            type='file'
+            id="document-upload"
+            name="document-upload"
+            type="file"
             multiple
-            accept='.pdf'
-            className='hidden'
+            accept=".pdf"
+            className="hidden"
             onChange={handleFileChange}
           />
         </div>
-        <p className="text-[10px] text-gray-500">Attach any relevant file. Max file size allowed is 3MB.</p>
+        <p className="text-[10px] text-gray-500">
+          Attach any relevant file. Max file size allowed is 3MB.
+        </p>
       </div>
     </div>
-  )
-}
+  );
+};
