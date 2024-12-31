@@ -1,16 +1,14 @@
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { SortOrder } from "@/types/enum";
 import { getEmployee } from "@/app/api/services/employee";
+import { SortOrder } from "@/types/enum";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 const useFetchEmployees = () => {
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [itemsPerPage, setItemsPerPage] = React.useState(10);
-  const [currentPage, setCurrentPage] = React.useState(1);
-  const [sortOrder, setSortOrder] = React.useState<SortOrder>(SortOrder.Asc);
-  const [statusFilter, setStatusFilter] = React.useState<string | undefined>(
-    "",
-  );
+  const [searchQuery, setSearchQuery] = useState("");
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.Asc);
+  const [statusFilter, setStatusFilter] = useState<string | undefined>("");
 
   const { data, isFetching, refetch } = useQuery({
     queryKey: [
@@ -18,8 +16,8 @@ const useFetchEmployees = () => {
       currentPage,
       itemsPerPage,
       sortOrder,
-      searchQuery,
       statusFilter,
+      searchQuery,
     ],
     queryFn: () =>
       getEmployee(
@@ -31,7 +29,7 @@ const useFetchEmployees = () => {
       ),
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       console.log("Fetched employees data:", data);
     }
