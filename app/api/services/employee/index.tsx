@@ -1,5 +1,5 @@
 "use server";
-import { Employee, ServerResponse } from "@/types";
+import { Employee, ServerResponse } from "@/types/api-index";
 import { SortOrder } from "@/types/enum";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/options";
