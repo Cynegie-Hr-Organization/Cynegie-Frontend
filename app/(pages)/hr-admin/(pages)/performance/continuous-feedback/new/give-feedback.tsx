@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// Updated feedback component and types
 "use client";
 
 import AppButton from "@/app/_components/shared/button";
@@ -8,17 +6,16 @@ import { AppFileUpload } from "@/app/_components/shared/file-upload";
 import { InputTextArea } from "@/app/_components/shared/input-text";
 import AppRadio from "@/app/_components/shared/radio";
 import { AppSelect } from "@/app/_components/shared/select";
-import { AppSelectWithSearch } from "@/app/_components/shared/select-with-search";
 import { giveFeedback } from "@/app/api/services/performance/continous-feedback";
 import useFetchEmployees from "@/utils/usefetchEmployees";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Skeleton from "react-loading-skeleton";
+import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 
-// Define the type for the feedback payload
 export interface FeedbackPayload {
-  recipient: string[]; // Array to accommodate multiple recipients if needed
+  recipient: string[];
   feedbackType: "positive" | "negative" | "neutral";
   comment: string;
   rating: number;
@@ -29,7 +26,7 @@ const DEFAULT_ATTACHMENT = "https://example.com/attachment.jpg";
 
 const GiveFeedback = () => {
   const router = useRouter();
-  const { employees, isFetching, handleSearch } = useFetchEmployees();
+  const { employees, isFetching } = useFetchEmployees();
 
   const [formData, setFormData] = useState<FeedbackPayload>({
     recipient: [],
@@ -39,11 +36,26 @@ const GiveFeedback = () => {
     attachment: DEFAULT_ATTACHMENT,
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = async () => {
+    const { recipient, feedbackType, comment, rating, attachment } = formData;
+
+    if (
+      !recipient.length ||
+      !feedbackType ||
+      !comment.trim() ||
+      rating === 0 ||
+      !attachment
+    ) {
+      toast.error("Please fill out all fields before submitting feedback.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
     try {
-      console.log(formData);
       const response = await giveFeedback(formData);
-      console.log(response);
 
       if (response.status === 201) {
         toast.success("Feedback submitted successfully:");
@@ -54,31 +66,38 @@ const GiveFeedback = () => {
     } catch (error) {
       console.error("Error submitting feedback:", error);
       toast.error("An error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
   return (
     <>
       <CardLayout className="space-y-6" bg="bg-white p-4 md:p-6 lg:p-8">
         {isFetching ? (
-          <Skeleton count={5} />
+          <div className="md:space-y-12">
+            <Skeleton width="100%" height={40} />
+            <Skeleton width="100%" height={40} />
+            <Skeleton width="100%" height={40} />
+          </div>
         ) : (
           <>
-            <AppSelectWithSearch
+            <AppMultipleSelect
               label="Recipient"
               placeholder="Select Recipient"
-              selectedItems={formData.recipient}
-              onChange={(value) =>
+              selectedValues={formData.recipient}
+              onSelectionChange={(values: string[]) =>
                 setFormData({
                   ...formData,
-                  recipient: [...new Set(value)],
+                  recipient: [...new Set(values)],
                 })
               }
-              listItems={employees.map((emp) => ({
+              items={employees.map((emp: any) => ({
                 label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
                 value: emp.id as string,
               }))}
-              isLoading={isFetching}
-              onSearch={handleSearch}
+              width="w-full"
+              noResultsText="No employees found"
             />
 
             <div className="space-y-2">
@@ -160,6 +179,8 @@ const GiveFeedback = () => {
           label="Give Feedback"
           className="btn-primary w-full md:w-[230px]"
           onClick={handleSubmit}
+          disabled={isSubmitting}
+          isLoading={isSubmitting}
         />
       </div>
     </>

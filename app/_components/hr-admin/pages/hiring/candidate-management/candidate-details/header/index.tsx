@@ -1,14 +1,35 @@
 import React, { useState, useEffect, useRef } from "react";
-// import MoveStageModal from "../move-stage-modal";
 import MoveStageModal from "../move-stage-modal";
 import { useRouter } from "next/navigation";
+import { fetchCandidateById } from "@/app/api/services/candidate";
 
-const HiringCandidateDetailsHeader: React.FC = () => {
+const HiringCandidateDetailsHeader: React.FC<{
+  candidate: string;
+  refetch: () => void;
+}> = ({ candidate, refetch }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
-
+  const [candidateData, setCandidateData] = useState<any>(null);
   const router = useRouter();
+
+  // Fetch candidate data on mount (you can modify this based on your API)
+  useEffect(() => {
+    const fetchCandidateData = async () => {
+      try {
+        const response = await fetchCandidateById(candidate);
+        console.log(response);
+        setCandidateData(response.data);
+      } catch (error) {
+        console.error("Error fetching candidate data:", error);
+      }
+    };
+
+    if (candidate) {
+      fetchCandidateData();
+    }
+  }, [candidate]);
+
   // Toggle popup visibility
   const handlePopupToggle = () => {
     setIsPopupOpen(!isPopupOpen);
@@ -64,7 +85,7 @@ const HiringCandidateDetailsHeader: React.FC = () => {
             className="px-6 py-2 text-base font-semibold bg-[#0035C3] text-white rounded-lg hover:bg-blue-600 focus:outline-none"
             onClick={() =>
               router.push(
-                "/hr-admin/hiring/candidate-management/interviews-schedule",
+                `/hr-admin/hiring/candidate-management/interviews-schedule/${candidate}`,
               )
             }
           >
@@ -96,9 +117,9 @@ const HiringCandidateDetailsHeader: React.FC = () => {
           {/* Pop-up for Mobile Actions */}
           {isPopupOpen && (
             <div
-              ref={popupRef} // Reference to the popup for outside click detection
+              ref={popupRef}
               className="absolute right-0 mt-1 bg-white w-44 rounded-lg shadow-lg z-50 flex flex-col gap-2 p-2 border border-gray-300"
-              onClick={(e) => e.stopPropagation()} // Prevent closing on click inside
+              onClick={(e) => e.stopPropagation()}
             >
               <ul className="space-y-2">
                 <li>
@@ -108,7 +129,7 @@ const HiringCandidateDetailsHeader: React.FC = () => {
                 </li>
                 <li>
                   <button
-                    onClick={handleModalToggle} // Toggle modal on click
+                    onClick={handleModalToggle}
                     className="w-full text-left text-base font-semibold text-gray-700 hover:text-blue-600"
                   >
                     Move Stage
@@ -121,8 +142,14 @@ const HiringCandidateDetailsHeader: React.FC = () => {
       </header>
 
       {/* Move Stage Modal */}
-      {/* <RejectModal isOpen={isModalOpen} onClose={handleModalToggle} /> */}
-      <MoveStageModal isOpen={isModalOpen} onClose={handleModalToggle} />
+      {candidateData && (
+        <MoveStageModal
+          isOpen={isModalOpen}
+          rowData={candidateData}
+          onClose={handleModalToggle}
+          refetch={refetch}
+        />
+      )}
     </>
   );
 };

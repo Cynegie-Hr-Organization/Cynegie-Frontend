@@ -1,11 +1,54 @@
-import React from "react";
+import { candidateUpdateStatus } from "@/app/api/services/candidate";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  candidateId: string;
 }
 
-const RejectModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+const RejectModal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  candidateId,
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [reasons, setReasons] = useState<string>("");
+
+  const handleReject = async () => {
+    if (!reasons) {
+      setError("Reasons for rejection are required.");
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    const payload = {
+      status: "Rejected",
+    };
+
+    try {
+      const response = await candidateUpdateStatus(candidateId, payload);
+
+      if (response.status === 200) {
+        toast.success("Candidate successfully rejected.");
+        onClose();
+      } else {
+        setError(response.message || "Failed to reject the candidate.");
+        toast.error(response.message || "Failed to reject the candidate.");
+      }
+    } catch (err) {
+      setError("An error occurred while rejecting the candidate.");
+      toast.error("Failed to reject the candidate.");
+      console.error("Error:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -14,7 +57,7 @@ const RejectModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         {/* Modal Header */}
         <div className="flex justify-between items-center mb-1">
           <h2 className="text-xl font-semibold text-gray-900">
-            Reject Candidate{" "}
+            Reject Candidate
           </h2>
           <button
             onClick={onClose}
@@ -40,16 +83,16 @@ const RejectModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
         {/* Modal Content */}
         <p className="text-sm mt-4 md:mt-0 text-center md:text-start md:max-w-96 text-gray-600 mb-6">
-          Are you sure you want to reject this candidate ? This action will
-          notify the candidate about their application status and can’t be
-          undone{" "}
+          Are you sure you want to reject this candidate? This action will
+          notify the candidate about their application status and can&apos;t be
+          undone.
         </p>
 
         {/* Form Fields */}
         <div className="space-y-4">
           <div>
             <label
-              htmlFor="notes"
+              htmlFor="reasons"
               className="block text-sm font-medium text-black"
             >
               Reasons for rejection
@@ -57,6 +100,8 @@ const RejectModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             <textarea
               id="reasons"
               placeholder=""
+              value={reasons}
+              onChange={(e) => setReasons(e.target.value)}
               className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-300"
               rows={4}
             ></textarea>
@@ -72,12 +117,15 @@ const RejectModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             Cancel
           </button>
           <button
-            onClick={() => alert("Moving to next stage...")}
-            className="w-full px-4 py-2 text-white bg-[#0035C3] rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-300"
+            onClick={handleReject}
+            disabled={isLoading}
+            className="w-full px-4 py-2 text-white bg-[#0035C3] rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-300 disabled:bg-gray-400"
           >
-            Reject
+            {isLoading ? "Processing..." : "Reject"}
           </button>
         </div>
+
+        {error && <p className="text-sm text-red-500 mt-4">{error}</p>}
       </div>
     </div>
   );

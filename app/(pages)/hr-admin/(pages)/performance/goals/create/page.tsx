@@ -11,9 +11,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PlusIcon } from "lucide-react";
 import useFetchEmployees from "@/utils/usefetchEmployees";
-import { AppSelectWithSearch } from "@/app/_components/shared/select-with-search";
 import { createGoals } from "@/app/api/services/performance/goals";
 import { toast } from "react-toastify";
+import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 
 interface IGoal {
   goalName: string;
@@ -53,23 +53,56 @@ const PerformanceGoalsCreatePage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Basic Validation
+    if (!formData.goalName.trim()) {
+      toast.error("Goal Name is required.");
+      return;
+    }
+
+    if (!formData.description.trim()) {
+      toast.error("Description is required.");
+      return;
+    }
+
+    if (!["team", "personal"].includes(formData.goalType)) {
+      toast.error("Goal Type must be 'team' or 'personal'.");
+      return;
+    }
+
+    if (!["High", "Medium", "Low"].includes(formData.priority)) {
+      toast.error("Priority must be 'High', 'Medium', or 'Low'.");
+      return;
+    }
+
+    if (!Array.isArray(formData.employees)) {
+      toast.error("Employees must be selected.");
+      return;
+    }
+
+    // Preparing payload
     const payload = {
-      ...formData,
+      goalName: formData.goalName.trim(),
+      description: formData.description.trim(),
+      goalType: formData.goalType,
+      priority: formData.priority,
+      employees: formData.employees,
+      dueDate: formData.dueDate?.toISOString(),
+      alignment: formData.alignment.trim(),
       milestones: formData.milestones.map((m) => ({
-        milestoneName: m.milestoneName,
+        milestoneName: m.milestoneName.trim(),
         dueDate: m.dueDate?.toISOString(),
       })),
       keyResults: formData.keyResults.map((kr) => ({
-        result: kr.keyResult,
-        targetValue: Number(kr.targetValue),
+        result: kr.keyResult.trim(),
+        targetValue: Number(kr.targetValue) || 0,
         dueDate: kr.dueDate?.toISOString(),
       })),
-      dueDate: formData.dueDate?.toISOString(),
     };
 
     console.log(payload);
 
     try {
+      console.log(payload);
       const response = await createGoals(payload);
       console.log(response);
       if (response?.status === 201) {
@@ -122,22 +155,22 @@ const PerformanceGoalsCreatePage = () => {
               { label: "Employee 3", value: "employee-3" },
             ]}
           />
-          <AppSelectWithSearch
+          <AppMultipleSelect
             label="Assign Employees"
             placeholder="Assign Employees"
-            selectedItems={formData.employees}
-            onChange={(value) =>
-              setFormData({
-                ...formData,
-                employees: [...new Set(value)],
-              })
-            }
-            listItems={employees.map((emp) => ({
+            items={employees.map((emp: any) => ({
               label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
               value: emp.id as string,
             }))}
-            isLoading={isFetching}
-            onSearch={handleSearch}
+            selectedValues={formData.employees}
+            onSelectionChange={(values: string[]) =>
+              setFormData({
+                ...formData,
+                employees: [...new Set(values)],
+              })
+            }
+            width="w-full"
+            noResultsText="No employees found"
           />
         </div>
 

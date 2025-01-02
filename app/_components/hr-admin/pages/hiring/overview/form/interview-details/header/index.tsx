@@ -1,10 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { fetchInterviewById } from "@/app/api/services/interview";
 import RejectCandidateModal from "../../../../candidate-management/reject-candidate-modal";
 
-const InterviewDetailsTopHeader = () => {
+interface InterviewDetailsTopHeaderProps {
+  interviewId: string;
+}
+
+const InterviewDetailsTopHeader: React.FC<InterviewDetailsTopHeaderProps> = ({
+  interviewId,
+}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [candidateData, setCandidateData] = useState<any | null>(null);
+  const [loading, setLoading] = useState(true);
+
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
   };
@@ -38,11 +48,33 @@ const InterviewDetailsTopHeader = () => {
     };
   }, [dropdownOpen]);
 
+  const getInterviewDetails = useCallback(async () => {
+    try {
+      const response = await fetchInterviewById(interviewId);
+      console.log(response);
+      setCandidateData(response.data?.candidate);
+      setLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch interview details", error);
+      setLoading(false);
+    }
+  }, [interviewId]);
+
+  useEffect(() => {
+    getInterviewDetails();
+  }, [getInterviewDetails]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       {/* Header Section */}
       <header className="flex flex-row justify-between items-center">
-        <h1 className="ml-2 text-xl md:text-2xl font-bold text-gray-900 md:mb-4"></h1>
+        <h1 className="ml-2 text-xl md:text-2xl font-bold text-gray-900 md:mb-4">
+          Interview Details
+        </h1>
         <div
           className="relative flex flex-row gap-2 items-center"
           ref={dropdownRef}
@@ -74,13 +106,13 @@ const InterviewDetailsTopHeader = () => {
             <div className="absolute right-0 top-9 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
               <button
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
-                onClick={() => alert("Close Job")}
+                onClick={() => alert("Schedule follow up interview")}
               >
                 Schedule follow up interview
               </button>
               <button
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
-                onClick={() => alert("Edit Job")}
+                onClick={() => alert("Move to next stage")}
               >
                 Move to next stage
               </button>
@@ -88,13 +120,22 @@ const InterviewDetailsTopHeader = () => {
                 className="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100 focus:outline-none"
                 onClick={handleRejectClick}
               >
-                Cancel
+                Reject Candidate
               </button>
             </div>
           )}
         </div>
       </header>
-      <RejectCandidateModal isOpen={isModalOpen} onClose={closeModal} />
+
+      {/* Reject Candidate Modal */}
+      {isModalOpen && candidateData && (
+        <RejectCandidateModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          rowData={candidateData}
+          refetch={getInterviewDetails}
+        />
+      )}
     </>
   );
 };

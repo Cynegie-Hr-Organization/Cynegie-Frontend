@@ -7,6 +7,14 @@ export type ColorVariant =
   | 'purple'
   | 'ash';
 
+
+  export type CreatedBy = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  id: string;
+};
+
 export type SummaryCard = {
   value: number;
   iconColorVariant: ColorVariant;
@@ -173,4 +181,199 @@ export interface DeviceMetrics {
     APPROVED: number;
     REJECTED: number;
   };
+}
+
+
+
+export interface Candidate {
+  firstName: string;
+  lastName: string;
+  job: Job;
+  stage: string;
+  status: string;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}
+
+export interface CandidateResponse {
+  id: string;
+  stage: string;
+  firstName: string;
+  lastName: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  job: Job;
+}
+
+export interface JobOffer {
+  description: string;
+  baseSalary: string;
+  bonus: string;
+  benefits: string;
+  documents: string[];
+  jobTitle: string;
+  offerDate: string;
+  jobStartDate: string;
+  expirationDate: string;
+  department: string;
+  candidate: Candidate;
+  status: string;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}
+
+export interface JobOfferResponseData {
+  totalPages: number;
+  count: number;
+  currentPage: number;
+  data: JobOffer[];
+}
+
+export interface JobOfferResponse {
+  status: number;
+  message: string;
+  data: JobOfferResponseData;
+}
+
+export interface Interview {
+  description: string;
+  startTime: string;
+  reminderTime: string;
+  startDate: string;
+  candidate: Candidate;
+  interviewer: string | null;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}
+
+interface PersonalInfo {
+  firstName: string;
+  lastName: string;
+  email: string;
+  id: string;
+}
+
+export interface Employee {
+  employmentInformation: string;
+  personalInfo: PersonalInfo;
+  compensation: string;
+  documents: string[];
+  NextOfKin: string[];
+  accessRights: string[];
+  deletedAt: string | null;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}
+
+export interface KeyResult {
+  result: string;
+  targetValue: number;
+  dueDate: string;
+  id: string;
+}
+
+export interface Milestone {
+  milestoneName: string;
+  dueDate: string;
+  id: string;
+}
+
+export interface Goal {
+  goalName: string;
+  description: string;
+  goalType: string;
+  priority: string;
+  employees: Employee;
+  dueDate: string;
+  status: string;
+  alignment: string;
+  keyResults: KeyResult[];
+  milestones: Milestone[];
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}
+
+export interface GoalResponse {
+  status: number;
+  message: string;
+  data: {
+    items: Goal[];
+    totalItems: number;
+    totalPages: number;
+    currentPage: number;
+  };
+}
+
+export type ReviewCycle = {
+  cycleName: string;
+  startDate: string;
+  endDate: string;
+  daysOfGrace: number;
+  employees: Employee[];
+  reviewers: Employee[];
+  reminderType: "email" | "sms";
+  reminderFrequency: "daily" | "weekly" | "monthly" | "yearly";
+  status: "not_started" | "in_progress" | "completed";
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+};
+
+type PaginationMeta = {
+  itemCount: number;
+  totalPages: number;
+  page: number;
+  limit: number;
+};
+
+export type ServerResponse<T> = {
+  status: string;
+  message: string;
+  data: T[];
+  meta: PaginationMeta;
+};
+
+export type FeedbackItem = {
+  recipient: Employee[];
+  feedbackType: "positive" | "neutral" | "negative";
+  comment: string;
+  rating: number;
+  attachment: string;
+  createdBy: CreatedBy;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+};
+
+export type FeedbackData = {
+  items: FeedbackItem[];
+  totalItems: number;
+  totalPages: number;
+  currentPage: number;
+};
+
+export interface GoalAchievementRate {
+  achievementRate: number;
+}
+
+export interface TrainingCompletionRate {
+  completionRate: number;
+}
+
+export interface MonthlyCompletionRate {
+  month: string;
+  completionRate: number;
 }

@@ -11,7 +11,6 @@ import Link from "next/link";
 import PerformanceReviewTable from "./components/table";
 import { useRouter } from "next/navigation";
 
-
 const colors = {
   grey: "#E6EBF9",
   yellow: "#FFAD33",
@@ -218,7 +217,10 @@ const PerformanceOverviewPage = () => {
           >
             Actions <IoIosArrowDown />
           </Link>
-          <button onClick={() => { router.push('/hr-admin/performance/review-cycle/new') }}
+          <button
+            onClick={() => {
+              router.push("/hr-admin/performance/review-cycle/new");
+            }}
             className="font-bold rounded-lg px-4 py-2 text-white bg-primary h-12 w-[249px] btn-active flex items-center justify-center"
           >
             Create New Review Cycle
@@ -244,21 +246,23 @@ const PerformanceOverviewPage = () => {
 };
 
 const OverviewCards = ({ className }: { className?: string }) => {
-  const overviewContents = [{
-    color: '#EADAFF',
-    title: 'Total Open Positions',
-    count: 15,
-  },
-  {
-    color: '#D2F1DE',
-    title: 'Total Applications',
-    count: 900,
-  },
-  {
-    color: '#DEE3FF',
-    title: 'Pending Offer',
-    count: 5,
-  }]
+  const overviewContents = [
+    {
+      color: "#EADAFF",
+      title: "Total Open Positions",
+      count: 15,
+    },
+    {
+      color: "#D2F1DE",
+      title: "Total Applications",
+      count: 900,
+    },
+    {
+      color: "#DEE3FF",
+      title: "Pending Offer",
+      count: 5,
+    },
+  ];
 
   return (
     <div
@@ -386,6 +390,5 @@ const PieChartCard = ({
     </div>
   );
 };
-
 
 export default PerformanceOverviewPage;

@@ -6,12 +6,12 @@ import AppButton from "@/app/_components/shared/button";
 import CardLayout from "@/app/_components/shared/cards";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
 import InputText from "@/app/_components/shared/input-text";
-import { AppSelectWithSearch } from "@/app/_components/shared/select-with-search";
 import useFetchEmployees from "@/utils/usefetchEmployees";
 import { useRouter } from "next/navigation";
 import { getTemplates } from "@/app/api/services/performance/template";
 import { toast } from "react-toastify";
 import { createAssessment } from "@/app/api/services/performance/assessments";
+import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 
 const SkeletonLoader = () => (
   <div className="animate-pulse space-y-4">
@@ -24,11 +24,7 @@ const SkeletonLoader = () => (
 const ManagerAssessmentPage = () => {
   const router = useRouter();
 
-  const {
-    employees,
-    isFetching: isFetchingEmp,
-    handleSearch: handleSearchEmp,
-  } = useFetchEmployees();
+  const { employees, isFetching: isFetchingEmp } = useFetchEmployees();
 
   const [templates, setTemplates] = useState<any[]>([]);
   const [loadingTemplates, setLoadingTemplates] = useState(true);
@@ -51,10 +47,8 @@ const ManagerAssessmentPage = () => {
   });
 
   const validateForm = () => {
-    const { assessmentName, employees, dueDate, template, type } = formData;
-    return (
-      assessmentName && employees.length > 0 && dueDate && template && type
-    );
+    const { assessmentName, employees, dueDate, template } = formData;
+    return assessmentName.trim() && employees.length > 0 && dueDate && template;
   };
 
   useEffect(() => {
@@ -74,17 +68,9 @@ const ManagerAssessmentPage = () => {
     fetchTemplates();
   }, []);
 
-  const handleTemplateChange = (selected: string[]) => {
-    if (selected.length > 0) {
-      setFormData({ ...formData, template: selected[0] });
-    } else {
-      setFormData({ ...formData, template: "" });
-    }
-  };
-
   const handleSubmit = async () => {
     if (!validateForm()) {
-      toast("Please fill out all required fields.");
+      toast.error("Please fill out all required fields.");
       return;
     }
 
@@ -115,11 +101,11 @@ const ManagerAssessmentPage = () => {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-lg font-semibold">New Assessment</h1>
+      <p className="text-lg font-semibold">New Manager Assessment</p>
 
       <CardLayout bg="bg-white p-4 md:p-6">
         <div className="flex flex-col gap-6">
-          <h2 className="font-semibold">Assessment Details</h2>
+          <p className="text-lg font-semibold">Assessment Details</p>
 
           {loadingTemplates || isFetchingEmp ? (
             <SkeletonLoader />
@@ -132,45 +118,48 @@ const ManagerAssessmentPage = () => {
                   value={formData.assessmentName}
                   id="assessment-name"
                   onChange={(e) =>
-                    setFormData({ ...formData, assessmentName: e.target.value })
-                  }
-                />
-                <AppSelectWithSearch
-                  label="Manager"
-                  placeholder="Select Manager"
-                  selectedItems={formData.manager ? [formData.manager] : []}
-                  onChange={(value) =>
                     setFormData({
                       ...formData,
-                      manager: value[0],
+                      assessmentName: e.target.value,
                     })
                   }
-                  listItems={employees.map((emp) => ({
+                />
+                <AppMultipleSelect
+                  label="Manager"
+                  placeholder="Select Manager"
+                  items={employees.map((emp: any) => ({
                     label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
                     value: emp.id as string,
                   }))}
-                  isLoading={isFetchingEmp}
-                  onSearch={handleSearchEmp}
+                  selectedValues={formData.manager ? [formData.manager] : []}
+                  onSelectionChange={(values: string[]) =>
+                    setFormData({
+                      ...formData,
+                      manager: values[0] || "",
+                    })
+                  }
+                  width="w-full"
+                  noResultsText="No Manager found"
                 />
               </div>
 
               <div className="flex flex-col md:flex-row gap-6">
-                <AppSelectWithSearch
+                <AppMultipleSelect
                   label="Assign Employees"
                   placeholder="Assign Employees"
-                  selectedItems={formData.employees}
-                  onChange={(value) =>
-                    setFormData({
-                      ...formData,
-                      employees: [...new Set(value)],
-                    })
-                  }
-                  listItems={employees.map((emp) => ({
+                  items={employees.map((emp: any) => ({
                     label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
                     value: emp.id as string,
                   }))}
-                  isLoading={isFetchingEmp}
-                  onSearch={handleSearchEmp}
+                  selectedValues={formData.employees}
+                  onSelectionChange={(values: string[]) =>
+                    setFormData({
+                      ...formData,
+                      employees: [...new Set(values)],
+                    })
+                  }
+                  width="w-full"
+                  noResultsText="No Employees found"
                 />
 
                 <AppDatePicker
@@ -182,23 +171,28 @@ const ManagerAssessmentPage = () => {
                   setSelectedDate={(value) =>
                     setFormData({
                       ...formData,
-                      dueDate: value?.toISOString() ?? "",
+                      dueDate: value?.toISOString() || "",
                     })
                   }
                 />
               </div>
 
-              <AppSelectWithSearch
+              <AppMultipleSelect
                 label="Template"
                 placeholder="Select Template"
-                selectedItems={formData.template ? [formData.template] : []}
-                onChange={handleTemplateChange}
-                listItems={templates.map((template) => ({
+                items={templates.map((template) => ({
                   label: template.templateName,
                   value: template.id,
                 }))}
-                isLoading={loadingTemplates}
-                onSearch={() => {}}
+                selectedValues={formData.template ? [formData.template] : []}
+                onSelectionChange={(values: string[]) =>
+                  setFormData({
+                    ...formData,
+                    template: values[0] || "",
+                  })
+                }
+                width="w-full"
+                noResultsText="No Templates found"
               />
             </div>
           )}
@@ -219,10 +213,10 @@ const ManagerAssessmentPage = () => {
         />
         <AppButton
           label="Submit"
-          className={`disabled:btn-inactive btn-primary ${
-            isSubmitting ? "opacity-50 pointer-events-none" : ""
-          }`}
+          className="btn-primary w-full md:w-[230px]"
           onClick={handleSubmit}
+          disabled={isSubmitting}
+          isLoading={isSubmitting}
         />
       </div>
     </div>

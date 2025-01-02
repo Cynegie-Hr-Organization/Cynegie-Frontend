@@ -2,12 +2,15 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import InterviewDetailsHeader from "./card-header";
 import InterviewDetailsTopHeader from "./header";
 
 export default function InterviewDetails() {
   const router = useRouter();
+  const { id } = useParams();
+
+  const interviewId = typeof id === "string" ? id : "";
 
   return (
     <div className="p-[15px] flex gap-4 flex-col md:p-[30px]">
@@ -24,9 +27,9 @@ export default function InterviewDetails() {
           Back to Interviews{" "}
         </h1>
       </div>
-      <InterviewDetailsTopHeader />
+      <InterviewDetailsTopHeader interviewId={interviewId} />
       <div className="space-y-6 bg-white p-4 md:p-6 rounded-md ">
-        <InterviewDetailsHeader />
+        <InterviewDetailsHeader interviewId={interviewId} />
       </div>
     </div>
   );

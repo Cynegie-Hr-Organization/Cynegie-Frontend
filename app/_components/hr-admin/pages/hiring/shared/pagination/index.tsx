@@ -6,7 +6,7 @@ interface PaginationProps {
   itemsPerPage: number;
   currentPage: number;
   onPageChange: (page: number) => void;
-  onItemsPerPageChange: (items: number) => void;
+  onItemsPerPageChange?: (items: number) => void;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
@@ -27,7 +27,7 @@ const Pagination: React.FC<PaginationProps> = ({
         <select
           className="border border-gray-300 rounded  md:px-2 py-[1px] text-sm"
           value={itemsPerPage}
-          onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
+          onChange={(e) => onItemsPerPageChange?.(Number(e.target.value))}
         >
           <option value={5}>5</option>
           <option value={10}>10</option>

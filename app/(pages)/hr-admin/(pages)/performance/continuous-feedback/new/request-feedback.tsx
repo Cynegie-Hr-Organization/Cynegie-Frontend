@@ -1,51 +1,71 @@
 "use client";
 
+import AppButton from "@/app/_components/shared/button";
 import CardLayout from "@/app/_components/shared/cards";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
+import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import { InputTextArea } from "@/app/_components/shared/input-text";
-import { AppSelectWithSearch } from "@/app/_components/shared/select-with-search";
 import { requestFeedback } from "@/app/api/services/performance/continous-feedback";
 import useFetchEmployees from "@/utils/usefetchEmployees";
 import { PlusIcon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Skeleton from "react-loading-skeleton";
 import { toast } from "react-toastify";
 
 export interface FeedbackPayload {
-  recipient: string[];
-  feedbackQuestions: string[];
+  feedbackProviders: string[];
+  employeeId: string;
+  feedbackQuestion: string[];
   dueDate: string;
 }
 
 const RequestFeedback = () => {
-  const { employees, isFetching, handleSearch } = useFetchEmployees();
+  const router = useRouter();
+  const { employees, isFetching } = useFetchEmployees();
 
   const [formData, setFormData] = useState<FeedbackPayload>({
-    recipient: [],
-    feedbackQuestions: [""],
+    feedbackProviders: [],
+    employeeId: "",
+    feedbackQuestion: [""],
     dueDate: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const { feedbackProviders, employeeId, feedbackQuestion, dueDate } =
+      formData;
+
+    if (
+      !feedbackProviders.length ||
+      !employeeId ||
+      feedbackQuestion.some((q) => !q.trim()) ||
+      !dueDate
+    ) {
+      toast.error("Please fill out all fields before submitting feedback.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      // Make API request
-      const response = await requestFeedback(formData);
-      console.log(response);
+      const response = await requestFeedback({
+        ...formData,
+        feedbackQuestion: formData.feedbackQuestion[0],
+      });
+
       if (response?.status === 200 || response?.status === 201) {
         toast.success("Feedback request sent successfully!");
         setFormData({
-          recipient: [],
-          feedbackQuestions: [""],
+          feedbackProviders: [],
+          feedbackQuestion: [""],
           dueDate: "",
+          employeeId: "",
         });
+        router.push("/hr-admin/performance/continuous-feedback");
       } else {
         toast.error("Failed to send feedback request. Please try again.");
       }
@@ -59,101 +79,135 @@ const RequestFeedback = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <CardLayout className="space-y-6" bg="bg-white p-4 md:p-6 lg:p-8">
-        <AppSelectWithSearch
-          label="Feedback Providers"
-          placeholder="Select"
-          onChange={(value) =>
-            setFormData({
-              ...formData,
-              recipient: [...new Set(value)],
-            })
-          }
-          listItems={employees.map((emp) => ({
-            label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
-            value: emp.id as string,
-          }))}
-          isLoading={isFetching}
-          onSearch={handleSearch}
-          selectedItems={formData.recipient}
-        />
+      <CardLayout className="space-y-6 mb-6" bg="bg-white p-4 md:p-6 lg:p-8">
+        {isFetching ? (
+          <div className="md:space-y-12">
+            <Skeleton width="100%" height={40} />
+            <Skeleton width="100%" height={40} />
+            <Skeleton width="100%" height={40} />
+          </div>
+        ) : (
+          <>
+            <AppMultipleSelect
+              label="Feedback Providers"
+              placeholder="Select"
+              items={employees.map((emp: any) => ({
+                label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
+                value: emp.id as string,
+              }))}
+              selectedValues={formData.feedbackProviders}
+              onSelectionChange={(values: string[]) =>
+                setFormData({
+                  ...formData,
+                  feedbackProviders: [...new Set(values)],
+                })
+              }
+              width="w-full"
+              noResultsText="No Feedback Providers found"
+            />
 
-        <div className="space-y-4">
-          <p className="text-sm font-semibold">Feedback Questions</p>
+            <AppMultipleSelect
+              label="Employee"
+              placeholder="Select Employee"
+              items={employees.map((emp: any) => ({
+                label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
+                value: emp.id as string,
+              }))}
+              selectedValues={formData.employeeId ? [formData.employeeId] : []}
+              onSelectionChange={(values: string[]) =>
+                setFormData({
+                  ...formData,
+                  employeeId: values[0] ?? "",
+                })
+              }
+              width="w-full"
+              noResultsText="No Employees found"
+            />
 
-          {formData.feedbackQuestions.map((question, index) => (
-            <div key={index} className="space-y-2">
-              <InputTextArea
-                label={`Question ${index + 1}`}
-                placeholder="Enter your feedback question"
-                value={question}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    feedbackQuestions: formData.feedbackQuestions.map((q, i) =>
-                      i === index ? e.target.value : q,
-                    ),
-                  })
-                }
-                id={`question-${index}`}
-              />
+            <div className="space-y-4">
+              <p className="text-sm font-semibold">Feedback Questions</p>
+
+              {formData.feedbackQuestion.map((question, index) => (
+                <div key={index} className="space-y-2">
+                  <InputTextArea
+                    label={`Question ${index + 1}`}
+                    placeholder="Enter your feedback question"
+                    value={question}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        feedbackQuestion: formData.feedbackQuestion.map(
+                          (q, i) => (i === index ? e.target.value : q),
+                        ),
+                      })
+                    }
+                    id={`question-${index}`}
+                  />
+                  <button
+                    type="button"
+                    className="text-red-500 text-sm"
+                    onClick={() =>
+                      setFormData({
+                        ...formData,
+                        feedbackQuestion: formData.feedbackQuestion.filter(
+                          (_, i) => i !== index,
+                        ),
+                      })
+                    }
+                    disabled={formData.feedbackQuestion.length === 1}
+                  >
+                    Remove Question
+                  </button>
+                </div>
+              ))}
+
               <button
                 type="button"
-                className="text-red-500 text-sm"
+                className="flex items-center gap-x-2 text-primary text-sm"
                 onClick={() =>
                   setFormData({
                     ...formData,
-                    feedbackQuestions: formData.feedbackQuestions.filter(
-                      (_, i) => i !== index,
-                    ),
+                    feedbackQuestion: [...formData.feedbackQuestion, ""],
                   })
                 }
-                disabled={formData.feedbackQuestions.length === 1} // Prevent removing the last question
               >
-                Remove Question
+                Add Question <PlusIcon className="w-4 h-4" />
               </button>
             </div>
-          ))}
 
-          <button
-            type="button"
-            className="flex items-center gap-x-2 text-primary text-sm"
-            onClick={() =>
-              setFormData({
-                ...formData,
-                feedbackQuestions: [...formData.feedbackQuestions, ""],
-              })
-            }
-          >
-            Add Question <PlusIcon className="w-4 h-4" />
-          </button>
-        </div>
-
-        <div className="flex flex-col lg:flex-row gap-6 w-full md:w-[calc(50%+16px)]">
-          <AppDatePicker
-            label="Due Date"
-            placeholder="Select Due Date"
-            selectedDate={
-              formData.dueDate === "" ? new Date() : new Date(formData.dueDate)
-            }
-            setSelectedDate={(value) =>
-              setFormData({
-                ...formData,
-                dueDate: value?.toISOString() ?? "",
-              })
-            }
-          />
-        </div>
+            <div className="flex flex-col lg:flex-row gap-6 w-full md:w-[calc(50%+16px)]">
+              <AppDatePicker
+                label="Due Date"
+                placeholder="Select Due Date"
+                selectedDate={
+                  formData.dueDate === ""
+                    ? new Date()
+                    : new Date(formData.dueDate)
+                }
+                setSelectedDate={(value) =>
+                  setFormData({
+                    ...formData,
+                    dueDate: value?.toISOString() ?? "",
+                  })
+                }
+              />
+            </div>
+          </>
+        )}
       </CardLayout>
 
-      <div className="flex justify-end gap-4 mt-6">
-        <button
+      <div className="flex flex-col md:flex-row justify-end gap-4">
+        <AppButton
+          label="Save & Continue Later"
+          className="btn-secondary w-full md:w-[230px]"
+        />
+        <AppButton
+          label={isSubmitting ? "Submitting..." : "Request Feedback"}
+          className="btn-primary"
           type="submit"
-          className="px-6 py-2 bg-primary text-white rounded-md disabled:opacity-50"
+          isLoading={isSubmitting}
           disabled={isSubmitting}
-        >
-          {isSubmitting ? "Submitting..." : "Request Feedback"}
-        </button>
+        />
       </div>
     </form>
   );

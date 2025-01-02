@@ -1,52 +1,37 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import { LuListFilter, LuMoreVertical } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
+import { useQuery } from "@tanstack/react-query";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AppSelect } from "@/app/_components/shared/select";
 import AppButton from "@/app/_components/shared/button";
 import Pagination from "@/app/_components/hr-admin/pages/hiring/shared/pagination";
 import AppMenubar from "@/app/_components/shared/menubar";
 import Skeleton from "react-loading-skeleton";
-import Link from "next/link";
 import { getGoals } from "@/app/api/services/performance/goals";
-import { Goal } from "@/types";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import DeleteGoalModal from "@/app/_components/hr-admin/performance/goal/delete-modal";
+import { GoalResponse } from "@/types";
+import { useRouter } from "next/navigation";
 
 const GoalTable = () => {
+  const router = useRouter();
   const [search, setSearch] = useState("");
   const [filter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
-  const [goals, setGoals] = useState<Goal[]>([]);
-  const [totalItems, setTotalItems] = useState(0);
-  const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [goalIdToDelete, setGoalIdToDelete] = useState<string | null>(null);
 
-  const fetchData = useCallback(async () => {
-    setLoading(true);
-    try {
-      const { data } = await getGoals(
-        currentPage,
-        itemsPerPage,
-        "asc",
-        filter,
-        search,
-      );
-      setGoals(data.items || []); // Fallback to empty array if data is undefined
+  // Fetch goals using useQuery
+  const { data, isLoading, refetch } = useQuery<GoalResponse>({
+    queryKey: ["goals", currentPage, itemsPerPage, search, filter],
+    queryFn: () => getGoals(currentPage, itemsPerPage, "desc", filter, search),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
 
-      setTotalItems(data.totalItems || 0); // Optional chaining with fallback to 0 if meta or totalItems is undefined
-    } catch (error) {
-      console.error("Error fetching goals:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [currentPage, itemsPerPage, filter, search]);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  const goals = data?.data?.items || [];
+  const totalItems = data?.data?.totalItems || 0;
 
   const handleDelete = (goalId: string) => {
     setGoalIdToDelete(goalId);
@@ -56,7 +41,7 @@ const GoalTable = () => {
   const handleCloseModal = () => {
     setModalOpen(false);
     setGoalIdToDelete(null);
-    fetchData();
+    refetch(); // Refetch data after deletion
   };
 
   const columns = [
@@ -103,11 +88,8 @@ const GoalTable = () => {
                   ]}
                   label="Priority"
                   placeholder="High"
-                  onChange={function (value: string): void {
-                    console.log(value);
-                  }}
+                  onChange={console.log}
                 />
-
                 <AppSelect
                   listItems={[
                     { label: "Completed", value: "completed" },
@@ -116,9 +98,7 @@ const GoalTable = () => {
                   ]}
                   label="Status"
                   placeholder="Pending"
-                  onChange={function (value: string): void {
-                    console.log(value);
-                  }}
+                  onChange={console.log}
                 />
                 <AppSelect
                   listItems={[
@@ -128,9 +108,7 @@ const GoalTable = () => {
                   ]}
                   label="Assigned To"
                   placeholder="HR Team"
-                  onChange={function (value: string): void {
-                    console.log(value);
-                  }}
+                  onChange={console.log}
                 />
                 <AppSelect
                   listItems={[
@@ -140,9 +118,7 @@ const GoalTable = () => {
                   ]}
                   label="Goal Type"
                   placeholder="All Goals"
-                  onChange={function (value: string): void {
-                    console.log(value);
-                  }}
+                  onChange={console.log}
                 />
               </div>
               <div className="flex items-center justify-between gap-4">
@@ -156,40 +132,8 @@ const GoalTable = () => {
 
       {/* Table */}
       <div className="-mx-5 mt-4">
-        {loading ? (
-          <table className="w-full border-collapse">
-            <thead>
-              <tr>
-                <th className="px-6 py-3 text-left">
-                  <Skeleton height={20} />
-                </th>
-                {columns.map((col, index) => (
-                  <th key={index} className="px-4 py-3 text-left">
-                    <Skeleton height={20} />
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {Array(4)
-                .fill(0)
-                .map((_, rowIndex) => (
-                  <tr
-                    key={rowIndex}
-                    className="border-b border-[#E4E7EC] hover:bg-gray-50"
-                  >
-                    <td className="px-6 py-4">
-                      <Skeleton height={20} />
-                    </td>
-                    {columns.map((_, colIndex) => (
-                      <td key={colIndex} className="px-4 py-4">
-                        <Skeleton height={20} />
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+        {isLoading ? (
+          <SkeletonTable columns={columns} />
         ) : (
           <table className="w-full border-collapse">
             <thead className="bg-[#F7F9FC]">
@@ -215,40 +159,48 @@ const GoalTable = () => {
                     <Checkbox className="rounded-md border-gray-300" />
                   </td>
                   <td className="px-4 py-4">{goal.goalName}</td>
-                  <td className="px-4 py-4">{goal.employees}</td>
+                  <td className="px-4 py-4">{`${goal.employees?.personalInfo?.firstName} ${goal.employees?.personalInfo?.lastName}`}</td>
                   <td className="px-4 py-4">
                     {new Date(goal.dueDate).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-4">
-                    <p className="text-sm font-semibold text-amber-600 bg-amber-50 rounded-full px-2 py-1">
+                    <p className="text-sm w-fit font-semibold text-amber-600 bg-amber-50 rounded-full px-2 py-1">
                       {goal.status}
                     </p>
                   </td>
                   <td className="px-4 py-4">{goal.priority}</td>
                   <td className="px-4 py-4">
                     <AppMenubar
-                      menuItems={
-                        <ul className="flex flex-col w-full text-base">
-                          {/* <li className="cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md w-full">
-                          <Link href={`/goals/edit/${goal.id}`}>Edit</Link>
-                        </li> */}
-                          <li className="cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md w-full">
-                            <Link
-                              href={`/hr-admin/performance/goals/goal-detail/${goal.id}`}
+                      menuItems={[
+                        {
+                          key: "view-details",
+                          label: (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                router.push(
+                                  `/hr-admin/performance/goals/goal-detail/${goal.id}`,
+                                )
+                              }
+                              className="hover:text-blue-600 cursor-pointer text-blue-500"
                             >
                               View Details
-                            </Link>
-                          </li>
-                          <li className="hover:text-red-600 cursor-pointer text-red-500 hover:bg-gray-100 px-2 py-1 rounded-md w-full">
+                            </button>
+                          ),
+                        },
+                        {
+                          key: "delete",
+                          label: (
                             <button
                               type="button"
                               onClick={() => handleDelete(goal.id)}
+                              className="hover:text-red-600 cursor-pointer text-red-500"
                             >
                               Delete
                             </button>
-                          </li>
-                        </ul>
-                      }
+                          ),
+                        },
+                      ]}
                     >
                       <LuMoreVertical />
                     </AppMenubar>
@@ -278,5 +230,41 @@ const GoalTable = () => {
     </div>
   );
 };
+
+// Helper component for loading skeleton
+const SkeletonTable = ({ columns }: { columns: string[] }) => (
+  <table className="w-full border-collapse">
+    <thead>
+      <tr>
+        <th className="px-6 py-3 text-left">
+          <Skeleton height={20} />
+        </th>
+        {columns.map((col, index) => (
+          <th key={index} className="px-4 py-3 text-left">
+            <Skeleton height={20} />
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {Array(4)
+        .fill(0)
+        .map((_, rowIndex) => (
+          <tr
+            key={rowIndex}
+            className="border-b border-[#E4E7EC] hover:bg-gray-50"
+          >
+            {Array(columns.length + 1)
+              .fill(0)
+              .map((_, colIndex) => (
+                <td key={colIndex} className="px-4 py-4">
+                  <Skeleton height={20} />
+                </td>
+              ))}
+          </tr>
+        ))}
+    </tbody>
+  </table>
+);
 
 export default GoalTable;
