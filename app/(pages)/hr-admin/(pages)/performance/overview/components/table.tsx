@@ -5,13 +5,15 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Checkbox } from "@/components/ui/checkbox";
 import { getReviewCycles } from "@/app/api/services/performance/review cycle";
-import { ReviewCycle } from "@/types";
 import Pagination from "@/app/_components/hr-admin/pages/hiring/shared/pagination";
 import AppMenubar from "@/app/_components/shared/menubar";
-import Link from "next/link";
 import DeleteReviewModal from "@/app/_components/hr-admin/performance/review-cycle/delete-modal";
+import { useRouter } from "next/navigation";
+import { ReviewCycle } from "@/types";
 
 const PerformanceReviewTable = () => {
+  const router = useRouter();
+
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,12 +30,13 @@ const PerformanceReviewTable = () => {
       const { data, meta } = await getReviewCycles(
         currentPage,
         itemsPerPage,
-        "asc",
+        "desc",
         filter,
         search,
       );
-      setReviews(data || []); // Fallback to empty array if data is undefined
-      setTotalItems(meta?.itemCount || 0); // Optional chaining with fallback to 0 if meta or itemCount is undefined
+      console.log(data);
+      setReviews(data || []);
+      setTotalItems(meta?.itemCount || 0);
     } catch (error) {
       console.error("Error fetching review cycles:", error);
     } finally {
@@ -47,7 +50,7 @@ const PerformanceReviewTable = () => {
 
   const handleDelete = (reviewId: string) => {
     setReviewIdToDelete(reviewId);
-    setModalOpen(true); // Open the modal when clicking delete
+    setModalOpen(true);
   };
 
   const handleCloseModal = () => {
@@ -166,8 +169,24 @@ const PerformanceReviewTable = () => {
                     </p>
                   </td>
                   <td className="px-4 py-4">
-                    <p className="text-sm">{review.employees}</p>
+                    <div className="text-sm">
+                      {review.employees?.length > 0 ? (
+                        <span>
+                          {review.employees[0].personalInfo?.firstName || "N/A"}{" "}
+                          {review.employees[0].personalInfo?.lastName || ""}
+                          {review.employees.length > 1 && (
+                            <span className="text-primary text-base">
+                              {" "}
+                              +{review.employees.length - 1}
+                            </span>
+                          )}
+                        </span>
+                      ) : (
+                        "N/A"
+                      )}
+                    </div>
                   </td>
+
                   <td className="px-4 py-4">
                     <p className="text-sm font-semibold text-amber-600 bg-amber-50 rounded-full px-2 py-1 w-fit text-nowrap">
                       {review.status}
@@ -175,32 +194,30 @@ const PerformanceReviewTable = () => {
                   </td>
                   <td className="p-4">
                     <AppMenubar
-                      menuItems={
-                        <ul className="flex flex-col w-full text-base">
-                          <li className="cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md w-full">
-                            <Link
-                              href={`/hr-admin/performance/review-cycle/edit/${review.id}`}
-                            >
-                              Edit
-                            </Link>
-                          </li>
-                          <li className="cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md w-full">
-                            <Link
-                              href={`/hr-admin/performance/review/${review.id}`}
-                            >
-                              View Details
-                            </Link>
-                          </li>
-                          <li className="hover:text-red-600 cursor-pointer text-red-500 hover:bg-gray-100 px-2 py-1 rounded-md w-full">
-                            <button
-                              type="button"
-                              onClick={() => handleDelete(review.id)}
-                            >
-                              Delete
-                            </button>
-                          </li>
-                        </ul>
-                      }
+                      menuItems={[
+                        {
+                          key: "edit",
+                          label: "Edit",
+                          onClick: () =>
+                            router.push(
+                              `/hr-admin/performance/review-cycle/edit/${review.id}`,
+                            ),
+                        },
+                        {
+                          key: "view-details",
+                          label: "View Details",
+                          onClick: () =>
+                            router.push(
+                              `/hr-admin/performance/review/${review.id}`,
+                            ),
+                        },
+                        {
+                          key: "delete",
+                          label: "Delete",
+                          onClick: () => handleDelete(review.id),
+                          className: "text-red-500",
+                        },
+                      ]}
                     >
                       <LuMoreVertical />
                     </AppMenubar>

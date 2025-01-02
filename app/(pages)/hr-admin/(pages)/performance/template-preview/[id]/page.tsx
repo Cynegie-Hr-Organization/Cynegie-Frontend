@@ -48,13 +48,13 @@ const TemplatePreviewPage = () => {
       <div className="space-y-6">
         <div className="flex items-center gap-2" onClick={() => router.back()}>
           <IoIosArrowBack className="text-xl" />
-          <h2 className="text-gray-500">Back to Assessment Form</h2>
+          <p className="text-gray-500">Back to Assessment Form</p>
         </div>
         <h2 className="text-2xl font-bold text-black">Template Preview</h2>
       </div>
 
       <CardLayout bg="border-none bg-white p-4 md:p-6 text-sm">
-        <div className="space-y-4 flex flex-col md:flex-row justify-between">
+        <div className="space-y-4 items-center flex flex-col md:flex-row justify-between">
           <PreviewTitle
             name="Template Name"
             description={template.templateName}
@@ -109,7 +109,7 @@ const PreviewTitle = ({
 }) => {
   return (
     <div className="space-y-2">
-      <h3 className="text-gray-500">{name}</h3>
+      <p className="text-gray-500">{name}</p>
       <p className="font-bold text-gray-900">{description}</p>
     </div>
   );

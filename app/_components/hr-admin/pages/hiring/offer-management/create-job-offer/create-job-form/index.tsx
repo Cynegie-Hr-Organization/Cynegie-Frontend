@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useParams } from "next/navigation";
 import CustomDatePicker from "../../../../../../ui/date-picker";
 import { Dayjs } from "dayjs";
 import dynamic from "next/dynamic";
@@ -11,6 +12,7 @@ import draftToHtml from "draftjs-to-html";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import CreateJobOfferSuccessModal from "../modal";
 import { createJobOffer } from "@/app/api/services/job-offer";
+import { fetchCandidateById } from "@/app/api/services/candidate";
 
 const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
@@ -18,34 +20,54 @@ const Editor = dynamic(
 );
 
 const CreateJobOfferForm: React.FC = () => {
-  // const [candidateName] = useState("Precious Henry");
-  // const [jobTitle] = useState("Front End Developer");
-  // const [department] = useState("Engineering");
+  const params = useParams();
+  const candidateId = Array.isArray(params?.id) ? params.id[0] : params?.id;
+
   const {
     register,
     handleSubmit,
     control,
     formState: { errors, isValid },
   } = useForm({ mode: "onChange" });
-  const [candidateName] = useState("Precious Henry");
-  const [jobTitle] = useState("Front End Developer");
-  const [department] = useState<string>("Engineering");
+
+  const [candidateName, setCandidateName] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
+  const [department, setDepartment] = useState("");
   const [offerDate, setOfferDate] = useState<Dayjs | null>(null);
   const [expirationDate, setExpirationDate] = useState<Dayjs | null>(null);
   const [jobStartDate, setJobStartDate] = useState<Dayjs | null>(null);
   const [baseSalary, setBaseSalary] = useState("");
-  const [bonusStructure, setBonusStructure] = useState("");
+  const [bonus, setBonus] = useState("");
   const [uploadedDocument, setUploadedDocument] = useState<File | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [benefits, setBenefits] = useState(EditorState.createEmpty());
 
+  useEffect(() => {
+    // Fetch candidate details using the candidateId
+    const fetchCandidateDetails = async () => {
+      if (candidateId) {
+        try {
+          const candidate = await fetchCandidateById(candidateId);
+          console.log(candidate.data);
+
+          // Populate form fields with the fetched data
+          setCandidateName(
+            `${candidate.data.firstName} ${candidate.data.lastName}`,
+          );
+          setJobTitle(candidate.data.job.title);
+          setDepartment(candidate.data.job.department);
+        } catch (error) {
+          console.error("Failed to fetch candidate details:", error);
+        }
+      }
+    };
+
+    fetchCandidateDetails();
+  }, [candidateId]);
+
   const handleEditorChange = (editorState: EditorState) => {
     setBenefits(editorState);
   };
-
-  // const handleSubmitClick = () => {
-  //   setIsModalOpen(true);
-  // };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -54,7 +76,7 @@ const CreateJobOfferForm: React.FC = () => {
   };
 
   const isFormComplete = (): boolean => {
-    const isBenefitsComplete = benefits.getCurrentContent().hasText(); // Check if benefits have text
+    const isBenefitsComplete = benefits.getCurrentContent().hasText();
     const isFileUploaded = uploadedDocument !== null;
 
     return isValid && isBenefitsComplete && isFileUploaded;
@@ -65,37 +87,29 @@ const CreateJobOfferForm: React.FC = () => {
       convertToRaw(benefits.getCurrentContent()),
     );
 
-    // Format the dates using dayjs
     const formattedOfferDate = offerDate?.format("YYYY-MM-DDTHH:mm:ssZ");
     const formattedExpirationDate = expirationDate?.format(
       "YYYY-MM-DDTHH:mm:ssZ",
     );
-    const formattedJobStartDate = jobStartDate?.format("YYYY-MM-DDTHH:mm:ssZ");
 
-    // Prepare the payload for the API
     const payload = {
       ...data,
-      candidate: candidateName,
+      jobTitle: jobTitle,
+      candidate: candidateId,
       department,
-      bonus: parseFloat(bonusStructure),
+      bonus: bonus,
       benefits: benefitsHTML,
-      uploadedDocument: uploadedDocument
-        ? uploadedDocument.name
-        : "default-link.pdf",
       offerDate: formattedOfferDate,
-      expiratioDate: formattedExpirationDate,
-      jobStartDate: formattedJobStartDate,
+      expirationDate: formattedExpirationDate,
       baseSalary,
-      bonusStructure,
     };
 
-    console.log(payload);
+    console.log("Payload to API:", payload);
 
     try {
-      // Call the createJobOffer API with the prepared payload
       const response = await createJobOffer(payload);
       console.log("Job offer created successfully", response);
-      setIsModalOpen(true); // Open the modal on success
+      setIsModalOpen(true);
     } catch (error) {
       console.error("Error creating job offer", error);
     }
@@ -262,19 +276,16 @@ const CreateJobOfferForm: React.FC = () => {
               <input
                 type="number"
                 placeholder="Enter Bonus Structure"
-                value={bonusStructure}
-                {...register("bonusStructure", {
+                value={bonus}
+                {...register("bonus", {
                   required: "This field is required",
                 })}
-                onChange={(e) => setBonusStructure(e.target.value)}
+                onChange={(e) => setBonus(e.target.value)}
                 className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-300"
               />
-              {errors.bonusStructure &&
-                typeof errors.bonusStructure.message === "string" && (
-                  <p className="text-xs text-red-500">
-                    {errors.bonusStructure.message}
-                  </p>
-                )}
+              {errors.bonus && typeof errors.bonus.message === "string" && (
+                <p className="text-xs text-red-500">{errors.bonus.message}</p>
+              )}
             </div>
           </div>
 

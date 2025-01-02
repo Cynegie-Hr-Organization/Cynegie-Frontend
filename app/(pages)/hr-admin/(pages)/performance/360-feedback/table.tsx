@@ -6,22 +6,15 @@ import { LuListFilter } from "react-icons/lu";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { RiSearchLine } from "react-icons/ri";
 import AppButton from "@/app/_components/shared/button";
-import { get360Feedback } from "@/app/api/services/performance/360-feedback";
+import {
+  Feedback,
+  get360Feedback,
+} from "@/app/api/services/performance/360-feedback";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-interface FeedbackItem {
-  id: string;
-  feedbackName: string;
-  employees: string[];
-  department: string[];
-  startDate: string;
-  endDate: string;
-  status: string;
-}
-
 const FeedbackTable = () => {
-  const [feedbackItems, setFeedbackItems] = useState<FeedbackItem[]>([]);
+  const [feedbackItems, setFeedbackItems] = useState<Feedback[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>("");
   const [status, setStatus] = useState<string>("");
@@ -30,8 +23,8 @@ const FeedbackTable = () => {
     const fetchFeedback = async () => {
       try {
         setLoading(true);
-        const data = await get360Feedback(1, 10, "asc", status, search);
-        setFeedbackItems(data.data.items || []);
+        const data = await get360Feedback(1, 10, "desc", status, search);
+        setFeedbackItems(data?.data.items || []);
         console.log(data);
       } catch (error) {
         console.error("Failed to fetch feedback:", error);
@@ -153,7 +146,7 @@ const FeedbackTable = () => {
                 >
                   <td className="px-4 py-4">
                     <p className="text-sm text-primary">
-                      {item.employees.join(", ")}
+                      {`${item.employees?.[0].personalInfo.firstName} ${item.employees?.[0].personalInfo.lastName}`}
                     </p>
                   </td>
                   <td className="px-4 py-4">
