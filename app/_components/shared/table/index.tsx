@@ -1,4 +1,6 @@
 'use client';
+import useCheckboxes from '@/hooks/useCheckboxes';
+import { FilterList } from '@mui/icons-material';
 import {
   Checkbox,
   Table as MuiTable,
@@ -8,25 +10,23 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { FieldType, TableProps, TableAction } from './types';
-import { FilterList } from '@mui/icons-material';
-import { PopoverType } from '../custom-popover/types';
-import Button from '../button-group/button';
-import { ButtonType } from '../page/heading/types';
-import TablePagination from './pagination';
+import { isArray } from 'lodash';
 import { usePathname } from 'next/navigation';
-import Popover from '../custom-popover';
+import React, { useEffect, useState } from 'react';
 import SearchField from '../../employee/input-fields/search';
+import Button from '../button-group/button';
+import Popover from '../custom-popover';
+import { PopoverType } from '../custom-popover/types';
 import MoreOptionsButton from '../more-options-button';
-import TableProgressCell from './cell/variants/progress';
+import { ButtonType } from '../page/heading/types';
 import TableLessonCell from './cell/variants/lesson';
 import TableLinkCell from './cell/variants/link';
-import TableAttendanceStatusCell from './cell/variants/status/attendance';
-import TableStatusCell from './cell/variants/status';
-import { isArray } from 'lodash';
 import TablePermissionsCell from './cell/variants/permissions';
-import useCheckboxes from '@/hooks/useCheckboxes';
+import TableProgressCell from './cell/variants/progress';
+import TableStatusCell from './cell/variants/status';
+import TableAttendanceStatusCell from './cell/variants/status/attendance';
+import TablePagination from './pagination';
+import { FieldType, TableAction, TableProps } from './types';
 
 const Table: React.FC<TableProps> = ({
   title,
@@ -110,15 +110,14 @@ const Table: React.FC<TableProps> = ({
     }
   };
 
-  useEffect(() => removeChecks(), [clearChecks]);
+  useEffect(() => removeChecks(), [clearChecks, removeChecks]);
 
   return (
     <div className={`flex flex-col ${title && 'gap-4'}`}>
       {title && <div className='card-title-small'>{title}</div>}
       <div
-        className={`common-card gap-6 !px-0 flex flex-col ${
-          !hasSearchFilter && '!pt-0'
-        }`}
+        className={`common-card gap-6 !px-0 flex flex-col ${!hasSearchFilter && '!pt-0'
+          }`}
       >
         {hasSearchFilter && (
           <div className='flex flex-col items-start md:flex-row md:items-center px-6'>
