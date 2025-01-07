@@ -1,6 +1,6 @@
-'use client';
-import useCheckboxes from '@/hooks/useCheckboxes';
-import { FilterList } from '@mui/icons-material';
+"use client";
+import useCheckboxes from "@/hooks/useCheckboxes";
+import { FilterList } from "@mui/icons-material";
 import {
   Checkbox,
   Table as MuiTable,
@@ -9,24 +9,24 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from '@mui/material';
-import { isArray } from 'lodash';
-import { usePathname } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import SearchField from '../../employee/input-fields/search';
-import Button from '../button-group/button';
-import Popover from '../custom-popover';
-import { PopoverType } from '../custom-popover/types';
-import MoreOptionsButton from '../more-options-button';
-import { ButtonType } from '../page/heading/types';
-import TableLessonCell from './cell/variants/lesson';
-import TableLinkCell from './cell/variants/link';
-import TablePermissionsCell from './cell/variants/permissions';
-import TableProgressCell from './cell/variants/progress';
-import TableStatusCell from './cell/variants/status';
-import TableAttendanceStatusCell from './cell/variants/status/attendance';
-import TablePagination from './pagination';
-import { FieldType, TableAction, TableProps } from './types';
+} from "@mui/material";
+import { isArray } from "lodash";
+import { usePathname } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import SearchField from "../../employee/input-fields/search";
+import Button from "../button-group/button";
+import Popover from "../custom-popover";
+import { PopoverType } from "../custom-popover/types";
+import MoreOptionsButton from "../more-options-button";
+import { ButtonType } from "../page/heading/types";
+import TableLessonCell from "./cell/variants/lesson";
+import TableLinkCell from "./cell/variants/link";
+import TablePermissionsCell from "./cell/variants/permissions";
+import TableProgressCell from "./cell/variants/progress";
+import TableStatusCell from "./cell/variants/status";
+import TableAttendanceStatusCell from "./cell/variants/status/attendance";
+import TablePagination from "./pagination";
+import { FieldType, TableAction, TableProps } from "./types";
 
 const Table: React.FC<TableProps> = ({
   title,
@@ -60,7 +60,7 @@ const Table: React.FC<TableProps> = ({
   );
 
   const headerRow = hasActionsColumn
-    ? [...headerRowData, 'Actions']
+    ? [...headerRowData, "Actions"]
     : headerRowData;
 
   const getTableCell = (
@@ -69,34 +69,34 @@ const Table: React.FC<TableProps> = ({
     field: string,
     fieldToGetSlug?: string
   ) => {
-    const rowVal = row[field ?? ''];
+    const rowVal = row[field ?? ""];
 
     switch (fieldType) {
       case FieldType.text:
         return rowVal;
 
       case FieldType.progress:
-        if (typeof rowVal === 'number')
+        if (typeof rowVal === "number")
           return <TableProgressCell value={rowVal} />;
 
       case FieldType.nextLesson:
-        if (typeof rowVal === 'number')
+        if (typeof rowVal === "number")
           return <TableLessonCell value={rowVal} />;
 
       case FieldType.link:
         return (
           <TableLinkCell
             value={rowVal}
-            path={`${pathname}/${row?.[fieldToGetSlug ?? '']}`}
+            path={`${pathname}/${row?.[fieldToGetSlug ?? ""]}`}
           />
         );
 
       case FieldType.attendanceStatus:
-        if (typeof rowVal === 'string')
+        if (typeof rowVal === "string")
           return <TableAttendanceStatusCell value={rowVal} />;
 
       case FieldType.status:
-        if (typeof rowVal === 'string')
+        if (typeof rowVal === "string")
           return <TableStatusCell value={rowVal} statusMap={statusMap ?? {}} />;
 
       case FieldType.permissions:
@@ -110,19 +110,20 @@ const Table: React.FC<TableProps> = ({
     }
   };
 
-  useEffect(() => removeChecks(), [clearChecks, removeChecks]);
+  useEffect(() => removeChecks(), [clearChecks]);
 
   return (
-    <div className={`flex flex-col ${title && 'gap-4'}`}>
-      {title && <div className='card-title-small'>{title}</div>}
+    <div className={`flex flex-col ${title && "gap-4"}`}>
+      {title && <div className="card-title-small">{title}</div>}
       <div
-        className={`common-card gap-6 !px-0 flex flex-col ${!hasSearchFilter && '!pt-0'
-          }`}
+        className={`common-card gap-6 !px-0 flex flex-col ${
+          !hasSearchFilter && "!pt-0"
+        }`}
       >
         {hasSearchFilter && (
-          <div className='flex flex-col items-start md:flex-row md:items-center px-6'>
-            <div className='w-full flex-grow'>
-              <div className='w-[90%] sm:w-[70%] md:w-[70%] mb-[15] md:mb-0'>
+          <div className="flex flex-col items-start md:flex-row md:items-center px-6">
+            <div className="w-full flex-grow">
+              <div className="w-[90%] sm:w-[70%] md:w-[70%] mb-[15] md:mb-0">
                 <SearchField />
               </div>
             </div>
@@ -134,7 +135,7 @@ const Table: React.FC<TableProps> = ({
                     <Button
                       type={ButtonType.filter}
                       icon={<FilterList />}
-                      text='Filter'
+                      text="Filter"
                     />
                   }
                   filters={filters}
@@ -146,17 +147,17 @@ const Table: React.FC<TableProps> = ({
         )}
         <TableContainer>
           <MuiTable>
-            <TableHead className='bg-[#F7F9FC]'>
+            <TableHead className="bg-[#F7F9FC]">
               <TableRow>
                 {hasCheckboxes && (
-                  <TableCell className='whitespace-nowrap' sx={{ py: 1 }}>
+                  <TableCell className="whitespace-nowrap" sx={{ py: 1 }}>
                     <Checkbox {...checkAllBoxProps} />
                   </TableCell>
                 )}
                 {headerRow.map((field, index) => (
                   <TableCell
                     key={index}
-                    className='whitespace-nowrap py-4'
+                    className="whitespace-nowrap py-4"
                     sx={{ ...(!hasCheckboxes && { pl: 3 }) }}
                   >
                     {field}
@@ -168,13 +169,13 @@ const Table: React.FC<TableProps> = ({
               {bodyRowData.map((row, rowIndex) => (
                 <TableRow key={rowIndex}>
                   {hasCheckboxes && (
-                    <TableCell className='whitespace-nowrap'>
+                    <TableCell className="whitespace-nowrap">
                       <Checkbox {...checkBoxProps(rowIndex)} />
                     </TableCell>
                   )}
                   {displayedFields.map((field, columnIndex) => (
                     <TableCell
-                      className='whitespace-nowrap !py-6'
+                      className="whitespace-nowrap !py-6"
                       sx={{ ...(!hasCheckboxes && { pl: 3 }) }}
                       key={columnIndex}
                     >
@@ -187,20 +188,20 @@ const Table: React.FC<TableProps> = ({
                     </TableCell>
                   ))}
                   {hasActionsColumn && (
-                    <TableCell className='whitespace-nowrap'>
+                    <TableCell className="whitespace-nowrap">
                       <Popover
                         type={PopoverType.moreOptions}
                         triggerButton={<MoreOptionsButton />}
                         getTriggerButtonClick={() =>
                           setActions(
-                            statusActionMap?.[row[fieldToGetAction ?? '']]
+                            statusActionMap?.[row[fieldToGetAction ?? ""]]
                           )
                         }
                         moreOptions={
                           statusActionMap ? actions : actionsFromProps ?? []
                         }
                         dataToReturnOnItemClick={
-                          row[fieldToReturnOnActionItemClick ?? '']
+                          row[fieldToReturnOnActionItemClick ?? ""]
                         }
                       />
                     </TableCell>
@@ -211,7 +212,7 @@ const Table: React.FC<TableProps> = ({
           </MuiTable>
         </TableContainer>
         {hasPagination && (
-          <div className='mx-3'>
+          <div className="mx-3">
             <TablePagination pageCount={pageCount} page={page} />
           </div>
         )}

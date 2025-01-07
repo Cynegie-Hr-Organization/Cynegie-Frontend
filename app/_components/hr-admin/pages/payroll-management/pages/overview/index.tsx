@@ -11,7 +11,7 @@ import {
   Select,
   Stack,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import PayrollTable from "../../tables/overview";
 import { ChevronLeft } from "@mui/icons-material";
@@ -22,6 +22,15 @@ import { useRouter } from "next/navigation";
 import { DateRangePicker } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import dayjs from "dayjs";
+import { useQuery } from "@tanstack/react-query";
+import { getServerSession } from "next-auth";
+import { request } from "@/utils/request";
+import { baseUrl } from "@/constants/config";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { getPayrolls } from "./api";
+import Table from "@/app/_components/shared/table";
+import { FieldType } from "@/app/_components/shared/table/types";
+import { Payroll } from "@/types";
 
 const HrAdminPayrollOverviewPage = () => {
   const router = useRouter();
@@ -33,8 +42,23 @@ const HrAdminPayrollOverviewPage = () => {
     endDate: dayjs().endOf("month").toDate(),
   });
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null,
+    null
   );
+
+  const { data } = useQuery({
+    queryKey: ["payrolls"],
+    queryFn: getPayrolls,
+  });
+
+  const [payrolls, setPayrolls] = useState<Payroll[]>([]);
+
+  useEffect(() => {
+    if (data) {
+      if (data.data) {
+        setPayrolls(data.data);
+      }
+    }
+  }, [data]);
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     const buttonElement = event.currentTarget;
@@ -375,7 +399,36 @@ const HrAdminPayrollOverviewPage = () => {
         </Grid2>
       </Grid2>
       <Box sx={{ overflowX: "auto" }}>
-        <PayrollTable />
+        {/* <PayrollTable /> */}
+        <Table
+          hasActionsColumn
+          hasCheckboxes
+          headerRowData={[
+            "Payroll Name",
+            "Payment Date",
+            "Gross Pay",
+            "Net Pay",
+            "Status",
+          ]}
+          bodyRowData={payrolls ?? []}
+          fieldTypes={[...Array(4).fill(FieldType.text), FieldType.status]}
+          displayedFields={[
+            "payrollName",
+            "paymentDate",
+            "totalGrossPay",
+            "totalNetPay",
+            "status",
+          ]}
+          actions={[
+            { name: "View Details", onClick: () => {} },
+            { name: "View Payroll Report", onClick: () => {} },
+          ]}
+          statusMap={{
+            approved: "success",
+            pending: "warning",
+            rejected: "error",
+          }}
+        />
       </Box>
       <Popover
         id={id}
