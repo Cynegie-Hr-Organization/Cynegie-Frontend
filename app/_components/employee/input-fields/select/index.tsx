@@ -1,10 +1,10 @@
-import { MenuItem, Select } from '@mui/material';
-import React, { SetStateAction } from 'react';
-import { InputFieldOption } from '../../modal/types';
+import { MenuItem, Select } from "@mui/material";
+import React, { SetStateAction } from "react";
+import { InputFieldOption } from "../../modal/types";
 
 export type SelectFieldProps = {
   value?: string | number;
-  setValue?: React.Dispatch<SetStateAction<string | number | undefined>>;
+  setValue?: React.Dispatch<SetStateAction<SelectValue>>;
   placeholder?: string;
   options?: InputFieldOption[];
   valueControlledFromOutside?: boolean;
@@ -12,10 +12,12 @@ export type SelectFieldProps = {
   getCurrentValue?: (arg: string | number) => void;
 };
 
+export type SelectValue = string | number | undefined;
+
 export const InputFieldPlaceholder: React.FC<{ placeholder: string }> = ({
   placeholder,
 }) => {
-  return <p style={{ color: 'grey' }}>{placeholder}</p>;
+  return <p style={{ color: "grey" }}>{placeholder}</p>;
 };
 
 const SelectField: React.FC<SelectFieldProps> = (props) => {
@@ -30,24 +32,24 @@ const SelectField: React.FC<SelectFieldProps> = (props) => {
   } = props;
   return (
     <Select
-      className='!rounded-md'
-      style={{ height: '42px', width: '100%', background: 'white' }}
-      defaultValue={defaultValue ?? ''}
-      {...(valueControlledFromOutside ? { value: value ?? '' } : {})}
+      className="!rounded-md"
+      style={{ height: "42px", width: "100%", background: "white" }}
+      defaultValue={defaultValue ?? ""}
+      {...(valueControlledFromOutside ? { value: value ?? "" } : {})}
       displayEmpty
       onChange={(e) => {
         setValue?.(e.target.value);
         getCurrentValue?.(e.target.value);
       }}
       renderValue={(selected) => {
-        if (selected === '') {
-          return <InputFieldPlaceholder placeholder={placeholder ?? ''} />;
+        if (selected === "") {
+          return <InputFieldPlaceholder placeholder={placeholder ?? ""} />;
         }
         const selectedItem = options?.find((item) => item.value === selected);
-        return selectedItem ? selectedItem.label : '';
+        return selectedItem ? selectedItem.label : "";
       }}
     >
-      <MenuItem value='' disabled sx={{ display: 'none' }}>
+      <MenuItem value="" disabled sx={{ display: "none" }}>
         {placeholder}
       </MenuItem>
       {options?.map((option) => (

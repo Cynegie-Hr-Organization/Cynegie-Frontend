@@ -4,15 +4,16 @@ import { FilterList } from "@mui/icons-material";
 import {
   Checkbox,
   Table as MuiTable,
+  Skeleton,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
 } from "@mui/material";
-import { isArray } from "lodash";
+import { debounce, isArray } from "lodash";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import SearchField from "../../employee/input-fields/search";
 import Button from "../button-group/button";
 import Popover from "../custom-popover";
@@ -51,11 +52,15 @@ const Table: React.FC<TableProps> = ({
   clearChecks,
   formFilter,
   onPermissionsClick,
+  skeletonSizes,
+  onResetClick,
+  onFilterClick,
+  onSearch,
 }) => {
   const pathname = usePathname();
   const [actions, setActions] = useState<TableAction[] | undefined>(undefined);
   const { checkAllBoxProps, checkBoxProps, removeChecks } = useCheckboxes(
-    bodyRowData,
+    bodyRowData ?? [],
     getCheckedRows
   );
 
@@ -63,52 +68,79 @@ const Table: React.FC<TableProps> = ({
     ? [...headerRowData, "Actions"]
     : headerRowData;
 
+  const loading = bodyRowData ? false : true;
+
+  //Get typeof first row
+  const firstRow = bodyRowData ? bodyRowData[0] : undefined;
+  type typeOfFirstRow = typeof firstRow;
+
   const getTableCell = (
     fieldType: FieldType,
-    row: (typeof bodyRowData)[0],
+    row: typeOfFirstRow,
     field: string,
     fieldToGetSlug?: string
   ) => {
-    const rowVal = row[field ?? ""];
+    if (row) {
+      const rowVal = row[field ?? ""];
 
-    switch (fieldType) {
-      case FieldType.text:
-        return rowVal;
+      switch (fieldType) {
+        case FieldType.text:
+          return rowVal;
 
-      case FieldType.progress:
-        if (typeof rowVal === "number")
-          return <TableProgressCell value={rowVal} />;
+        case FieldType.progress:
+          if (typeof rowVal === "number")
+            return <TableProgressCell value={rowVal} />;
 
-      case FieldType.nextLesson:
-        if (typeof rowVal === "number")
-          return <TableLessonCell value={rowVal} />;
+        case FieldType.nextLesson:
+          if (typeof rowVal === "number")
+            return <TableLessonCell value={rowVal} />;
 
-      case FieldType.link:
-        return (
-          <TableLinkCell
-            value={rowVal}
-            path={`${pathname}/${row?.[fieldToGetSlug ?? ""]}`}
-          />
-        );
-
-      case FieldType.attendanceStatus:
-        if (typeof rowVal === "string")
-          return <TableAttendanceStatusCell value={rowVal} />;
-
-      case FieldType.status:
-        if (typeof rowVal === "string")
-          return <TableStatusCell value={rowVal} statusMap={statusMap ?? {}} />;
-
-      case FieldType.permissions:
-        if (isArray(rowVal))
+        case FieldType.link:
           return (
-            <TablePermissionsCell
-              permissions={rowVal}
-              onClick={onPermissionsClick}
+            <TableLinkCell
+              value={rowVal}
+              path={`${pathname}/${row?.[fieldToGetSlug ?? ""]}`}
             />
           );
+
+        case FieldType.attendanceStatus:
+          if (typeof rowVal === "string")
+            return <TableAttendanceStatusCell value={rowVal} />;
+
+        case FieldType.status:
+          if (typeof rowVal === "string")
+            return (
+              <TableStatusCell value={rowVal} statusMap={statusMap ?? {}} />
+            );
+
+        case FieldType.permissions:
+          if (isArray(rowVal))
+            return (
+              <TablePermissionsCell
+                permissions={rowVal}
+                onClick={onPermissionsClick}
+              />
+            );
+      }
     }
   };
+
+  const cellSkeleton = (size: "small" | "medium" | "large") => {
+    const sizeMap = {
+      small: 20,
+      medium: 60,
+      large: 100,
+    };
+    return <Skeleton variant="text" width={sizeMap[size]} height={20} />;
+  };
+
+  const debouncedSearch = useMemo(
+    () =>
+      debounce((query: string) => {
+        onSearch?.(query);
+      }, 500),
+    []
+  );
 
   useEffect(() => removeChecks(), [clearChecks]);
 
@@ -124,11 +156,11 @@ const Table: React.FC<TableProps> = ({
           <div className="flex flex-col items-start md:flex-row md:items-center px-6">
             <div className="w-full flex-grow">
               <div className="w-[90%] sm:w-[70%] md:w-[70%] mb-[15] md:mb-0">
-                <SearchField />
+                <SearchField getSearchQuery={debouncedSearch} />
               </div>
             </div>
             {(filters || formFilter) && (
-              <div>
+              <div className="hover:cursor-pointer">
                 <Popover
                   type={PopoverType.filter}
                   triggerButton={
@@ -140,6 +172,8 @@ const Table: React.FC<TableProps> = ({
                   }
                   filters={filters}
                   formFilter={formFilter}
+                  onResetClick={onResetClick}
+                  onFilterClick={onFilterClick}
                 />
               </div>
             )}
@@ -151,7 +185,14 @@ const Table: React.FC<TableProps> = ({
               <TableRow>
                 {hasCheckboxes && (
                   <TableCell className="whitespace-nowrap" sx={{ py: 1 }}>
-                    <Checkbox {...checkAllBoxProps} />
+                    <Checkbox
+                      {...checkAllBoxProps}
+                      {...((loading ||
+                        (bodyRowData && bodyRowData.length < 1)) && {
+                        disabled: true,
+                        checked: false,
+                      })}
+                    />
                   </TableCell>
                 )}
                 {headerRow.map((field, index) => (
@@ -166,11 +207,19 @@ const Table: React.FC<TableProps> = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {bodyRowData.map((row, rowIndex) => (
+              {(
+                bodyRowData ??
+                Array(6)
+                  .fill(undefined)
+                  .map((row, index) => ({ index: index, ...row }))
+              ).map((row, rowIndex) => (
                 <TableRow key={rowIndex}>
                   {hasCheckboxes && (
                     <TableCell className="whitespace-nowrap">
-                      <Checkbox {...checkBoxProps(rowIndex)} />
+                      <Checkbox
+                        {...checkBoxProps(rowIndex)}
+                        {...(loading && { disabled: true })}
+                      />
                     </TableCell>
                   )}
                   {displayedFields.map((field, columnIndex) => (
@@ -179,31 +228,37 @@ const Table: React.FC<TableProps> = ({
                       sx={{ ...(!hasCheckboxes && { pl: 3 }) }}
                       key={columnIndex}
                     >
-                      {getTableCell(
-                        fieldTypes[columnIndex],
-                        row,
-                        field,
-                        fieldToGetSlug
-                      )}
+                      {loading
+                        ? cellSkeleton(skeletonSizes?.[columnIndex] ?? "medium")
+                        : getTableCell(
+                            fieldTypes[columnIndex],
+                            row,
+                            field,
+                            fieldToGetSlug
+                          )}
                     </TableCell>
                   ))}
                   {hasActionsColumn && (
                     <TableCell className="whitespace-nowrap">
-                      <Popover
-                        type={PopoverType.moreOptions}
-                        triggerButton={<MoreOptionsButton />}
-                        getTriggerButtonClick={() =>
-                          setActions(
-                            statusActionMap?.[row[fieldToGetAction ?? ""]]
-                          )
-                        }
-                        moreOptions={
-                          statusActionMap ? actions : actionsFromProps ?? []
-                        }
-                        dataToReturnOnItemClick={
-                          row[fieldToReturnOnActionItemClick ?? ""]
-                        }
-                      />
+                      {loading ? (
+                        cellSkeleton("medium")
+                      ) : (
+                        <Popover
+                          type={PopoverType.moreOptions}
+                          triggerButton={<MoreOptionsButton />}
+                          getTriggerButtonClick={() =>
+                            setActions(
+                              statusActionMap?.[row[fieldToGetAction ?? ""]]
+                            )
+                          }
+                          moreOptions={
+                            statusActionMap ? actions : actionsFromProps ?? []
+                          }
+                          dataToReturnOnItemClick={
+                            row[fieldToReturnOnActionItemClick ?? ""]
+                          }
+                        />
+                      )}
                     </TableCell>
                   )}
                 </TableRow>

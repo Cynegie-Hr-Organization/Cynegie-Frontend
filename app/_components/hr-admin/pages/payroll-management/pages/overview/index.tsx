@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "./style.css";
-import PayrollTable from "../../tables/overview";
 import { ChevronLeft } from "@mui/icons-material";
 import PayrollOverviewChartLarge from "../../charts/payroll-overview/large";
 import PayrollOverviewChartMobile from "../../charts/payroll-overview/mobile";
@@ -23,14 +22,12 @@ import { DateRangePicker } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import dayjs from "dayjs";
 import { useQuery } from "@tanstack/react-query";
-import { getServerSession } from "next-auth";
-import { request } from "@/utils/request";
-import { baseUrl } from "@/constants/config";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { getPayrolls } from "./api";
 import Table from "@/app/_components/shared/table";
 import { FieldType } from "@/app/_components/shared/table/types";
-import { Payroll } from "@/types";
+import { FetchParams, Payroll } from "@/types";
+import { InputFieldValue } from "@/app/_components/employee/modal/types";
+import { initFetchParams } from "@/constants";
 
 const HrAdminPayrollOverviewPage = () => {
   const router = useRouter();
@@ -45,20 +42,52 @@ const HrAdminPayrollOverviewPage = () => {
     null
   );
 
+  const [fetchParams, setFetchParams] = useState<
+    FetchParams & { status?: InputFieldValue }
+  >({ ...initFetchParams, status: undefined });
+
   const { data } = useQuery({
-    queryKey: ["payrolls"],
-    queryFn: getPayrolls,
+    queryKey: ["payrolls", fetchParams],
+    queryFn: () => getPayrolls(fetchParams),
   });
 
-  const [payrolls, setPayrolls] = useState<Payroll[]>([]);
+  const [payrolls, setPayrolls] = useState<
+    {
+      payrollName: string;
+      payrollPeriod: string;
+      paymentDate: string;
+      totalEmployees: number;
+      grossPay: string;
+      netPay: string;
+      approvalDate?: string;
+      status: "approved" | "pending" | "rejected";
+    }[]
+  >();
 
   useEffect(() => {
     if (data) {
-      if (data.data) {
-        setPayrolls(data.data);
-      }
+      setPayrolls(
+        data.data.map((payroll) => ({
+          payrollName: payroll.payrollName,
+          payrollPeriod: `${dayjs(payroll.startDate).format(
+            "DD MMM"
+          )} - ${dayjs(payroll.endDate).format("DD MMM")}`,
+          paymentDate: dayjs(payroll.paymentDate).format("DD MMM YYYY"),
+          totalEmployees: payroll.employees.length,
+          grossPay: `₦${payroll.totalGrossPay}`,
+          netPay: `₦${payroll.totalGrossPay}`,
+          approvalDate: payroll.approvalDate
+            ? dayjs(payroll.approvalDate).format("DD MMM YYYY")
+            : "--",
+          status: payroll.status,
+        }))
+      );
+    } else {
+      setPayrolls(undefined);
     }
   }, [data]);
+
+  const [statusFilter, setStatusFilter] = useState<InputFieldValue>();
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     const buttonElement = event.currentTarget;
@@ -399,35 +428,73 @@ const HrAdminPayrollOverviewPage = () => {
         </Grid2>
       </Grid2>
       <Box sx={{ overflowX: "auto" }}>
-        {/* <PayrollTable /> */}
         <Table
           hasActionsColumn
           hasCheckboxes
           headerRowData={[
             "Payroll Name",
+            "Payroll Period",
             "Payment Date",
+            "Total Employees",
             "Gross Pay",
             "Net Pay",
+            "Approval Date",
             "Status",
           ]}
-          bodyRowData={payrolls ?? []}
-          fieldTypes={[...Array(4).fill(FieldType.text), FieldType.status]}
+          bodyRowData={payrolls}
+          skeletonSizes={Array(7).fill("medium")}
+          fieldTypes={[...Array(7).fill(FieldType.text), FieldType.status]}
           displayedFields={[
             "payrollName",
+            "payrollPeriod",
             "paymentDate",
-            "totalGrossPay",
-            "totalNetPay",
+            "totalEmployees",
+            "grossPay",
+            "netPay",
+            "approvalDate",
             "status",
-          ]}
-          actions={[
-            { name: "View Details", onClick: () => {} },
-            { name: "View Payroll Report", onClick: () => {} },
           ]}
           statusMap={{
             approved: "success",
             pending: "warning",
             rejected: "error",
           }}
+          fieldActionMap={{
+            approved: [
+              { name: "View Details", onClick: () => {} },
+              { name: "View Payroll Report", onClick: () => {} },
+            ],
+            pending: [
+              { name: "Edit Payroll", onClick: () => {} },
+              { name: "Delete", onClick: () => {} },
+            ],
+            rejected: [{ name: "Resolve Issue", onClick: () => {} }],
+          }}
+          fieldToGetAction="status"
+          onSearch={(query) =>
+            setFetchParams({ ...fetchParams, search: query })
+          }
+          formFilter={{
+            gridSpacing: 2,
+            inputFields: [
+              {
+                name: "Status",
+                type: "select",
+                options: [
+                  { label: "Approved", value: "approved" },
+                  { label: "Pending", value: "pending" },
+                  { label: "Rejected", value: "rejected" },
+                ],
+                value: statusFilter,
+                setValue: setStatusFilter,
+                selectValControlledFromOutside: true,
+              },
+            ],
+          }}
+          onResetClick={() => setStatusFilter(undefined)}
+          onFilterClick={() =>
+            setFetchParams({ ...fetchParams, status: statusFilter })
+          }
         />
       </Box>
       <Popover

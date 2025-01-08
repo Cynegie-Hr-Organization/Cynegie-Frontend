@@ -82,6 +82,13 @@ export interface FetchJob {
   data: Job;
 }
 
+export type FetchParams = {
+  page: number;
+  limit: number;
+  sortOrder: "asc" | "desc";
+  search?: string;
+};
+
 interface User {
   email: string;
   isActive: boolean;
@@ -346,6 +353,7 @@ export type Payroll = {
   payrollName: string;
   startDate: string;
   endDate: string;
+  approvalDate?: string;
   status: "approved" | "pending" | "rejected";
   paymentDate: string;
   employees: [];
