@@ -6,67 +6,70 @@ function generateRange(start: number, end: number): number[] {
 
 const useCheckboxes = <T,>(
   rows: T[],
-  getCheckedItems?: (rows: T[]) => void
+  getCheckedItems?: (rows: T[]) => void,
+  defaultCheckedItems?: T[]
 ) => {
-  const [selectedItemsIndexes, setSelectedItemsIndexes] = useState<number[]>(
-    []
-  );
   const [checkedItems, setCheckedItems] = useState<T[]>([]);
 
   const handleCheckboxChangeAll = (event: ChangeEvent<HTMLInputElement>) => {
-    let itemsIndexes: number[] = [];
+    let items = rows;
     if (event.target.checked) {
-      itemsIndexes = generateRange(0, rows.length - 1);
-      setSelectedItemsIndexes(itemsIndexes);
+      items = rows;
     } else {
-      setSelectedItemsIndexes(itemsIndexes);
+      items = [];
     }
-    const selectedItems = itemsIndexes.map((index) => rows[index]);
-    setCheckedItems(selectedItems);
-    getCheckedItems?.(selectedItems);
+    setCheckedItems(items);
+    getCheckedItems?.(items);
   };
 
   const handleCheckboxChange = (
     event: ChangeEvent<HTMLInputElement>,
-    rowIndex: number
+    row: T
   ) => {
-    let itemsIndexes: number[] = [];
-    setSelectedItemsIndexes((prevSelectedItems) => {
-      if (event.target.checked) {
-        itemsIndexes = [...prevSelectedItems, rowIndex];
-        return itemsIndexes;
+    let items: T[] = [];
+    if (event.target.checked) {
+      if (defaultCheckedItems) {
+        items = [...defaultCheckedItems, row];
       } else {
-        itemsIndexes = prevSelectedItems.filter((index) => index !== rowIndex);
-        return itemsIndexes;
+        items = [...checkedItems, row];
       }
-    });
-    const selectedItems = itemsIndexes.map((index) => rows[index]);
-    setCheckedItems(selectedItems);
-    getCheckedItems?.(selectedItems);
+    } else {
+      if (defaultCheckedItems) {
+        items = defaultCheckedItems.filter((item) => item !== row);
+      } else {
+        items = checkedItems.filter((item) => item !== row);
+      }
+    }
+    setCheckedItems(items);
+    getCheckedItems?.(items);
   };
 
   const checkAllBoxProps = {
     onChange: handleCheckboxChangeAll,
-    checked: selectedItemsIndexes.length === rows.length,
-    indeterminate:
-      selectedItemsIndexes.length > 0 &&
-      selectedItemsIndexes.length < rows.length,
+    checked: checkedItems.length === rows.length,
+    indeterminate: checkedItems.length > 0 && checkedItems.length < rows.length,
   };
 
-  const checkBoxProps = (index: number) => {
+  const checkBoxProps = (row: T) => {
     return {
-      checked: selectedItemsIndexes.includes(index),
+      checked: defaultCheckedItems
+        ? defaultCheckedItems.includes(row)
+        : checkedItems.includes(row),
       onChange: (e: ChangeEvent<HTMLInputElement>) =>
-        handleCheckboxChange(e, index),
+        handleCheckboxChange(e, row),
     };
   };
 
   const removeChecks = () => {
     setCheckedItems([]);
-    setSelectedItemsIndexes([]);
   };
 
-  return { checkAllBoxProps, checkBoxProps, checkedItems, removeChecks };
+  return {
+    checkAllBoxProps,
+    checkBoxProps,
+    checkedItems,
+    removeChecks,
+  };
 };
 
 export default useCheckboxes;

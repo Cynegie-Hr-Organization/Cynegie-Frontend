@@ -1,16 +1,17 @@
-import { InputFieldProps } from '@/app/_components/employee/modal/types';
-import FieldLabel from '../../detail-group/detail/value';
-import TextField from '@/app/_components/employee/input-fields/text';
-import MessageField from '@/app/_components/employee/input-fields/message';
-import SelectField from '@/app/_components/employee/input-fields/select';
-import CustomDatePicker from '@/app/_components/ui/date-picker';
-import CustomTimePicker from '@/app/_components/ui/time-picker';
-import RadioField from '@/app/_components/employee/input-fields/radio-group';
-import { Dayjs } from 'dayjs';
-import DragUpload from '../../drag-upload';
-import { MultiSelect } from '../../multi-select-dropdown';
-import AddItems from '../../custom-popover/content/add-items';
-import CheckboxField from '@/app/_components/employee/input-fields/checkbox-group';
+import CheckboxField from "@/app/_components/employee/input-fields/checkbox-group";
+import DateRangeField from "@/app/_components/employee/input-fields/date-range";
+import MessageField from "@/app/_components/employee/input-fields/message";
+import RadioField from "@/app/_components/employee/input-fields/radio-group";
+import SelectField from "@/app/_components/employee/input-fields/select";
+import TextField from "@/app/_components/employee/input-fields/text";
+import { InputFieldProps } from "@/app/_components/employee/modal/types";
+import CustomDatePicker from "@/app/_components/ui/date-picker";
+import CustomTimePicker from "@/app/_components/ui/time-picker";
+import dayjs, { Dayjs } from "dayjs";
+import AddItems from "../../custom-popover/content/add-items";
+import FieldLabel from "../../detail-group/detail/value";
+import DragUpload from "../../drag-upload";
+import { MultiSelect } from "../../multi-select-dropdown";
 
 const InputField: React.FC<InputFieldProps> = ({
   name,
@@ -26,11 +27,14 @@ const InputField: React.FC<InputFieldProps> = ({
   getCurrentValue,
   startAdornment,
   checkboxItems,
+  getDateRange,
+  getDate,
+  dateRangeDefaultValue,
 }) => {
   return (
-    <div className='flex flex-col gap-2'>
-      <FieldLabel wrapText value={name ?? ''} />
-      {type === 'text' && (
+    <div className="flex flex-col gap-2">
+      <FieldLabel wrapText value={name ?? ""} />
+      {type === "text" && (
         <TextField
           placeholder={placeholder}
           value={value}
@@ -40,17 +44,17 @@ const InputField: React.FC<InputFieldProps> = ({
           startAdornment={startAdornment}
         />
       )}
-      {type == 'message' && (
+      {type == "message" && (
         <MessageField
           placeholder={placeholder}
           value={value}
           setValue={setValue}
         />
       )}
-      {type == 'select' && (
+      {type == "select" && (
         <SelectField
           options={options}
-          placeholder={placeholder ?? 'Select'}
+          placeholder={placeholder ?? "Select"}
           value={value}
           defaultValue={defaultValue}
           setValue={setValue}
@@ -58,33 +62,42 @@ const InputField: React.FC<InputFieldProps> = ({
           getCurrentValue={getCurrentValue}
         />
       )}
-      {type == 'radio' && <RadioField options={options ?? []} />}
-      {type == 'checkbox' && <CheckboxField items={checkboxItems ?? []} />}
-      {type == 'date' && (
+      {type == "radio" && <RadioField options={options ?? []} />}
+      {type == "checkbox" && <CheckboxField items={checkboxItems ?? []} />}
+      {type == "date" && (
         <CustomDatePicker
-          value={null}
-          onChange={function (newValue: Dayjs | null): void {
-            console.log(newValue);
-          }}
+          // value={dayjs(value)}
+          {...(value && { value: dayjs(value) })}
+          {...(defaultValue && { defaultValue: dayjs(defaultValue) })}
+          disabled={disabled}
+          onChange={(newValue) => getDate?.(newValue)}
         />
       )}
-      {type == 'time' && (
+      {type == "date-range" && (
+        <DateRangeField
+          placeholder={placeholder}
+          getDateRange={getDateRange}
+          disabled={disabled}
+          defaultValue={dateRangeDefaultValue}
+        />
+      )}
+      {type == "time" && (
         <CustomTimePicker
           value={null}
           onChange={function (newValue: Dayjs | null): void {
-            console.log(newValue);
+            console.log(newValue?.toISOString());
           }}
         />
       )}
-      {type == 'drag-upload' && (
+      {type == "drag-upload" && (
         <div>
           <DragUpload />
         </div>
       )}
-      {type == 'multi-select' && (
+      {type == "multi-select" && (
         <MultiSelect options={[]} value={[]} onChange={() => {}} />
       )}
-      {type === 'add-items' && addItemsProps && <AddItems {...addItemsProps} />}
+      {type === "add-items" && addItemsProps && <AddItems {...addItemsProps} />}
     </div>
   );
 };

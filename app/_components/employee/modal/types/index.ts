@@ -1,10 +1,12 @@
-import { Dispatch, SetStateAction } from "react";
+import { ButtonGroupPosition } from "@/app/_components/shared/button-group/types";
+import { AddItemsProps } from "@/app/_components/shared/custom-popover/content/add-items";
 import { DetailGroupProps } from "@/app/_components/shared/detail-group/types";
 import { FormProps } from "@/app/_components/shared/form/types";
 import { ButtonProps } from "@/app/_components/shared/page/heading/types";
-import { ButtonGroupPosition } from "@/app/_components/shared/button-group/types";
+import { Dayjs } from "dayjs";
+import { SetStateAction } from "react";
+import { DateRange } from "rsuite/esm/DateRangePicker";
 import { ViewTaskProps } from "../../pages/task/view-task/types";
-import { AddItemsProps } from "@/app/_components/shared/custom-popover/content/add-items";
 
 export type ModalProps = {
   open: boolean;
@@ -44,6 +46,9 @@ export type InputFieldProps = {
   getCurrentValue?: (arg: string | number) => void;
   startAdornment?: React.ReactElement;
   checkboxItems?: string[];
+  getDateRange?: (range: { startDate: Date; endDate: Date }) => void;
+  getDate?: (date: Dayjs | null) => void;
+  dateRangeDefaultValue?: DateRange | null;
 };
 
 export type InputFieldOption = {

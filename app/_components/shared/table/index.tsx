@@ -56,14 +56,9 @@ const Table: React.FC<TableProps> = ({
   onResetClick,
   onFilterClick,
   onSearch,
+  defaultCheckedRows,
 }) => {
   const pathname = usePathname();
-  const [actions, setActions] = useState<TableAction[] | undefined>(undefined);
-  const { checkAllBoxProps, checkBoxProps, removeChecks } = useCheckboxes(
-    bodyRowData ?? [],
-    getCheckedRows
-  );
-
   const headerRow = hasActionsColumn
     ? [...headerRowData, "Actions"]
     : headerRowData;
@@ -73,6 +68,14 @@ const Table: React.FC<TableProps> = ({
   //Get typeof first row
   const firstRow = bodyRowData ? bodyRowData[0] : undefined;
   type typeOfFirstRow = typeof firstRow;
+
+  const [actions, setActions] = useState<TableAction[] | undefined>(undefined);
+
+  const { checkAllBoxProps, removeChecks, checkBoxProps } = useCheckboxes(
+    bodyRowData ?? [],
+    getCheckedRows,
+    defaultCheckedRows
+  );
 
   const getTableCell = (
     fieldType: FieldType,
@@ -217,7 +220,7 @@ const Table: React.FC<TableProps> = ({
                   {hasCheckboxes && (
                     <TableCell className="whitespace-nowrap">
                       <Checkbox
-                        {...checkBoxProps(rowIndex)}
+                        {...checkBoxProps(row)}
                         {...(loading && { disabled: true })}
                       />
                     </TableCell>

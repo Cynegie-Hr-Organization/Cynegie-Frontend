@@ -1,7 +1,6 @@
 import { ColorVariant } from "@/types";
 import { FormProps } from "../../form/types";
 import { Permission } from "../cell/variants/permissions";
-import { InputFieldValue } from "@/app/_components/employee/modal/types";
 
 export type TableProps<T = Record<string, any>> = {
   title?: string;
@@ -33,6 +32,7 @@ export type TableProps<T = Record<string, any>> = {
   clearChecks?: boolean;
   onPermissionsClick?: (permissions: Permission[]) => void;
   onSearch?: (arg: string) => void;
+  defaultCheckedRows?: T[];
 };
 
 export type Filter = {

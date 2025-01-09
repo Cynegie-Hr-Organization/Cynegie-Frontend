@@ -25,7 +25,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getPayrolls } from "./api";
 import Table from "@/app/_components/shared/table";
 import { FieldType } from "@/app/_components/shared/table/types";
-import { FetchParams, Payroll } from "@/types";
+import { FetchParams } from "@/types";
 import { InputFieldValue } from "@/app/_components/employee/modal/types";
 import { initFetchParams } from "@/constants";
 
@@ -66,22 +66,24 @@ const HrAdminPayrollOverviewPage = () => {
 
   useEffect(() => {
     if (data) {
-      setPayrolls(
-        data.data.map((payroll) => ({
-          payrollName: payroll.payrollName,
-          payrollPeriod: `${dayjs(payroll.startDate).format(
-            "DD MMM"
-          )} - ${dayjs(payroll.endDate).format("DD MMM")}`,
-          paymentDate: dayjs(payroll.paymentDate).format("DD MMM YYYY"),
-          totalEmployees: payroll.employees.length,
-          grossPay: `₦${payroll.totalGrossPay}`,
-          netPay: `₦${payroll.totalGrossPay}`,
-          approvalDate: payroll.approvalDate
-            ? dayjs(payroll.approvalDate).format("DD MMM YYYY")
-            : "--",
-          status: payroll.status,
-        }))
-      );
+      if (data.data) {
+        setPayrolls(
+          data.data.map((payroll) => ({
+            payrollName: payroll.payrollName,
+            payrollPeriod: `${dayjs(payroll.startDate).format(
+              "DD MMM"
+            )} - ${dayjs(payroll.endDate).format("DD MMM")}`,
+            paymentDate: dayjs(payroll.paymentDate).format("DD MMM YYYY"),
+            totalEmployees: payroll.employees.length,
+            grossPay: `₦${payroll.totalGrossPay}`,
+            netPay: `₦${payroll.totalGrossPay}`,
+            approvalDate: payroll.approvalDate
+              ? dayjs(payroll.approvalDate).format("DD MMM YYYY")
+              : "--",
+            status: payroll.status,
+          }))
+        );
+      }
     } else {
       setPayrolls(undefined);
     }

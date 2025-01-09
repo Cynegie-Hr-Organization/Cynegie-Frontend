@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { FetchParams, PaginatedResponse2, Payroll } from "@/types";
+import { Employee } from "@/types/api-index";
 
 export const getPayrolls = async (
   params: FetchParams
@@ -20,4 +21,18 @@ export const getPayrolls = async (
     },
     params: params,
   }) as Promise<PaginatedResponse2<Payroll>>;
+};
+
+export const getMyEmployees = async (
+  params: FetchParams
+): Promise<PaginatedResponse2<Employee>> => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/employees/mine`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`, // Add session token to Authorization header
+    },
+    params: params,
+  }) as Promise<PaginatedResponse2<Employee>>;
 };
