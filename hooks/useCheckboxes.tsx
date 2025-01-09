@@ -1,9 +1,5 @@
 import { ChangeEvent, useState } from "react";
 
-function generateRange(start: number, end: number): number[] {
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-}
-
 const useCheckboxes = <T,>(
   rows: T[],
   getCheckedItems?: (rows: T[]) => void,
