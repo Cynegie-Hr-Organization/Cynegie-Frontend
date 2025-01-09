@@ -257,6 +257,18 @@ const HrAdminCreatePayrollPage = () => {
               setFetchParams({ ...fetchParams, search: query })
             }
             getCheckedRows={(rows) => setCheckedRows(rows)}
+            actions={[
+              { name: "Adjust Compenstation", onClick: () => {} },
+              {
+                name: "Remove Employee",
+                onClick: () => {},
+                onDataReturned: (id) =>
+                  setCheckedRows(
+                    checkedRows.filter((checkedRow) => checkedRow.id !== id)
+                  ),
+              },
+            ]}
+            fieldToReturnOnActionItemClick="id"
           />
         </Page>
       )}
