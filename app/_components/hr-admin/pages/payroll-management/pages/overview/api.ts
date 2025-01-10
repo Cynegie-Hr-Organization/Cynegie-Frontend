@@ -36,3 +36,23 @@ export const getMyEmployees = async (
     params: params,
   }) as Promise<PaginatedResponse2<Employee>>;
 };
+
+export type CreatePayrollPayload = {
+  payrollName: string;
+  startDate: string;
+  endDate: string;
+  status: "approved" | "pending" | "rejected";
+  paymentDate: string;
+  employees: (string | null)[];
+};
+
+export const createPayroll = async (payload: CreatePayrollPayload) => {
+  const session = await getServerSession(authOptions);
+  return request("POST", `${baseUrl}/v1/payroll`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: payload,
+  });
+};

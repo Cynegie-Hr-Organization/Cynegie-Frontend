@@ -1,17 +1,19 @@
 "use client";
-import ButtonGroup from "@/app/_components/shared/button-group";
+import Modal from "@/app/_components/employee/modal";
+import Button from "@/app/_components/shared/button-group/button";
 import Form from "@/app/_components/shared/form";
 import Page from "@/app/_components/shared/page";
 import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import Table from "@/app/_components/shared/table";
 import { FieldType } from "@/app/_components/shared/table/types";
+import { route } from "@/constants";
 import { FetchParams } from "@/types";
 import { Divider, Stack } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getMyEmployees } from "../api";
+import { createPayroll, CreatePayrollPayload, getMyEmployees } from "../api";
 
 type MappedEmployee = {
   id: string | null;
@@ -49,6 +51,9 @@ const HrAdminCreatePayrollPage = () => {
 
   const [checkedRows, setCheckedRows] = useState<MappedEmployee[]>([]);
 
+  const [departmentFilter, setDepartmentFilter] = useState<string>();
+  const [usedDepartmentFilter, setUsedDepartmentFilter] = useState<string>();
+
   useEffect(() => {
     if (myEmployeesData) {
       if (myEmployeesData.data) {
@@ -75,7 +80,10 @@ const HrAdminCreatePayrollPage = () => {
       checkedRows.length > 0 &&
       payrollPeriod.startDate.length != 0 &&
       payrollPeriod.endDate.length != 0 &&
-      paymentDate.length != 0
+      paymentDate.length != 0 &&
+      payrollPeriod.startDate != "Invalid Date" &&
+      payrollPeriod.endDate != "Invalid Date" &&
+      payrollPeriod.startDate < payrollPeriod.endDate
     ) {
       return true;
     } else {
@@ -83,23 +91,34 @@ const HrAdminCreatePayrollPage = () => {
     }
   };
 
-  //Mutation Payload
-  // {
-  //   payrollName: payrollName,
-  //   startDate: payrollPeriod.startDate,
-  //   endDate: payrollPeriod.endDate,
-  //   status: "pending",
-  //   paymentDate: paymentDate,
-  //   employees: checkedRows.map((row) => row.id),
-  // }
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [createLoading, setCreateLoading] = useState(false);
+  const [openSuccessModal, setOpenSuccessModal] = useState(false);
+  const [openFailureModal, setOpenFailureModal] = useState(false);
+
+  const createPayrollMutation = useMutation({
+    mutationFn: (payload: CreatePayrollPayload) => createPayroll(payload),
+    onMutate: () => setCreateLoading(true),
+    onSuccess: () => {
+      setCreateLoading(false);
+      setOpenSuccessModal(true);
+    },
+    onError: () => {
+      setCreateLoading(false);
+      setOpenFailureModal(true);
+    },
+  });
 
   return (
-    <>
+    <div>
       {activeTab == 0 && (
         <Page
           backText="Back to Payroll Management"
           title="Create Payroll"
-          onBackTextClick={() => router.push("/hr-admin/payroll/overview")}
+          onBackTextClick={() =>
+            router.push(route.hrAdmin.payroll.overview.home)
+          }
         >
           <Form
             isCard
@@ -122,7 +141,7 @@ const HrAdminCreatePayrollPage = () => {
                     endDate: dayjs(range.endDate).format("YYYY-MM-DD"),
                   }),
                 ...(payrollPeriod.startDate.length > 1 && {
-                  dateRangeDefaultValue: [
+                  dateRangeValue: [
                     dayjs(payrollPeriod.startDate).toDate(),
                     dayjs(payrollPeriod.endDate).toDate(),
                   ],
@@ -208,6 +227,7 @@ const HrAdminCreatePayrollPage = () => {
           />
           <Table
             hasActionsColumn
+            hasPagination={false}
             headerRowData={[
               "Employee Name",
               "Department",
@@ -240,6 +260,14 @@ const HrAdminCreatePayrollPage = () => {
               }))
               .filter((employee) =>
                 checkedRows?.map((row) => row.id).includes(employee.id)
+              )
+              .filter((employee) =>
+                employee.name.toLowerCase().includes(searchQuery.toLowerCase())
+              )
+              .filter((employee) =>
+                employee.department
+                  .toLowerCase()
+                  .includes(usedDepartmentFilter?.toLowerCase() ?? "")
               )}
             displayedFields={[
               "name",
@@ -253,9 +281,32 @@ const HrAdminCreatePayrollPage = () => {
               "tax",
               "overtime",
             ]}
-            onSearch={(query) =>
-              setFetchParams({ ...fetchParams, search: query })
-            }
+            onSearch={(query) => setSearchQuery(query)}
+            formFilter={{
+              inputFields: [
+                {
+                  name: "Department",
+                  type: "select",
+                  placeholder: departmentFilter,
+                  value: departmentFilter,
+                  setValue: setDepartmentFilter,
+                  selectValControlledFromOutside: true,
+                  options: [
+                    ...new Set(
+                      checkedRows.map((employee) => employee.department)
+                    ),
+                  ].map((department) => ({
+                    label: department,
+                    value: department.toLowerCase(),
+                  })),
+                },
+              ],
+            }}
+            onFilterClick={() => setUsedDepartmentFilter(departmentFilter)}
+            onResetClick={() => {
+              setDepartmentFilter(undefined);
+              setUsedDepartmentFilter(undefined);
+            }}
             getCheckedRows={(rows) => setCheckedRows(rows)}
             actions={[
               { name: "Adjust Compenstation", onClick: () => {} },
@@ -355,22 +406,63 @@ const HrAdminCreatePayrollPage = () => {
           </Stack>
         </Page>
       )}
-      <div className="mt-[-30] mb-10">
-        <ButtonGroup
-          leftButton={{
-            type: ButtonType.outlined,
-            text: "Save & Continue Later",
-            onClick: () => {},
-          }}
-          rightButton={{
-            type: enableButton() ? ButtonType.contained : ButtonType.disabled,
-            text: "Continue",
-            onClick: () => setActiveTab(activeTab + 1),
-          }}
-          position="end"
-        />
-      </div>
-    </>
+      <Page>
+        <div className="flex justify-center sm:justify-end mt-[-70]">
+          {/** TODO: Add Save and Continue Later Button */}
+          <Button
+            type={
+              enableButton()
+                ? createLoading
+                  ? ButtonType.disabledLoading
+                  : ButtonType.contained
+                : ButtonType.disabled
+            }
+            text={
+              activeTab < 2
+                ? "Continue"
+                : createLoading
+                ? ""
+                : "Finalize Payroll"
+            }
+            onClick={() => {
+              if (activeTab < 2) {
+                window.scrollTo({
+                  top: 0,
+                });
+                setActiveTab(activeTab + 1);
+              } else {
+                createPayrollMutation.mutateAsync({
+                  payrollName: payrollName,
+                  startDate: payrollPeriod.startDate,
+                  endDate: payrollPeriod.endDate,
+                  status: "pending",
+                  paymentDate: paymentDate,
+                  employees: checkedRows.map((row) => row.id),
+                });
+              }
+            }}
+          />
+        </div>
+      </Page>
+      <Modal
+        open={openSuccessModal}
+        onClose={() => {}}
+        hasHeading={false}
+        centerImage="/icons/success-tick.svg"
+        centerTitle="You're all set"
+        centerMessage={`Payroll ${dayjs(payrollPeriod.startDate).format(
+          "DD MMM"
+        )} - ${dayjs(payrollPeriod.endDate).format(
+          "DD MMM YYYY"
+        )} has been sent for approval`}
+        centerButton
+        buttonOne={{
+          type: ButtonType.contained,
+          text: "Back to Payroll",
+          onClick: () => router.push(route.hrAdmin.payroll.overview.home),
+        }}
+      />
+    </div>
   );
 };
 

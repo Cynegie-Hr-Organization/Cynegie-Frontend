@@ -223,10 +223,17 @@ const basePath = {
   roleManagement: "role/",
   directory: "directory/",
   appManagement: "app-management/",
+  payroll: "payroll/",
 };
 
 export const route = {
   hrAdmin: {
+    payroll: {
+      overview: {
+        home: `${basePath.hrAdmin}${basePath.payroll}overview`,
+        createPayroll: `${basePath.hrAdmin}${basePath.payroll}create-payroll`,
+      },
+    },
     employeeManagement: {
       approvalManagement: {
         home: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.approvalManagement}`,

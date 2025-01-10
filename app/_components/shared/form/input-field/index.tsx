@@ -29,6 +29,7 @@ const InputField: React.FC<InputFieldProps> = ({
   checkboxItems,
   getDateRange,
   getDate,
+  dateRangeValue,
   dateRangeDefaultValue,
 }) => {
   return (
@@ -78,6 +79,7 @@ const InputField: React.FC<InputFieldProps> = ({
           placeholder={placeholder}
           getDateRange={getDateRange}
           disabled={disabled}
+          value={dateRangeValue}
           defaultValue={dateRangeDefaultValue}
         />
       )}

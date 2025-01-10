@@ -48,6 +48,7 @@ export type InputFieldProps = {
   checkboxItems?: string[];
   getDateRange?: (range: { startDate: Date; endDate: Date }) => void;
   getDate?: (date: Dayjs | null) => void;
+  dateRangeValue?: DateRange | null;
   dateRangeDefaultValue?: DateRange | null;
 };
 

@@ -4,6 +4,7 @@ import { DateRangePicker } from "rsuite";
 import { DateRange } from "rsuite/esm/DateRangePicker";
 
 type DateRangeFieldProps = {
+  value?: DateRange | null;
   defaultValue?: DateRange | null;
   placeholder?: string;
   disabled?: boolean;
@@ -14,6 +15,7 @@ const DateRangeField: React.FC<DateRangeFieldProps> = ({
   placeholder,
   getDateRange,
   disabled,
+  value,
   defaultValue,
 }) => {
   return (
@@ -23,12 +25,13 @@ const DateRangeField: React.FC<DateRangeFieldProps> = ({
         ...(disabled && color.inputfield.disabled),
       }}
       defaultValue={defaultValue}
+      value={value}
       preventOverflow
       showOneCalendar
       cleanable={false}
       ranges={[]}
       disabled={disabled}
-      format="dd MMM yyyy"
+      format="dd/MMM/yyyy"
       placeholder={placeholder ?? "Select Period"}
       onChange={(e) => {
         if (e) {

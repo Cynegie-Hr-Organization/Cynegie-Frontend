@@ -1,10 +1,11 @@
-import React from 'react';
-import { ChevronDown } from 'lucide-react';
-import { color, icon } from '@/constants';
-import { ButtonProps, ButtonType } from '../../page/heading/types';
-import { PopoverType } from '@/app/_components/shared/custom-popover/types';
-import SvgIcon from '../../../icons/container';
-import Popover from '../../custom-popover';
+import { PopoverType } from "@/app/_components/shared/custom-popover/types";
+import { color, icon } from "@/constants";
+import { CircularProgress } from "@mui/material";
+import { ChevronDown } from "lucide-react";
+import React from "react";
+import SvgIcon from "../../../icons/container";
+import Popover from "../../custom-popover";
+import { ButtonProps, ButtonType } from "../../page/heading/types";
 
 const Button: React.FC<ButtonProps> = (props) => {
   const {
@@ -18,11 +19,11 @@ const Button: React.FC<ButtonProps> = (props) => {
     iconOnly,
   } = props;
 
-  const borderStyle = { border: '1.5px solid' };
-  const paddingStyle = { padding: '10px 24px' };
-  const fontSizeStyle = { fontSize: '16px' };
+  const borderStyle = { border: "1.5px solid" };
+  const paddingStyle = { padding: "10px 24px" };
+  const fontSizeStyle = { fontSize: "16px" };
   const fontWeightStyle = { fontWeight: 700 };
-  const borderRadiusStyle = { borderRadius: '8px' };
+  const borderRadiusStyle = { borderRadius: "8px" };
 
   const containedStyle = {
     ...color.button.contained,
@@ -30,7 +31,7 @@ const Button: React.FC<ButtonProps> = (props) => {
     ...fontSizeStyle,
     ...fontWeightStyle,
     ...borderRadiusStyle,
-    fill: '#FFF',
+    fill: "#FFF",
   };
 
   const outlinedStyle = {
@@ -45,9 +46,9 @@ const Button: React.FC<ButtonProps> = (props) => {
   const filterStyle = {
     ...color.button.filter,
     ...borderStyle,
-    padding: '6px 14px',
-    borderRadius: '6px',
-    fontSize: '14px',
+    padding: "6px 14px",
+    borderRadius: "6px",
+    fontSize: "14px",
     fontWeight: 600,
   };
 
@@ -64,15 +65,15 @@ const Button: React.FC<ButtonProps> = (props) => {
 
   const blackStyle = {
     ...containedStyle,
-    backgroundColor: 'black',
+    backgroundColor: "black",
   };
 
   const deleteWithIconStyle = {
     ...containedStyle,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     border: 0,
     color: color.error.dark,
-    display: 'flex',
+    display: "flex",
     gap: 10,
     paddingLeft: 0,
     fontWeight: 400,
@@ -89,7 +90,8 @@ const Button: React.FC<ButtonProps> = (props) => {
   const button = (
     <button
       onClick={onClick}
-      {...(type === ButtonType.disabled && { disabled: true })}
+      {...((type === ButtonType.disabled ||
+        type === ButtonType.disabledLoading) && { disabled: true })}
       style={{
         ...(type === ButtonType.outlined && outlinedStyle),
         ...(type === ButtonType.contained && containedStyle),
@@ -99,30 +101,41 @@ const Button: React.FC<ButtonProps> = (props) => {
         ...(type === ButtonType.deleteContained && deleteContainedStyle),
         ...(type === ButtonType.deleteWithIcon && deleteWithIconStyle),
         ...(type === ButtonType.disabled && disabledStyle),
+        ...(type === ButtonType.disabledLoading && disabledStyle),
         ...(type === ButtonType.black && blackStyle),
         ...(type === ButtonType.actions && outlinedStyle),
-        borderRadius: '8px',
+        borderRadius: "8px",
         ...((iconProp || type === ButtonType.download) && {
-          display: 'flex',
-          alignItems: 'center',
+          display: "flex",
+          alignItems: "center",
           gap: 5,
         }),
-        ...(small && { fontSize: '14px' }),
-        textWrap: 'nowrap',
+        ...(small && { fontSize: "14px" }),
+        textWrap: "nowrap",
         ...(deleteIconOnly && { padding: 0 }),
       }}
-      className={`w-fit sm:${fullWidth ? 'w-full' : 'w-fit'}`}
+      className={`${fullWidth ? "w-full" : "w-fit"} sm:${
+        fullWidth ? "w-full" : "w-fit"
+      }`}
     >
       {iconProp}
       {type === ButtonType.deleteWithIcon && (
         <SvgIcon path={icon.bin} width={20} height={20} />
       )}
       {type === ButtonType.download && (
-        <SvgIcon path='/icons/download.svg' width={24} height={24} />
+        <SvgIcon path="/icons/download.svg" width={24} height={24} />
+      )}
+      {type === ButtonType.disabledLoading && (
+        <CircularProgress
+          sx={{ mx: 5 }}
+          size={22}
+          thickness={5}
+          color="inherit"
+        />
       )}
       {!iconOnly && text}
       {(popoverOptions || type === ButtonType.actions) && (
-        <ChevronDown style={{ display: 'inline', marginLeft: 5 }} />
+        <ChevronDown style={{ display: "inline", marginLeft: 5 }} />
       )}
     </button>
   );
