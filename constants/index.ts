@@ -113,7 +113,7 @@ export const color = {
   },
   inputfield: {
     disabled: {
-      backgroundColor: "#F0F2F5",
+      backgroundColor: "#F7F7FA",
       color: "#98A2B3",
     },
   },
