@@ -1,4 +1,4 @@
-import {  SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { DetailGroupProps } from '@/app/_components/shared/detail-group/types';
 import { FormProps } from '@/app/_components/shared/form/types';
 import { ButtonProps } from '@/app/_components/shared/page/heading/types';
@@ -35,7 +35,7 @@ export type InputFieldProps = {
   placeholder?: string;
   options?: InputFieldOption[];
   value?: string | number;
-  setValue?: (value: string | number) => void;
+  setValue?: Dispatch<SetStateAction<string | number | undefined>>;
   selectValControlledFromOutside?: boolean;
   disabled?: boolean;
   defaultValue?: string | number;
@@ -43,7 +43,6 @@ export type InputFieldProps = {
   getCurrentValue?: (arg: string | number) => void;
   startAdornment?: React.ReactElement;
   checkboxItems?: string[];
-  
 };
 
 export type InputFieldOption = { label: string; value: string | number };

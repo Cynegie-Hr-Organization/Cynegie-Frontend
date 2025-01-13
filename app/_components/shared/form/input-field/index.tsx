@@ -38,7 +38,6 @@ const InputField: React.FC<InputFieldProps> = ({
           disabled={disabled}
           defaultValue={defaultValue}
           startAdornment={startAdornment}
-          
         />
       )}
       {type == 'message' && (

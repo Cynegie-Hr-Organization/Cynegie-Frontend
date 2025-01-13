@@ -7,11 +7,9 @@ export const getUserDetails = async () => {
     if (session && session.user) {
       const fullName =
         `${session.user.firstName || ""} ${session.user.lastName || ""}`.trim();
-      const roles = session.user.role
       return {
         name: fullName || "User",
         email: session.user.email || "Email",
-        roles  
       };
     }
   } catch (error) {

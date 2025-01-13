@@ -26,7 +26,7 @@ const LearningManagementTable = () => {
         const response = await getAllCourses(
           page,
           limit,
-          "desc",
+          "asc",
           status,
           search,
         );

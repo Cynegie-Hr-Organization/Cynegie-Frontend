@@ -71,44 +71,33 @@ const AssignCourseModal = ({ trigger }: { trigger: ReactNode }) => {
   });
 
   const handleSubmit = async () => {
+    if (!formData.courseTitle || !formData.employees) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
 
-    if (!formData.courseTitle || !formData.employees)
-    {
-    toast.error("Please fill in all required fields.");
-    return;
-  }
-
-    if (!formData.startDate || !formData.endDate)
-    {
-    toast.error("Please select both start and end dates.");
-    return;
-  }
-
-  try {
     const payload = {
       courseTitle: formData.courseTitle,
       courseDescription: formData.courseDescription,
       employee: formData.employees,
-      startDate: new Date(formData.startDate).toISOString(),
-      endDate: new Date(formData.endDate).toISOString(), 
+      startDate: formData.startDate,
+      endDate: formData.endDate,
       courseSource: formData.uploadCourse ? "upload" : formData.courseSource,
     };
 
-    console.log(payload);
-
     setIsSubmitting(true);
-
-    const response = await assignCourse(payload);
-    console.log(response);
-    toast.success("Course assigned successfully!");
-    setIsOpen(false);
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to assign course. Please try again.");
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+    try {
+      const response = await assignCourse(payload);
+      console.log(response);
+      toast.success("Course assigned successfully!");
+      setIsOpen(false);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to assign course. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <DrawerDialog
@@ -148,11 +137,11 @@ const AssignCourseModal = ({ trigger }: { trigger: ReactNode }) => {
             label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
             value: emp.id as string,
           }))}
-          selectedValues={formData.employees ? [formData.employees] : []} 
+          selectedValues={formData.employees ? [formData.employees] : []} // Handle the single value as an array
           onSelectionChange={(values: string[]) =>
             setFormData({
               ...formData,
-              employees: values[values.length - 1] || "", 
+              employees: values[values.length - 1] || "", // Set the last selected value as a string
             })
           }
           width="w-full"

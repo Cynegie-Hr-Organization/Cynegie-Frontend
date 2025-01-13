@@ -1,10 +1,10 @@
 import { MenuItem, Select } from '@mui/material';
-import React from 'react';
+import React, { SetStateAction } from 'react';
 import { InputFieldOption } from '../../modal/types';
 
 export type SelectFieldProps = {
   value?: string | number;
-  setValue?: (value: string | number) => void;  // Change here
+  setValue?: React.Dispatch<SetStateAction<string | number | undefined>>;
   placeholder?: string;
   options?: InputFieldOption[];
   valueControlledFromOutside?: boolean;

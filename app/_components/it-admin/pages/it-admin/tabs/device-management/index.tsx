@@ -30,7 +30,7 @@ const DeviceManagementTab: React.FC = () => {
       getDeviceManagement(
         currentPage,
         itemsPerPage,
-        "desc",
+        "asc",
         statusFilter,
         searchQuery,
       ),

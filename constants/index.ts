@@ -167,8 +167,6 @@ export const APRStatusMap: StatusMap = {
   Rejected: 'error',
 };
 
-
-
 export const CISStatusMap: StatusMap = {
   Completed: 'success',
   'In Progress': 'warning',
@@ -189,10 +187,6 @@ export const AttendanceStatusMap: StatusMap = {
 export const ReadAdminStatusMap: StatusMap = {
   Read: 'warning',
   Admin: 'info',
-};
-export const AppRequestStatusMap: StatusMap = {
-  INACTIVE: 'error',
-  ACTIVE: 'success',
 };
 
 export const PDStatusMap: StatusMap = {

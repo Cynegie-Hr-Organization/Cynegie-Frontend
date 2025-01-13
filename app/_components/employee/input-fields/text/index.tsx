@@ -9,14 +9,13 @@ const textFieldStyle = {
   },
 };
 
-const TextField: React.FC<Omit<InputFieldProps, 'type'> & { inputProps?: React.InputHTMLAttributes<HTMLInputElement> }> = ({
+const TextField: React.FC<Omit<InputFieldProps, 'type'>> = ({
   placeholder,
   value,
   setValue,
   disabled,
   defaultValue,
   startAdornment,
-  inputProps, 
 }) => {
   return (
     <MuiTextField
@@ -28,11 +27,12 @@ const TextField: React.FC<Omit<InputFieldProps, 'type'> & { inputProps?: React.I
       fullWidth
       defaultValue={defaultValue}
       placeholder={placeholder}
-      value={value || ''} // Ensure no uncontrolled component issues
+      value={value}
       onChange={(e) => setValue?.(e.target.value)}
-      inputProps={{
-        startAdornment: startAdornment,
-        ...inputProps, // Spread inputProps to the MuiTextField's InputProps
+      slotProps={{
+        input: {
+          startAdornment: startAdornment,
+        },
       }}
     />
   );
