@@ -1,5 +1,7 @@
 import { color } from '@/constants';
 import { ColorVariant } from '@/types';
+import { UserRole } from '@/types/enum';
+import { rolesMap } from '@/types/form';
 
 export function getMonthRange(monthIndex: number, year: number): string {
   const monthNames = [
@@ -88,3 +90,12 @@ export function addNavItemEllipsis(text: string) {
   const limit = 20;
   return text.length > limit ? `${text.slice(0, limit) + '...'}` : text;
 }
+
+
+export const getRedirectPath = (roles: string[]): string | null => {
+  const primaryRole = roles.includes(UserRole.EMPLOYEE)
+    ? UserRole.EMPLOYEE
+    : roles.find(role => rolesMap[role]) || null;
+
+  return primaryRole ? rolesMap[primaryRole] : null;
+};

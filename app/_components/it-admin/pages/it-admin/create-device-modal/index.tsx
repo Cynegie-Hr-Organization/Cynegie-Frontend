@@ -20,14 +20,21 @@ const CreateDeviceModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = React.useState(false);
 
   const handleSubmit = async () => {
-    if (!formData.deviceName || !formData.status || !formData.location) {
-      toast.error("Please fill in all required fields.");
-      return;
-    }
+   if (
+     !formData.deviceName.trim() ||
+     !formData.status.trim() ||
+     !formData.location.trim()
+) {
+  toast.error("Please fill in all required fields.");
+  return;
+}
+
 
     setIsLoading(true);
 
-    try {
+    try
+    {
+      console.log(formData);
       const response = await createDevice(formData);
       console.log(response);
       toast.success("Device created successfully!");
@@ -91,15 +98,19 @@ const CreateDeviceModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             }
             value={formData.location}
           />
+          
+        </div>
+
+        <div className="mt-2">
           <AppSelect
             label="Status"
             requiredField
             placeholder="Select device status"
             onChange={(value) => setFormData({ ...formData, status: value })}
             listItems={[
-              { label: "Active", value: "active" },
-              { label: "Under Maintenance", value: "under-maintenance" },
-              { label: "Inactive", value: "inactive" },
+              { label: "Active", value: "ACTIVE" },
+              { label: "Under Repair", value: "UNDER_REPAIR" },
+              { label: "Inactive", value: "INACTIVE" },
             ]}
           />
         </div>

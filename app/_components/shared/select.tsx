@@ -24,7 +24,7 @@ export function AppSelect({ listLabel, label, requiredField = false, listItems, 
   triggerStyle?: string
 }) {
   return (
-    <Select>
+    <Select onValueChange={onChange}>
       <div className={`flex flex-col gap-2 w-full ${width}`}>
         {label && <p className={`text-sm font-semibold flex justify-start w-full ${requiredField ? 'after:content-["*"] after:text-red-500 after:ml-1 after:font-bold' : ''}`}>{label}</p>}
 

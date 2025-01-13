@@ -9,4 +9,5 @@ export const rolesMap: Record<string, string> = {
   [UserRole.SUPER_ADMIN]: "/super-admin",
   [UserRole.HR_ADMIN]: "/hr-admin",
   [UserRole.IT_ADMIN]: "/it-admin",
+  [UserRole.EMPLOYEE] : "/employee",
 };

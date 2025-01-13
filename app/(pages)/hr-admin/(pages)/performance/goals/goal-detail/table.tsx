@@ -90,7 +90,7 @@ const KeyResultsTable = ({ keyResults }: { keyResults: KeyResult[] }) => {
           </tr>
         </thead>
         <tbody>
-          {keyResults.map((keyResult) => {
+          {keyResults?.map((keyResult) => {
             const percentage = (keyResult.targetValue / 100) * 100; // Assuming targetValue is a percentage
             return (
               <tr

@@ -50,7 +50,7 @@ export const createDevice = async (payload: any) => {
 export const getDeviceManagement = async (
   page: number,
   limit: number,
-  sortOrder: string = "asc",
+  sortOrder: string = "desc",
   status?: string,
   search?: string,
 ): Promise<DevicePaginatedResponse<Device>> => {
@@ -95,7 +95,7 @@ export const deleteDevice = async (id: string) => {
 export const getSoftwareManagement = async (
   page: number,
   limit: number,
-  sortOrder: string = "asc", // Default to ascending order
+  sortOrder: string = "desc", // Default to ascending order
   status?: string,
   search?: string,
 ): Promise<SoftwarePaginatedResponse<Software>> => {
@@ -119,7 +119,7 @@ export const getSoftwareManagement = async (
 export const getSecurityAlerts = async (
   page: number,
   limit: number,
-  sortOrder: string = "asc",
+  sortOrder: string = "desc",
   status?: string,
   search?: string,
 ): Promise<SecurityAlertsPaginatedResponse<SecurityAlert>> => {
@@ -164,7 +164,7 @@ export const deleteSecurityAlerts = async (id: string) => {
 export const getDeviceRequests = async (
   page: number,
   limit: number,
-  sortOrder: string = "asc",
+  sortOrder: string = "desc",
   status?: string,
   search?: string,
 ): Promise<DeviceRequestPaginatedResponse<DeviceRequest>> => {
