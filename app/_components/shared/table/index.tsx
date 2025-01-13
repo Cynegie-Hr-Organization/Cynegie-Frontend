@@ -153,7 +153,7 @@ const Table: React.FC<TableProps> = ({
                     <Checkbox {...checkAllBoxProps} />
                   </TableCell>
                 )}
-                {headerRow.map((field, index) => (
+                {headerRow?.map((field, index) => (
                   <TableCell
                     key={index}
                     className='whitespace-nowrap py-4'
@@ -165,7 +165,7 @@ const Table: React.FC<TableProps> = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {bodyRowData.map((row, rowIndex) => (
+              {bodyRowData?.map((row, rowIndex) => (
                 <TableRow key={rowIndex}>
                   {hasCheckboxes && (
                     <TableCell className='whitespace-nowrap'>

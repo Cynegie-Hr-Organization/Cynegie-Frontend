@@ -12,6 +12,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { authUrl } from "@/constants/config";
 import { rolesMap } from "../../../../types/form";
 import { request } from "@/utils/request";
+import { UserRole } from "@/types/enum";
+import { getRedirectPath } from "@/utils";
 
 const credentialsProviderOptions = {
   name: "Login",
@@ -38,6 +40,9 @@ const credentialsProviderOptions = {
         data: { email, password },
       });
 
+          console.log("API response:", json);
+
+
       if (!json || json.error || !json.data || !json.data.user) {
         console.error(
           "Invalid credentials or server error:",
@@ -63,6 +68,8 @@ const credentialsProviderOptions = {
         token: { accessToken, refreshToken },
       };
 
+      console.log(loggedInUser);
+
       return loggedInUser;
     } catch (error) {
       console.error("Login error:", error);
@@ -79,7 +86,7 @@ export const authOptions: AuthOptions = {
         token.name = user.email || "";
         token.access = user.token.accessToken || "";
         token.refresh = user.token.refreshToken || "";
-        token.role = user.role || "";
+        token.roles = user.role || [];
         token.firstName = user.firstName || "";
         token.lastName = user.lastName || "";
         token.company = user.company || "";
@@ -89,7 +96,7 @@ export const authOptions: AuthOptions = {
     async session({ session, token }) {
       session.user = {
         email: token.name as string,
-        role: token.role as string,
+        role: token.roles as string[],
         firstName: token.firstName as string,
         lastName: token.lastName as string,
         company: token.company as string,
@@ -98,14 +105,23 @@ export const authOptions: AuthOptions = {
       return session;
     },
 
-    async signIn({ user }) {
-      if (!user.role) {
-        console.error("User role is missing during sign-in");
-        return false;
-      }
+  async signIn({ user }) {
+    if (!user.role || user.role.length === 0) {
+      console.error("User roles are missing during sign-in");
+      return false;
+    }
 
-      return rolesMap[user.role] ? true : false;
-    },
+    const redirectPath = getRedirectPath(user.role);
+    if (!redirectPath) {
+      console.error("No valid role found for user");
+      return false;
+    }
+
+    // Instead of returning redirectPath, handle redirection in the client
+  console.log("Redirecting to:", redirectPath);
+  return true;  
+  },
+
   },
   pages: {
     signIn: "/signin",

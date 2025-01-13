@@ -7,7 +7,7 @@ import useMyCoursesTable from './hooks/table/useMyCoursesTable';
 import Page from '@/app/_components/shared/page';
 
 const EmployeeLearningAndDevelopment = () => {
-  const { myCourseTableData } = useMyCoursesTable();
+  const { tableProps } = useMyCoursesTable(); // Correctly reference `tableProps`
   return (
     <Page title='Learning and Development'>
       <Grid2 container spacing={3}>
@@ -27,7 +27,7 @@ const EmployeeLearningAndDevelopment = () => {
         )}
       </Grid2>
       <Stack gap={2}>
-        <Table {...myCourseTableData} />
+        <Table {...tableProps} />
       </Stack>
     </Page>
   );

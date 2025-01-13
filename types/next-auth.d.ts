@@ -8,7 +8,7 @@ declare module "next-auth" {
     email: string;
     firstName: string; // Added first name
     lastName: string; // Added last name
-    role: string;
+    role: string[];
     company: string; // Added company
     token: {
       accessToken: string;
