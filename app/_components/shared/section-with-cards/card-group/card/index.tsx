@@ -1,7 +1,7 @@
-import Value from './value';
-import CardLabel from './label';
-import React from 'react';
-import { CardProps } from '../../types';
+import React from "react";
+import { CardProps } from "../../types";
+import CardLabel from "./label";
+import Value from "./value";
 
 const Card: React.FC<CardProps> = (props) => {
   const {
@@ -23,8 +23,8 @@ const Card: React.FC<CardProps> = (props) => {
   return (
     <div
       className={`flex ${
-        valueBelow ? 'flex-col-reverse' : 'flex-col'
-      } gap-4 common-card h-full`}
+        valueBelow ? "flex-col-reverse" : "flex-col"
+      } gap-6 common-card h-full`}
     >
       <Value
         lineBelow={lineBelowValue}

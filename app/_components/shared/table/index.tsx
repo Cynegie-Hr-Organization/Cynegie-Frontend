@@ -45,8 +45,7 @@ const Table: React.FC<TableProps> = ({
   displayedFields,
   fieldActionMap: statusActionMap,
   bodyRowData,
-  page,
-  pageCount,
+  paginationMeta,
   actions: actionsFromProps,
   getCheckedRows,
   clearChecks,
@@ -66,8 +65,11 @@ const Table: React.FC<TableProps> = ({
   const loading = bodyRowData ? false : true;
 
   //Get typeof first row
-  const firstRow = bodyRowData ? bodyRowData[0] : undefined;
-  type typeOfFirstRow = typeof firstRow;
+  // const firstRow = bodyRowData ? bodyRowData[0] : undefined;
+  // type typeOfFirstRow = typeof firstRow;
+  type typeOfFirstRow = typeof bodyRowData extends Array<infer U>
+    ? U
+    : undefined;
 
   const [actions, setActions] = useState<TableAction[] | undefined>(undefined);
 
@@ -212,7 +214,7 @@ const Table: React.FC<TableProps> = ({
             <TableBody>
               {(
                 bodyRowData ??
-                Array(6)
+                Array(5)
                   .fill(undefined)
                   .map((row, index) => ({ index: index, ...row }))
               ).map((row, rowIndex) => (
@@ -271,7 +273,7 @@ const Table: React.FC<TableProps> = ({
         </TableContainer>
         {hasPagination && (
           <div className="mx-3">
-            <TablePagination pageCount={pageCount} page={page} />
+            <TablePagination {...paginationMeta} />
           </div>
         )}
       </div>

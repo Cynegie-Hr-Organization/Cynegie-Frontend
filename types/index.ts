@@ -51,6 +51,12 @@ export interface Job extends CreateJobProps {
   status: string;
 }
 
+export interface FetchResponse<T> {
+  status: number;
+  message: string;
+  data: T;
+}
+
 export interface PaginatedResponse<T> {
   status: number;
   message: string;
@@ -356,7 +362,7 @@ export type Payroll = {
   approvalDate?: string;
   status: "approved" | "pending" | "rejected";
   paymentDate: string;
-  employees: [];
+  employees: Employee[] | string[];
   deletedAt: string | null;
   company: string;
   createdAt: string;

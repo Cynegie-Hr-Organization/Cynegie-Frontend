@@ -10,7 +10,7 @@ import React from "react";
 interface CustomDatePickerProps {
   value?: Dayjs | null;
   defaultValue?: Dayjs | null;
-  onChange: (newValue: Dayjs | null) => void;
+  onChange?: (newValue: Dayjs | null) => void;
   disabled?: boolean;
 }
 
@@ -23,10 +23,11 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
-        value={value}
-        defaultValue={defaultValue}
+        // value={value}
+        {...(value && { value: value })}
+        {...(defaultValue && { defaultValue: defaultValue })}
         disabled={disabled}
-        onChange={onChange}
+        {...(onChange && { onChange: onChange })}
         slotProps={{
           textField: {
             id: "date-picker",

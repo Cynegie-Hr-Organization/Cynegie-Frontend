@@ -1,4 +1,4 @@
-import { CardValueProps } from '../../../types';
+import { CardValueProps } from "../../../types";
 
 const Value: React.FC<CardValueProps> = (props) => {
   const {
@@ -12,27 +12,27 @@ const Value: React.FC<CardValueProps> = (props) => {
   return (
     <div
       style={{
-        color: '#1B1B1B',
+        color: "#1B1B1B",
         fontWeight: 600,
-        fontSize: '24px',
+        fontSize: "24px",
         ...(lineBelow && {
-          textDecoration: 'underline',
+          textDecoration: "underline",
           textUnderlineOffset: 11,
           textDecorationColor: lineColor,
         }),
         ...(additionalInfo && {
-          display: 'flex',
-          alignItems: 'center',
+          display: "flex",
+          alignItems: "center",
         }),
       }}
     >
       {<span style={{ flexGrow: 1 }}>{value}</span>}
-      {isPercentage && '%'}
+      {isPercentage && "%"}
       {denominator && (
         <span
           style={{
-            fontSize: '18px',
-            color: '#475367',
+            fontSize: "18px",
+            color: "#475367",
             fontWeight: 600,
           }}
         >
@@ -40,14 +40,14 @@ const Value: React.FC<CardValueProps> = (props) => {
         </span>
       )}
       {additionalInfo && (
-        <span className='tiny-text self-end'>
+        <span className="tiny-text">
           <span
             className={`${
               additionalInfo.left?.color &&
               `text-[${additionalInfo.left.color}]`
             }`}
           >
-            {additionalInfo.left?.text ?? ''}
+            {additionalInfo.left?.text ?? ""}
           </span>
           <span
             className={`${
@@ -55,7 +55,7 @@ const Value: React.FC<CardValueProps> = (props) => {
               `text-[${additionalInfo.right.color}]`
             }`}
           >
-            {additionalInfo.right?.text ?? ''}
+            {additionalInfo.right?.text ?? ""}
           </span>
         </span>
       )}

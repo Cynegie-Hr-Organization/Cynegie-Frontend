@@ -50,6 +50,7 @@ export type InputFieldProps = {
   getDate?: (date: Dayjs | null) => void;
   dateRangeValue?: DateRange | null;
   dateRangeDefaultValue?: DateRange | null;
+  loading?: boolean;
 };
 
 export type InputFieldOption = {

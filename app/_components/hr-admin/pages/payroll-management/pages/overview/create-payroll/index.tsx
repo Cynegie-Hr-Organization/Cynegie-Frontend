@@ -9,11 +9,17 @@ import { FieldType } from "@/app/_components/shared/table/types";
 import { route } from "@/constants";
 import { FetchParams } from "@/types";
 import { Divider, Stack } from "@mui/material";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { createPayroll, CreatePayrollPayload, getMyEmployees } from "../api";
+import {
+  createPayroll,
+  CreatePayrollPayload,
+  editPayroll,
+  getMyEmployees,
+  getPayroll,
+} from "../api";
 
 type MappedEmployee = {
   id: string | null;
@@ -24,16 +30,26 @@ type MappedEmployee = {
   netPay: string;
 };
 
-const HrAdminCreatePayrollPage = () => {
+const HrAdminCreatePayrollPage = ({
+  editPayrollId,
+}: {
+  editPayrollId?: string;
+}) => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(0);
 
   const [payrollName, setPayrollName] = useState("");
-  const [payrollPeriod, setPayrollPeriod] = useState({
-    startDate: "",
-    endDate: "",
-  });
-  const [paymentDate, setPaymentDate] = useState("");
+  const [payrollPeriod, setPayrollPeriod] = useState(
+    editPayrollId
+      ? {
+          startDate: dayjs().toISOString(),
+          endDate: dayjs().toISOString(),
+        }
+      : { startDate: "", endDate: "" }
+  );
+  const [paymentDate, setPaymentDate] = useState(
+    editPayrollId ? "0000-00-00" : ""
+  );
 
   const [fetchParams, setFetchParams] = useState<FetchParams>({
     page: 1,
@@ -47,12 +63,45 @@ const HrAdminCreatePayrollPage = () => {
     queryFn: () => getMyEmployees(fetchParams),
   });
 
-  const [employees, setEmployees] = useState<MappedEmployee[]>();
+  const { data: selectedPayrollData } = useQuery({
+    queryKey: ["payroll", editPayrollId],
+    ...(editPayrollId && { queryFn: () => getPayroll(editPayrollId) }),
+  });
 
-  const [checkedRows, setCheckedRows] = useState<MappedEmployee[]>([]);
+  const [employees, setEmployees] = useState<MappedEmployee[]>();
+  const [editEmployees, setEditEmployees] = useState<MappedEmployee[]>();
+
+  const [checkedRows, setCheckedRows] = useState<
+    (MappedEmployee | Record<string, string>)[]
+  >([]);
 
   const [departmentFilter, setDepartmentFilter] = useState<string>();
   const [usedDepartmentFilter, setUsedDepartmentFilter] = useState<string>();
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (selectedPayrollData) {
+      setPayrollName(selectedPayrollData.data.payrollName);
+      setPayrollPeriod({
+        startDate: dayjs(selectedPayrollData.data.startDate).format(
+          "YYYY-MM-DD"
+        ),
+        endDate: dayjs(selectedPayrollData.data.endDate).format("YYYY-MM-DD"),
+      });
+      setPaymentDate(
+        dayjs(selectedPayrollData.data.paymentDate).format("YYYY-MM-DD")
+      );
+      if (employees) {
+        setEditEmployees(employees);
+        setCheckedRows(
+          employees.filter((employee) =>
+            selectedPayrollData.data.employees.includes(employee.id)
+          )
+        );
+      }
+    }
+  }, [selectedPayrollData]);
 
   useEffect(() => {
     if (myEmployeesData) {
@@ -73,6 +122,14 @@ const HrAdminCreatePayrollPage = () => {
       }
     }
   }, [myEmployeesData]);
+
+  useEffect(() => {
+    if (employees) {
+      if (selectedPayrollData) {
+        setEditEmployees(employees);
+      }
+    }
+  }, [selectedPayrollData, employees]);
 
   const enableButton = () => {
     if (
@@ -95,18 +152,37 @@ const HrAdminCreatePayrollPage = () => {
 
   const [createLoading, setCreateLoading] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
-  const [openFailureModal, setOpenFailureModal] = useState(false);
+  // const [openFailureModal, setOpenFailureModal] = useState(false);
 
   const createPayrollMutation = useMutation({
     mutationFn: (payload: CreatePayrollPayload) => createPayroll(payload),
     onMutate: () => setCreateLoading(true),
     onSuccess: () => {
+      // queryClient.invalidateQueries({ queryKey: ["payrolls"], exact: false });
+      queryClient.resetQueries({ queryKey: ["payrolls"] });
       setCreateLoading(false);
       setOpenSuccessModal(true);
     },
     onError: () => {
       setCreateLoading(false);
-      setOpenFailureModal(true);
+      // setOpenFailureModal(true);
+    },
+  });
+
+  const editPayrollMutation = useMutation({
+    mutationFn: (payload: CreatePayrollPayload) =>
+      editPayroll(selectedPayrollData?.data.id ?? "", payload),
+    onMutate: () => setCreateLoading(true),
+    onSuccess: () => {
+      // queryClient.invalidateQueries({ queryKey: ["payrolls"], exact: false });
+      queryClient.resetQueries({ queryKey: ["payrolls"] });
+      queryClient.invalidateQueries({ queryKey: ["payroll", editPayrollId] });
+      setCreateLoading(false);
+      setOpenSuccessModal(true);
+    },
+    onError: () => {
+      setCreateLoading(false);
+      // setOpenFailureModal(true);
     },
   });
 
@@ -115,7 +191,7 @@ const HrAdminCreatePayrollPage = () => {
       {activeTab == 0 && (
         <Page
           backText="Back to Payroll Management"
-          title="Create Payroll"
+          title={editPayrollId ? "Edit Payroll" : "Create Payroll"}
           onBackTextClick={() =>
             router.push(route.hrAdmin.payroll.overview.home)
           }
@@ -123,6 +199,9 @@ const HrAdminCreatePayrollPage = () => {
           <Form
             isCard
             gridItemSize={{ xs: 12, md: 4 }}
+            {...(editPayrollId && {
+              loading: selectedPayrollData ? false : true,
+            })}
             gridSpacing={3}
             inputFields={[
               {
@@ -130,7 +209,11 @@ const HrAdminCreatePayrollPage = () => {
                 type: "text",
                 placeholder: "Enter",
                 value: payrollName,
-                setValue: setPayrollName,
+                setValue: (arg) => {
+                  if (typeof arg === "string" && arg !== undefined) {
+                    setPayrollName(arg);
+                  }
+                },
               },
               {
                 name: "Payroll Period",
@@ -140,7 +223,7 @@ const HrAdminCreatePayrollPage = () => {
                     startDate: dayjs(range.startDate).format("YYYY-MM-DD"),
                     endDate: dayjs(range.endDate).format("YYYY-MM-DD"),
                   }),
-                ...(payrollPeriod.startDate.length > 1 && {
+                ...((editPayrollId || payrollPeriod.startDate.length > 1) && {
                   dateRangeValue: [
                     dayjs(payrollPeriod.startDate).toDate(),
                     dayjs(payrollPeriod.endDate).toDate(),
@@ -150,7 +233,9 @@ const HrAdminCreatePayrollPage = () => {
               {
                 name: "Payment Date",
                 type: "date",
-                defaultValue: paymentDate,
+                ...(editPayrollId
+                  ? { value: paymentDate }
+                  : { defaultValue: paymentDate }),
                 getDate: (date) =>
                   setPaymentDate(dayjs(date).format("YYYY-MM-DD")),
               },
@@ -158,6 +243,7 @@ const HrAdminCreatePayrollPage = () => {
           />
           <Table
             hasCheckboxes
+            hasPagination={false}
             title="Select Employees for Payroll Cycle"
             headerRowData={[
               "Employee Name",
@@ -167,7 +253,7 @@ const HrAdminCreatePayrollPage = () => {
               "Net Pay",
             ]}
             fieldTypes={Array(5).fill(FieldType.text)}
-            bodyRowData={employees}
+            bodyRowData={editPayrollId ? editEmployees : employees}
             displayedFields={[
               "name",
               "department",
@@ -185,7 +271,7 @@ const HrAdminCreatePayrollPage = () => {
       )}
       {activeTab == 1 && (
         <Page
-          backText="Back to Create Payroll"
+          backText={`Back to ${editPayrollId ? "Edit" : "Create"} Payroll`}
           title="Review Payroll"
           onBackTextClick={() => setActiveTab(0)}
         >
@@ -199,7 +285,9 @@ const HrAdminCreatePayrollPage = () => {
                 type: "text",
                 placeholder: "Enter",
                 value: payrollName,
-                setValue: setPayrollName,
+                setValue: (arg) => {
+                  if (typeof arg === "string") setPayrollName(arg);
+                },
                 disabled: true,
               },
               {
@@ -289,7 +377,9 @@ const HrAdminCreatePayrollPage = () => {
                   type: "select",
                   placeholder: departmentFilter,
                   value: departmentFilter,
-                  setValue: setDepartmentFilter,
+                  setValue: (arg) => {
+                    if (typeof arg === "string") setDepartmentFilter(arg);
+                  },
                   selectValControlledFromOutside: true,
                   options: [
                     ...new Set(
@@ -422,6 +512,8 @@ const HrAdminCreatePayrollPage = () => {
                 ? "Continue"
                 : createLoading
                 ? ""
+                : editPayrollId
+                ? "Edit Payroll"
                 : "Finalize Payroll"
             }
             onClick={() => {
@@ -431,14 +523,23 @@ const HrAdminCreatePayrollPage = () => {
                 });
                 setActiveTab(activeTab + 1);
               } else {
-                createPayrollMutation.mutateAsync({
-                  payrollName: payrollName,
-                  startDate: payrollPeriod.startDate,
-                  endDate: payrollPeriod.endDate,
-                  status: "pending",
-                  paymentDate: paymentDate,
-                  employees: checkedRows.map((row) => row.id),
-                });
+                editPayrollId
+                  ? editPayrollMutation.mutateAsync({
+                      payrollName: payrollName,
+                      startDate: payrollPeriod.startDate,
+                      endDate: payrollPeriod.endDate,
+                      status: "pending",
+                      paymentDate: paymentDate,
+                      employees: checkedRows.map((row) => row.id),
+                    })
+                  : createPayrollMutation.mutateAsync({
+                      payrollName: payrollName,
+                      startDate: payrollPeriod.startDate,
+                      endDate: payrollPeriod.endDate,
+                      status: "pending",
+                      paymentDate: paymentDate,
+                      employees: checkedRows.map((row) => row.id),
+                    });
               }
             }}
           />
@@ -450,15 +551,19 @@ const HrAdminCreatePayrollPage = () => {
         hasHeading={false}
         centerImage="/icons/success-tick.svg"
         centerTitle="You're all set"
-        centerMessage={`Payroll ${dayjs(payrollPeriod.startDate).format(
-          "DD MMM"
-        )} - ${dayjs(payrollPeriod.endDate).format(
-          "DD MMM YYYY"
-        )} has been sent for approval`}
+        centerMessage={` ${
+          editPayrollId
+            ? "The payroll has been"
+            : `Payroll ${dayjs(payrollPeriod.startDate).format(
+                "DD MMM"
+              )} - ${dayjs(payrollPeriod.endDate).format(
+                "DD MMM YYYY"
+              )} has been`
+        } ${editPayrollId ? " edited successfully" : "sent for approval"}`}
         centerButton
         buttonOne={{
           type: ButtonType.contained,
-          text: "Back to Payroll",
+          text: "Back to Payroll Overview",
           onClick: () => router.push(route.hrAdmin.payroll.overview.home),
         }}
       />

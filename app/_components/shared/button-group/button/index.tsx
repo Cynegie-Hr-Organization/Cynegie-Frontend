@@ -128,7 +128,7 @@ const Button: React.FC<ButtonProps> = (props) => {
       {type === ButtonType.disabledLoading && (
         <CircularProgress
           sx={{ mx: 5 }}
-          size={22}
+          size={14}
           thickness={5}
           color="inherit"
         />

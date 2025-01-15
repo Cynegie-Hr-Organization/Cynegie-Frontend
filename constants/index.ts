@@ -224,6 +224,7 @@ const basePath = {
   directory: "directory/",
   appManagement: "app-management/",
   payroll: "payroll/",
+  editPayroll: "edit-payroll/",
 };
 
 export const route = {
@@ -233,6 +234,7 @@ export const route = {
         home: `${basePath.hrAdmin}${basePath.payroll}overview`,
         createPayroll: `${basePath.hrAdmin}${basePath.payroll}create-payroll`,
       },
+      "edit-payroll": `${basePath.hrAdmin}${basePath.payroll}${basePath.editPayroll}`,
     },
     employeeManagement: {
       approvalManagement: {

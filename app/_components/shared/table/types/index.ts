@@ -21,8 +21,7 @@ export type TableProps<T = Record<string, any>> = {
   /** fieldToGetAction is passed to the getActionsBasedOnField function inside the GeneralTable. Both are required to have certain actions appear based on a particular field. */
   fieldToGetAction?: string;
   getActionsBasedOnField?: (arg: string | number) => TableAction[] | undefined;
-  pageCount?: number;
-  page?: number;
+  paginationMeta?: TablePaginationProps;
   fieldToGetSlug?: string;
   statusMap?: StatusMap;
   fieldActionMap?: StatusActionMap;
@@ -57,8 +56,15 @@ export enum FieldType {
 }
 
 export type TablePaginationProps = {
+  itemCount?: number;
+  totalPages?: number;
   page?: number;
-  pageCount?: number;
+  limit?: number;
+  itemsOnPage?: number;
+  onPrevClick?: () => void;
+  onNextClick?: () => void;
+  loading?: boolean;
+  onChangeLimit?: (limit: number) => void;
 };
 
 export type StatusMap = { [key: string]: ColorVariant };

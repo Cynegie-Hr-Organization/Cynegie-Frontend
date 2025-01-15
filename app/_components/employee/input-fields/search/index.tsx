@@ -1,10 +1,11 @@
 import Image from "next/image";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Input, InputGroup } from "rsuite";
-import { InputFieldProps } from "../../modal/types";
 
 const SearchField: React.FC<{
-  getSearchQuery: (arg: string) => void;
+  value?: string;
+  getSearchQuery?: (arg: string) => void;
+  setValue?: Dispatch<SetStateAction<string | number | undefined>>;
 }> = ({ getSearchQuery }) => {
   return (
     <InputGroup>
@@ -20,7 +21,7 @@ const SearchField: React.FC<{
       <Input
         style={{ paddingLeft: "0px", height: "30px" }}
         placeholder="Search here..."
-        onChange={(newValue) => getSearchQuery(newValue)}
+        onChange={(newValue) => getSearchQuery?.(newValue)}
       />
     </InputGroup>
   );

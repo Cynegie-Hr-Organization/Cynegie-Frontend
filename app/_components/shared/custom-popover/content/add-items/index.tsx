@@ -1,25 +1,25 @@
-import useCheckboxes from '@/hooks/useCheckboxes';
-import React, { useState } from 'react';
-import InputField from '../../../form/input-field';
-import { ButtonType } from '../../../page/heading/types';
-import { Checkbox } from '@mui/material';
-import { icon } from '@/constants';
-import Popover from '../..';
-import { PopoverType } from '../../types';
-import SearchField from '@/app/_components/employee/input-fields/search';
+import SearchField from "@/app/_components/employee/input-fields/search";
 import {
   InputFieldProps,
   InputFieldType,
-} from '@/app/_components/employee/modal/types';
-import Button from '../../../button-group/button';
-import SvgIcon from '@/app/_components/icons/container';
-import AddItemsLabel from './label';
+} from "@/app/_components/employee/modal/types";
+import SvgIcon from "@/app/_components/icons/container";
+import { icon } from "@/constants";
+import useCheckboxes from "@/hooks/useCheckboxes";
+import { Checkbox } from "@mui/material";
+import React, { useState } from "react";
+import Popover from "../..";
+import Button from "../../../button-group/button";
+import InputField from "../../../form/input-field";
+import { ButtonType } from "../../../page/heading/types";
+import { PopoverType } from "../../types";
+import AddItemsLabel from "./label";
 
 export type AddItemsProps = {
   addText: string;
   addedItems?: AddedItem[];
   allItems?: string[];
-  type?: 'no-select' | 'select' | 'multi-select';
+  type?: "no-select" | "select" | "multi-select";
   inputFieldType?: InputFieldType;
   secondaryFieldType?: InputFieldType;
   inputFieldPlacehdoler?: string;
@@ -46,8 +46,8 @@ const AddItems: React.FC<AddItemsProps> = ({
   addText,
   addedItems,
   allItems,
-  type = 'select',
-  inputFieldType = 'text',
+  type = "select",
+  inputFieldType = "text",
   showFieldLabels = true,
   hasSecondaryField,
   inputFieldPlacehdoler,
@@ -77,17 +77,17 @@ const AddItems: React.FC<AddItemsProps> = ({
   });
 
   const [searchQuery, setSearchQuery] = useState<string | number | undefined>(
-    ''
+    ""
   );
 
   const [showAddField, setShowAddField] = useState(false);
 
   const [addFieldValue, setAddFieldValue] = useState<
     string | number | undefined
-  >('');
+  >("");
 
   const displayedAvailableItems = availableItems.filter(
-    (item) => typeof searchQuery === 'string' && item.includes(searchQuery)
+    (item) => typeof searchQuery === "string" && item.includes(searchQuery)
   );
 
   const { checkedItems, checkBoxProps, removeChecks } =
@@ -107,7 +107,7 @@ const AddItems: React.FC<AddItemsProps> = ({
     if (checkedItems.length > 0) {
       const checkedItemsToAdd = checkedItems.map((item) => ({
         name: item,
-        value: '',
+        value: "",
       }));
       setLocalAddedItems([...localAddedItems, ...checkedItemsToAdd]);
       setAvailableItems(
@@ -123,18 +123,18 @@ const AddItems: React.FC<AddItemsProps> = ({
   const handleNoSelectAddItem = () => {
     setLocalAddedItems([
       ...localAddedItems,
-      { name: inputFieldName ?? '', value: '' },
+      { name: inputFieldName ?? "", value: "" },
     ]);
   };
 
   const handleAddDoc = () => {
     setShowAddField(false);
-    if (typeof addFieldValue == 'string')
+    if (typeof addFieldValue == "string")
       setLocalAddedItems([
         ...localAddedItems,
-        { name: addFieldValue, value: '' },
+        { name: addFieldValue, value: "" },
       ]);
-    setAddFieldValue('');
+    setAddFieldValue("");
   };
 
   const deleteButton = (item: AddedItem) => {
@@ -174,7 +174,7 @@ const AddItems: React.FC<AddItemsProps> = ({
               name={inputFieldName ?? showFieldLabels ? item.name : undefined}
               disabled={disabled}
               defaultValue={
-                hasSecondaryField && inputFieldType !== 'select'
+                hasSecondaryField && inputFieldType !== "select"
                   ? item.name
                   : disabled
                   ? `${disabledValue} ${index + 1}`
@@ -211,76 +211,80 @@ const AddItems: React.FC<AddItemsProps> = ({
             className={`${
               hasSecondaryField
                 ? middleField
-                  ? 'mt-8'
-                  : inputFieldType === 'select'
-                  ? 'mt-8'
-                  : 'mt-2'
-                : inputFieldType == 'drag-upload'
-                ? 'mt-0'
-                : 'mt-6'
+                  ? "mt-8"
+                  : inputFieldType === "select"
+                  ? "mt-8"
+                  : "mt-2"
+                : inputFieldType == "drag-upload"
+                ? "mt-0"
+                : "mt-6"
             }`}
           >
             {showDeleteButton(startIndexToShowDelete, index, item)}
           </div>
         </div>
       ))}
-      {type == 'no-select' && (
+      {type == "no-select" && (
         <AddItemsLabel
           text={addText}
           onClick={
-            inputFieldType == 'drag-upload'
+            inputFieldType == "drag-upload"
               ? () => setShowAddField(true)
               : handleNoSelectAddItem
           }
         />
       )}
       {showAddField && (
-        <div className='flex gap-4 items-center'>
+        <div className="flex gap-4 items-center">
           <InputField
-            type='text'
-            placeholder='Name of Document'
+            type="text"
+            placeholder="Name of Document"
             setValue={setAddFieldValue}
           />
-          <div className='mt-2'>
+          <div className="mt-2">
             <Button
               type={ButtonType.outlined}
-              text='Add'
+              text="Add"
               onClick={handleAddDoc}
             />
           </div>
         </div>
       )}
-      {type !== 'no-select' && (
+      {type !== "no-select" && (
         <Popover
           type={PopoverType.addItems}
           triggerButton={
             <AddItemsLabel
               text={addText}
               onClick={
-                () => setSearchQuery('') /**Reset query on open popover*/
+                () => setSearchQuery("") /**Reset query on open popover*/
               }
             />
           }
           addItemsSelectContent={
             <>
-              <div className='flex flex-col gap-2 w-[200px] py-2'>
+              <div className="flex flex-col gap-2 w-[200px] py-2">
                 {!(availableItems.length < 1) && (
-                  <div className='mx-2 mt-1'>
+                  <div className="mx-2 mt-1">
                     <SearchField
-                      value={searchQuery}
+                      value={
+                        typeof searchQuery === "string"
+                          ? searchQuery
+                          : undefined
+                      }
                       setValue={setSearchQuery}
                     />
                   </div>
                 )}
-                {displayedAvailableItems.map((item, index) => (
+                {displayedAvailableItems.map((item) => (
                   <div key={item} className={`flex gap-1 items-center`}>
-                    <Checkbox {...checkBoxProps(index)} />
+                    <Checkbox {...checkBoxProps(item)} />
                     {item}
                   </div>
                 ))}
                 {(availableItems.length < 1 ||
                   displayedAvailableItems.length < 1) && (
-                  <div className='p-2 font-[600]'>None</div>
+                  <div className="p-2 font-[600]">None</div>
                 )}
               </div>
             </>

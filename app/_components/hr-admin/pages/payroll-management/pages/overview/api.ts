@@ -6,7 +6,12 @@ import { baseUrl } from "@/constants/config";
 import { getServerSession } from "next-auth";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { FetchParams, PaginatedResponse2, Payroll } from "@/types";
+import {
+  FetchParams,
+  FetchResponse,
+  PaginatedResponse2,
+  Payroll,
+} from "@/types";
 import { Employee } from "@/types/api-index";
 
 export const getPayrolls = async (
@@ -21,6 +26,19 @@ export const getPayrolls = async (
     },
     params: params,
   }) as Promise<PaginatedResponse2<Payroll>>;
+};
+
+export const getPayroll = async (
+  id: string
+): Promise<FetchResponse<Payroll>> => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/payroll/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`, // Add session token to Authorization header
+    },
+  }) as Promise<FetchResponse<Payroll>>;
 };
 
 export const getMyEmployees = async (
@@ -54,5 +72,29 @@ export const createPayroll = async (payload: CreatePayrollPayload) => {
       Authorization: `Bearer ${session?.token}`,
     },
     data: payload,
+  });
+};
+
+export const editPayroll = async (
+  id: string,
+  payload: CreatePayrollPayload
+) => {
+  const session = await getServerSession(authOptions);
+  return request("PUT", `${baseUrl}/v1/payroll/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: payload,
+  });
+};
+
+export const deletePayroll = async (id: string) => {
+  const session = await getServerSession(authOptions);
+  return request("DELETE", `${baseUrl}/v1/payroll/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
   });
 };

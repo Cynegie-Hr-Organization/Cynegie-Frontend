@@ -24,8 +24,8 @@ const DateRangeField: React.FC<DateRangeFieldProps> = ({
         borderRadius: "6px",
         ...(disabled && color.inputfield.disabled),
       }}
-      defaultValue={defaultValue}
-      value={value}
+      {...(value && { value: value })}
+      {...(defaultValue && { defaultValue: defaultValue })}
       preventOverflow
       showOneCalendar
       cleanable={false}
@@ -33,14 +33,24 @@ const DateRangeField: React.FC<DateRangeFieldProps> = ({
       disabled={disabled}
       format="dd/MMM/yyyy"
       placeholder={placeholder ?? "Select Period"}
-      onChange={(e) => {
-        if (e) {
-          getDateRange?.({
-            startDate: e[0],
-            endDate: e[1],
-          });
-        }
-      }}
+      // onChange={(e) => {
+      //   if (e) {
+      //     getDateRange?.({
+      //       startDate: e[0],
+      //       endDate: e[1],
+      //     });
+      //   }
+      // }}
+      {...(getDateRange && {
+        onChange: (e) => {
+          if (e) {
+            getDateRange?.({
+              startDate: e[0],
+              endDate: e[1],
+            });
+          }
+        },
+      })}
       character=" – "
       caretAs={CalendarIcon}
     />
