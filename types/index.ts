@@ -371,6 +371,7 @@ export type Payroll = {
   totalGrossPay: number;
   totalNetPay: number;
   totalDeductions: number;
+  employeesInfo?: { employeeId: string; employeeInfo: Employee }[];
 };
 
 type PaginationMeta = {

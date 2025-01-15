@@ -479,6 +479,12 @@ const HrAdminPayrollOverviewPage = () => {
           ],
           pending: [
             {
+              name: "View Details",
+              onClick: () => {},
+              onDataReturned: (id) =>
+                router.push(`${route.hrAdmin.payroll["view-payroll"]}${id}`),
+            },
+            {
               name: "Edit Payroll",
               onClick: () => {},
               onDataReturned: (id) =>

@@ -98,3 +98,15 @@ export const deletePayroll = async (id: string) => {
     },
   });
 };
+
+export const viewPayroll = async (
+  id: string
+): Promise<FetchResponse<Payroll & { totalEmployees: number }>> => {
+  const session = await getServerSession(authOptions);
+  return request("GET", `${baseUrl}/v1/payroll/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  }) as Promise<FetchResponse<Payroll & { totalEmployees: number }>>;
+};
