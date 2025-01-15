@@ -20,7 +20,7 @@ const Appbutton = ({
   return (
     <Button
       disabled={disabled}
-      className={`rounded-lg text-base p-2 text-white ${className ?? "bg-primary "}`}
+      className={`rounded-lg text-sm font-semibold p-2 text-white ${className ?? "bg-primary "}`}
       onClick={onClick}
     >
       {loading && <Spinner />}
@@ -29,6 +29,6 @@ const Appbutton = ({
   );
 };
 
-export const Spinner = () => <Loader2 className="animate-spin" />;
+export const Spinner = ({ ...props }) => <Loader2 className={`animate-spin ${props.className ?? ""}`} />;
 
 export default Appbutton;

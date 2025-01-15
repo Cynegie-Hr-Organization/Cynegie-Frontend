@@ -1,9 +1,9 @@
 "use client"
 
-import { DeleteSvg } from "@/app/_components/icons/delete";
+import { DeleteSvg } from "@/app/_components/icons/custom-icons";
 import AppButton from "@/app/_components/shared/button";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
-import InputText from "@/app/_components/shared/input-text";
+import AppInputText from "@/app/_components/shared/input-text";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DialogTitle } from "@/components/ui/dialog";
@@ -95,14 +95,15 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
     <DrawerDialog
       trigger={trigger}
-      header={<DialogTitle className="text-lg font-bold text-center">
-        <span className="flex flex-col items-center justify-center gap-y-6">
-          <DeleteSvg />
-          <span className="flex flex-col items-center justify-center gap-y-2">
-            <span>Are you sure you want to deactivate Michael Jackson?</span>
+      header={
+        <span className="text-lg font-bold text-center">
+          <span className="flex flex-col items-center justify-center gap-y-6">
+            <DeleteSvg />
+            <span className="flex flex-col items-center justify-center gap-y-2">
+              <span>Are you sure you want to deactivate Michael Jackson?</span>
+            </span>
           </span>
         </span>
-      </DialogTitle>
       }
       footer={
         <div className="flex flex-col md:flex-row items-center justify-center gap-2">
@@ -183,7 +184,7 @@ const EditVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) =>
       }>
       <form>
         <div className="space-y-4">
-          <InputText
+          <AppInputText
             label="Vendor Name"
             placeholder="Enter vendor name"
             onChange={(e) => { setFormData({ ...formData, vendorName: e.target.value }) }}
@@ -192,7 +193,7 @@ const EditVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) =>
             requiredField
             type={"text"}
           />
-          <InputText
+          <AppInputText
             label="Phone Number"
             placeholder="Enter vendor name"
             onChange={(e) => { setFormData({ ...formData, phoneNumber: e.target.value }) }}
@@ -201,7 +202,7 @@ const EditVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) =>
             requiredField
             type={"text"}
           />
-          <InputText
+          <AppInputText
             label="Email"
             placeholder="Enter vendor name"
             onChange={(e) => { setFormData({ ...formData, email: e.target.value }) }}
@@ -210,7 +211,7 @@ const EditVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) =>
             requiredField
             type={"text"}
           />
-          <InputText
+          <AppInputText
             label="Address"
             placeholder="Enter vendor name"
             onChange={(e) => { setFormData({ ...formData, address: e.target.value }) }}
@@ -219,7 +220,7 @@ const EditVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) =>
             requiredField
             type={"text"}
           />
-          <InputText
+          <AppInputText
             label="City"
             placeholder="Enter vendor name"
             onChange={(e) => { setFormData({ ...formData, city: e.target.value }) }}
@@ -228,7 +229,7 @@ const EditVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) =>
             requiredField
             type={"text"}
           />
-          <InputText
+          <AppInputText
             label="State"
             placeholder="Enter vendor name"
             onChange={(e) => { setFormData({ ...formData, state: e.target.value }) }}

@@ -2,10 +2,11 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { IoCloseCircle } from "react-icons/io5";
 
-export const AppFileUpload = ({ label, onChange, className }: {
+export const AppFileUpload = ({ label, onChange, className, bottomInfo }: {
   label?: string,
   onChange: (files: File[]) => void,
-  className?: string
+  className?: string,
+  bottomInfo?: string
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
@@ -33,7 +34,7 @@ export const AppFileUpload = ({ label, onChange, className }: {
 
   return (
     <div className={cn("space-y-2", className)}>
-      <p className="text-sm font-semibold text-black">{label}</p>
+      <p className="text-xs font-semibold text-black">{label}</p>
       <div className="space-y-1">
         <div className='flex flex-col border-dashed border-2 outline-none rounded-lg p-2 relative'>
           <div className='flex flex-wrap gap-2'>
@@ -57,11 +58,11 @@ export const AppFileUpload = ({ label, onChange, className }: {
             onClick={() => document.getElementById('document-upload')?.click()}
           >
             {selectedFiles.length === 0 ? (
-              <p className='text-sm text-gray-500'>
+              <p className='text-xs text-gray-500'>
                 click to upload
               </p>
             ) : (
-              <p className='text-sm text-primary mt-2'>
+              <p className='text-xs text-primary mt-2'>
                 + Add more files
               </p>
             )}
@@ -77,7 +78,7 @@ export const AppFileUpload = ({ label, onChange, className }: {
             onChange={handleFileChange}
           />
         </div>
-        <p className="text-[10px] text-gray-500">Attach any relevant file. Max file size allowed is 3MB.</p>
+        <p className="text-[10px] text-gray-500">{bottomInfo ?? 'Attach any relevant file. Max file size allowed is 3MB.'}</p>
       </div>
     </div>
   )

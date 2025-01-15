@@ -115,63 +115,6 @@ const PayrollManagementTable = () => {
 }
 
 
-// function PopoverMenu() {
-//   return (
-//     <Popover>
-//       <PopoverTrigger asChild>
-//         <button className='cursor-pointer outline-none p-1 border border-gray-300 rounded-lg'>
-//           <HiDotsVertical />
-//         </button>
-//       </PopoverTrigger>
-
-//       <PopoverContent className='w-40 bg-white space-y-2 cursor-pointer rounded-lg flex flex-col items-start text-[#475367]'>
-//         <button className=''>Approve</button>
-//         <button className=''>Reject</button>
-//         <DeleteModal trigger={<button>View Details</button>} />
-//       </PopoverContent>
-//     </Popover>
-//   );
-// }
-
-
-
-// const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
-//   return (
-//     <DrawerDialog
-//       trigger={trigger}
-//       header={<DialogTitle className="text-lg font-bold text-center">
-//         <span className="flex flex-col items-center justify-center gap-y-6">
-//           <DeleteSvg />
-//           <span className="flex flex-col items-center justify-center gap-y-2">
-//             <span>Are you sure you want to delete this budget?</span>
-//             <span className="text-sm text-gray-400 max-w-[367px] text-center">
-//               Why do you want to delete this budget? This action cannot be reversed!
-//             </span>
-//           </span>
-//         </span>
-//       </DialogTitle>}
-//       footer={
-//         <div className="flex flex-col md:flex-row items-center justify-center gap-2">
-//           <AppButton label="Cancel" className="bg-white border-2 border-gray-400 text-gray-500 md:w-[150px] w-full" />
-//           <AppButton label="Delete" className="bg-red-700 text-white md:w-[150px] w-full border border-red-700" />
-//         </div>
-//       }
-//     >
-//       <div className="md:p-4 lg:p-6 p-2">
-//         <InputTextArea
-//           id="reason"
-//           placeholder="Enter reason"
-//           value=""
-//           onChange={(e) => {
-//             console.log(e.target.value)
-//           }}
-//         />
-//       </div>
-//     </DrawerDialog>
-//   )
-// }
-
-
 
 
 

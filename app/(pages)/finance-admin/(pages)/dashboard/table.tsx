@@ -1,7 +1,7 @@
-import { DeleteSvg } from "@/app/_components/icons/delete";
+import { DeleteSvg } from "@/app/_components/icons/custom-icons";
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
-import { InputTextArea } from "@/app/_components/shared/input-text";
+import { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -164,7 +164,7 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
       }
     >
       <div className="md:p-4 lg:p-6 p-2">
-        <InputTextArea id="reason" placeholder="Enter reason" onChange={function (e) {
+        <AppInputTextArea id="reason" placeholder="Enter reason" onChange={function (e) {
           console.log(e.target.value)
         }} value="" />
       </div>
@@ -176,10 +176,11 @@ const PreviewModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
     <DrawerDialog
       trigger={trigger}
-      header={<DialogTitle className="text-lg font-bold pl-4">
-        <p>Transaction Details</p>
-      </DialogTitle>}
-    >
+      header={
+        <span className="text-lg font-bold pl-4">
+          <p>Transaction Details</p>
+        </span>
+      }>
       <div className="md:p-4 lg:p-6 p-2 space-y-4 py-5">
         <TransactionDetailItem label="Transaction ID" value="1234567890" />
         <TransactionDetailItem label="Transaction date" value="Aug 28, 2024; 3:40 PM" />
