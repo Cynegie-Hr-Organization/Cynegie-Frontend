@@ -67,7 +67,7 @@ const formatLargeNumber = (value: number) => {
 export function GradientLineChart() {
   return (
     <ChartContainer
-      className="h-[300px] w-full mt-6 -ml-6"
+      className="h-[250px] w-full mt-6 -ml-6"
       config={chartConfig}
     >
       <ResponsiveContainer width="100%" height="100%">

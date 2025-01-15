@@ -1,38 +1,42 @@
 "use client";
+
+import AppTabs from "@/app/_components/shared/tabs";
+import dynamic from "next/dynamic";
 import { useState } from "react";
-import TaskList from "./task-list";
 import NewHireList from "./new-hire-list";
+import TaskList from "./task-list";
+
+
+
+type ListType = "task" | "new-hire";
+
+
+
+
 
 const TaskSection = () => {
+  const TaskListClient = dynamic(() => Promise.resolve(TaskList), {
+    ssr: false,
+  });
+  const NewHireListClient = dynamic(() => Promise.resolve(NewHireList), {
+    ssr: false,
+  });
+
   const [list, setList] = useState<ListType>("task");
+  const listTabs = [
+    { label: "Task List", onClick: () => setList("task") },
+    { label: "New Hire List", onClick: () => setList("new-hire") }
+  ];
 
   return (
-    <div className="my-12">
-      <div className="flex gap-4 text-sm mb-4 pl-4 relative w-max">
-        <div className="absolute bottom-0 w-full h-[1px] bg-gray-200" />
-        <div
-          className={`absolute bottom-0 h-[2px] bg-primary transition-all duration-300 ease-in-out w-1/2 ${
-            list === "task" ? "left-0" : "left-[55%]"
-          }`}
-        />
-        <button
-          className={`p-4 outline-none border-none ${list === "task" ? "text-primary" : "text-gray-500"}`}
-          onClick={() => setList("task")}
-        >
-          Task List
-        </button>
-        <button
-          className={`p-4 outline-none border-none ${list === "new-hire" ? "text-primary" : "text-gray-500"}`}
-          onClick={() => setList("new-hire")}
-        >
-          New Hire List
-        </button>
-      </div>
+    <div className="my-12 space-y-6">
+      <AppTabs tabs={listTabs} />
 
-      {list === "task" ? <TaskList /> : <NewHireList />}
+      {list === "task" ? <TaskListClient /> : <NewHireListClient />}
     </div>
   );
 };
 
-type ListType = "task" | "new-hire";
+
+
 export default TaskSection;
