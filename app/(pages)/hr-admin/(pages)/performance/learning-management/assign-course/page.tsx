@@ -3,7 +3,7 @@
 import AppButton from "@/app/_components/shared/button";
 import CardLayout from "@/app/_components/shared/cards";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
-import InputText from "@/app/_components/shared/input-text";
+import AppInputText from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -29,7 +29,7 @@ const NewSelfAssessmentPage = () => {
 
           <div className="grid gap-6">
             <div className="flex flex-col md:flex-row gap-6">
-              <InputText
+              <AppInputText
                 label="Assessment Name"
                 placeholder="Enter Name"
                 value={formData.assessmentName}
@@ -115,7 +115,7 @@ const NewSelfAssessmentPage = () => {
         <AppButton
           label="Save & Continue Later"
           className="btn-secondary"
-          onClick={() => {}}
+          onClick={() => { }}
         />
         <AppButton
           label="Submit"

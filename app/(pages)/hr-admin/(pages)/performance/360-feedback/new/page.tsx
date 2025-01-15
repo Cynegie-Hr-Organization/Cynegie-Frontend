@@ -6,13 +6,13 @@ import AppButton from "@/app/_components/shared/button";
 import CardLayout from "@/app/_components/shared/cards";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
-import InputText from "@/app/_components/shared/input-text";
+import AppInputText from "@/app/_components/shared/input-text";
 import { create360Feedback } from "@/app/api/services/performance/360-feedback";
 import { getTemplates } from "@/app/api/services/performance/template";
 import useFetchDepartment from "@/utils/usefetchDepartment";
 import useFetchEmployees from "@/utils/usefetchEmployees";
 import { useRouter } from "next/navigation";
-import { useState, ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const MultiStepFeedbackForm = () => {
@@ -103,7 +103,7 @@ const StepOne = ({ formData, setFormData, nextStep }: any) => {
           <p className="text-lg font-semibold">Feedback Cycle Details</p>
           <div className="grid gap-6">
             <div className="flex flex-col md:flex-row gap-6">
-              <InputText
+              <AppInputText
                 label="Feedback Cycle Name"
                 placeholder="Enter Name"
                 value={formData.assessmentName}
@@ -134,7 +134,7 @@ const StepOne = ({ formData, setFormData, nextStep }: any) => {
               <AppMultipleSelect
                 label="Employees"
                 placeholder="Select Employees"
-                items={employees.map((emp : any) => ({
+                items={employees.map((emp: any) => ({
                   label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
                   value: emp.id as string,
                 }))}
@@ -151,7 +151,7 @@ const StepOne = ({ formData, setFormData, nextStep }: any) => {
               <AppMultipleSelect
                 label="Feedback Providers"
                 placeholder="Select Feedback Providers"
-                items={employees.map((emp :  any) => ({
+                items={employees.map((emp: any) => ({
                   label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
                   value: emp.id as string,
                 }))}
@@ -221,7 +221,7 @@ const StepOne = ({ formData, setFormData, nextStep }: any) => {
         <AppButton
           label="Save & Continue Later"
           className="btn-secondary"
-          onClick={() => {}}
+          onClick={() => { }}
         />
         <AppButton label="Next" className="btn-primary" onClick={nextStep} />
       </div>

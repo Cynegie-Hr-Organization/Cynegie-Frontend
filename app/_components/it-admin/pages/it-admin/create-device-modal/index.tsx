@@ -1,4 +1,4 @@
-import InputText from "@/app/_components/shared/input-text";
+import AppInputText from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import { createDevice } from "@/app/api/services/it-admin";
 import React from "react";
@@ -20,20 +20,19 @@ const CreateDeviceModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = React.useState(false);
 
   const handleSubmit = async () => {
-   if (
-     !formData.deviceName.trim() ||
-     !formData.status.trim() ||
-     !formData.location.trim()
-) {
-  toast.error("Please fill in all required fields.");
-  return;
-}
+    if (
+      !formData.deviceName.trim() ||
+      !formData.status.trim() ||
+      !formData.location.trim()
+    ) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
 
 
     setIsLoading(true);
 
-    try
-    {
+    try {
       console.log(formData);
       const response = await createDevice(formData);
       console.log(response);
@@ -76,7 +75,7 @@ const CreateDeviceModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         </p>
 
         <div className="flex gap-2">
-          <InputText
+          <AppInputText
             label="Device Name"
             type="text"
             id="device-name"
@@ -87,7 +86,7 @@ const CreateDeviceModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             }
             value={formData.deviceName}
           />
-          <InputText
+          <AppInputText
             label="Location"
             type="text"
             id="device-location"
@@ -98,7 +97,7 @@ const CreateDeviceModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             }
             value={formData.location}
           />
-          
+
         </div>
 
         <div className="mt-2">
@@ -116,7 +115,7 @@ const CreateDeviceModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         </div>
 
         <div className="mt-2">
-          <InputText
+          <AppInputText
             label="Device Description"
             type="textarea"
             id="device-description"

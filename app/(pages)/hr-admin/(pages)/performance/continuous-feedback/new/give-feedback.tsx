@@ -2,17 +2,17 @@
 
 import AppButton from "@/app/_components/shared/button";
 import CardLayout from "@/app/_components/shared/cards";
+import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import { AppFileUpload } from "@/app/_components/shared/file-upload";
-import { InputTextArea } from "@/app/_components/shared/input-text";
+import { AppInputTextArea } from "@/app/_components/shared/input-text";
 import AppRadio from "@/app/_components/shared/radio";
 import { AppSelect } from "@/app/_components/shared/select";
 import { giveFeedback } from "@/app/api/services/performance/continous-feedback";
 import useFetchEmployees from "@/utils/usefetchEmployees";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast } from "react-toastify";
 import Skeleton from "react-loading-skeleton";
-import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
+import { toast } from "react-toastify";
 
 export interface FeedbackPayload {
   recipient: string[];
@@ -130,7 +130,7 @@ const GiveFeedback = () => {
               </div>
             </div>
 
-            <InputTextArea
+            <AppInputTextArea
               label="Comment"
               id="comment"
               placeholder="Enter your feedback here"

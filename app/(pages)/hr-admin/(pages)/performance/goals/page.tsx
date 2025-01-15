@@ -8,7 +8,7 @@ import { DrawerDialog } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 import { AppDropdownMenu } from "../../../../../_components/shared/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { DeleteSvg } from "@/app/_components/icons/delete";
+import { DeleteSvg } from "@/app/_components/icons/custom-icons";
 
 const PerformanceGoalsPage = () => {
   return (

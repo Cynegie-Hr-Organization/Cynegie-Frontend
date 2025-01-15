@@ -1,15 +1,15 @@
 "use client";
 
-import { LuPlusCircle, LuTrash } from "react-icons/lu";
-import ContinuousFeedbackTable from "./table";
-import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
-import { IoIosArrowDown } from "react-icons/io";
 import AppButton from "@/app/_components/shared/button";
+import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
+import { AppFileUpload } from "@/app/_components/shared/file-upload";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
-import InputText, { InputTextArea } from "@/app/_components/shared/input-text";
-import { AppFileUpload } from "@/app/_components/shared/file-upload";
 import { useRouter } from "next/navigation";
+import { IoIosArrowDown } from "react-icons/io";
+import { LuPlusCircle, LuTrash } from "react-icons/lu";
+import ContinuousFeedbackTable from "./table";
+import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-text";
 
 const ContinuousFeedbackPage = () => {
   return (
@@ -111,43 +111,43 @@ const RecognizeAchievementModal = ({
     >
       <form action="">
         <div className="space-y-4">
-          <InputText
+          <AppInputText
             label="Employee"
             id="employee"
             placeholder="Select Employee"
             requiredField
             value={""}
-            onChange={() => {}}
+            onChange={() => { }}
           />
 
-          <InputText
+          <AppInputText
             label="Recognition Type"
             id="recognition-type"
             placeholder="Select Recognition type"
             requiredField
             value={""}
-            onChange={() => {}}
+            onChange={() => { }}
           />
 
-          <InputText
+          <AppInputText
             label="Date Of Recognition"
             id="date-of-recognition"
             placeholder="Select Date of Recognition"
             requiredField
             value={""}
-            onChange={() => {}}
+            onChange={() => { }}
           />
 
-          <InputTextArea
+          <AppInputTextArea
             label="Comments"
             id="comment"
             placeholder="Enter your comment here"
             requiredField
             value={""}
-            onChange={() => {}}
+            onChange={() => { }}
           />
 
-          <AppFileUpload label="Attachment" onChange={() => {}} />
+          <AppFileUpload label="Attachment" onChange={() => { }} />
         </div>
       </form>
     </DrawerDialog>

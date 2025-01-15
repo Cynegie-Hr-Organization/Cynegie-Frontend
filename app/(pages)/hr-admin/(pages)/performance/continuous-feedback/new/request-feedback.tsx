@@ -4,7 +4,7 @@ import AppButton from "@/app/_components/shared/button";
 import CardLayout from "@/app/_components/shared/cards";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
-import { InputTextArea } from "@/app/_components/shared/input-text";
+import { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { requestFeedback } from "@/app/api/services/performance/continous-feedback";
 import useFetchEmployees from "@/utils/usefetchEmployees";
 import { PlusIcon } from "lucide-react";
@@ -129,7 +129,7 @@ const RequestFeedback = () => {
 
               {formData.feedbackQuestion.map((question, index) => (
                 <div key={index} className="space-y-2">
-                  <InputTextArea
+                  <AppInputTextArea
                     label={`Question ${index + 1}`}
                     placeholder="Enter your feedback question"
                     value={question}

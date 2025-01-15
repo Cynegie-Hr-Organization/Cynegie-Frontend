@@ -1,19 +1,19 @@
 "use client";
 
 import AppButton from "@/app/_components/shared/button";
-import LearningManagementTable from "./table";
-import { DrawerDialog } from "@/components/drawer/modal";
-import InputText, { InputTextArea } from "@/app/_components/shared/input-text";
-import { ReactNode, useState } from "react";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
-import { DialogTitle } from "@/components/ui/dialog";
-import AppRadio from "@/app/_components/shared/radio";
+import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import { AppFileUpload } from "@/app/_components/shared/file-upload";
+import AppRadio from "@/app/_components/shared/radio";
+import { assignCourse } from "@/app/api/services/performance/learning";
+import { DrawerDialog } from "@/components/drawer/modal";
+import { DialogTitle } from "@/components/ui/dialog";
 import useFetchEmployees from "@/utils/usefetchEmployees";
+import { ReactNode, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { assignCourse } from "@/app/api/services/performance/learning";
-import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
+import LearningManagementTable from "./table";
+import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-text";
 
 const SelfAssessmentPage = () => {
   return (
@@ -72,43 +72,41 @@ const AssignCourseModal = ({ trigger }: { trigger: ReactNode }) => {
 
   const handleSubmit = async () => {
 
-    if (!formData.courseTitle || !formData.employees)
-    {
-    toast.error("Please fill in all required fields.");
-    return;
-  }
+    if (!formData.courseTitle || !formData.employees) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
 
-    if (!formData.startDate || !formData.endDate)
-    {
-    toast.error("Please select both start and end dates.");
-    return;
-  }
+    if (!formData.startDate || !formData.endDate) {
+      toast.error("Please select both start and end dates.");
+      return;
+    }
 
-  try {
-    const payload = {
-      courseTitle: formData.courseTitle,
-      courseDescription: formData.courseDescription,
-      employee: formData.employees,
-      startDate: new Date(formData.startDate).toISOString(),
-      endDate: new Date(formData.endDate).toISOString(), 
-      courseSource: formData.uploadCourse ? "upload" : formData.courseSource,
-    };
+    try {
+      const payload = {
+        courseTitle: formData.courseTitle,
+        courseDescription: formData.courseDescription,
+        employee: formData.employees,
+        startDate: new Date(formData.startDate).toISOString(),
+        endDate: new Date(formData.endDate).toISOString(),
+        courseSource: formData.uploadCourse ? "upload" : formData.courseSource,
+      };
 
-    console.log(payload);
+      console.log(payload);
 
-    setIsSubmitting(true);
+      setIsSubmitting(true);
 
-    const response = await assignCourse(payload);
-    console.log(response);
-    toast.success("Course assigned successfully!");
-    setIsOpen(false);
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to assign course. Please try again.");
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+      const response = await assignCourse(payload);
+      console.log(response);
+      toast.success("Course assigned successfully!");
+      setIsOpen(false);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to assign course. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <DrawerDialog
@@ -148,18 +146,18 @@ const AssignCourseModal = ({ trigger }: { trigger: ReactNode }) => {
             label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
             value: emp.id as string,
           }))}
-          selectedValues={formData.employees ? [formData.employees] : []} 
+          selectedValues={formData.employees ? [formData.employees] : []}
           onSelectionChange={(values: string[]) =>
             setFormData({
               ...formData,
-              employees: values[values.length - 1] || "", 
+              employees: values[values.length - 1] || "",
             })
           }
           width="w-full"
           noResultsText="No employees found"
         />
 
-        <InputText
+        <AppInputText
           label="Course Title"
           placeholder="Course Title"
           value={formData.courseTitle}
@@ -168,7 +166,7 @@ const AssignCourseModal = ({ trigger }: { trigger: ReactNode }) => {
             setFormData({ ...formData, courseTitle: e.target.value })
           }
         />
-        <InputTextArea
+        <AppInputTextArea
           label="Course Description"
           placeholder="Course Description"
           value={formData.courseDescription}
@@ -214,7 +212,7 @@ const AssignCourseModal = ({ trigger }: { trigger: ReactNode }) => {
         )}
 
         {formData.externalLink && (
-          <InputText
+          <AppInputText
             label="Course Source"
             placeholder="Enter course source URL"
             value={formData.courseSource}

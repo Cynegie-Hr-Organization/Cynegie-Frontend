@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useEffect, useState } from "react";
 import AppButton from "@/app/_components/shared/button";
 import CardLayout from "@/app/_components/shared/cards";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
-import InputText from "@/app/_components/shared/input-text";
+import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
+import AppInputText from "@/app/_components/shared/input-text";
+import { createAssessment } from "@/app/api/services/performance/assessments";
+import { getTemplates } from "@/app/api/services/performance/template";
 import useFetchEmployees from "@/utils/usefetchEmployees";
 import { useRouter } from "next/navigation";
-import { getTemplates } from "@/app/api/services/performance/template";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { createAssessment } from "@/app/api/services/performance/assessments";
-import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 
 const SkeletonLoader = () => (
   <div className="animate-pulse space-y-4">
@@ -112,7 +112,7 @@ const ManagerAssessmentPage = () => {
           ) : (
             <div className="grid gap-6">
               <div className="flex flex-col md:flex-row gap-6">
-                <InputText
+                <AppInputText
                   label="Assessment Name"
                   placeholder="Enter Name"
                   value={formData.assessmentName}
@@ -209,7 +209,7 @@ const ManagerAssessmentPage = () => {
         <AppButton
           label="Save & Continue Later"
           className="btn-secondary"
-          onClick={() => {}}
+          onClick={() => { }}
         />
         <AppButton
           label="Submit"

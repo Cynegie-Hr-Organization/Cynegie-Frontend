@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
 import CardLayout from "@/app/_components/shared/cards";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
+import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
+import AppInputText from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import { AppSwitch } from "@/app/_components/shared/switch";
-import useFetchEmployees from "@/utils/usefetchEmployees";
-import InputText from "@/app/_components/shared/input-text";
 import {
   editReviewCycle,
   fetchReviewCycleById,
 } from "@/app/api/services/performance/review cycle";
+import useFetchEmployees from "@/utils/usefetchEmployees";
+import { useParams, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 
 interface IReviewCycle {
   reviewCycleName: string;
@@ -138,7 +138,7 @@ const EditReviewCycle = () => {
       <h3 className="text-lg font-semibold">Edit Review Cycle</h3>
 
       <CardLayout className="bg-white space-y-4 md:space-y-8" bg="p-4 md:p-6">
-        <InputText
+        <AppInputText
           label="Review Cycle Name"
           id="review-cycle-name"
           placeholder="Enter cycle name"
@@ -166,7 +166,7 @@ const EditReviewCycle = () => {
               setFormData({ ...formData, endDate: date })
             }
           />
-          <InputText
+          <AppInputText
             label="Days of Grace"
             type="number"
             id="days-of-grace"
