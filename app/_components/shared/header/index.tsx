@@ -1,15 +1,14 @@
-import { useEffect, useState } from 'react';
-import { IoIosNotificationsOutline } from 'react-icons/io';
-import { IoMenu } from 'react-icons/io5';
+import { rolesMap } from '@/types/form';
+import { getUserDetails } from '@/utils/getUserDetails';
 import { Avatar } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { IoMenu } from 'react-icons/io5';
+import { PiBell } from 'react-icons/pi';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { getUserDetails } from '@/utils/getUserDetails';
 import RecentActivities from '../../it-admin/pages/it-admin/recent-activities';
-import { rolesMap } from '@/types/form';
 import { AppSelect } from '../select';
-import { PiBell } from 'react-icons/pi';
 
 const reverseRolesMap: Record<string, string> = Object.entries(rolesMap).reduce(
   (acc: Record<string, string>, [role, path]) => {
@@ -65,7 +64,7 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
     // Extract the first segment of the pathname
     const path = pathname.split('/').filter(Boolean)[0]; // Split and remove empty segments
     const roleFromPath = reverseRolesMap[path];
-    
+
     if (roleFromPath) {
       setCurrentRole(roleFromPath);
     } else {
