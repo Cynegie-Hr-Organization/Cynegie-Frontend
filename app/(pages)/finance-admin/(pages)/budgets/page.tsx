@@ -25,9 +25,10 @@ const BudgetsPage = () => {
     <div className="space-y-8 py-6">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-2xl font-bold">Budgets Management</h3>
-          <p className="text-sm text-gray-500">Manage finance and organization payroll</p>
+          <h3 className="text-lg font-bold">Budgets Management</h3>
+          <p className="text-xs text-gray-500">Manage finance and organization payroll</p>
         </div>
+        
         <AddBudgetModal trigger={<AppButton label="Add New" className="btn-primary hidden md:block" />} />
         <AddBudgetModal trigger={
           <button className="btn-primary rounded-full p-3 md:hidden block">
@@ -35,6 +36,7 @@ const BudgetsPage = () => {
           </button>
         } />
       </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {pageCards.map((card, index) => (
           <div className="common-card space-y-5" key={index}>
@@ -45,6 +47,7 @@ const BudgetsPage = () => {
           </div>
         ))}
       </div>
+
       <BudgetsTable />
     </div>
   );

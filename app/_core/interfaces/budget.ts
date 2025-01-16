@@ -19,4 +19,21 @@ export interface IBudget extends IBudgetBase {
   updatedAt: string;
 }
 
-export type IBudgetCreate = Omit<IBudgetBase, "company">;
+// export type IBudgetCreate = Omit<IBudgetBase, "company">;
+// export interface IBudgetCreate {
+//   allocation: number;
+//   budgetName: string;
+//   department: string;
+//   description: string;
+//   endDate: string;
+//   startDate: string;
+// }
+
+export interface IBudgetCreate {
+  budgetName: string;
+  department: string;
+  allocation: number;
+  description: string;
+  startDate: string;
+  endDate: string;
+}

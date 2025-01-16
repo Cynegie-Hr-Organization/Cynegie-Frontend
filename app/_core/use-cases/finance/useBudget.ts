@@ -1,7 +1,7 @@
 import { getAllBudget } from "@/app/_core/actions/finance/budget";
 import { headers } from "@/app/_core/actions/session";
 import { handleError, Http } from "@/app/_core/axios";
-import { IBudget } from "@/app/_core/interfaces/budget";
+import { IBudget, IBudgetCreate } from "@/app/_core/interfaces/budget";
 import { IRes } from "@/app/_core/interfaces/res";
 import { queryKeys } from "@/app/_core/queryKeys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -30,7 +30,7 @@ export const useBudgetMutations = () => {
 
   const createBudget = useMutation({
     mutationKey: ['create-budget'],
-    mutationFn: async (body: Partial<IBudget>) => {
+    mutationFn: async (body: IBudgetCreate) => {
       const session = await getSession();
 
       return await Http.post<IRes<IBudget>>("budgets", body, {
@@ -38,6 +38,7 @@ export const useBudgetMutations = () => {
       })
     },
     onSuccess: async (data) => {
+      console.log(data)
       toast.success(data.data.message);
       if (!data.data.data?.status) throw new Error(data.data.message ?? `Unable to Create this budget, please try again`);
 

@@ -13,15 +13,12 @@ const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const isMutatingCreateBudget = useIsMutating({ mutationKey: ["create-budget"] });
   const [formData, setFormData] = useState<IBudgetCreate>({
-    department: {
-      departmentName: 'Finance Department',
-      id: 'Finance',
-    },
-    allocation: 30000,
-    budgetName: "Travel",
-    description: "Travel budget for the year",
-    startDate: "2024-01-01T00:00:00.000Z",
-    endDate: "2024-12-31T00:00:00.000Z",
+    budgetName: "Support Infrastructure Upgrade",
+    department: "Finance",
+    allocation: 20000,
+    description: "Upgrade servers and networking equipments",
+    startDate: "2024-01-01T00:00:00Z",
+    endDate: "2024-12-31T23:59:59Z"
   })
 
   const isFormValidated = formData.department && formData.allocation && formData.description && formData.startDate && formData.endDate
@@ -67,7 +64,7 @@ const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
         <div className="space-y-4">
           <AppSelect label="Department"
             placeholder="Select department"
-            onChange={(value) => { setFormData({ ...formData, department: { departmentName: value, id: '' } }) }}
+            onChange={(value) => { setFormData({ ...formData, department: value }) }}
             requiredField
             listItems={[
               { label: "Finance Department", value: "Finance" },
