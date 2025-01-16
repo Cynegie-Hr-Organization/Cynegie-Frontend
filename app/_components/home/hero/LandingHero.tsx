@@ -1,15 +1,15 @@
-import { PageTitleComponents } from "../common";
 import Link from "next/link";
+import { PageTitleComponents } from "../common";
 const LandingHero = () => {
   return (
     <>
       <section
-        className={`max-w-7xl mx-auto mt-10 px-5 md:px-10 lg:px-10 lg:mt-32`}
+        className={`max-w-7xl mx-auto mt-10 px-5 md:px-10 lg:px-10 xl:mt-20`}
       >
         <section className={`flex flex-col lg:flex-row items-center gap-10`}>
           <div>
             <PageTitleComponents
-              className={`text-4xl mb-5 lg:text-5xl lg:max-w-4xl text-PennBlue font-bold `}
+              className={`text-4xl mb-5 xl:text-5xl lg:max-w-4xl text-PennBlue font-bold `}
               subtitle={
                 <p className={`text-Charcoal text-base font-medium `}>
                   Manage HR, IT, and Finance effortlessly in one unified
@@ -36,12 +36,7 @@ const LandingHero = () => {
                 />
               </form>
               <div className={"flex items-center justify-center"}>
-                <Link
-                  href={"/"}
-                  className={`bg-PersianBlue font-semibold text-center text-white py-3.5 lg:py-2.5 px-5 rounded-md w-full`}
-                >
-                  Explore Cynegie
-                </Link>
+                <Link href={"/"} className='btn-link-primary'> Explore Cynegie </Link>
               </div>
             </div>
           </div>

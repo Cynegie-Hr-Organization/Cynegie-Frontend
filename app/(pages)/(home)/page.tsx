@@ -114,7 +114,7 @@ const GuestHome = () => {
             {/*  image  */}
             <figure className={"lg:absolute lg:bottom-0 lg:right-0 lg:hidden"}>
               <img
-                src={"/public/image/call-to-action-2.png"}
+                src={"/image/call-to-action-2.png"}
                 alt={"Image"}
                 width={700}
               />

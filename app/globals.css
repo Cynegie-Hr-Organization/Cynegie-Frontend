@@ -200,6 +200,10 @@ input[type="number"] {
   .blue-card-decoration {
     @apply relative after:content-[''] after:absolute after:-top-48 after:-right-48 after:bg-white/15 after:rounded-full after:h-[381.76px] after:w-[457px] before:content-[''] before:absolute before:-top-10 before:-right-20 before:bg-white/10 before:rounded-full before:h-[381.76px] before:w-[457px];
   }
+
+  .btn-link-primary {
+    @apply bg-primary font-semibold text-center text-white py-3.5 lg:py-2.5 px-5 rounded-md w-full hover:no-underline hover:text-white/90 active:no-underline active:text-white visited:text-white visited:no-underline transition-colors duration-300
+  }
 }
 
 .tiny-text {
