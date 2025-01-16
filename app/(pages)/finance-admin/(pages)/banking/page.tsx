@@ -275,7 +275,7 @@ const TransferForm = () => {
 				/>
 			</div>
 
-			<AppButton label={"Initiate Transfer"} className="btn-primary md:w-full" />
+			<AppButton label={"Initiate Transfer"} className="btn-primary md:w-full" onClick={handleTransfer} />
 		</form>
 	)
 }
