@@ -509,7 +509,7 @@ const HrAdminPayrollOverviewPage = () => {
           gridSpacing: 2,
           inputFields: [
             {
-              name: "Status",
+              label: "Status",
               type: "select",
               options: [
                 { label: "Approved", value: "approved" },

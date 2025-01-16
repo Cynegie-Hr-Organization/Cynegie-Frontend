@@ -1,13 +1,13 @@
-'use client';
-import Modal from '@/app/_components/employee/modal';
-import Page from '@/app/_components/shared/page';
-import { ButtonType } from '@/app/_components/shared/page/heading/types';
-import Table from '@/app/_components/shared/table';
-import { FieldType } from '@/app/_components/shared/table/types';
-import Toast from '@/app/_components/shared/toast';
-import { icon, route } from '@/constants';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+"use client";
+import Modal from "@/app/_components/employee/modal";
+import Page from "@/app/_components/shared/page";
+import { ButtonType } from "@/app/_components/shared/page/heading/types";
+import Table from "@/app/_components/shared/table";
+import { FieldType } from "@/app/_components/shared/table/types";
+import Toast from "@/app/_components/shared/toast";
+import { icon, route } from "@/constants";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const HrAdminEmployeeRole = () => {
   const router = useRouter();
@@ -15,11 +15,11 @@ const HrAdminEmployeeRole = () => {
   const [openDeleteToast, setOpenDeleteToast] = useState(false);
   return (
     <Page
-      title='Roles'
+      title="Roles"
       hasButtons
       rightButton={{
         type: ButtonType.contained,
-        text: 'Create New Role',
+        text: "Create New Role",
         onClick: () =>
           router.push(route.hrAdmin.employeeManagement.roleManagement.create),
       }}
@@ -28,43 +28,43 @@ const HrAdminEmployeeRole = () => {
         hasCheckboxes
         hasActionsColumn
         headerRowData={[
-          'Role Name',
-          'Department',
-          'Employee Assigned',
-          'Permission',
+          "Role Name",
+          "Department",
+          "Employee Assigned",
+          "Permission",
         ]}
         fieldTypes={Array(4).fill(FieldType.text)}
         displayedFields={[
-          'name',
-          'department',
-          'employeeAssigned',
-          'permission',
+          "name",
+          "department",
+          "employeeAssigned",
+          "permission",
         ]}
         bodyRowData={Array(8).fill({
-          name: 'Analytical Officer',
-          department: 'Technology',
-          employeeAssigned: 'N/A',
-          permission: 'Job Posting +1',
+          name: "Analytical Officer",
+          department: "Technology",
+          employeeAssigned: "N/A",
+          permission: "Job Posting +1",
         })}
         formFilter={{
           inputFields: [
             {
-              name: 'Department',
-              type: 'select',
+              label: "Department",
+              type: "select",
               options: [
-                { label: 'All', value: 0 },
-                { label: 'Technology', value: 1 },
+                { label: "All", value: 0 },
+                { label: "Technology", value: 1 },
               ],
             },
           ],
         }}
         actions={[
           {
-            name: 'Edit',
+            name: "Edit",
             onClick: () =>
               router.push(route.hrAdmin.employeeManagement.roleManagement.edit),
           },
-          { name: 'Delete', onClick: () => setOpenDeleteModal(true) },
+          { name: "Delete", onClick: () => setOpenDeleteModal(true) },
         ]}
       />
       <Modal
@@ -72,23 +72,23 @@ const HrAdminEmployeeRole = () => {
         onClose={() => setOpenDeleteModal(false)}
         hasHeading={false}
         centerImage={icon.deleteX}
-        centerTitle='Delete Role?'
-        centerMessage='If you delete this role, it will be removed from the role management and it will be inaccessible'
+        centerTitle="Delete Role?"
+        centerMessage="If you delete this role, it will be removed from the role management and it will be inaccessible"
         form={{
           inputFields: [
-            { name: 'Why are you deleting this role?', type: 'message' },
+            { label: "Why are you deleting this role?", type: "message" },
           ],
         }}
         reduceVerticalGap
-        buttonGroupPosition='center'
+        buttonGroupPosition="center"
         buttonOne={{
           type: ButtonType.outlined,
-          text: 'Cancel',
+          text: "Cancel",
           onClick: () => setOpenDeleteModal(false),
         }}
         buttonTwo={{
           type: ButtonType.deleteContained,
-          text: 'Delete Role',
+          text: "Delete Role",
           onClick: () => {
             setOpenDeleteModal(false);
             setOpenDeleteToast(true);
@@ -100,23 +100,23 @@ const HrAdminEmployeeRole = () => {
         onClose={() => setOpenDeleteModal(false)}
         hasHeading={false}
         centerImage={icon.deleteX}
-        centerTitle='Delete Role?'
-        centerMessage='If you delete this role, it will be removed from the role management and it will be inaccessible'
+        centerTitle="Delete Role?"
+        centerMessage="If you delete this role, it will be removed from the role management and it will be inaccessible"
         form={{
           inputFields: [
-            { name: 'Why are you deleting this role?', type: 'message' },
+            { label: "Why are you deleting this role?", type: "message" },
           ],
         }}
         reduceVerticalGap
-        buttonGroupPosition='center'
+        buttonGroupPosition="center"
         buttonOne={{
           type: ButtonType.outlined,
-          text: 'Cancel',
+          text: "Cancel",
           onClick: () => setOpenDeleteModal(false),
         }}
         buttonTwo={{
           type: ButtonType.deleteContained,
-          text: 'Delete Role',
+          text: "Delete Role",
           onClick: () => {
             setOpenDeleteModal(false);
             setOpenDeleteToast(true);
@@ -126,9 +126,9 @@ const HrAdminEmployeeRole = () => {
       <Toast
         open={openDeleteToast}
         onClose={() => setOpenDeleteToast(false)}
-        status='Successful'
-        message='Role has been deleted successfully'
-        type='success'
+        status="Successful"
+        message="Role has been deleted successfully"
+        type="success"
         icon={icon.checkCircle}
       />
     </Page>

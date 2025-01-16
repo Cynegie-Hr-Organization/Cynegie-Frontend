@@ -1,125 +1,299 @@
 "use client";
 
-import { Box, Button, Grid2, Stack } from "@mui/material";
+import Modal from "@/app/_components/employee/modal";
+import SvgIcon from "@/app/_components/icons/container";
+import Page from "@/app/_components/shared/page";
+import { ButtonType } from "@/app/_components/shared/page/heading/types";
+import CardGroup from "@/app/_components/shared/section-with-cards/card-group";
+import Toast from "@/app/_components/shared/toast";
+import { icon } from "@/constants";
+import { useMutation } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import PayrollBenefitsManagementTable from "../../tables/benefits-management";
-import { useState } from "react";
-import AddBenefitModal from "../../modals/add-benefit";
-import Image from "next/image";
+import { addBenefit, AddBenefitPayload } from "./api";
 
 const HrAdminPayrollBenefitsManagementPage = () => {
   const router = useRouter();
   const [showAddBenefitsModal, setShowAddBenefitsModal] = useState(false);
+  const [mutationLoading, setMutationLoading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset,
+    watch,
+    setError,
+    clearErrors,
+  } = useForm();
+
+  const addBenefitMutation = useMutation({
+    mutationFn: (payload: AddBenefitPayload) => addBenefit(payload), //TODO: Add Mutation Function
+    onMutate: () => setMutationLoading(true),
+    onSuccess: () => {
+      setMutationLoading(false);
+      setShowAddBenefitsModal(false);
+      setShowToast(true);
+      reset();
+    },
+    onError: () => {
+      setMutationLoading(false);
+    },
+  });
+
+  const startDate = watch("startDate");
+  const endDate = watch("End Date");
+
+  useEffect(() => {
+    if (startDate != undefined) {
+      if (startDate >= endDate) {
+        setError("Start Date", {
+          message: "Start date cannot be later than end date",
+        });
+      } else {
+        clearErrors("Start Date");
+      }
+    }
+  }, [startDate, endDate]);
+
   return (
-    <Stack gap={3} mb={10} mt={6}>
-      <Stack direction="row" alignItems="center">
-        <div style={{ flexGrow: 1 }} className="section-heading">
-          Benefits Management
-        </div>
-        <Stack direction="row" gap={2}>
-          <Button
-            // disabled
-            onClick={() => router.push("/hr-admin/payroll/salary-advance")}
-            style={{
-              borderRadius: "8px",
-              border: "1.5px solid #98A2B3",
-              color: "#98A2B3",
-              fontSize: "16px",
-              fontWeight: 600,
-              padding: "8px 20px",
-              textTransform: "none",
-              // width: '250px',
-              //   backgroundColor: '#0035C3',
-            }}
-          >
-            Salary Advance
-          </Button>
-          <button
-            onClick={() => setShowAddBenefitsModal(true)}
-            style={{
-              borderRadius: "8px",
-              border: "1.5px solid #98A2B3",
-              color: "#FFFFFF",
-              fontSize: "16px",
-              fontWeight: 600,
-              padding: "8px 20px",
-              // width: '250px',
-              backgroundColor: "#0035C3",
-            }}
-          >
-            Add Benefits
-          </button>
-        </Stack>
-      </Stack>
-      <Grid2 columnSpacing={2} rowSpacing={2} container>
-        {[
+    <Page
+      title="Benefits Management"
+      hasButtons
+      leftButton={{
+        type: ButtonType.outlined,
+        text: "Salary Advance",
+        onClick: () => router.push("/hr-admin/payroll/salary-advance"),
+      }}
+      rightButton={{
+        type: ButtonType.contained,
+        text: "Add Benefits",
+        onClick: () => setShowAddBenefitsModal(true),
+      }}
+    >
+      <CardGroup
+        cardLargeLabelText
+        cardValueBelow
+        gridItemSize={{ sm: 6, md: 3 }}
+        cards={[
           {
-            title: "Total Benefits",
+            labelText: "Total Benefits",
             value: "10",
-            icon: "/icons/group.svg",
+            icon: <SvgIcon path="/icons/group.svg" width={16} height={16} />,
+            iconColorVariant: "purple",
           },
           {
-            title: "Employees Enrolled",
+            labelText: "Employees Enrolled",
             value: "250",
-            icon: "/icons/paper-money.svg",
+            icon: (
+              <SvgIcon path="/icons/paper-money.svg" width={16} height={16} />
+            ),
+            iconColorVariant: "purple",
           },
           {
-            title: "Pending Enrollments",
+            labelText: "Pending Enrollments",
             value: "5",
-            icon: "/icons/paper-money.svg",
+            icon: (
+              <SvgIcon path="/icons/paper-money.svg" width={16} height={16} />
+            ),
+            iconColorVariant: "purple",
           },
           {
-            title: "Pending Approvals",
+            labelText: "Pending Approvals",
             value: "3",
-            icon: "/icons/paper-money.svg",
+            icon: (
+              <SvgIcon path="/icons/paper-money.svg" width={16} height={16} />
+            ),
+            iconColorVariant: "purple",
           },
-        ].map((item, index) => (
-          <Grid2
-            key={index}
-            size={{ xs: 12, sm: 6, md: 3 }}
-            className="common-card"
-          >
-            <Stack gap={3}>
-              <Stack direction="row" alignItems="center" gap={1}>
-                <div
-                  style={{
-                    padding: "6px",
-                    borderRadius: "50%",
-                    backgroundColor: "#EADAFF",
-                  }}
-                >
-                  <Image src={item.icon} width={16} height={16} alt="" />
-                </div>
-                <Box
-                  sx={{
-                    fontWeight: 600,
-                    fontSize: "16px",
-                    color: "#1B1B1B",
-                  }}
-                >
-                  {item.title}
-                </Box>
-              </Stack>
-              <Box
-                flexGrow={1}
-                sx={{
-                  fontSize: "20px",
-                  fontWeight: 700,
-                  color: "#1B1B1B",
-                }}
-              >
-                {item.value}
-              </Box>
-            </Stack>
-          </Grid2>
-        ))}
-      </Grid2>
-      <PayrollBenefitsManagementTable />
-      <AddBenefitModal
-        open={showAddBenefitsModal}
-        onCloseFn={() => setShowAddBenefitsModal(false)}
+        ]}
       />
-    </Stack>
+      <PayrollBenefitsManagementTable />
+      {showAddBenefitsModal && (
+        <Modal
+          open={showAddBenefitsModal}
+          onClose={
+            mutationLoading
+              ? () => {}
+              : () => {
+                  setShowAddBenefitsModal(false);
+                  reset();
+                }
+          }
+          title="New Benefit"
+          onFormSubmit={handleSubmit((values) => {
+            addBenefitMutation.mutateAsync({
+              name: values["Benefit Name"],
+              benefitType: values["Benefit Type"],
+              departments: values["Department"].map(
+                (department: { label: string; value: string }) =>
+                  department.label
+              ),
+              employmentType: values["Employment Type"],
+              jobLevel: values["Job Level"],
+              startDate: dayjs(values["Start Date"]).toISOString(),
+              endDate: dayjs(values["End Date"]).toISOString(),
+              employerContribution: Number(values["Employer Contribution"]),
+              employeeContribution: Number(values["Employee Contribution"]),
+              status: "pending",
+            });
+          })}
+          formRegister={register}
+          formErrors={errors}
+          formControl={control}
+          forms={[
+            {
+              gridSpacing: 3,
+              gridItemSize: { xs: 12, sm: 6, md: 4, lg: 4 },
+              inputFields: [
+                {
+                  label: "Benefit Name",
+                  type: "text",
+                  placeholder: "Enter Name",
+                  required: true,
+                },
+                {
+                  label: "Benefit Type",
+                  type: "select",
+                  required: true,
+                  placeholder: "Select Type",
+                  options: [
+                    { label: "Health", value: "health" },
+                    { label: "Financial", value: "financial" },
+                    { label: "Leave", value: "leave" },
+                    { label: "Transportation", value: "transportation" },
+                    { label: "Education", value: "education" },
+                    { label: "Pension", value: "pension" },
+                    { label: "Others", value: "others" },
+                  ],
+                  hookFormField: true,
+                  controllerRules: {
+                    required: "Benefit Type is required",
+                  },
+                },
+                {
+                  label: "Benefit Provider",
+                  type: "text",
+                  placeholder: "Enter Name",
+                  required: true,
+                },
+              ],
+            },
+            {
+              title: "Eligibility Criteria",
+              gridSpacing: 3,
+              gridItemSize: { xs: 12, sm: 6, md: 4, lg: 4 },
+              inputFields: [
+                {
+                  label: "Department",
+                  type: "multi-select",
+                  placeholder: "Select Department",
+                  options: [
+                    { label: "Engineering", value: "engineering" },
+                    { label: "Product", value: "product" },
+                    { label: "Marketing", value: "marketing" },
+                  ],
+                  hookFormField: true,
+                },
+                {
+                  label: "Employment Type",
+                  type: "select",
+                  placeholder: "Select Employment Type",
+                  options: [
+                    { label: "Full Time", value: "full-time" },
+                    { label: "Part Time", value: "part-time" },
+                    { label: "Contract Workers", value: "contract-workers" },
+                  ],
+                  hookFormField: true,
+                },
+                {
+                  label: "Job Level",
+                  type: "select",
+                  placeholder: "Select Job Level",
+                  options: [
+                    { label: "Junior", value: "junior" },
+                    { label: "Mid Level", value: "mid-level" },
+                    { label: "Senior", value: "senior" },
+                  ],
+                  hookFormField: true,
+                },
+                {
+                  label: "Start Date",
+                  type: "date",
+                  required: true,
+                  hookFormField: true,
+                  controllerRules: {
+                    required: "Start date is required",
+                  },
+                },
+                {
+                  label: "End Date",
+                  type: "date",
+                  required: true,
+                  hookFormField: true,
+                  controllerRules: {
+                    required: "End date is required",
+                  },
+                },
+              ],
+            },
+            {
+              title: "Contribution Details",
+              gridSpacing: 3,
+              gridItemSize: { xs: 12, sm: 6 },
+              inputFields: [
+                {
+                  label: "Employer Contribution",
+                  type: "text",
+                  placeholder: "Enter Employer Contribution",
+                },
+                {
+                  label: "Employee Contribution",
+                  type: "text",
+                  placeholder: "Enter Employer Contribution",
+                },
+              ],
+            },
+          ]}
+          formButtonGroup={{
+            leftButton: {
+              type: mutationLoading ? ButtonType.disabled : ButtonType.outlined,
+              text: "Cancel",
+              onClick: () => {
+                setShowAddBenefitsModal(false);
+                reset();
+              },
+            },
+            rightButton: {
+              type: isValid
+                ? mutationLoading
+                  ? ButtonType.disabledLoading
+                  : ButtonType.contained
+                : ButtonType.disabled,
+              text: mutationLoading ? "" : "Submit",
+              onClick: () => {},
+              isSubmit: true,
+            },
+            position: "center",
+          }}
+        />
+      )}
+      {showToast && (
+        <Toast
+          open={showToast}
+          onClose={() => setShowToast(false)}
+          icon={icon.checkCircle}
+          type="success"
+          status="Successful"
+          message="Benefit has been successfully added"
+        />
+      )}
+    </Page>
   );
 };
 

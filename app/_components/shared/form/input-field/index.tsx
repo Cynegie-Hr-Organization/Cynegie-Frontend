@@ -1,6 +1,7 @@
 import CheckboxField from "@/app/_components/employee/input-fields/checkbox-group";
 import DateRangeField from "@/app/_components/employee/input-fields/date-range";
 import MessageField from "@/app/_components/employee/input-fields/message";
+import MultiSelectField from "@/app/_components/employee/input-fields/multi-select";
 import RadioField from "@/app/_components/employee/input-fields/radio-group";
 import SelectField from "@/app/_components/employee/input-fields/select";
 import TextField from "@/app/_components/employee/input-fields/text";
@@ -12,10 +13,9 @@ import dayjs, { Dayjs } from "dayjs";
 import AddItems from "../../custom-popover/content/add-items";
 import FieldLabel from "../../detail-group/detail/value";
 import DragUpload from "../../drag-upload";
-import { MultiSelect } from "../../multi-select-dropdown";
 
 const InputField: React.FC<InputFieldProps> = ({
-  name,
+  label: name,
   type,
   placeholder,
   options,
@@ -33,22 +33,32 @@ const InputField: React.FC<InputFieldProps> = ({
   dateRangeValue,
   dateRangeDefaultValue,
   loading,
+  register,
+  errors,
+  control,
+  hookFormField,
+  required,
+  controllerRules,
 }) => {
   return (
     <div className="flex flex-col gap-2">
-      <FieldLabel wrapText value={name ?? ""} />
+      <FieldLabel required={required} wrapText value={name ?? ""} />
       {loading ? (
         <Skeleton height={40} sx={{ width: "auto" }} />
       ) : (
         <>
           {type === "text" && (
             <TextField
+              label={name}
               placeholder={placeholder}
               value={value}
               setValue={setValue}
               disabled={disabled}
               defaultValue={defaultValue}
               startAdornment={startAdornment}
+              register={register}
+              errors={errors}
+              required={required}
             />
           )}
           {type == "message" && (
@@ -67,6 +77,11 @@ const InputField: React.FC<InputFieldProps> = ({
               setValue={setValue}
               valueControlledFromOutside={selectValControlledFromOutside}
               getCurrentValue={getCurrentValue}
+              control={control}
+              hookFormField={hookFormField}
+              name={name}
+              errors={errors}
+              controllerRules={controllerRules}
             />
           )}
           {type == "radio" && <RadioField options={options ?? []} />}
@@ -79,6 +94,11 @@ const InputField: React.FC<InputFieldProps> = ({
               disabled={disabled}
               // onChange={(newValue) => getDate?.(newValue)}
               {...(getDate && { onChange: (newValue) => getDate?.(newValue) })}
+              hookFormField={hookFormField}
+              control={control}
+              controllerRules={controllerRules}
+              name={name}
+              errors={errors}
             />
           )}
           {type == "date-range" && (
@@ -104,7 +124,12 @@ const InputField: React.FC<InputFieldProps> = ({
             </div>
           )}
           {type == "multi-select" && (
-            <MultiSelect options={[]} value={[]} onChange={() => {}} />
+            <MultiSelectField
+              options={options}
+              label={name}
+              control={control}
+              placeholder={placeholder}
+            />
           )}
           {type === "add-items" && addItemsProps && (
             <AddItems {...addItemsProps} />

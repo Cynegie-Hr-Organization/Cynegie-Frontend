@@ -1,5 +1,13 @@
-import { MenuItem, Select } from "@mui/material";
+import { FormHelperText, MenuItem, Select } from "@mui/material";
 import React from "react";
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  FieldName,
+  FieldValues,
+  RegisterOptions,
+} from "react-hook-form";
 import { InputFieldOption, InputFieldValue } from "../../modal/types";
 
 export type SelectFieldProps = {
@@ -11,6 +19,14 @@ export type SelectFieldProps = {
   valueControlledFromOutside?: boolean;
   defaultValue?: string | number;
   getCurrentValue?: (arg: string | number) => void;
+  hookFormField?: boolean;
+  name?: string;
+  control?: Control<FieldValues, any>;
+  errors?: FieldErrors<FieldValues>;
+  controllerRules?: Omit<
+    RegisterOptions<FieldValues, FieldName<FieldValues>>,
+    "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
+  >;
 };
 
 export type SelectValue = string | number | undefined;
@@ -21,6 +37,8 @@ export const InputFieldPlaceholder: React.FC<{ placeholder: string }> = ({
   return <p style={{ color: "grey" }}>{placeholder}</p>;
 };
 
+const classStyle = "!rounded-md h-[42px] !w-full bg-white";
+
 const SelectField: React.FC<SelectFieldProps> = (props) => {
   const {
     options,
@@ -30,11 +48,41 @@ const SelectField: React.FC<SelectFieldProps> = (props) => {
     valueControlledFromOutside,
     defaultValue,
     getCurrentValue,
+    hookFormField,
+    name,
+    control,
+    errors,
+    controllerRules,
   } = props;
-  return (
+  return hookFormField ? (
+    <>
+      <Controller
+        name={name ?? ""}
+        control={control}
+        defaultValue=""
+        rules={controllerRules}
+        render={({ field }) => (
+          <Select {...field} displayEmpty className={classStyle}>
+            <MenuItem value="" disabled sx={{ display: "none" }}>
+              {placeholder}
+            </MenuItem>
+            {options?.map((option) => (
+              <MenuItem key={option.label} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+        )}
+      />
+      {errors && name && errors[name] && (
+        <FormHelperText sx={{ color: "red" }}>
+          {typeof errors[name].message === "string" && errors[name].message}
+        </FormHelperText>
+      )}
+    </>
+  ) : (
     <Select
-      className="!rounded-md"
-      style={{ height: "42px", width: "100%", background: "white" }}
+      className={classStyle}
       defaultValue={defaultValue ?? ""}
       {...(valueControlledFromOutside ? { value: value ?? "" } : {})}
       displayEmpty

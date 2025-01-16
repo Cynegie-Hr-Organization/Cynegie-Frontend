@@ -19,6 +19,7 @@ export type PageHeadingProps = {
 };
 
 export type ButtonProps = {
+  isSubmit?: boolean;
   type?: ButtonType;
   text?: string;
   icon?: React.ReactElement;

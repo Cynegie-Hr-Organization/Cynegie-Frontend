@@ -205,7 +205,7 @@ const HrAdminCreatePayrollPage = ({
             gridSpacing={3}
             inputFields={[
               {
-                name: "Payroll Name",
+                label: "Payroll Name",
                 type: "text",
                 placeholder: "Enter",
                 value: payrollName,
@@ -216,7 +216,7 @@ const HrAdminCreatePayrollPage = ({
                 },
               },
               {
-                name: "Payroll Period",
+                label: "Payroll Period",
                 type: "date-range",
                 getDateRange: (range) =>
                   setPayrollPeriod({
@@ -231,7 +231,7 @@ const HrAdminCreatePayrollPage = ({
                 }),
               },
               {
-                name: "Payment Date",
+                label: "Payment Date",
                 type: "date",
                 ...(editPayrollId
                   ? { value: paymentDate }
@@ -281,7 +281,7 @@ const HrAdminCreatePayrollPage = ({
             gridSpacing={3}
             inputFields={[
               {
-                name: "Payroll Name",
+                label: "Payroll Name",
                 type: "text",
                 placeholder: "Enter",
                 value: payrollName,
@@ -291,7 +291,7 @@ const HrAdminCreatePayrollPage = ({
                 disabled: true,
               },
               {
-                name: "Payroll Period",
+                label: "Payroll Period",
                 type: "date-range",
                 disabled: true,
                 getDateRange: (range) =>
@@ -304,7 +304,7 @@ const HrAdminCreatePayrollPage = ({
                 )} - ${dayjs(payrollPeriod.endDate).format("DD MMM YYYY")}`,
               },
               {
-                name: "Payment Date",
+                label: "Payment Date",
                 type: "date",
                 value: paymentDate,
                 getDate: (date) =>
@@ -373,7 +373,7 @@ const HrAdminCreatePayrollPage = ({
             formFilter={{
               inputFields: [
                 {
-                  name: "Department",
+                  label: "Department",
                   type: "select",
                   placeholder: departmentFilter,
                   value: departmentFilter,

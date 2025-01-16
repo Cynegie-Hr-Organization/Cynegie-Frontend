@@ -1,10 +1,21 @@
-import { ButtonGroupPosition } from "@/app/_components/shared/button-group/types";
+import {
+  ButtonGroupPosition,
+  ButtonGroupProps,
+} from "@/app/_components/shared/button-group/types";
 import { AddItemsProps } from "@/app/_components/shared/custom-popover/content/add-items";
 import { DetailGroupProps } from "@/app/_components/shared/detail-group/types";
 import { FormProps } from "@/app/_components/shared/form/types";
 import { ButtonProps } from "@/app/_components/shared/page/heading/types";
 import { Dayjs } from "dayjs";
-import { SetStateAction } from "react";
+import { FormEventHandler, SetStateAction } from "react";
+import {
+  Control,
+  FieldErrors,
+  FieldName,
+  FieldValues,
+  RegisterOptions,
+  UseFormRegister,
+} from "react-hook-form";
 import { DateRange } from "rsuite/esm/DateRangePicker";
 import { ViewTaskProps } from "../../pages/task/view-task/types";
 
@@ -23,16 +34,22 @@ export type ModalProps = {
   centerMessage?: string;
   reduceVerticalGap?: boolean;
   form?: FormProps;
+  forms?: FormProps[];
   hasDocSelect?: boolean;
   isPayrollSlip?: boolean;
   buttonGroupPosition?: ButtonGroupPosition;
   viewTaskProps?: ViewTaskProps;
+  onFormSubmit?: FormEventHandler<HTMLFormElement> | undefined;
+  formRegister?: UseFormRegister<FieldValues> | undefined;
+  formErrors?: FieldErrors<FieldValues>;
+  formControl?: Control<FieldValues, any>;
+  formButtonGroup?: ButtonGroupProps;
 };
 
 export type ModalData = Omit<ModalProps, "open" | "onClose">;
 
 export type InputFieldProps = {
-  name?: string;
+  label?: string;
   type: InputFieldType;
   placeholder?: string;
   options?: InputFieldOption[];
@@ -51,6 +68,15 @@ export type InputFieldProps = {
   dateRangeValue?: DateRange | null;
   dateRangeDefaultValue?: DateRange | null;
   loading?: boolean;
+  register?: UseFormRegister<FieldValues>;
+  errors?: FieldErrors<FieldValues>;
+  control?: Control<FieldValues, any>;
+  hookFormField?: boolean;
+  required?: boolean;
+  controllerRules?: Omit<
+    RegisterOptions<FieldValues, FieldName<FieldValues>>,
+    "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
+  >;
 };
 
 export type InputFieldOption = {

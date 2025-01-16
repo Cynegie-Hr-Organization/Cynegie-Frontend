@@ -15,6 +15,9 @@ const Form: React.FC<FormProps> = (props) => {
     buttonGroup,
     gridItemSize,
     loading,
+    register,
+    errors,
+    control,
   } = props;
   return (
     <div>
@@ -30,7 +33,13 @@ const Form: React.FC<FormProps> = (props) => {
                 key={index}
                 size={gridItemSize ?? getGridLayout(index, layout)}
               >
-                <InputField {...field} loading={loading} />
+                <InputField
+                  {...field}
+                  loading={loading}
+                  register={register}
+                  errors={errors}
+                  control={control}
+                />
               </Grid2>
             ))}
           </Grid2>

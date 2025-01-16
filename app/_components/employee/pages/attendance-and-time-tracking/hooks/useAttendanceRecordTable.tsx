@@ -113,11 +113,11 @@ const useAttendanceRecordTable = () => {
     subtitle: "Fill the details below",
     form: {
       inputFields: [
-        { name: "Date", type: "date" },
-        { name: "Correct Clock In Time", type: "time" },
-        { name: "Correct Clock Out Time", type: "time" },
-        { name: "Reason for Correction", type: "message" },
-        { name: "Attachments", type: "drag-upload" },
+        { label: "Date", type: "date" },
+        { label: "Correct Clock In Time", type: "time" },
+        { label: "Correct Clock Out Time", type: "time" },
+        { label: "Reason for Correction", type: "message" },
+        { label: "Attachments", type: "drag-upload" },
       ],
       isCard: false,
       gridSpacing: 3,

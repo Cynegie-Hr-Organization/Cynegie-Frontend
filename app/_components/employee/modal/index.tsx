@@ -34,10 +34,16 @@ const Modal: React.FC<ModalProps> = (props) => {
     reduceVerticalGap = false,
     detailGroup,
     form,
+    forms,
     isPayrollSlip = false,
     buttonGroupPosition = "center",
     viewTaskProps,
     hasDocSelect,
+    onFormSubmit,
+    formRegister,
+    formErrors,
+    formControl,
+    formButtonGroup,
   } = props;
 
   return (
@@ -89,6 +95,24 @@ const Modal: React.FC<ModalProps> = (props) => {
               </div>
             )}
             {form && <Form {...form} />}
+            {forms && (
+              <form className="flex flex-col gap-10" onSubmit={onFormSubmit}>
+                {forms.map((form, index) => (
+                  <Form
+                    key={index}
+                    {...form}
+                    register={formRegister}
+                    errors={formErrors}
+                    control={formControl}
+                  />
+                ))}
+                {formButtonGroup && (
+                  <div className="mt-8 mb-[-20]">
+                    <ButtonGroup {...formButtonGroup} />
+                  </div>
+                )}
+              </form>
+            )}
             {!buttonTwo && (
               <div className={`flex ${centerButton && "justify-center"}`}>
                 <Button {...buttonOne} />

@@ -1,15 +1,15 @@
-'use client';
-import Page from '@/app/_components/shared/page';
-import { ButtonType } from '@/app/_components/shared/page/heading/types';
-import Table from '@/app/_components/shared/table';
-import useHandleRowChecks from '@/app/_components/shared/table/hooks/useHandleRowChecks';
-import { FieldType } from '@/app/_components/shared/table/types';
-import { icon, route } from '@/constants';
-import { useRouter } from 'next/navigation';
-import useApprovalConfirmationModal from './hooks/useApprovalConfirmationModal';
-import Modal from '@/app/_components/employee/modal';
-import { useState } from 'react';
-import Toast from '@/app/_components/shared/toast';
+"use client";
+import Modal from "@/app/_components/employee/modal";
+import Page from "@/app/_components/shared/page";
+import { ButtonType } from "@/app/_components/shared/page/heading/types";
+import Table from "@/app/_components/shared/table";
+import useHandleRowChecks from "@/app/_components/shared/table/hooks/useHandleRowChecks";
+import { FieldType } from "@/app/_components/shared/table/types";
+import Toast from "@/app/_components/shared/toast";
+import { icon, route } from "@/constants";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import useApprovalConfirmationModal from "./hooks/useApprovalConfirmationModal";
 
 const HrAdminEmployeeManagementApproval = () => {
   const router = useRouter();
@@ -24,19 +24,19 @@ const HrAdminEmployeeManagementApproval = () => {
 
   return (
     <Page
-      title='Approval Management'
-      subtitle='Manage and Approve all requests pending HR review'
+      title="Approval Management"
+      subtitle="Manage and Approve all requests pending HR review"
       hasButtons
       leftButton={{
         type:
           checkedRows.length > 0 ? ButtonType.outlined : ButtonType.disabled,
-        text: 'Reject All',
+        text: "Reject All",
         onClick: () => resetChecks(),
       }}
       rightButton={{
         type:
           checkedRows.length > 0 ? ButtonType.contained : ButtonType.disabled,
-        text: 'Approve All',
+        text: "Approve All",
         onClick: () => setOpenConfirmationModal(true),
       }}
     >
@@ -44,72 +44,72 @@ const HrAdminEmployeeManagementApproval = () => {
         hasCheckboxes
         hasActionsColumn
         headerRowData={[
-          'Request Type',
-          'Employee Name',
-          'Staff ID',
-          'Department',
-          'Request Details',
-          'Request Date',
-          'Status',
+          "Request Type",
+          "Employee Name",
+          "Staff ID",
+          "Department",
+          "Request Details",
+          "Request Date",
+          "Status",
         ]}
         fieldTypes={[...Array(6).fill(FieldType.text), FieldType.status]}
         displayedFields={[
-          'requestType',
-          'employeeName',
-          'staffID',
-          'department',
-          'requestDetails',
-          'requestDate',
-          'status',
+          "requestType",
+          "employeeName",
+          "staffID",
+          "department",
+          "requestDetails",
+          "requestDate",
+          "status",
         ]}
         bodyRowData={Array(5).fill({
-          requestType: 'Leave Request',
-          employeeName: 'Ayomide Alibaba',
-          staffID: 'CYN0235',
-          department: 'Product',
-          requestDetails: 'Annual Leave (5 days)',
-          requestDate: 'Oct 12, 2024',
-          status: 'Pending',
+          requestType: "Leave Request",
+          employeeName: "Ayomide Alibaba",
+          staffID: "CYN0235",
+          department: "Product",
+          requestDetails: "Annual Leave (5 days)",
+          requestDate: "Oct 12, 2024",
+          status: "Pending",
         })}
         formFilter={{
           inputFields: [
             {
-              name: 'Request Type',
-              type: 'select',
-              placeholder: 'Select',
-              options: [{ label: 'Leave Request', value: 0 }],
+              label: "Request Type",
+              type: "select",
+              placeholder: "Select",
+              options: [{ label: "Leave Request", value: 0 }],
             },
             {
-              name: 'Department',
-              type: 'select',
-              placeholder: 'Select',
-              options: [{ label: 'HR', value: 0 }],
+              label: "Department",
+              type: "select",
+              placeholder: "Select",
+              options: [{ label: "HR", value: 0 }],
             },
             {
-              name: 'Date',
-              type: 'date',
+              label: "Date",
+              type: "date",
             },
             {
-              name: 'Status',
-              type: 'select',
-              placeholder: 'Select',
+              label: "Status",
+              type: "select",
+              placeholder: "Select",
               options: [
-                { label: 'Approved', value: 2 },
-                { label: 'Rejected', value: 1 },
-                { label: 'Pending', value: 0 },
+                { label: "Approved", value: 2 },
+                { label: "Rejected", value: 1 },
+                { label: "Pending", value: 0 },
               ],
             },
           ],
         }}
         statusMap={{
-          Approved: 'success',
-          Pending: 'warning',
-          Rejected: 'error',
+          Approved: "success",
+          Pending: "warning",
+          Rejected: "error",
         }}
         fieldActionMap={{
           Pending: [
             {
-              name: 'View Details',
+              name: "View Details",
               onClick: () =>
                 router.push(
                   route.hrAdmin.employeeManagement.approvalManagement
@@ -117,16 +117,16 @@ const HrAdminEmployeeManagementApproval = () => {
                 ),
             },
             {
-              name: 'Approve',
+              name: "Approve",
               onClick: () => setOpenToast(true),
             },
             {
-              name: 'Reject',
+              name: "Reject",
               onClick: () => {},
             },
           ],
         }}
-        fieldToGetAction='status'
+        fieldToGetAction="status"
         getCheckedRows={setCheckedRows}
         clearChecks={clearChecks}
       />
@@ -147,10 +147,10 @@ const HrAdminEmployeeManagementApproval = () => {
         <Toast
           open={openToast}
           icon={icon.checkCircle}
-          type='success'
+          type="success"
           onClose={() => setOpenToast(false)}
-          status='Successful'
-          message='Request(s) approved successfully!'
+          status="Successful"
+          message="Request(s) approved successfully!"
         />
       )}
     </Page>

@@ -17,6 +17,7 @@ const Button: React.FC<ButtonProps> = (props) => {
     fullWidth,
     small,
     iconOnly,
+    isSubmit,
   } = props;
 
   const borderStyle = { border: "1.5px solid" };
@@ -89,6 +90,7 @@ const Button: React.FC<ButtonProps> = (props) => {
 
   const button = (
     <button
+      {...(isSubmit ? { type: "submit" } : { type: "button" })}
       onClick={onClick}
       {...((type === ButtonType.disabled ||
         type === ButtonType.disabledLoading) && { disabled: true })}

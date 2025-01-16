@@ -1,12 +1,12 @@
-import { ButtonType } from '@/app/_components/shared/page/heading/types';
-import { PageProps } from '@/app/_components/shared/page/types';
-import { FieldType, TableProps } from '@/app/_components/shared/table/types';
-import { icon, route } from '@/constants';
-import { useState } from 'react';
-import { CardGroupProps } from '@/app/_components/shared/section-with-cards/types';
-import SvgIcon from '@/app/_components/icons/container';
-import { useRouter } from 'next/navigation';
-import { ModalProps } from '../../../modal/types';
+import SvgIcon from "@/app/_components/icons/container";
+import { ButtonType } from "@/app/_components/shared/page/heading/types";
+import { PageProps } from "@/app/_components/shared/page/types";
+import { CardGroupProps } from "@/app/_components/shared/section-with-cards/types";
+import { FieldType, TableProps } from "@/app/_components/shared/table/types";
+import { icon, route } from "@/constants";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { ModalProps } from "../../../modal/types";
 
 const useBenefitsPage = () => {
   const [openRequestModal, setOpenRequestModal] = useState(false);
@@ -16,17 +16,17 @@ const useBenefitsPage = () => {
   const router = useRouter();
 
   const pageProps: PageProps = {
-    title: 'Benefits',
-    subtitle: 'All your benefits below',
+    title: "Benefits",
+    subtitle: "All your benefits below",
     hasButtons: true,
     leftButton: {
       type: ButtonType.outlined,
-      text: 'Salary Advance',
+      text: "Salary Advance",
       onClick: () => router.push(route.employee.benefits.salaryAdvance),
     },
     rightButton: {
       type: ButtonType.contained,
-      text: 'Request Benefits',
+      text: "Request Benefits",
       onClick: () => setOpenRequestModal(true),
     },
   };
@@ -37,32 +37,32 @@ const useBenefitsPage = () => {
     gridItemSize: { xs: 12, sm: 6, md: 3 },
     cards: [
       {
-        labelText: 'Total Benefits Enrolled',
-        value: '10',
+        labelText: "Total Benefits Enrolled",
+        value: "10",
         valueBelow: true,
         icon: giftIcon,
-        iconColorVariant: 'success',
+        iconColorVariant: "success",
       },
       {
-        labelText: 'Active Benefits',
-        value: '4',
+        labelText: "Active Benefits",
+        value: "4",
         valueBelow: true,
         icon: giftIcon,
-        iconColorVariant: 'info',
+        iconColorVariant: "info",
       },
       {
-        labelText: 'Pending Benefits',
-        value: '3',
+        labelText: "Pending Benefits",
+        value: "3",
         valueBelow: true,
         icon: giftIcon,
-        iconColorVariant: 'warning',
+        iconColorVariant: "warning",
       },
       {
-        labelText: 'Upcoming Expiration',
-        value: '2',
+        labelText: "Upcoming Expiration",
+        value: "2",
         valueBelow: true,
         icon: giftIcon,
-        iconColorVariant: 'error',
+        iconColorVariant: "error",
       },
     ],
   };
@@ -70,26 +70,26 @@ const useBenefitsPage = () => {
   const tableProps: TableProps = {
     hasActionsColumn: true,
     headerRowData: [
-      'Benefit Name',
-      'Benefit Type',
-      'Provider',
-      'Employee Contribution',
+      "Benefit Name",
+      "Benefit Type",
+      "Provider",
+      "Employee Contribution",
     ],
     bodyRowData: Array(5).fill({
-      name: 'Health Insurance',
-      type: 'Health',
-      provider: 'Cynegie',
-      employeeContribution: 'N20,000',
+      name: "Health Insurance",
+      type: "Health",
+      provider: "Cynegie",
+      employeeContribution: "N20,000",
     }),
     fieldTypes: Array(4).fill(FieldType.text),
-    displayedFields: ['name', 'type', 'provider', 'employeeContribution'],
+    displayedFields: ["name", "type", "provider", "employeeContribution"],
     actions: [
-      { name: 'View Details', onClick: () => setOpenDetailsModal(true) },
+      { name: "View Details", onClick: () => setOpenDetailsModal(true) },
     ],
     filters: [
       {
-        name: 'Benefit Type',
-        items: ['Health', 'Pension', 'Retirement', 'Transport', 'Life'],
+        name: "Benefit Type",
+        items: ["Health", "Pension", "Retirement", "Transport", "Life"],
       },
     ],
   };
@@ -97,64 +97,64 @@ const useBenefitsPage = () => {
   const requestModalProps: ModalProps = {
     open: openRequestModal,
     onClose: () => setOpenRequestModal(false),
-    title: 'Request Benefit',
-    subtitle: 'Request benefit below',
+    title: "Request Benefit",
+    subtitle: "Request benefit below",
     form: {
       gridSpacing: 4,
       inputFields: [
         {
-          name: 'Benefit Type',
-          type: 'select',
-          placeholder: 'Select',
+          label: "Benefit Type",
+          type: "select",
+          placeholder: "Select",
           options: [
             {
-              label: 'Health Insurance',
+              label: "Health Insurance",
               value: 4,
             },
             {
-              label: 'Pension Insurance',
+              label: "Pension Insurance",
               value: 3,
             },
             {
-              label: 'Retirement Insurance',
+              label: "Retirement Insurance",
               value: 2,
             },
             {
-              label: 'Transport Insurance',
+              label: "Transport Insurance",
               value: 1,
             },
             {
-              label: 'Life Insurance',
+              label: "Life Insurance",
               value: 0,
             },
           ],
         },
         {
-          name: 'Provider',
-          type: 'select',
-          placeholder: 'Select',
+          label: "Provider",
+          type: "select",
+          placeholder: "Select",
           options: [
             {
-              label: 'ABC Hospital',
+              label: "ABC Hospital",
               value: 0,
             },
           ],
         },
         {
-          name: 'Coverage Detail',
-          type: 'text',
-          placeholder: 'Sample description here',
+          label: "Coverage Detail",
+          type: "text",
+          placeholder: "Sample description here",
         },
         {
-          name: 'Monthly Cost',
-          type: 'text',
-          placeholder: '',
+          label: "Monthly Cost",
+          type: "text",
+          placeholder: "",
         },
       ],
     },
     buttonOne: {
       type: ButtonType.contained,
-      text: 'Request Beneift',
+      text: "Request Beneift",
       onClick: () => setOpenRequestModal(false),
     },
     centerButton: true,
@@ -163,40 +163,40 @@ const useBenefitsPage = () => {
   const detailsModalProps: ModalProps = {
     open: openDetailsModal,
     onClose: () => setOpenDetailsModal(false),
-    title: 'View Details',
-    subtitle: 'View details below',
+    title: "View Details",
+    subtitle: "View details below",
     detailGroup: {
       spaceBetweenLayout: true,
       details: [
         {
-          name: 'Benefit Name',
-          value: 'Retirment Plans',
+          name: "Benefit Name",
+          value: "Retirment Plans",
         },
         {
-          name: 'Benefit Type',
-          value: 'Financial',
+          name: "Benefit Type",
+          value: "Financial",
         },
         {
-          name: 'Provider',
-          value: 'Cynegie',
+          name: "Provider",
+          value: "Cynegie",
         },
         {
-          name: 'Start Date',
-          value: 'January 30, 2024',
+          name: "Start Date",
+          value: "January 30, 2024",
         },
         {
-          name: 'End Date',
-          value: 'December 21, 2024',
+          name: "End Date",
+          value: "December 21, 2024",
         },
         {
-          name: 'Employee Contribution',
-          value: 'N20,000',
+          name: "Employee Contribution",
+          value: "N20,000",
         },
       ],
     },
     buttonOne: {
       type: ButtonType.outlinedBlue,
-      text: 'Contact HR',
+      text: "Contact HR",
       onClick: () => setOpenDetailsModal(false),
     },
     centerButton: true,
@@ -207,11 +207,11 @@ const useBenefitsPage = () => {
     onClose: () => setOpenSuccessModal(false),
     hasHeading: false,
     reduceVerticalGap: true,
-    centerImage: '/icons/modal-success.svg',
-    centerTitle: 'App Requested',
-    centerMessage: 'Your request has been sent successfully',
+    centerImage: "/icons/modal-success.svg",
+    centerTitle: "App Requested",
+    centerMessage: "Your request has been sent successfully",
     buttonOne: {
-      text: 'Return to App Dashboard',
+      text: "Return to App Dashboard",
       type: ButtonType.contained,
       onClick: () => {
         setOpenSuccessModal(false);

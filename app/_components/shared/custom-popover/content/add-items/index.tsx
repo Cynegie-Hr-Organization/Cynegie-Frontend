@@ -171,7 +171,7 @@ const AddItems: React.FC<AddItemsProps> = ({
           <div>
             <InputField
               type={inputFieldType}
-              name={inputFieldName ?? showFieldLabels ? item.name : undefined}
+              label={inputFieldName ?? showFieldLabels ? item.name : undefined}
               disabled={disabled}
               defaultValue={
                 hasSecondaryField && inputFieldType !== "select"
@@ -195,7 +195,7 @@ const AddItems: React.FC<AddItemsProps> = ({
           {hasSecondaryField && (
             <div>
               <InputField
-                {...(secondaryFieldName && { name: secondaryFieldName })}
+                {...(secondaryFieldName && { label: secondaryFieldName })}
                 type={secondaryFieldType ?? inputFieldType}
                 defaultValue={item.value}
                 placeholder={secondaryFieldPlaceholder}
