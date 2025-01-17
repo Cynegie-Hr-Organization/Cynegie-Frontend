@@ -66,7 +66,7 @@ const CreateNewTemplate = () => {
 
   return (
     <form className="mb-12">
-      <h3>Create New Template</h3>
+      <h3 className="text-lg font-semibold">Create New Template</h3>
 
       <CardLayout className="mt-6 space-y-6">
         <div className="flex flex-col">

@@ -20,8 +20,8 @@ export const PageHeader = ({
   return (
     <div className="flex justify-between items-center">
       <div>
-        <h3 className="text-xl font-bold text-black">{title}</h3>
-        <p className="text-sm text-gray-500">{description}</p>
+        <h3 className="text-lg font-bold text-black">{title}</h3>
+        <p className="text-xs text-gray-500">{description}</p>
       </div>
 
       <AppButton

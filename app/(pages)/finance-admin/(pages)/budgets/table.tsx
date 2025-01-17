@@ -10,8 +10,6 @@ const BudgetsTable = () => {
   const { data: budgets, isLoading } = useAllBudget();
   // const { totalItems } = budgets?.data ?? { totalItems: 0 }
 
-  console.log('here', budgets)
-
   // const handleSelectAll = () => {
   //   if (selectedItems.size === totalItems) {
   //     clearSelection();

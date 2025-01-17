@@ -23,6 +23,30 @@ export const useBankingMutations = () => {
     },
     onSuccess: async (data) => {
       toast.success(data.data.message);
+      toast.success('created successfully');
+
+      if (!data?.status) throw new Error(data.data.message ?? `Unable to create this account, please try again`);
+
+      await queryClient.invalidateQueries({ queryKey: [queryKeys.BANKING] });
+    },
+    onError: (error) => handleError(error)
+  })
+
+
+
+  const initiateTransfer = useMutation({
+    mutationKey: ['initiate-transfer'],
+    mutationFn: async (body: Partial<IBankTransfer>) => {
+      const session = await getSession();
+
+      return await Http.post<IRes<IBankTransfer>>('bank/initiate-transfer', body, {
+        headers: await headers(session?.token ?? '')
+      })
+    },
+    onSuccess: async (data) => {
+      toast.success(data.data.message);
+      toast.success('funds sent successfully');
+
       if (!data?.status) throw new Error(data.data.message ?? `Unable to create this account, please try again`);
 
       await queryClient.invalidateQueries({ queryKey: [queryKeys.BANKING] });
@@ -33,7 +57,8 @@ export const useBankingMutations = () => {
 
 
   return {
-    createBankAccount
+    createBankAccount,
+    initiateTransfer
   }
 }
 
@@ -51,4 +76,14 @@ interface IBankAccount {
   companyAddress: string,
   secondaryContact: string,
   transactionPin: string
+}
+
+
+export interface IBankTransfer {
+  beneficiary: string;
+  accountName: string;
+  accountNumber: string;
+  bankName: string;
+  sourceBank: string;
+  amount: number;
 }

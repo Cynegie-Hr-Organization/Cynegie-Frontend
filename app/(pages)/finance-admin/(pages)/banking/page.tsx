@@ -198,6 +198,21 @@ const TransferStatuses = () => {
 }
 
 const TransferForm = () => {
+	const { initiateTransfer } = useBankingMutations()
+	const [formData, setFormData] = useState({
+		beneficiary: "Jane Doe",
+		accountName: "John Doe",
+		accountNumber: "1234567890",
+		bankName: "First Bank",
+		sourceBank: "Access Bank",
+		amount: 5000
+	})
+
+	const handleTransfer = () => {
+		initiateTransfer.mutate(formData)
+	}
+
+
 	return (
 		<form className="common-card space-y-7">
 			<p className="text-base font-bold text-black">New Transfer</p>
@@ -211,7 +226,7 @@ const TransferForm = () => {
 						{ label: "Bank 2", value: "bank2" },
 						{ label: "Bank 3", value: "bank3" },
 					]}
-					onChange={(value) => console.log(value)}
+					onChange={(value) => { setFormData((prev) => ({ ...prev, sourceBank: value })) }}
 				/>
 				<AppSelect
 					label="Beneficiary"
@@ -221,7 +236,7 @@ const TransferForm = () => {
 						{ label: 'beneficiary 2', value: 'bene2' },
 						{ label: 'beneficiary 3', value: 'bene3' },
 					]}
-					onChange={(value) => console.log(value)}
+					onChange={(value) => { setFormData({ ...formData, beneficiary: value }) }}
 				/>
 
 				<AppInputText
@@ -229,8 +244,11 @@ const TransferForm = () => {
 					id="amount"
 					type="number"
 					placeholder="Enter amount"
-					onChange={() => { }}
-					value=""
+					onChange={(e) => {
+						const numericValue = e.target.value.replace(/\D/g, '');
+						setFormData({ ...formData, amount: parseInt(numericValue) })
+					}}
+					value={formData.amount}
 				/>
 
 				<AppInputText
@@ -238,8 +256,11 @@ const TransferForm = () => {
 					id="account-number"
 					type="string"
 					placeholder="Enter account number"
-					onChange={() => { }}
-					value=""
+					onChange={(e) => {
+						const numericValue = e.target.value.replace(/\D/g, '');
+						setFormData({ ...formData, accountNumber: numericValue })
+					}}
+					value={formData.accountNumber}
 				/>
 
 				<AppSelect
@@ -250,11 +271,11 @@ const TransferForm = () => {
 						{ label: "Bank 2", value: "bank2" },
 						{ label: "Bank 3", value: "bank3" },
 					]}
-					onChange={(value) => console.log(value)}
+					onChange={(value) => { setFormData({ ...formData, bankName: value }) }}
 				/>
 			</div>
 
-			<AppButton label={"Initiate Transfer"} className="btn-primary md:w-full" />
+			<AppButton label={"Initiate Transfer"} className="btn-primary md:w-full" onClick={handleTransfer} />
 		</form>
 	)
 }
@@ -376,8 +397,11 @@ const PageHeader = ({ title, button1Label, button2Label, link1 }: {
 // }
 
 const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => {
+	const [isOpenModal, setIsOpenModal] = useState(false)
 	const { createBankAccount } = useBankingMutations();
 	const isMutating = useIsMutating();
+
+
 	const [formData, setFormData] = useState({
 		accountName: "Houstin ChurchHill",
 		businessType: "SOLE OWENER",
@@ -394,6 +418,7 @@ const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger })
 	const handleSubmit = () => {
 		createBankAccount.mutate(formData, {
 			onSuccess: () => {
+				setIsOpenModal(false)
 			},
 			onError: (error) => {
 				console.log(error)
@@ -404,7 +429,10 @@ const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger })
 
 
 	return (
-		<DrawerDialog trigger={trigger}
+		<DrawerDialog
+			open={isOpenModal}
+			setOpen={setIsOpenModal}
+			trigger={trigger}
 			header={
 				<span className="flex flex-col gap-y-1">
 					<span className="font-roboto text-xl font-bold">New Account</span>

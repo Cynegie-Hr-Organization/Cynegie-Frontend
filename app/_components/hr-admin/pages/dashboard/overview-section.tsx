@@ -1,10 +1,12 @@
-import { Stack, Box, Grid2, MenuItem, Select } from "@mui/material";
-import Image from "next/image";
-import { GradientLineChart } from "./chart";
-import { PieChart } from "@mui/x-charts/PieChart";
-import { newIndex } from "@/lib/utils";
+import { AppSelect } from "@/app/_components/shared/select";
 import Todo from "@/app/_components/todo";
+import { newIndex } from "@/lib/utils";
+import { Box, Grid2, Stack } from "@mui/material";
+import { PieChart } from "@mui/x-charts/PieChart";
 import Link from "next/link";
+import { GoDotFill } from "react-icons/go";
+import { PiListChecksFill } from "react-icons/pi";
+import { GradientLineChart } from "./chart";
 
 const colors = {
   red: "#D42620",
@@ -20,8 +22,8 @@ const data = [
 ];
 
 const size = {
-  width: 250,
-  height: 150,
+  width: 200,
+  height: 200,
 };
 
 const overviewContents = [
@@ -59,138 +61,114 @@ const OverViewSection = () => {
 
 const OverViewCards = () => {
   return (
-    <Stack gap={2}>
-      <Box className="section-heading">Overview</Box>
-      <Grid2 columnSpacing={2} rowSpacing={2} container>
-        {overviewContents.map((content) => (
-          <Grid2
-            key={content.title}
-            size={{ xs: 12, sm: 6, md: 3 }}
-            className="border-[1.13px] border-card-border bg-white p-3 md:p-5 rounded-[12.56px]"
-          >
-            <Stack gap={3}>
-              <Stack direction="row" alignItems="center" gap={2}>
-                <Box
-                  className={`p-1 rounded-full text-center flex justify-center`}
-                  sx={{ backgroundColor: content.color }}
-                >
-                  <Image
-                    src="/icons/task-square-bold.svg"
-                    alt=""
-                    width={13.56}
-                    height={13.56}
-                  />
-                </Box>
-                <Box className="font-semibold text-[#1B1B1B]">
-                  {content.title}
-                </Box>
-              </Stack>
+    <div className="space-y-8">
+      <h3 className="text-base font-bold text-black">Overview</h3>
 
-              <Box className="text-[33.48px] font-bold text-[#1B1B1B]">
-                {content.count}
-              </Box>
-            </Stack>
-          </Grid2>
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4" >
+        {overviewContents.map((content) => (
+          <div key={content.title} className="common-card p-3 md:p-5 rounded-[12.56px] space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="p-1 rounded-full text-center flex justify-center w-fit"
+                style={{ backgroundColor: content.color }}>
+                <PiListChecksFill />
+              </div>
+              <p className="font-semibold text-[#1B1B1B] text-xs">{content.title}</p>
+            </div>
+
+            <p className="text-lg font-bold text-[#1B1B1B]"> {content.count}</p>
+          </div>
         ))}
-      </Grid2>
-    </Stack>
+      </div>
+    </div>
   );
 };
 
 const ChartsCard = () => {
-  return (
-    <Grid2 columnSpacing={3} rowSpacing={3} container>
-      <Grid2
-        className="border-[1.13px] border-card-border bg-white p-4 rounded-[12.56px]"
-        size={{ xs: 12, sm: 6, md: 8 }}
-      >
-        <Stack gap={2}>
-          <Stack direction="row">
-            <Box className="card-title-large flex-grow">
-              Total Payroll Processed
-            </Box>
-            <Select
-              defaultValue="Monthly"
-              className="h-[30px] rounded-[4.62px] pr-[15px]"
-              disabled
-            >
-              <MenuItem value="Monthly">Monthly</MenuItem>
-            </Select>
-          </Stack>
-          <Box>
-            <GradientLineChart />
-          </Box>
-        </Stack>
-      </Grid2>
+  const timeRanges = [
+    { label: "Monthly", value: "monthly" },
+    { label: "Yearly", value: "yearly" },
+  ];
 
-      <Grid2
-        className="border-[1.13px] border-card-border bg-white p-4 rounded-[12.56px]"
-        size={{ xs: 12, sm: 6, md: 4 }}
-      >
-        <Stack gap={2}>
-          <Box className="card-title-large">Employee Status Distribution</Box>
-          <Box
-            sx={{
-              display: "flex",
-              marginTop: { xs: "0px", sm: "0px", md: "-20px", lg: "0px" },
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+  const handleTimeRangeChange = (value: string) => {
+    console.log(value);
+  };
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <div className="common-card p-4 rounded-[12.56px] col-span-1 lg:col-span-8">
+
+        <div className="flex items-center justify-between gap-2">
+          <h3 className="text-base font-semibold text-black w-full flex-grow">Total Payroll Processed</h3>
+          <div>
+            <AppSelect
+              width="w-[120px]"
+              placeholder="Monthly"
+              listItems={timeRanges}
+              onChange={handleTimeRangeChange}
+            />
+          </div>
+        </div>
+
+        <GradientLineChart />
+      </div>
+
+      <div className="common-card p-4 rounded-xl col-span-1 lg:col-span-4" >
+        <div className="space-y-2">
+          <h3 className="text-base font-semibold text-black">Employee Status Distribution</h3>
+
+          <div className="flex justify-center mt-0 md:-mt-5 lg:mt-0">
             <PieChart
-              series={[{ data, innerRadius: 55, cx: 120 }]}
+              series={[{ data, innerRadius: 65, cx: 90 }]}
               slotProps={{
                 legend: { hidden: true },
               }}
               {...size}
             />
-          </Box>
-          <Stack gap={2}>
+          </div>
+
+          <div className="space-y-2">
             {[
               { color: colors.green, label: "Active", percentage: 75 },
               { color: colors.yellow, label: "On Leave", percentage: 10 },
               { color: colors.grey, label: "Probation", percentage: 5 },
               { color: colors.red, label: "Resigned", percentage: 10 },
             ].map((item, index) => (
-              <Stack
-                key={index}
-                direction="row"
-                alignItems="center"
-                gap={2}
-                sx={{ fontSize: "18px" }}
-              >
-                <Box
-                  style={{
-                    borderRadius: "50%",
-                    width: "15px",
-                    height: "15px",
-                    backgroundColor: item.color,
-                  }}
-                />
-                <Box flexGrow={1}>{item.label}</Box>
-                <Box>{item.percentage}%</Box>
-              </Stack>
+              <div key={index} className="flex items-center justify-between gap-1 text-base">
+                <div className="flex items-center gap-1">
+                  <GoDotFill color={item.color} size={18} />
+                  <p className="font-semibold text-xs">{item.label}</p>
+                </div>
+                <p className="font-semibold text-xs">{item.percentage}%</p>
+              </div>
             ))}
-          </Stack>
-        </Stack>
-      </Grid2>
-    </Grid2>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
 const PriorityCard = () => {
+  const timeRanges = [
+    { label: "Monthly", value: "monthly" },
+    { label: "Yearly", value: "yearly" },
+  ];
+
+  const handleTimeRangeChange = (value: string) => {
+    console.log(value);
+  };
+
   return (
     <Grid2 className="common-card" size={{ xs: 12, sm: 6, md: 8.5 }}>
       <Stack gap={2}>
         <Stack direction="row">
-          <Box className="card-title-large flex-grow">Priority Todos</Box>
-          <Select
-            defaultValue="Monthly"
-            className="h-[30px] rounded-[4.62px] pr-[15px]"
-            disabled
-          >
-            <MenuItem value="Monthly">Today</MenuItem>
-          </Select>
+          <Box className="text-base font-semibold flex-grow">Priority Todos</Box>
+          <AppSelect
+            width="w-[120px]"
+            placeholder="Monthly"
+            listItems={timeRanges}
+            onChange={handleTimeRangeChange}
+          />
         </Stack>
         <Grid2 columnSpacing={2} rowSpacing={2} container>
           {Array(3)

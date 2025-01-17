@@ -1,9 +1,9 @@
+import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import StatusPill from "@/app/_components/shared/pills/status";
+import { AppSelect } from "@/app/_components/shared/select";
 import { newIndex } from "@/lib/utils";
 import {
   Box,
-  MenuItem,
-  Select,
   Stack,
   Table,
   TableBody,
@@ -11,14 +11,15 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
+  TextField
 } from "@mui/material";
+import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 
 const CandidatesSection = () => {
   return (
     <Stack gap={2}>
-      <Box className="section-heading">Candidates</Box>
+      <Box className="text-base font-bold">Candidates</Box>
       <Stack gap={2} className="common-card">
         <Stack
           sx={{
@@ -45,14 +46,32 @@ const CandidatesSection = () => {
               placeholder="Search"
             />
           </Box>
-          <Select
-            defaultValue="Filter"
-            sx={{ height: "30px", borderRadius: "4.62px", pr: "15px" }}
-            disabled
-          >
-            <MenuItem value="Filter">Filter</MenuItem>
-          </Select>
+          <AppDropdownMenu
+            trigger={
+              <button type="button" className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
+                <LuListFilter /> Filter
+              </button>
+            }
+            menuItems={
+              <div className="p-4 space-y-10">
+                <div className="space-y-4">
+                  <AppSelect
+                    listItems={[
+                      { label: "Completed", value: "completed" },
+                      { label: "In Progress", value: "in-progress" },
+                      { label: "Not Started", value: "not-started" },
+                    ]}
+                    label="Status"
+                    placeholder="Pending"
+                    onChange={() => { }}
+                  />
+                </div>
+              </div>
+            }
+          />
         </Stack>
+
+
         <CandidatesTable />
       </Stack>
     </Stack>

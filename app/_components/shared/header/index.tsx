@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import { IoIosNotificationsOutline } from 'react-icons/io';
-import { IoMenu } from 'react-icons/io5';
+import { rolesMap } from '@/types/form';
+import { getUserDetails } from '@/utils/getUserDetails';
 import { Avatar } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { IoMenu } from 'react-icons/io5';
+import { PiBell } from 'react-icons/pi';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { getUserDetails } from '@/utils/getUserDetails';
 import RecentActivities from '../../it-admin/pages/it-admin/recent-activities';
-import { rolesMap } from '@/types/form';
 import { AppSelect } from '../select';
 
 const reverseRolesMap: Record<string, string> = Object.entries(rolesMap).reduce(
@@ -64,7 +64,7 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
     // Extract the first segment of the pathname
     const path = pathname.split('/').filter(Boolean)[0]; // Split and remove empty segments
     const roleFromPath = reverseRolesMap[path];
-    
+
     if (roleFromPath) {
       setCurrentRole(roleFromPath);
     } else {
@@ -113,19 +113,19 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
       </div>
 
       <div className="items-center justify-between hidden gap-5 xl:flex">
-        <IoIosNotificationsOutline size={25} onClick={handleNotificationClick} />
-
         <AppSelect
           listItems={roles.map((role) => ({ label: role, value: role }))}
           onChange={(value) => handleRoleChange(value)}
           placeholder={currentRole || 'Select a role'}
         />
+
+        <PiBell strokeWidth={3} size={25} onClick={handleNotificationClick} />
       </div>
 
       <h3 className="xl:hidden font-semibold text-lg">Overview</h3>
 
       <div className="z-50 flex items-center gap-5 xl:hidden">
-        <IoIosNotificationsOutline size={25} onClick={handleNotificationClick} />
+        <PiBell size={25} onClick={handleNotificationClick} />
         <IoMenu size={28} onClick={onMenuClick} />
       </div>
 
@@ -138,14 +138,16 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
   );
 };
 
-const ProfileSkeleton = () => (
-  <div className="flex gap-2">
-    <Skeleton width={40} height={40} circle />
-    <div className="space-y-0">
-      <Skeleton width={200} height={18} />
-      <Skeleton width={200} height={10} />
+const ProfileSkeleton = () => {
+  return (
+    <div className='flex gap-x-2 items-center'>
+      <Skeleton width={40} height={40} circle className='my-0' />
+      <div className=''>
+        <Skeleton width={200} height={16} className='mt-2' />
+        <Skeleton width={200} height={12} className='my-0' />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Header;

@@ -29,7 +29,7 @@ export function AppSelect({ listLabel, label, requiredField = false, listItems, 
 
         <SelectTrigger className={`${triggerStyle} h-[34px] text-xs transition-all duration-300 placeholder:text-gray-400 outline-none focus focus:ring-1 focus:ring-offset-0 focus:ring-primary ${width}`}>
           <SelectValue
-            className=" placeholder:text-gray-400 text-xs placeholder:text-xs"
+            className="placeholder:text-gray-400 text-xs placeholder:text-xs"
             placeholder={<p className="text-gray-400 text-xs">{placeholder}</p>} />
         </SelectTrigger>
 
