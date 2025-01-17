@@ -1,8 +1,9 @@
+import { getMyBeneficiaries } from "@/app/_core/actions/finance/banking"
 import { headers } from "@/app/_core/actions/session"
 import { handleError, Http } from "@/app/_core/axios"
 import { IRes } from "@/app/_core/interfaces/res"
 import { queryKeys } from "@/app/_core/queryKeys"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { getSession } from "next-auth/react"
 import { toast } from "react-toastify"
 
@@ -56,12 +57,48 @@ export const useBankingMutations = () => {
 
 
 
+
+  const addBeneficiary = useMutation({
+    mutationKey: ['add-beneficiary'],
+    mutationFn: async (body: Partial<IAddBeneficiary>) => {
+      const session = await getSession();
+
+      return await Http.post<IRes<IAddBeneficiary>>('bank/add-beneficiary', body, {
+        headers: await headers(session?.token ?? '')
+      })
+    },
+    onSuccess: async (data) => {
+      toast.success(data.data.message);
+      toast.success('beneficiary added successfully');
+
+      if (!data?.status) throw new Error(data.data.message ?? `Unable to add beneficiary, please try again`);
+
+      await queryClient.invalidateQueries({ queryKey: [queryKeys.BANKING] });
+    },
+    onError: (error) => handleError(error)
+  })
+
+
   return {
     createBankAccount,
+    addBeneficiary,
     initiateTransfer
   }
 }
 
+
+
+export const useBeneficiaries = () => {
+  return useQuery({
+    queryKey: [queryKeys.BENEFICIARIES],
+    queryFn: () => getMyBeneficiaries(),
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    initialData: undefined,
+    retry: false,
+  })
+}
 
 
 
@@ -86,4 +123,10 @@ export interface IBankTransfer {
   bankName: string;
   sourceBank: string;
   amount: number;
+}
+
+export interface IAddBeneficiary {
+  accountName: string,
+  accountNumber: string,
+  bankName: string
 }
