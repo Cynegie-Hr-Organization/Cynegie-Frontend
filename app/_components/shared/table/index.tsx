@@ -65,8 +65,6 @@ const Table: React.FC<TableProps> = ({
   const loading = bodyRowData ? false : true;
 
   //Get typeof first row
-  // const firstRow = bodyRowData ? bodyRowData[0] : undefined;
-  // type typeOfFirstRow = typeof firstRow;
   type typeOfFirstRow = typeof bodyRowData extends Array<infer U>
     ? U
     : undefined;

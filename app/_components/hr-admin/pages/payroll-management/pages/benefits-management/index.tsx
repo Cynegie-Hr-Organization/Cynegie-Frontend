@@ -5,21 +5,39 @@ import SvgIcon from "@/app/_components/icons/container";
 import Page from "@/app/_components/shared/page";
 import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import CardGroup from "@/app/_components/shared/section-with-cards/card-group";
+import Table from "@/app/_components/shared/table";
+import { FieldType } from "@/app/_components/shared/table/types";
 import Toast from "@/app/_components/shared/toast";
 import { icon } from "@/constants";
-import { useMutation } from "@tanstack/react-query";
+import { FetchParams } from "@/types";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import PayrollBenefitsManagementTable from "../../tables/benefits-management";
-import { addBenefit, AddBenefitPayload } from "./api";
+import { addBenefit, AddBenefitPayload, getBenefits } from "./api";
+
+type MappedBenefit = {
+  id: string;
+  benefitName: string;
+  benefitType: string;
+  employeesEnrolled: number;
+  pendingApprovals: number;
+};
 
 const HrAdminPayrollBenefitsManagementPage = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [showAddBenefitsModal, setShowAddBenefitsModal] = useState(false);
   const [mutationLoading, setMutationLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [benefits, setBenefits] = useState<MappedBenefit[]>();
+  const [fetchParams, setFetchParams] = useState<FetchParams>({
+    page: 1,
+    limit: 10,
+    sortOrder: "asc",
+    search: "",
+  });
 
   const {
     control,
@@ -32,10 +50,19 @@ const HrAdminPayrollBenefitsManagementPage = () => {
     clearErrors,
   } = useForm();
 
+  const startDate = watch("startDate");
+  const endDate = watch("End Date");
+
+  const { data: benefitsData } = useQuery({
+    queryKey: ["benefits", fetchParams],
+    queryFn: () => getBenefits(fetchParams),
+  });
+
   const addBenefitMutation = useMutation({
-    mutationFn: (payload: AddBenefitPayload) => addBenefit(payload), //TODO: Add Mutation Function
+    mutationFn: (payload: AddBenefitPayload) => addBenefit(payload),
     onMutate: () => setMutationLoading(true),
     onSuccess: () => {
+      queryClient.resetQueries({ queryKey: ["benefits"] });
       setMutationLoading(false);
       setShowAddBenefitsModal(false);
       setShowToast(true);
@@ -46,8 +73,21 @@ const HrAdminPayrollBenefitsManagementPage = () => {
     },
   });
 
-  const startDate = watch("startDate");
-  const endDate = watch("End Date");
+  useEffect(() => {
+    if (benefitsData) {
+      setBenefits(
+        benefitsData.data.map((benefitData) => ({
+          id: benefitData.id,
+          benefitName: benefitData.name,
+          benefitType: benefitData.benefitType,
+          employeesEnrolled: benefitData.employees.length,
+          pendingApprovals: 0,
+        }))
+      );
+    } else {
+      setBenefits(undefined);
+    }
+  }, [benefitsData]);
 
   useEffect(() => {
     if (startDate != undefined) {
@@ -113,7 +153,51 @@ const HrAdminPayrollBenefitsManagementPage = () => {
           },
         ]}
       />
-      <PayrollBenefitsManagementTable />
+      <Table
+        hasActionsColumn
+        headerRowData={[
+          "Benefit Name",
+          "Benefit Type",
+          "Employees Enrolled",
+          "Pending Approvals",
+        ]}
+        fieldTypes={Array(4).fill(FieldType.text)}
+        displayedFields={[
+          "benefitName",
+          "benefitType",
+          "employeesEnrolled",
+          "pendingApprovals",
+        ]}
+        bodyRowData={benefits}
+        actions={[
+          {
+            name: "View Details",
+            onClick: () => {},
+            onDataReturned: (id) =>
+              router.push(`hr-admin/payroll/benefits/view/${id}`),
+          },
+          {
+            name: "Enroll Employees",
+            onClick: () => {},
+            onDataReturned: (id) =>
+              router.push(`hr-admin/payroll/benefits/enroll/${id}`),
+          },
+        ]}
+        onSearch={(query) =>
+          setFetchParams((prev) => ({ ...prev, search: query }))
+        }
+        paginationMeta={{
+          ...benefitsData?.meta,
+          itemsOnPage: benefits?.length,
+          onChangeLimit: (limit) =>
+            setFetchParams((prev) => ({ ...prev, limit: limit })),
+          onNextClick: () =>
+            setFetchParams((prev) => ({ ...prev, page: prev.page + 1 })),
+          onPrevClick: () =>
+            setFetchParams((prev) => ({ ...prev, page: prev.page - 1 })),
+          loading: benefits ? false : true,
+        }}
+      />
       {showAddBenefitsModal && (
         <Modal
           open={showAddBenefitsModal}

@@ -29,6 +29,27 @@ export type CompanyRegistrationData = {
   companyName: string;
 };
 
+export type Benefit = {
+  name: string;
+  benefitType: string;
+  departments: string[];
+  employmentType: string;
+  jobLevel: string;
+  startDate: string;
+  endDate: string;
+  employerContribution: number;
+  employeeContribution: number;
+  status: "approved" | "pending" | "rejected";
+  employees: Employee[];
+  deletedAt: string | null;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+  totalEmployees: number;
+  employeesByStatus: {};
+};
+
 export interface CreateJobProps {
   requisitorName: string;
   title: string;
@@ -79,6 +100,16 @@ export interface PaginatedResponse2<T> {
     totalPages: number;
     page: number;
     limit: number;
+  };
+}
+
+export interface PaginatedResponse3<T> {
+  data: T[];
+  meta: {
+    page: number;
+    limit: number;
+    itemCount: number;
+    pageCount: number;
   };
 }
 
