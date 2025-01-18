@@ -185,10 +185,10 @@ const DeleteModal = ({ trigger, handleDelete, beneficiary }: {
 export default BeneficiaryListing;
 
 
-interface Beneficiary {
-  id: number;
-  accountNumber: string;
-  accountName: string;
-  bankName: string;
-  bankCode: string;
-}
+// interface Beneficiary {
+//   id: number;
+//   accountNumber: string;
+//   accountName: string;
+//   bankName: string;
+//   bankCode: string;
+// }

@@ -7,9 +7,9 @@ import AppTabs from "@/app/_components/shared/tabs";
 import { useBankingMutations, useMyTransfers } from "@/app/_core/use-cases/finance/useBanking";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { ChartConfig } from "@/components/ui/chart";
-import { useIsMutating } from "@tanstack/react-query";
+import { dehydrate, HydrationBoundary, useIsMutating, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { CiBank } from "react-icons/ci";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { VscEye } from "react-icons/vsc";
@@ -66,49 +66,56 @@ const chartData = [{
 
 
 const BankingPage = () => {
+
+	const queryClient = useQueryClient();
+
 	return (
-		<div className="space-y-4 py-6">
-			<PageHeader
-				title="Banking"
-				button1Label="Transaction History"
-				button2Label="Create new Account"
-				link1="/finance-admin/banking/transaction-history"
-			/>
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			<Suspense>
+				<div className="space-y-4 py-6">
+					<PageHeader
+						title="Banking"
+						button1Label="Transaction History"
+						button2Label="Create new Account"
+						link1="/finance-admin/banking/transaction-history"
+					/>
 
 
-			<div className="space-y-8">
-				<div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-					<div className="col-span-1 lg:col-span-3">
-						<BankCards />
-					</div>
+					<div className="space-y-8">
+						<div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+							<div className="col-span-1 lg:col-span-3">
+								<BankCards />
+							</div>
 
-					<div className="col-span-1 lg:col-span-9">
-						<FinancialStats />
+							<div className="col-span-1 lg:col-span-9">
+								<FinancialStats />
+							</div>
+						</div>
+
+
+						<div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+							<div className="col-span-1 lg:col-span-3">
+								<TransferForm />
+							</div>
+
+							<div className="col-span-1 lg:col-span-9">
+								<TransferStatuses />
+							</div>
+						</div>
+
+						<div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+							<div className="col-span-1 lg:col-span-3">
+								<BeneficiaryForm />
+							</div>
+
+							<div className="col-span-1 lg:col-span-9">
+								<BeneficiaryListing />
+							</div>
+						</div>
 					</div>
 				</div>
-
-
-				<div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-					<div className="col-span-1 lg:col-span-3">
-						<TransferForm />
-					</div>
-
-					<div className="col-span-1 lg:col-span-9">
-						<TransferStatuses />
-					</div>
-				</div>
-
-				<div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-					<div className="col-span-1 lg:col-span-3">
-						<BeneficiaryForm />
-					</div>
-
-					<div className="col-span-1 lg:col-span-9">
-						<BeneficiaryListing />
-					</div>
-				</div>
-			</div>
-		</div>
+			</Suspense>
+		</HydrationBoundary>
 	);
 };
 
