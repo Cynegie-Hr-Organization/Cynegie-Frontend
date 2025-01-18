@@ -25,6 +25,7 @@ const GoalDetailPage = () => {
         const response = await fetchGoalById(goalId);
         if (response.status === 200) {
           setGoalData(response.data);
+          console.log(response.data);
         }
       } catch (error) {
         console.error("Error fetching goal data:", error);
@@ -85,8 +86,8 @@ const PerformanceReviewCard: React.FC<PerformanceReviewCardProps> = ({
         <CardLayout className="flex flex-col lg:flex-row justify-between gap-y-10 col-span-1 lg:col-span-9">
           <div className="flex flex-col gap-y-4 space-y-8 flex-grow">
             <div className="flex gap-x-8 gap-y-2 text-lg flex-wrap max-w-[474px]">
-              <h3 className="text-sm font-semibold">{goal.goalName}</h3>
-              <p className="text-xs text-gray-700">{goal.description}</p>
+              <h3 className="text-sm font-semibold">{goal?.goalName}</h3>
+              <p className="text-xs text-gray-700">{goal?.description}</p>
             </div>
 
             <div className="flex gap-x-8 gap-y-2 text-lg flex-wrap max-w-[474px]">
@@ -94,8 +95,8 @@ const PerformanceReviewCard: React.FC<PerformanceReviewCardProps> = ({
                 label="Due Date:"
                 value={new Date(goal.dueDate).toLocaleDateString()}
               />
-              <GoalHeaderDetail label="Priority" value={goal.priority} />
-              <GoalHeaderDetail label="Status" value={goal.status} />
+              <GoalHeaderDetail label="Priority" value={goal?.priority} />
+              <GoalHeaderDetail label="Status" value={goal?.status} />
             </div>
 
             <div className="space-y-3 ">
@@ -118,7 +119,7 @@ const PerformanceReviewCard: React.FC<PerformanceReviewCardProps> = ({
               <div className="space-y-3">
                 <p className="text-sm text-gray-700">
                   Assigned To:{" "}
-                  {`${goal.employees.personalInfo.firstName} ${goal.employees.personalInfo.lastName}`}
+                  {`${goal?.employees?.personalInfo?.firstName} ${goal?.employees?.personalInfo?.lastName}`}
                 </p>
               </div>
 

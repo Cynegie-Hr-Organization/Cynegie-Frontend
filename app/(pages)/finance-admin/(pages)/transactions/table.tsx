@@ -4,10 +4,10 @@ import { LuListFilter } from "react-icons/lu";
 
 import { RiSearchLine } from "react-icons/ri";
 
-import { DeleteSvg } from "@/app/_components/icons/delete";
+import { DeleteSvg } from "@/app/_components/icons/custom-icons";
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
-import { InputTextArea } from "@/app/_components/shared/input-text";
+import { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DialogTitle } from "@/components/ui/dialog";
@@ -151,17 +151,18 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
     <DrawerDialog
       trigger={trigger}
-      header={<DialogTitle className="text-lg font-bold text-center">
-        <span className="flex flex-col items-center justify-center gap-y-6">
-          <DeleteSvg />
-          <span className="flex flex-col items-center justify-center gap-y-2">
-            <span>Are you sure you want to delete this transaction?</span>
-            <span className="text-sm text-gray-400 max-w-[367px] text-center">
-              Why do you want to delete this transaction? This action cannot be reversed!
+      header={
+        <span className="text-lg font-bold text-center">
+          <span className="flex flex-col items-center justify-center gap-y-6">
+            <DeleteSvg />
+            <span className="flex flex-col items-center justify-center gap-y-2">
+              <span>Are you sure you want to delete this transaction?</span>
+              <span className="text-sm text-gray-400 max-w-[367px] text-center">
+                Why do you want to delete this transaction? This action cannot be reversed!
+              </span>
             </span>
           </span>
         </span>
-      </DialogTitle>
       }
       footer={
         <div className="flex flex-col md:flex-row items-center justify-center gap-2">
@@ -171,7 +172,7 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
       }
     >
       <div className="md:p-4 lg:p-6 p-2">
-        <InputTextArea id="reason" placeholder="Enter reason" onChange={function (e) {
+        <AppInputTextArea id="reason" placeholder="Enter reason" onChange={function (e) {
           console.log(e.target.value)
         }} value="" />
       </div>

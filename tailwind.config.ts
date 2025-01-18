@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import tailwindanimate from "tailwindcss-animate";
+import plugin from "tailwindcss/plugin";
 
 export default {
 	darkMode: ["class"],
@@ -161,14 +162,61 @@ export default {
 					to: {
 						transform: 'translateY(0)'
 					}
+				},
+				entrance: {
+					'0%': {
+						transform: 'scale(0)'
+					},
+					'20%': {
+						transform: 'scale(1.1)'
+					},
+					'40%': {
+						transform: 'scale(0.95)'
+					},
+					'60%': {
+						transform: 'scale(1.05)'
+					},
+					'80%': {
+						transform: 'scale(1)'
+					},
+					'100%': {
+						transform: 'scale(1)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'slide-up': 'slide-up 0.5s ease-in-out'
+				'slide-up': 'slide-up 0.5s ease-in-out',
+				entrance: 'entrance 1.3s ease-in-out'
 			}
 		}
 	},
-	plugins: [tailwindanimate],
+	plugins: [tailwindanimate, plugin(function ({ addUtilities }) {
+		addUtilities({
+			'.no-scrollbar': {
+				'::-webkit-scrollbar': {
+					display: 'none'
+				},
+				'-ms-overflow-style': 'none',
+				'scrollbar-width': 'none',
+			},
+			'.ios-scrollbar': {
+				'::-webkit-scrollbar': {
+					width: '6px',
+					height: '6px',
+				},
+				'::-webkit-scrollbar-track': {
+					background: 'transparent',
+				},
+				'::-webkit-scrollbar-thumb': {
+					background: 'rgba(0, 0, 0, 0.2)',
+					borderRadius: '3px',
+				},
+				'::-webkit-scrollbar-thumb:hover': {
+					background: 'rgba(0, 0, 0, 0.3)',
+				},
+			},
+		})
+	})],
 } satisfies Config;

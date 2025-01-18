@@ -6,11 +6,11 @@ import { useInView } from "react-intersection-observer";
 import { getSession, signIn } from "next-auth/react";
 import { FaRegUser } from "react-icons/fa";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
-import { rolesMap } from "@/types/form";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AppButton from "../shared/button";
+import { getRedirectPath } from "@/utils";
 
 const SigninMain = () => {
   const router = useRouter();
@@ -32,41 +32,51 @@ const SigninMain = () => {
     if (email.trim() === "") return;
     setStep("password");
   };
+  
+const handlePasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setIsLoading(true);
 
-  const handlePasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
+  try {
+    console.log("Attempting signIn with credentials:", { email, password });
+    const res = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+    console.log("SignIn response:", res);
 
-    try {
-      const res = await signIn("credentials", {
-        redirect: false,
-        email,
-        password,
-      });
-      if (res && res.ok) {
-        const user = await getSession();
-        if (user?.user?.role) {
-          const route = rolesMap[user.user.role] || "/";
-          router.push(route);
-        } else {
-          toast.error("User role not found. Please contact support.", {
-            className: "text-blue-600",
-          });
-        }
+    if (res && res.ok) {
+      const user = await getSession();
+      console.log("User session data:", user);
+
+      const redirectPath = getRedirectPath(user?.user?.role || []);
+      console.log("Redirect path:", redirectPath);
+
+      if (redirectPath) {
+        router.push(redirectPath);
       } else {
-        toast.error("Login failed. Please check your credentials.", {
+        console.error("Invalid redirect path.");
+        toast.error("User role not found. Please contact support.", {
           className: "text-blue-600",
         });
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("An unexpected error occurred. Please try again.", {
+    } else {
+      console.error("Login failed:", res);
+      toast.error("Login failed. Please check your credentials.", {
         className: "text-blue-600",
       });
     }
-
+  } catch (error) {
+    console.error("An unexpected error occurred:", error);
+    toast.error("An unexpected error occurred. Please try again.", {
+      className: "text-blue-600",
+    });
+  } finally {
     setIsLoading(false);
-  };
+  }
+};
+
 
   return (
     <section

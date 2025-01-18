@@ -1,7 +1,7 @@
 'use client'
 
 import AppButton from "@/app/_components/shared/button";
-import InputText from "@/app/_components/shared/input-text";
+import AppInputText from "@/app/_components/shared/input-text";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { DrawerTitle } from "@/components/ui/drawer";
 import { VendorTable } from "./tables";
@@ -41,7 +41,7 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
 
       <form>
         <div className="space-y-4">
-          <InputText
+          <AppInputText
             label="Vendor Name"
             placeholder="Enter vendor name"
             onChange={() => { }}
@@ -50,7 +50,7 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
             requiredField
             type={"text"}
           />
-          <InputText
+          <AppInputText
             label="Phone Number"
             placeholder="Enter vendor name"
             onChange={() => { }}
@@ -59,7 +59,7 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
             requiredField
             type={"text"}
           />
-          <InputText
+          <AppInputText
             label="Email"
             placeholder="Enter vendor name"
             onChange={() => { }}
@@ -68,7 +68,7 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
             requiredField
             type={"text"}
           />
-          <InputText
+          <AppInputText
             label="Contact Person"
             placeholder="Enter vendor name"
             onChange={() => { }}
@@ -77,7 +77,7 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
             requiredField
             type={"text"}
           />
-          <InputText
+          <AppInputText
             label="Payment Terms"
             placeholder="Enter vendor name"
             onChange={() => { }}
@@ -86,7 +86,7 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
             requiredField
             type={"text"}
           />
-          <InputText
+          <AppInputText
             label="Vendor Address"
             placeholder="Enter vendor name"
             onChange={() => { }}

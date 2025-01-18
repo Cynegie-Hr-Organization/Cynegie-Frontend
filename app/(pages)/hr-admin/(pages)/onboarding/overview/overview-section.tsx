@@ -1,12 +1,11 @@
 "use client";
 import Appbutton from "@/app/_components/shared/buttons";
-import { Stack, Box, Grid2 } from "@mui/material";
-import Image from "next/image";
+import { Box, Grid2, Stack } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { FaCheck } from "react-icons/fa";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { LuClock3 } from "react-icons/lu";
 import { PiChartLineUp } from "react-icons/pi";
-import { FaCheck } from "react-icons/fa";
-import { useRouter } from "next/navigation";
 
 
 
@@ -14,7 +13,7 @@ import { useRouter } from "next/navigation";
 
 
 const OverViewSection = () => {
-const router = useRouter();
+  const router = useRouter();
 
   const overviewContents = [
     {
@@ -47,8 +46,8 @@ const router = useRouter();
   return (
     <Stack gap={3}>
       <Stack gap={2}>
-        <Box className=" flex items-center justify-between">
-          <h3 className="section-heading xl:block hidden">Overview</h3>
+        <Box className="flex items-center justify-between">
+          <h3 className="text-base font-bold xl:block hidden">Overview</h3>
           <Appbutton
             buttonText="Onboarding Templates"
             className="bg-primary hidden md:block"
@@ -61,30 +60,22 @@ const router = useRouter();
             <Grid2
               key={content.title}
               size={{ xs: 12, sm: 6, md: 3 }}
-              className="border-[1.13px] border-card-border bg-white p-3 md:p-5 rounded-[12.56px]"
+              className="common-card"
             >
-              <Stack gap={3}>
+              <Stack gap={2}>
                 <Stack direction="row" alignItems="center" gap={2}>
-                  <Box
-                    className={`p-1 rounded-full text-center flex justify-center`}
-                    sx={{ backgroundColor: content.color }}
-                  >
-                    <Image
-                      src="/icons/task-square-bold.svg"
-                      alt=""
-                      width={13.56}
-                      height={13.56}
-                    />
-                  </Box>
-                  <Box className="text-base font-semibold text-[#1B1B1B]">
-                    {" "}
+                  <div className="p-1 rounded-full text-center flex justify-center w-fit"
+                    style={{ backgroundColor: content.color }}>
+                    {content.icon}
+                  </div>
+                  <p className="text-xs font-semibold text-[#1B1B1B]">
                     {content.title}
-                  </Box>
+                  </p>
                 </Stack>
 
-                <Box className="text-[33.48px] font-bold text-[#1B1B1B]">
+                <p className="text-lg font-bold text-[#1B1B1B]">
                   {content.count}
-                </Box>
+                </p>
               </Stack>
             </Grid2>
           ))}

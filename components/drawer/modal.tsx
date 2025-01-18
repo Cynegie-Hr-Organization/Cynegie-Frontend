@@ -2,34 +2,47 @@
 
 import * as React from "react";
 
-import { useMediaQuery } from "@/app/hooks/use-media-query";
+import { useMediaQuery } from "@/app/_hooks/use-media-query";
 // import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Drawer,
   DrawerContent,
+  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
-  DrawerTrigger,
+  DrawerTitle,
+  DrawerTrigger
 } from "@/components/ui/drawer";
+import { ReactNode } from "react";
+
+
+
+
+
+
 
 export function DrawerDialog({
   children,
   trigger,
   header,
+  description,
   footer,
   open,
   setOpen
 }: {
-  children: React.ReactNode
-  trigger: React.ReactNode
-  header: React.ReactNode
-  footer?: React.ReactNode
+  children?: ReactNode
+  trigger: ReactNode
+  header: ReactNode
+  description?: ReactNode
+  footer?: ReactNode
   open?: boolean
   setOpen?: (open: boolean) => void
 }) {
@@ -46,7 +59,8 @@ export function DrawerDialog({
         </DialogTrigger>
         <DialogContent className="sm:max-w-[600px] bg-white max-h-[600px] px-4 overflow-y-scroll">
           <DialogHeader className="px-0 mx-0">
-            {header}
+            <DialogTitle className="text-base">{header}</DialogTitle>
+            <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
           {children}
           {footer && (
@@ -66,7 +80,10 @@ export function DrawerDialog({
         {trigger}
       </DrawerTrigger>
       <DrawerContent className="bg-white max-h-max px-4">
-        <DrawerHeader className="text-left">{header}</DrawerHeader>
+        <DrawerHeader className="text-left">
+          <DrawerTitle className="text-base">{header}</DrawerTitle>
+          <DrawerDescription>{description}</DrawerDescription>
+        </DrawerHeader>
         {children}
         {footer && (
           <DrawerFooter className="pt-2 w-full py-4 px-0">

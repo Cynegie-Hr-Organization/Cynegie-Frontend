@@ -1,6 +1,6 @@
 "use client"
 
-import SuccessSvg from "@/app/(pages)/hr-admin/(pages)/onboarding/template/new-hire-list/SuccessSvg";
+import { SuccessSvg } from "@/app/_components/icons/custom-icons";
 import AppButton from "@/app/_components/shared/button";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { DrawerTitle } from "@/components/ui/drawer";

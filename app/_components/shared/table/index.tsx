@@ -198,7 +198,7 @@ const Table: React.FC<TableProps> = ({
                     />
                   </TableCell>
                 )}
-                {headerRow.map((field, index) => (
+                {headerRow?.map((field, index) => (
                   <TableCell
                     key={index}
                     className="whitespace-nowrap py-4"

@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
-import { RxHamburgerMenu } from "react-icons/rx";
-import { IoMdClose } from "react-icons/io";
 import { useState } from "react";
+import { IoMdClose } from "react-icons/io";
+import { RxHamburgerMenu } from "react-icons/rx";
 
 const GuestNavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -80,10 +80,7 @@ const GuestNavBar = () => {
             <Link href={"/signin"} className={`text-PersianBlue font-semibold`}>
               Login
             </Link>
-            <Link
-              href={"/signup"}
-              className={`bg-PersianBlue font-semibold text-white py-2 px-5 rounded-md h-fit w-fit`}
-            >
+            <Link href={"/signup"} className={`btn-link-primary`}>
               Explore Cynegie
             </Link>
           </div>

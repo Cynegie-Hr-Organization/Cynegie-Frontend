@@ -1,0 +1,228 @@
+'use client'
+
+import { DeleteSvg } from "@/app/_components/icons/custom-icons";
+import AppButton from "@/app/_components/shared/button";
+import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
+import { AppSelect } from "@/app/_components/shared/select";
+import { DrawerDialog } from "@/components/drawer/modal";
+import { useState } from "react";
+import { HiDotsVertical } from "react-icons/hi";
+import { LuListFilter } from "react-icons/lu";
+import { RiSearchLine } from "react-icons/ri";
+
+const BeneficiaryListing = () => {
+
+  const [beneficiaries, setBeneficiaries] = useState([
+    {
+      id: 1,
+      accountNumber: '1234567890',
+      accountName: 'John Doe',
+      bankName: 'Guaranty Trust Bank',
+      bankCode: '058',
+    },
+    {
+      id: 2,
+      accountNumber: '9876543210',
+      accountName: 'Jane Doe',
+      bankName: 'Access Bank',
+      bankCode: '044',
+    },
+    {
+      id: 3,
+      accountNumber: '3456789012',
+      accountName: 'Emeka Okoro',
+      bankName: 'First Bank',
+      bankCode: '011',
+    },
+    {
+      id: 4,
+      accountNumber: '4567890123',
+      accountName: 'Aisha Musa',
+      bankName: 'United Bank for Africa',
+      bankCode: '033',
+    },
+    {
+      id: 5,
+      accountNumber: '5678901234',
+      accountName: 'Oluwaseun Ogunyemi',
+      bankName: 'Fidelity Bank',
+      bankCode: '070',
+    },
+  ]);
+
+
+  const handleDelete = (id: number) => {
+    setBeneficiaries(prevBeneficiaries =>
+      prevBeneficiaries.filter(beneficiary => beneficiary.id !== id)
+    );
+  };
+
+  return (
+    <div className="space-y-3 max-h-[460px] h-max lg:h-full">
+      <p className="text-base font-semibold">Beneficiary Listing</p>
+      <div className="common-card space-y-4 h-full">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
+          <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
+            <RiSearchLine className="text-gray-400" />
+            <input type="text" placeholder="Search here..." className="w-full h-9 px-2 outline-none" />
+          </div>
+
+          <AppDropdownMenu trigger={
+            <button
+              type="button"
+              className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
+              <LuListFilter /> Filter
+            </button>
+          }
+            menuItems={
+              <div className="p-4 space-y-10">
+                <div className="space-y-4">
+                  <AppSelect listItems={[
+                    { label: "High", value: "high" },
+                    { label: "Medium", value: "medium" },
+                    { label: "Low", value: "low" }
+                  ]}
+                    label="Priority"
+                    placeholder="High"
+                    onChange={(value) => {
+                      console.log(value)
+                    }} />
+
+                  <AppSelect
+                    listItems={[
+                      { label: "Completed", value: "completed" },
+                      { label: "In Progress", value: "in-progress" },
+                      { label: "Not Started", value: "not-started" },
+                    ]}
+                    label="Status"
+                    placeholder="Pending"
+                    onChange={function (value: string): void {
+                      console.log(value)
+                    }} />
+                </div>
+
+                <div className="flex items-center justify-between gap-4">
+                  <AppButton label="Reset" className="btn-secondary w-[90px]" />
+                  <AppButton label="Filter" className="btn-primary w-[90px]" />
+                </div>
+              </div>
+            } />
+        </div>
+
+        <div className='-mx-5 mt-4 overflow-x-scroll'>
+          <table className='w-full border-collapse'>
+            <thead className='bg-[#F7F9FC]'>
+              <tr>
+                <th className='px-5 py-3 text-left'>Name</th>
+                <th className='px-5 py-3 text-left'>Account Number</th>
+                <th className='px-5 py-3 text-left'>Bank Name</th>
+                <th className='px-5 py-3 text-left'>Date Added</th>
+                <th className='px-5 py-3 text-left'>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {beneficiaries.map((beneficiary) => {
+                return (
+                  <tr key={beneficiary.id} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
+                    <td className='px-5 py-4'>{beneficiary.accountNumber}</td>
+                    <td className='px-5 py-4'>{beneficiary.accountName}</td>
+                    <td className='px-5 py-4'>{beneficiary.bankName}</td>
+                    <td className='px-5 py-4'>{beneficiary.bankCode}</td>
+                    <td className='px-5 py-4'>
+                      <AppDropdownMenu
+                        width="w-max"
+                        trigger={
+                          <button className="border border-gray-300 rounded-lg p-2 w-max hover:ring-1 hover:ring-gray-400 outline-none">
+                            <HiDotsVertical />
+                          </button>
+                        }
+                        menuItems={
+                          <DeleteModal
+                            beneficiary={beneficiary}
+                            trigger={
+                              <button
+                                className="w-full p-2 text-left hover:bg-gray-50 text-red-500 text-sm">
+                                Delete Beneficiary
+                              </button>
+                            }
+                            handleDelete={() => handleDelete(beneficiary.id)}
+                          />
+                        }
+                      />
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+
+
+const DeleteModal = ({ trigger, handleDelete, beneficiary }: {
+  trigger: React.ReactNode, handleDelete: () => void, beneficiary?: Beneficiary
+}) => {
+  const [openModal, setOpenModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+
+
+  return (
+    <DrawerDialog
+      open={openModal}
+      setOpen={setOpenModal}
+      trigger={trigger}
+      header={
+        <span className="text-lg font-bold text-center">
+          <span className="flex flex-col items-center justify-center gap-y-6">
+            <DeleteSvg />
+            <span className="flex flex-col items-center justify-center gap-y-2">
+              <span className="text-xl text-[#303030] max-w-[367px] text-center font-roboto text-semibold">
+                Are you sure you want to delete {beneficiary?.accountName} as Beneficiary
+              </span>
+            </span>
+          </span>
+        </span>
+      }
+      footer={
+        <div className="flex flex-col md:flex-row items-center justify-center gap-2">
+          <AppButton label="Cancel" className="bg-white border-2 border-gray-400 text-gray-500 md:w-[150px] w-full" />
+          <AppButton
+            isLoading={isLoading}
+            label="Delete"
+            className="bg-red-700 text-white md:w-[150px] w-full border border-red-700"
+            onClick={() => {
+              setIsLoading(true);
+              setTimeout(() => {
+                setIsLoading(false);
+              }, 1000);
+              setTimeout(() => {
+                handleDelete();
+                setOpenModal(false);
+              }, 1500);
+            }} />
+        </div>
+      }
+    />
+  )
+}
+
+
+
+
+export default BeneficiaryListing;
+
+
+interface Beneficiary {
+  id: number;
+  accountNumber: string;
+  accountName: string;
+  bankName: string;
+  bankCode: string;
+}

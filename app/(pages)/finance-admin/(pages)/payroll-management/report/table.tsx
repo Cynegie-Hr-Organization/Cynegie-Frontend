@@ -1,6 +1,6 @@
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
-import { InputTextArea } from "@/app/_components/shared/input-text";
+import { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -158,7 +158,7 @@ const RejectModal = ({ trigger }: { trigger: React.ReactNode }) => {
       }
     >
       <div className="lg:p-6">
-        <InputTextArea label="Rejection Reason" id="reason" placeholder="Enter reason" onChange={function (e) {
+        <AppInputTextArea label="Rejection Reason" id="reason" placeholder="Enter reason" onChange={function (e) {
           console.log(e.target.value)
         }} value="" />
       </div>

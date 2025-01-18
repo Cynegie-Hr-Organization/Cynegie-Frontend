@@ -1,6 +1,8 @@
 import { color } from "@/constants";
 import { ColorVariant } from "@/types";
 import dayjs from "dayjs";
+import { UserRole } from '@/types/enum';
+import { rolesMap } from '@/types/form';
 
 export function getMonthRange(monthIndex: number, year: number): string {
   const monthNames = [
@@ -98,3 +100,12 @@ export function getHumanReadableDateRange(
     "DD MMM"
   )}`;
 }
+
+
+export const getRedirectPath = (roles: string[]): string | null => {
+  const primaryRole = roles.includes(UserRole.EMPLOYEE)
+    ? UserRole.EMPLOYEE
+    : roles.find(role => rolesMap[role]) || null;
+
+  return primaryRole ? rolesMap[primaryRole] : null;
+};

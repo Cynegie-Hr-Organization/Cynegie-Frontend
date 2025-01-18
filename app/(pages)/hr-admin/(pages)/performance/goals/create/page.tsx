@@ -2,18 +2,16 @@
 "use client";
 
 import CardLayout from "@/app/_components/shared/cards";
-import InputText, {
-  InputTextArea,
-} from "../../../../../../_components/shared/input-text";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
-import { AppSelect } from "@/app/_components/shared/select";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { PlusIcon } from "lucide-react";
-import useFetchEmployees from "@/utils/usefetchEmployees";
-import { createGoals } from "@/app/api/services/performance/goals";
-import { toast } from "react-toastify";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
+import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-text";
+import { AppSelect } from "@/app/_components/shared/select";
+import { createGoals } from "@/app/api/services/performance/goals";
+import useFetchEmployees from "@/utils/usefetchEmployees";
+import { PlusIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface IGoal {
   goalName: string;
@@ -124,7 +122,7 @@ const PerformanceGoalsCreatePage = () => {
         className="bg-white space-y-4 md:space-y-8 md:py-6"
         bg="p-4 md:p-6"
       >
-        <InputText
+        <AppInputText
           label="Goal Name"
           id="goal-name"
           placeholder="Enter goal name"
@@ -134,7 +132,7 @@ const PerformanceGoalsCreatePage = () => {
           value={formData.goalName}
         />
 
-        <InputTextArea
+        <AppInputTextArea
           label="Description"
           id="goal-description"
           placeholder="Enter goal description"
@@ -196,7 +194,7 @@ const PerformanceGoalsCreatePage = () => {
         </div>
 
         <div className="flex flex-col md:flex-row gap-y-4 md:gap-10 items-center justify-between w-full lg:w-[calc(50%-16px)]">
-          <InputText
+          <AppInputText
             label="Alignment"
             id="alignment"
             placeholder="Enter alignment"
@@ -212,7 +210,7 @@ const PerformanceGoalsCreatePage = () => {
 
           {formData.keyResults.map((keyResult, index) => (
             <div key={index} className="space-y-4">
-              <InputText
+              <AppInputText
                 label="Key Result"
                 id={`key-result-${index}`}
                 placeholder="Enter key result"
@@ -228,7 +226,7 @@ const PerformanceGoalsCreatePage = () => {
               />
 
               <div className="flex flex-col md:flex-row gap-y-4 md:gap-10 items-center justify-between w-full">
-                <InputText
+                <AppInputText
                   label="Target Value"
                   type="number"
                   id={`target-value-${index}`}
@@ -329,7 +327,7 @@ const MilestoneForm = ({
 
       {formData.milestones.map((milestone, index) => (
         <div key={index} className="space-y-4">
-          <InputText
+          <AppInputText
             label="Milestone Name"
             id={`milestone-name-${index}`}
             placeholder="Enter milestone name"

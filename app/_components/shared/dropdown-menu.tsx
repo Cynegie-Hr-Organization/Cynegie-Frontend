@@ -5,17 +5,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ReactNode, useState } from "react"
+import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { Check } from "lucide-react"
-import { Input } from "@/components/ui/input"
+import { ReactNode, useState } from "react"
 import { IoIosArrowDown } from "react-icons/io"
 
 
 
 
 
-export function AppDropdownMenu({ trigger, menuItems, width = "w-56" }: { trigger: ReactNode, menuItems: ReactNode, width?: string }) {
+export function AppDropdownMenu({ trigger, menuItems, width = "w-56" }: {
+  trigger: ReactNode,
+  menuItems: ReactNode,
+  width?: string,
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -71,7 +75,7 @@ export function AppMultipleSelect({
 
   const displayValue = () => {
     if (!selectedValues || selectedValues.length === 0) {
-      return <span className="text-gray-400">{placeholder}</span>
+      return <span className="text-gray-400 text-xs">{placeholder}</span>
     }
     const selectedLabels = items
       .filter(item => selectedValues.includes(item.value))
@@ -81,18 +85,18 @@ export function AppMultipleSelect({
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
-      <div className={`flex flex-col gap-2 ${width}`}>
+      <div className={`flex flex-col gap-1 ${width}`}>
         {label && (
-          <p className={`text-sm font-semibold flex justify-start w-full ${requiredField ? 'after:content-["*"] after:text-red-500 after:ml-1 after:font-bold' : ''
+          <p className={`text-xs font-semibold flex justify-start w-full ${requiredField ? 'after:content-["*"] after:text-red-500 after:ml-1 after:font-bold' : ''
             }`}>
             {label}
           </p>
         )}
 
         <DropdownMenuTrigger asChild>
-          <button className={`${triggerStyle} relative h-10 w-full rounded-md border bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`}>
+          <button className={`${triggerStyle} relative outline-none h-9 w-full rounded-md border bg-white px-3 py-2 text-xs ring-offset-white placeholder:text-gray-400 focus:outline-none focus:border-primary focus:ring-gray-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`}>
             <div className="grid grid-cols-[1fr_auto] items-center w-full gap-2">
-              <p className="truncate text-left">{displayValue()}</p>
+              <p className="truncate text-left text-xs">{displayValue()}</p>
               <IoIosArrowDown />
             </div>
           </button>
@@ -104,7 +108,7 @@ export function AppMultipleSelect({
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full"
+              className="w-full text-xs placeholder:text-xs outline-none focus:outline-none focus:border-primary"
             />
           </div>
 
@@ -127,12 +131,12 @@ export function AppMultipleSelect({
                 <div className="w-4 h-4 border rounded flex items-center justify-center">
                   {selectedValues.length === items.length && <Check className="w-3 h-3" />}
                 </div>
-                <span>Select All</span>
+                <span className="text-xs">Select All</span>
               </DropdownMenuItem>
               {filteredItems.map((item) => (
                 <DropdownMenuItem
                   key={item.value}
-                  className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 hover:rounded-md text-sm px-2"
+                  className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 hover:rounded-md text-xs px-2"
                   onClick={(e) => handleItemClick(e, item.value)}
                   onSelect={(e: any) => e.preventDefault()}
                 >

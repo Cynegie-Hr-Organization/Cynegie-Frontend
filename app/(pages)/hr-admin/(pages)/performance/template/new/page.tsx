@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useState } from "react";
 import AppButton from "@/app/_components/shared/button";
 import CardLayout from "@/app/_components/shared/cards";
-import InputText, { InputTextArea } from "@/app/_components/shared/input-text";
+import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { AppSwitch } from "@/app/_components/shared/switch";
+import { createTemplate } from "@/app/api/services/performance/template";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
-import { createTemplate } from "@/app/api/services/performance/template";
-import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface Question {
   question: string;
@@ -67,7 +67,7 @@ const PerformanceTemplateNewPage = () => {
       <h3 className="text-lg font-semibold">New Template</h3>
 
       <CardLayout className="space-y-6 p-4 md:p-6">
-        <InputText
+        <AppInputText
           label="Template Name"
           id="template-name"
           placeholder="Enter template name"
@@ -75,7 +75,7 @@ const PerformanceTemplateNewPage = () => {
           value={templateName}
         />
 
-        <InputTextArea
+        <AppInputTextArea
           label="Template Description"
           id="template-description"
           placeholder="Enter template description"
@@ -188,13 +188,13 @@ const AddQuestionModal = ({
         <FooterButtons
           btn1Label="Cancel"
           btn2Label="Add Question"
-          onBtn1Click={() => {}}
+          onBtn1Click={() => { }}
           onBtn2Click={handleAdd}
         />
       }
     >
       <form className="space-y-4">
-        <InputText
+        <AppInputText
           label="Question"
           id="question"
           requiredField
@@ -203,7 +203,7 @@ const AddQuestionModal = ({
           value={question}
         />
 
-        <InputTextArea
+        <AppInputTextArea
           label="Description"
           id="description"
           placeholder="Enter description"

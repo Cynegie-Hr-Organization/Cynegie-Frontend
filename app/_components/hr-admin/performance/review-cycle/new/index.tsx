@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import CardLayout from "@/app/_components/shared/cards";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
+import AppInputText from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
-import { AppSwitch } from "@/app/_components/shared/switch";
 import { AppSelectWithSearch } from "@/app/_components/shared/select-with-search";
-import useFetchEmployees from "@/utils/usefetchEmployees";
-import InputText from "@/app/_components/shared/input-text";
+import { AppSwitch } from "@/app/_components/shared/switch";
 import { createReviewCycle } from "@/app/api/services/performance/review cycle";
+import useFetchEmployees from "@/utils/usefetchEmployees";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 interface IReviewCycle {
@@ -101,7 +101,7 @@ const NewReviewCycle = () => {
       <h3 className="text-lg font-semibold">New Review Cycle</h3>
 
       <CardLayout className="bg-white space-y-4 md:space-y-8" bg="p-4 md:p-6">
-        <InputText
+        <AppInputText
           label="Review Cycle Name"
           id="review-cycle-name"
           placeholder="Enter cycle name"
@@ -129,7 +129,7 @@ const NewReviewCycle = () => {
               setFormData({ ...formData, endDate: date })
             }
           />
-          <InputText
+          <AppInputText
             label="Days of Grace"
             type="number"
             id="days-of-grace"

@@ -2,7 +2,7 @@
 
 import AppButton from "@/app/_components/shared/button";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
-import InputText from "@/app/_components/shared/input-text";
+import AppInputText from "@/app/_components/shared/input-text";
 import { AppCheckbox } from "@/app/_components/shared/radio";
 import { AppSelect } from "@/app/_components/shared/select";
 
@@ -48,7 +48,7 @@ const FinanceAdminSettings = () => {
 
           </div>
           <div className="flex flex-col lg:flex-row items-center justify-center gap-5">
-            <InputText
+            <AppInputText
               value=""
               id="tax-settings"
               label="Tax Settings"

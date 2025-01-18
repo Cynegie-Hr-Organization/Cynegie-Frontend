@@ -10,8 +10,8 @@ const textFieldStyle = {
   },
 };
 
-const TextField: React.FC<Omit<InputFieldProps, "type">> = ({
-  label: name,
+const TextField: React.FC<Omit<InputFieldProps, 'type'> & { inputProps?: React.InputHTMLAttributes<HTMLInputElement> }> = ({
+    label: name,
   placeholder,
   value,
   setValue,
@@ -21,6 +21,7 @@ const TextField: React.FC<Omit<InputFieldProps, "type">> = ({
   register,
   errors,
   required,
+        inputProps, 
 }) => {
   return (
     <>
@@ -33,7 +34,7 @@ const TextField: React.FC<Omit<InputFieldProps, "type">> = ({
         fullWidth
         defaultValue={defaultValue}
         placeholder={placeholder}
-        value={value}
+        value={value || ''} // Ensure no uncontrolled component issues
         onChange={(e) => setValue?.(e.target.value)}
         {...register?.(name ?? "", {
           required: required ? `${name} is required` : false,
@@ -43,6 +44,10 @@ const TextField: React.FC<Omit<InputFieldProps, "type">> = ({
             startAdornment: startAdornment,
           },
         }}
+        inputProps={{
+        startAdornment: startAdornment,
+        ...inputProps, // Spread inputProps to the MuiTextField's InputProps
+      }}
       />
       {errors && name && errors[name] && (
         <FormHelperText sx={{ color: "red" }}>
