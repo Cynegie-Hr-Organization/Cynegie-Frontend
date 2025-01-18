@@ -4,7 +4,7 @@ import AppButton from "@/app/_components/shared/button";
 import AppInputText from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import AppTabs from "@/app/_components/shared/tabs";
-import { useBankingMutations } from "@/app/_core/use-cases/finance/useBanking";
+import { useBankingMutations, useMyTransfers } from "@/app/_core/use-cases/finance/useBanking";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { ChartConfig } from "@/components/ui/chart";
 import { useIsMutating } from "@tanstack/react-query";
@@ -123,6 +123,22 @@ const BankingPage = () => {
 
 
 const BeneficiaryForm = () => {
+	const { addBeneficiary } = useBankingMutations()
+	const addBeneficiaryIsMutating = useIsMutating({ mutationKey: ['add-beneficiary'] })
+	const isLoading = addBeneficiaryIsMutating > 0
+
+	const [formData, setFormData] = useState({
+		accountName: "John Doe",
+		accountNumber: "1213456789",
+		bankName: "First Bank of Nigeria"
+	})
+
+
+	const handleCreateBeneficiary = () => {
+		return addBeneficiary.mutate(formData)
+	}
+
+
 	return (
 		<form className="common-card space-y-8 h-full">
 			<p className="text-base font-bold text-black">New Beneficiary</p>
@@ -133,8 +149,8 @@ const BeneficiaryForm = () => {
 					id="beneficiary-alias"
 					type="string"
 					placeholder="Enter beneficiary alias"
-					onChange={() => { }}
-					value=""
+					onChange={(e) => { setFormData({ ...formData, accountName: e.target.value }) }}
+					value={formData.accountName}
 				/>
 
 				<AppSelect
@@ -145,7 +161,7 @@ const BeneficiaryForm = () => {
 						{ label: "Bank 2", value: "bank2" },
 						{ label: "Bank 3", value: "bank3" },
 					]}
-					onChange={(value) => console.log(value)}
+					onChange={(value) => { setFormData({ ...formData, bankName: value }) }}
 				/>
 
 				<AppInputText
@@ -153,34 +169,45 @@ const BeneficiaryForm = () => {
 					id="account-number"
 					type="string"
 					placeholder="Enter account number"
-					onChange={() => { }}
-					value=""
+					onChange={(e) => { setFormData({ ...formData, accountNumber: e.target.value }) }}
+					value={formData.accountNumber}
 				/>
+
 				<AppInputText
 					label="Account Name"
 					id="account-name"
 					type="string"
 					placeholder="Enter account name"
-					onChange={() => { }}
-					value=""
+					onChange={(e) => { setFormData({ ...formData, accountName: e.target.value }) }}
+					value={formData.accountName}
 				/>
-
 			</div>
 
-			<AppButton label={"Create Beneficiary"} className="btn-primary md:w-full" />
+			<AppButton
+				label={"Create Beneficiary"}
+				className="btn-primary md:w-full"
+				isLoading={isLoading}
+				disabled={isLoading}
+				onClick={handleCreateBeneficiary}
+			/>
 		</form>
 	)
 }
 
 
 const TransferStatuses = () => {
-	type TransferStatusType = 'Pending' | 'Approved' | 'Failed' | 'Listing';
-	const [status, setStatus] = useState<TransferStatusType>('Pending');
+	const { data } = useMyTransfers({})
+
+	console.log(data)
+
+
+	type TransferStatusType = 'PENDING' | 'APPROVED' | 'FAILED' | 'LISTING';
+	const [status, setStatus] = useState<TransferStatusType>('PENDING');
 	const tabs = [
-		{ label: 'Pending Transfers', onClick: () => setStatus('Pending') },
-		{ label: 'Approved Transfers', onClick: () => setStatus('Approved'), },
-		{ label: 'Failed Transfers', onClick: () => setStatus('Failed'), },
-		{ label: 'Transfer Listing', onClick: () => setStatus('Listing'), },
+		{ label: 'Pending Transfers', onClick: () => setStatus('PENDING') },
+		{ label: 'Approved Transfers', onClick: () => setStatus('APPROVED'), },
+		{ label: 'Failed Transfers', onClick: () => setStatus('FAILED'), },
+		{ label: 'Transfer Listing', onClick: () => setStatus('LISTING'), },
 	]
 	return (
 
@@ -192,13 +219,15 @@ const TransferStatuses = () => {
 					tabHorizontalPadding="px-7"
 				/>
 			</div>
-			{(status === 'Pending' || status === 'Approved' || status === 'Failed' || status === 'Listing') && <TransactionsTable />}
+			{(status === 'PENDING' || status === 'APPROVED' || status === 'FAILED' || status === 'LISTING') && <TransactionsTable />}
 		</div>
 	)
 }
 
 const TransferForm = () => {
 	const { initiateTransfer } = useBankingMutations()
+	const initiateTransferIsMutating = useIsMutating({ mutationKey: ['initiate-transfer'] })
+	const isLoading = initiateTransferIsMutating > 0
 	const [formData, setFormData] = useState({
 		beneficiary: "Jane Doe",
 		accountName: "John Doe",
@@ -226,7 +255,7 @@ const TransferForm = () => {
 						{ label: "Bank 2", value: "bank2" },
 						{ label: "Bank 3", value: "bank3" },
 					]}
-					onChange={(value) => { setFormData((prev) => ({ ...prev, sourceBank: value })) }}
+					onChange={(value) => { setFormData({ ...formData, sourceBank: value }) }}
 				/>
 				<AppSelect
 					label="Beneficiary"
@@ -275,7 +304,13 @@ const TransferForm = () => {
 				/>
 			</div>
 
-			<AppButton label={"Initiate Transfer"} className="btn-primary md:w-full" onClick={handleTransfer} />
+			<AppButton
+				label={"Initiate Transfer"}
+				disabled={isLoading}
+				isLoading={isLoading}
+				className="btn-primary md:w-full"
+				onClick={handleTransfer}
+			/>
 		</form>
 	)
 }
@@ -384,17 +419,6 @@ const PageHeader = ({ title, button1Label, button2Label, link1 }: {
 }
 
 
-
-// {
-//   "accountName": "John Doe",
-//   "businessType": "SOLE PROPRIETORSHIP",
-//   "currency": "USD",
-//   "companyEmail": "company@example.com",
-//   "companyRegistrationNumber": "REG12345",
-//   "companyAddress": "123 Main Street, Cityville, ABC",
-//   "secondaryContact": "0987654321",
-//   "transactionPin": "1234"
-// }
 
 const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => {
 	const [isOpenModal, setIsOpenModal] = useState(false)

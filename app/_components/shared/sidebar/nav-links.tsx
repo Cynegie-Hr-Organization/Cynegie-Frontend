@@ -217,31 +217,23 @@ const NavLinks = ({
   };
 
   return (
-    <div className='transition-all duration-300 ease-in-out'>
-      <ul className='flex flex-col gap-2'>
+    <div className="transition-all duration-300 ease-in-out">
+      <ul className="flex flex-col gap-2">
         {menuLinks.map((item: DashboardMenu) => {
           const isActive = isPathActive(item.path, item.subMenu);
 
           return (
             <li key={item.path}>
               <div
-                className={`flex items-center justify-between cursor-pointer p-3 w-full rounded-[4px] 
-                                    ${
-                                      isActive
-                                        ? 'bg-primary text-white fill-white'
-                                        : 'text-black'
-                                    } transition duration-100`}
+                className={`flex items-center justify-between cursor-pointer p-3 py-2 w-full rounded-[4px] 
+                                    ${isActive ? 'bg-primary text-white' : 'text-black'} transition duration-100`}
               >
                 <button
-                  className='flex items-center gap-x-2 flex-grow'
+                  className="flex items-center gap-x-2 flex-grow"
                   onClick={() => handleNavLinkClick(item.path)}
                 >
                   <span>{item.icon}</span>
-                  <span
-                    className={`text-[14px] font-sans ${
-                      isActive ? 'font-semibold' : 'font-normal'
-                    }`}
-                  >
+                  <span className={`text-sm font-sans ${isActive ? 'font-semibold' : 'font-normal'}`}>
                     {item.name}
                   </span>
                 </button>
@@ -249,18 +241,14 @@ const NavLinks = ({
                   <button
                     onClick={handleDropdownToggle}
                     data-path={item.path}
-                    className='p-1'
+                    className="p-1"
                   >
-                    <FaChevronDown
-                      className={`transition-transform duration-300 ${
-                        openDropDown === item.path ? 'rotate-180' : ''
-                      }`}
-                    />
+                    <FaChevronDown className={`transition-transform duration-300 ${((openDropDown === item.path)) ? 'rotate-180' : ''}`} />
                   </button>
                 )}
               </div>
-              {item.subMenu && openDropDown === item.path && (
-                <ul className='ml-4'>
+              {(item.subMenu && (openDropDown === item.path)) && (
+                <ul className="ml-4">
                   {item.subMenu.map((subItem) => {
                     const isSubActive = isPathActive(subItem.path);
 
@@ -268,12 +256,9 @@ const NavLinks = ({
                       <li key={subItem.path}>
                         <button
                           onClick={() => handleNavLinkClick(subItem.path)}
-                          className={`flex items-center p-2 text-[14px] font-sans pl-5 ${
-                            isSubActive
-                              ? 'text-primary font-semibold'
-                              : 'text-gray-700 font-normal'
-                          }`}
-                        >
+                          className={`flex items-center p-2 text-sm font-sans pl-5 ${isSubActive ?
+                            'text-primary font-semibold' : 'text-gray-700 font-normal'
+                            }`}>
                           {subItem.name}
                         </button>
                       </li>

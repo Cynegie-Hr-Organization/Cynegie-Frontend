@@ -8,7 +8,7 @@ import { getSession } from "next-auth/react";
 export const getAllBudget = async () => {
   try {
     const session = await getSession();
-    const { data } = await Http.get<IPaginatedRes<IBudget>>('/budgets', {
+    const { data } = await Http.get<IPaginatedRes<IBudget>>('budgets', {
       headers: await headers(session?.token ?? ''),
     });
 

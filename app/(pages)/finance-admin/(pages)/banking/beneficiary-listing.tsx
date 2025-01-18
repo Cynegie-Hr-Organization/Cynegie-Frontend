@@ -4,7 +4,10 @@ import { DeleteSvg } from "@/app/_components/icons/custom-icons";
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppSelect } from "@/app/_components/shared/select";
+import { IBeneficiary } from "@/app/_core/actions/finance/banking";
+import { useBeneficiaries } from "@/app/_core/use-cases/finance/useBanking";
 import { DrawerDialog } from "@/components/drawer/modal";
+import { localTime } from "@/lib/utils";
 import { useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { LuListFilter } from "react-icons/lu";
@@ -12,50 +15,9 @@ import { RiSearchLine } from "react-icons/ri";
 
 const BeneficiaryListing = () => {
 
-  const [beneficiaries, setBeneficiaries] = useState([
-    {
-      id: 1,
-      accountNumber: '1234567890',
-      accountName: 'John Doe',
-      bankName: 'Guaranty Trust Bank',
-      bankCode: '058',
-    },
-    {
-      id: 2,
-      accountNumber: '9876543210',
-      accountName: 'Jane Doe',
-      bankName: 'Access Bank',
-      bankCode: '044',
-    },
-    {
-      id: 3,
-      accountNumber: '3456789012',
-      accountName: 'Emeka Okoro',
-      bankName: 'First Bank',
-      bankCode: '011',
-    },
-    {
-      id: 4,
-      accountNumber: '4567890123',
-      accountName: 'Aisha Musa',
-      bankName: 'United Bank for Africa',
-      bankCode: '033',
-    },
-    {
-      id: 5,
-      accountNumber: '5678901234',
-      accountName: 'Oluwaseun Ogunyemi',
-      bankName: 'Fidelity Bank',
-      bankCode: '070',
-    },
-  ]);
+  const { data } = useBeneficiaries();
+  const { beneficiaries } = data ?? {};
 
-
-  const handleDelete = (id: number) => {
-    setBeneficiaries(prevBeneficiaries =>
-      prevBeneficiaries.filter(beneficiary => beneficiary.id !== id)
-    );
-  };
 
   return (
     <div className="space-y-3 max-h-[460px] h-max lg:h-full">
@@ -64,7 +26,11 @@ const BeneficiaryListing = () => {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
           <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
             <RiSearchLine className="text-gray-400" />
-            <input type="text" placeholder="Search here..." className="w-full h-9 px-2 outline-none" />
+            <input
+              type="text"
+              placeholder="Search here..."
+              className="w-full h-9 px-2 outline-none"
+            />
           </div>
 
           <AppDropdownMenu trigger={
@@ -122,13 +88,13 @@ const BeneficiaryListing = () => {
             </thead>
 
             <tbody>
-              {beneficiaries.map((beneficiary) => {
+              {beneficiaries?.map((beneficiary) => {
                 return (
                   <tr key={beneficiary.id} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
-                    <td className='px-5 py-4'>{beneficiary.accountNumber}</td>
-                    <td className='px-5 py-4'>{beneficiary.accountName}</td>
-                    <td className='px-5 py-4'>{beneficiary.bankName}</td>
-                    <td className='px-5 py-4'>{beneficiary.bankCode}</td>
+                    <td className='px-5 py-4'>{beneficiary?.accountName}</td>
+                    <td className='px-5 py-4'>{beneficiary?.accountNumber}</td>
+                    <td className='px-5 py-4'>{beneficiary?.ownedBy}</td>
+                    <td className='px-5 py-4'>{localTime(beneficiary?.dateAdded, 'Do MMM, yyyy')}</td>
                     <td className='px-5 py-4'>
                       <AppDropdownMenu
                         width="w-max"
@@ -146,7 +112,7 @@ const BeneficiaryListing = () => {
                                 Delete Beneficiary
                               </button>
                             }
-                            handleDelete={() => handleDelete(beneficiary.id)}
+                            handleDelete={() => { }}
                           />
                         }
                       />
@@ -166,7 +132,7 @@ const BeneficiaryListing = () => {
 
 
 const DeleteModal = ({ trigger, handleDelete, beneficiary }: {
-  trigger: React.ReactNode, handleDelete: () => void, beneficiary?: Beneficiary
+  trigger: React.ReactNode, handleDelete: () => void, beneficiary?: Partial<IBeneficiary>
 }) => {
   const [openModal, setOpenModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
