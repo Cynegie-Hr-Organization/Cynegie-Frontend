@@ -2,13 +2,13 @@
 
 import { ChevronLeft } from "@mui/icons-material";
 import { Box, Grid2, Stack } from "@mui/material";
-import React from "react";
 import { useRouter } from "next/navigation";
-import ReviewPayrollTable from "../../../tables/review-payroll";
-import { DatePicker, DateRangePicker, Input } from "rsuite";
-import "rsuite/dist/rsuite.min.css";
+import React from "react";
+// import ReviewPayrollTable from "../../../tables/review-payroll";
 import dayjs from "dayjs";
 import Image from "next/image";
+import { DatePicker, DateRangePicker, Input } from "rsuite";
+import "rsuite/dist/rsuite.min.css";
 
 const HrAdminReviewPayrollPage = () => {
   const router = useRouter();
@@ -251,7 +251,7 @@ const HrAdminReviewPayrollPage = () => {
             Add New Employee
           </div>
         </Stack>
-        <ReviewPayrollTable />
+        {/* <ReviewPayrollTable /> */}
         <Stack
           direction="row"
           alignItems="center"

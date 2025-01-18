@@ -9,6 +9,7 @@ const CardGroup: React.FC<CardGroupProps> = ({
   gridItemSize,
   cardLargeLabelText,
   cardValueBelow,
+  loading,
 }) => {
   return (
     <Grid2 className="h-full" container spacing={2}>
@@ -35,6 +36,7 @@ const CardGroup: React.FC<CardGroupProps> = ({
             denominator={card.denominator}
             isPercentage={card.isPercentage}
             additionalInfo={card.additionalInfo}
+            loading={loading}
           />
         </Grid2>
       ))}

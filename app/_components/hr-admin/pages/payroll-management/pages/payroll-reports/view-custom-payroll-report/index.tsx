@@ -2,9 +2,9 @@
 import { ChevronLeft } from "@mui/icons-material";
 import { Box, Grid2, Stack } from "@mui/material";
 import { useRouter } from "next/navigation";
-import ViewCustomPayrollReport from "../../../tables/view-custom-payroll-report";
-import PayrollSummaryChart from "../../../charts/payroll-summary";
+// import ViewCustomPayrollReport from "../../../tables/view-custom-payroll-report";
 import Image from "next/image";
+import PayrollSummaryChart from "../../../charts/payroll-summary";
 
 const HrAdminViewCustomPayrollReportPage = () => {
   const router = useRouter();
@@ -123,7 +123,7 @@ const HrAdminViewCustomPayrollReportPage = () => {
           <PayrollSummaryChart />
         </Stack>
       </div>
-      <ViewCustomPayrollReport />
+      {/* <ViewCustomPayrollReport /> */}
     </Stack>
   );
 };

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { getJobs } from "@/app/api/services/job";
+import { SortOrder } from "@/types/enum";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { SortOrder } from "@/types/enum";
-import { getJobs } from "@/app/api/services/job";
 
 const useFetchJobs = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -33,7 +33,7 @@ const useFetchJobs = () => {
         searchQuery,
         filters.company,
         filters.requiredSkills,
-        filters.type,
+        filters.type
       ),
     staleTime: 2 * 60 * 1000,
   });
@@ -64,10 +64,12 @@ const useFetchJobs = () => {
   };
 
   return {
-    jobs: data?.data?.data || [],
+    // jobs: data?.data?.data || [],
+    jobs: data?.data || [],
     isFetching,
     currentPage,
-    totalPages: data?.data?.totalPages || 0, // Directly use the backend-provided totalPages
+    // totalPages: data?.data?.totalPages || 0, // Directly use the backend-provided totalPages
+    totalPages: 0,
     handleSearch,
     handleFilterChange,
     handlePageChange,

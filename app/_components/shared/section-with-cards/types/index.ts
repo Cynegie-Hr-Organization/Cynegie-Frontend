@@ -27,6 +27,7 @@ export type CardProps = {
   denominator?: number;
   isPercentage?: boolean;
   additionalInfo?: CardAdditionalInfo;
+  loading?: boolean;
 };
 
 export type CardAdditionalInfo = {
@@ -96,6 +97,7 @@ export type CardGroupProps = {
   gridItemSize?: GridItemSize;
   cardLargeLabelText?: boolean;
   cardValueBelow?: boolean;
+  loading?: boolean;
 };
 
 type GridItemSize = { xs?: number; sm?: number; md?: number; lg?: number };

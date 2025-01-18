@@ -3,13 +3,12 @@ import StatusPill from "@/app/_components/shared/pills/status";
 import { ChevronLeft } from "@mui/icons-material";
 import { Stack } from "@mui/material";
 import { useRouter } from "next/navigation";
-import ViewPayrollReportTable from "../../../tables/view-payroll-report";
-import React from "react";
-import DownloadReportModal from "../../../modals/download-report";
+// import ViewPayrollReportTable from "../../../tables/view-payroll-report";
+// import DownloadReportModal from "../../../modals/download-report";
 
 const HrAdminViewPayrollReport = () => {
   const router = useRouter();
-  const [showDownloadModal, setShowDownloadModal] = React.useState(false);
+  // const [showDownloadModal, setShowDownloadModal] = React.useState(false);
   return (
     <Stack gap={3} mx={5} mb={10} mt={6}>
       <Stack direction="row" alignItems="center">
@@ -29,7 +28,7 @@ const HrAdminViewPayrollReport = () => {
           </div>
         </Stack>
         <button
-          onClick={() => setShowDownloadModal(true)}
+          // onClick={() => setShowDownloadModal(true)}
           style={{
             borderRadius: "8px",
             border: "1.5px solid #98A2B3",
@@ -88,13 +87,13 @@ const HrAdminViewPayrollReport = () => {
           ))}
         </Stack>
       </Stack>
-      <ViewPayrollReportTable />
-      {showDownloadModal && (
+      {/* <ViewPayrollReportTable /> */}
+      {/* {showDownloadModal && (
         <DownloadReportModal
           open={showDownloadModal}
           onCloseFn={() => setShowDownloadModal(false)}
         />
-      )}
+      )} */}
     </Stack>
   );
 };

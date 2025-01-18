@@ -94,9 +94,10 @@ const HrAdminCreatePayrollPage = ({
       );
       if (employees) {
         setEditEmployees(employees);
+        const employeeIds = selectedPayrollData.data.employees as string[];
         setCheckedRows(
           employees.filter((employee) =>
-            selectedPayrollData.data.employees.includes(employee.id)
+            employeeIds.includes(employee.id ?? "")
           )
         );
       }
@@ -152,20 +153,17 @@ const HrAdminCreatePayrollPage = ({
 
   const [createLoading, setCreateLoading] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
-  // const [openFailureModal, setOpenFailureModal] = useState(false);
 
   const createPayrollMutation = useMutation({
     mutationFn: (payload: CreatePayrollPayload) => createPayroll(payload),
     onMutate: () => setCreateLoading(true),
     onSuccess: () => {
-      // queryClient.invalidateQueries({ queryKey: ["payrolls"], exact: false });
       queryClient.resetQueries({ queryKey: ["payrolls"] });
       setCreateLoading(false);
       setOpenSuccessModal(true);
     },
     onError: () => {
       setCreateLoading(false);
-      // setOpenFailureModal(true);
     },
   });
 
@@ -174,7 +172,6 @@ const HrAdminCreatePayrollPage = ({
       editPayroll(selectedPayrollData?.data.id ?? "", payload),
     onMutate: () => setCreateLoading(true),
     onSuccess: () => {
-      // queryClient.invalidateQueries({ queryKey: ["payrolls"], exact: false });
       queryClient.resetQueries({ queryKey: ["payrolls"] });
       queryClient.invalidateQueries({ queryKey: ["payroll", editPayrollId] });
       setCreateLoading(false);
@@ -182,7 +179,6 @@ const HrAdminCreatePayrollPage = ({
     },
     onError: () => {
       setCreateLoading(false);
-      // setOpenFailureModal(true);
     },
   });
 
@@ -523,23 +519,25 @@ const HrAdminCreatePayrollPage = ({
                 });
                 setActiveTab(activeTab + 1);
               } else {
-                editPayrollId
-                  ? editPayrollMutation.mutateAsync({
-                      payrollName: payrollName,
-                      startDate: payrollPeriod.startDate,
-                      endDate: payrollPeriod.endDate,
-                      status: "pending",
-                      paymentDate: paymentDate,
-                      employees: checkedRows.map((row) => row.id),
-                    })
-                  : createPayrollMutation.mutateAsync({
-                      payrollName: payrollName,
-                      startDate: payrollPeriod.startDate,
-                      endDate: payrollPeriod.endDate,
-                      status: "pending",
-                      paymentDate: paymentDate,
-                      employees: checkedRows.map((row) => row.id),
-                    });
+                if (editPayrollId) {
+                  editPayrollMutation.mutateAsync({
+                    payrollName: payrollName,
+                    startDate: payrollPeriod.startDate,
+                    endDate: payrollPeriod.endDate,
+                    status: "pending",
+                    paymentDate: paymentDate,
+                    employees: checkedRows.map((row) => row.id),
+                  });
+                } else {
+                  createPayrollMutation.mutateAsync({
+                    payrollName: payrollName,
+                    startDate: payrollPeriod.startDate,
+                    endDate: payrollPeriod.endDate,
+                    status: "pending",
+                    paymentDate: paymentDate,
+                    employees: checkedRows.map((row) => row.id),
+                  });
+                }
               }
             }}
           />

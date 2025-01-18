@@ -47,7 +47,7 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
         name={name ?? ""}
         control={control}
         rules={controllerRules}
-        render={({ field, fieldState }) => (
+        render={({ field /*fieldState*/ }) => (
           <DatePicker
             {...field}
             // label="Date of Birth"

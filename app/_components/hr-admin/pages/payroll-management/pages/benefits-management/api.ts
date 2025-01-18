@@ -1,7 +1,14 @@
 "use server";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { baseUrl } from "@/constants/config";
-import { Benefit, FetchParams, PaginatedResponse3 } from "@/types";
+import {
+  Benefit,
+  BenefitResponse,
+  Department,
+  FetchParams,
+  PaginatedResponse3,
+  PaginatedResponse4,
+} from "@/types";
 import { request } from "@/utils/request";
 import { getServerSession } from "next-auth";
 
@@ -40,4 +47,42 @@ export const addBenefit = async (payload: AddBenefitPayload) => {
     },
     data: payload,
   });
+};
+
+export const getBenefit = async (id: string): Promise<BenefitResponse> => {
+  const session = await getServerSession(authOptions);
+  return request("GET", `${baseUrl}/v1/benefits/${id}`, {
+    headers: {
+      "Content-Type": "Application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  }) as Promise<BenefitResponse>;
+};
+
+export const enrollToBenefit = async (
+  id: string,
+  payload: { employeeIds: string[] }
+) => {
+  const session = await getServerSession(authOptions);
+  return request("POST", `${baseUrl}/v1/benefits/${id}/enroll`, {
+    headers: {
+      "Content-Type": "Application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: payload,
+  });
+};
+
+export const getDepartments = async (
+  params: FetchParams
+): Promise<PaginatedResponse4<Department>> => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/departments`, {
+    headers: {
+      "Content-type": "Application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    params: params,
+  }) as Promise<PaginatedResponse4<Department>>;
 };

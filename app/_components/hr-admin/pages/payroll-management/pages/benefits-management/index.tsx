@@ -15,7 +15,12 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { addBenefit, AddBenefitPayload, getBenefits } from "./api";
+import {
+  addBenefit,
+  AddBenefitPayload,
+  getBenefits,
+  getDepartments,
+} from "./api";
 
 type MappedBenefit = {
   id: string;
@@ -32,6 +37,9 @@ const HrAdminPayrollBenefitsManagementPage = () => {
   const [mutationLoading, setMutationLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [benefits, setBenefits] = useState<MappedBenefit[]>();
+  const [departments, setDepartments] = useState<
+    { label: string; value: string }[]
+  >([]);
   const [fetchParams, setFetchParams] = useState<FetchParams>({
     page: 1,
     limit: 10,
@@ -58,6 +66,11 @@ const HrAdminPayrollBenefitsManagementPage = () => {
     queryFn: () => getBenefits(fetchParams),
   });
 
+  const { data: departmentsData } = useQuery({
+    queryKey: ["departments"],
+    queryFn: () => getDepartments({ page: 1, limit: 20, sortOrder: "asc" }),
+  });
+
   const addBenefitMutation = useMutation({
     mutationFn: (payload: AddBenefitPayload) => addBenefit(payload),
     onMutate: () => setMutationLoading(true),
@@ -79,7 +92,12 @@ const HrAdminPayrollBenefitsManagementPage = () => {
         benefitsData.data.map((benefitData) => ({
           id: benefitData.id,
           benefitName: benefitData.name,
-          benefitType: benefitData.benefitType,
+          benefitType: `${benefitData.benefitType
+            .toUpperCase()
+            .slice(0, 1)}${benefitData.benefitType.slice(
+            1,
+            benefitData.benefitType.length
+          )}`,
           employeesEnrolled: benefitData.employees.length,
           pendingApprovals: 0,
         }))
@@ -88,6 +106,17 @@ const HrAdminPayrollBenefitsManagementPage = () => {
       setBenefits(undefined);
     }
   }, [benefitsData]);
+
+  useEffect(() => {
+    if (departmentsData) {
+      setDepartments(
+        departmentsData.data.map((department) => ({
+          label: department.departmentName,
+          value: department.id,
+        }))
+      );
+    }
+  }, [departmentsData]);
 
   useEffect(() => {
     if (startDate != undefined) {
@@ -117,19 +146,19 @@ const HrAdminPayrollBenefitsManagementPage = () => {
       }}
     >
       <CardGroup
-        cardLargeLabelText
         cardValueBelow
         gridItemSize={{ sm: 6, md: 3 }}
+        loading={benefitsData ? false : true}
         cards={[
           {
             labelText: "Total Benefits",
-            value: "10",
+            value: `${benefitsData?.meta.itemCount}`,
             icon: <SvgIcon path="/icons/group.svg" width={16} height={16} />,
             iconColorVariant: "purple",
           },
           {
             labelText: "Employees Enrolled",
-            value: "250",
+            value: "N/A",
             icon: (
               <SvgIcon path="/icons/paper-money.svg" width={16} height={16} />
             ),
@@ -137,7 +166,7 @@ const HrAdminPayrollBenefitsManagementPage = () => {
           },
           {
             labelText: "Pending Enrollments",
-            value: "5",
+            value: "N/A",
             icon: (
               <SvgIcon path="/icons/paper-money.svg" width={16} height={16} />
             ),
@@ -145,7 +174,7 @@ const HrAdminPayrollBenefitsManagementPage = () => {
           },
           {
             labelText: "Pending Approvals",
-            value: "3",
+            value: "N/A",
             icon: (
               <SvgIcon path="/icons/paper-money.svg" width={16} height={16} />
             ),
@@ -174,18 +203,36 @@ const HrAdminPayrollBenefitsManagementPage = () => {
             name: "View Details",
             onClick: () => {},
             onDataReturned: (id) =>
-              router.push(`hr-admin/payroll/benefits/view/${id}`),
+              router.push(`/hr-admin/payroll/benefits-management/view/${id}`),
           },
           {
             name: "Enroll Employees",
             onClick: () => {},
             onDataReturned: (id) =>
-              router.push(`hr-admin/payroll/benefits/enroll/${id}`),
+              router.push(`/hr-admin/payroll/benefits-management/enroll/${id}`),
           },
         ]}
+        fieldToReturnOnActionItemClick="id"
         onSearch={(query) =>
           setFetchParams((prev) => ({ ...prev, search: query }))
         }
+        formFilter={{
+          inputFields: [
+            {
+              label: "Benefit Type",
+              type: "select",
+              options: [
+                { label: "Health", value: "health" },
+                { label: "Financial", value: "financial" },
+                { label: "Leave", value: "leave" },
+                { label: "Transportation", value: "transportation" },
+                { label: "Education", value: "education" },
+                { label: "Pension", value: "pension" },
+                { label: "Others", value: "others" },
+              ],
+            },
+          ],
+        }}
         paginationMeta={{
           ...benefitsData?.meta,
           itemsOnPage: benefits?.length,
@@ -216,7 +263,7 @@ const HrAdminPayrollBenefitsManagementPage = () => {
               benefitType: values["Benefit Type"],
               departments: values["Department"].map(
                 (department: { label: string; value: string }) =>
-                  department.label
+                  department.value
               ),
               employmentType: values["Employment Type"],
               jobLevel: values["Job Level"],
@@ -277,11 +324,7 @@ const HrAdminPayrollBenefitsManagementPage = () => {
                   label: "Department",
                   type: "multi-select",
                   placeholder: "Select Department",
-                  options: [
-                    { label: "Engineering", value: "engineering" },
-                    { label: "Product", value: "product" },
-                    { label: "Marketing", value: "marketing" },
-                  ],
+                  options: departments,
                   hookFormField: true,
                 },
                 {

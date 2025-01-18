@@ -29,10 +29,23 @@ export type CompanyRegistrationData = {
   companyName: string;
 };
 
+export type Department = {
+  departmentName: string;
+  departmentManager: string;
+  employees: string[];
+  userLimit: number;
+  status: string;
+  deletedAt: string | null;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+};
+
 export type Benefit = {
   name: string;
   benefitType: string;
-  departments: string[];
+  departments: Pick<Department, "id">[];
   employmentType: string;
   jobLevel: string;
   startDate: string;
@@ -48,6 +61,12 @@ export type Benefit = {
   id: string;
   totalEmployees: number;
   employeesByStatus: {};
+};
+
+export type BenefitResponse = {
+  benefit: Omit<Benefit, "totalEmployees" | "employeesByStatus">;
+  totalEmployees: number;
+  totalUtilization: number;
 };
 
 export interface CreateJobProps {
@@ -110,6 +129,18 @@ export interface PaginatedResponse3<T> {
     limit: number;
     itemCount: number;
     pageCount: number;
+  };
+}
+
+export interface PaginatedResponse4<T> {
+  data: T[];
+  meta: {
+    page: number;
+    limit: number;
+    itemCount: number;
+    pageCount: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
   };
 }
 

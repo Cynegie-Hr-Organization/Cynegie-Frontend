@@ -20,14 +20,18 @@ const Detail: React.FC<SingleDetail> = (props) => {
         <>
           {props.type === "status" && (
             <StatusPill
-              variant={props.statusMap?.[props.value]}
-              text={props.value}
+              variant={props.statusMap?.[props.value ?? ""]}
+              text={props.value ?? ""}
             />
           )}
           {props.type === "document" && (
-            <StatusPill variant="info" text={props.value} icon={props.icon} />
+            <StatusPill
+              variant="info"
+              text={props.value ?? ""}
+              icon={props.icon}
+            />
           )}
-          {!props.type && <DetailValue value={props.value} />}
+          {!props.type && <DetailValue value={props.value ?? ""} />}
         </>
       )}
     </Stack>

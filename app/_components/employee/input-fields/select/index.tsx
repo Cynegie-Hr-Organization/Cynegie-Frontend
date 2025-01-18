@@ -37,7 +37,7 @@ export const InputFieldPlaceholder: React.FC<{ placeholder: string }> = ({
   return <p style={{ color: "grey" }}>{placeholder}</p>;
 };
 
-const classStyle = "!rounded-md h-[42px] !w-full bg-white";
+const classStyle = "!rounded-md !h-[37.5px] !w-full !bg-white !text-[14px]";
 
 const SelectField: React.FC<SelectFieldProps> = (props) => {
   const {
