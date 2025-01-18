@@ -1,3 +1,4 @@
+
 import { withAuth } from 'next-auth/middleware';
 import { NextRequest } from 'next/server';
 import { JWT } from 'next-auth/jwt';
@@ -27,5 +28,6 @@ export default withAuth({
 });
 
 export const config = {
-  matcher: ["/hr-admin/:path*", "/super-admin/:path*"], // Match paths for HR Admin and Super Admin
+  // matcher: ["/hr-admin/:path*", "/super-admin/:path*"], // Match paths for HR Admin and Super Admin
+  matcher: [],
 };
