@@ -1,12 +1,16 @@
-import { ButtonType } from '@/app/_components/shared/page/heading/types';
-import { PageProps } from '@/app/_components/shared/page/types';
-import { FieldType, TableProps } from '@/app/_components/shared/table/types';
-import { AppRequestStatusMap } from '@/constants';
-import { useEffect, useState } from 'react';
-import { ModalProps } from '../../../modal/types';
-import { getAllMyAppRequest, getApps, requestApp } from '@/app/api/services/employee/app-request';
-import { useQuery } from '@tanstack/react-query';
-import Skeleton from '@mui/material/Skeleton';
+import { ButtonType } from "@/app/_components/shared/page/heading/types";
+import { PageProps } from "@/app/_components/shared/page/types";
+import { FieldType, TableProps } from "@/app/_components/shared/table/types";
+import {
+  getAllMyAppRequest,
+  getApps,
+  requestApp,
+} from "@/app/api/services/employee/app-request";
+import { AppRequestStatusMap } from "@/constants";
+import Skeleton from "@mui/material/Skeleton";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { ModalProps } from "../../../modal/types";
 
 const useAppRequestsPage = () => {
   const [openRequestModal, setOpenRequestModal] = useState(false);
@@ -15,10 +19,9 @@ const useAppRequestsPage = () => {
   const [fetchedApps, setFetchedApps] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [formData, setFormData] = useState({
-    appId: '',
-    reasonForRequest: '',
+    appId: "",
+    reasonForRequest: "",
   });
-
 
   // Fetch apps data when the component mounts
   useEffect(() => {
@@ -38,35 +41,35 @@ const useAppRequestsPage = () => {
     }));
   };
 
-
   const handleSubmitRequest = async () => {
     try {
       const response = await requestApp(formData);
       if (response?.status === 201) {
         setOpenRequestModal(false);
         setOpenSuccessModal(true);
-                refetch();
-
+        refetch();
       } else {
-        console.error('Request failed:', response?.message || 'Unknown error');
+        console.error("Request failed:", response?.message || "Unknown error");
       }
     } catch (error) {
-      console.error('Error while making app request:', error);
+      console.error("Error while making app request:", error);
     }
   };
 
   // Fetch app requests using useQuery
-  const { data: appRequests, refetch, isLoading } = useQuery({
-    queryKey: ['app-requests'], // Unique query key
+  const {
+    data: appRequests,
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ["app-requests"], // Unique query key
     queryFn: async () => {
-      const response = await getAllMyAppRequest('desc', 1, 10);
+      const response = await getAllMyAppRequest("desc", 1, 10);
       return response.data.items;
     },
     refetchOnWindowFocus: false, // Prevent refetching on window focus
     staleTime: 60000, // Cache for 1 minute
   });
-
-  
 
   const pageProps: PageProps = {
     title: "Your Apps & Request",
@@ -81,38 +84,35 @@ const useAppRequestsPage = () => {
   };
 
   const tableProps: TableProps = {
-  hasCheckboxes: true,
-  hasActionsColumn: true,
-  headerRowData: ['Request ID', 'App Name', 'Access Level', 'Request Date'],
-  bodyRowData: isLoading
-    ? Array(5).fill({
-       requestId: <Skeleton width={100} />,
-        appName: <Skeleton width={150} />,
-        accessLevel: <Skeleton width={100} />,
-        requestDate: <Skeleton width={120} />,
-      })
-    : appRequests?.map((request) => ({
-        requestId: request.id,
-        appName: request.appId.appName,
-        accessLevel: request.status,
-        requestDate: new Date(request.requestDate).toLocaleDateString(),
-      })) || [],
-  fieldTypes: [
-    ...Array(2).fill(FieldType.text),
-    FieldType.status,
-    FieldType.text,
+    hasCheckboxes: true,
+    hasActionsColumn: true,
+    headerRowData: ["Request ID", "App Name", "Access Level", "Request Date"],
+    bodyRowData: isLoading
+      ? Array(5).fill({
+          requestId: <Skeleton width={100} />,
+          appName: <Skeleton width={150} />,
+          accessLevel: <Skeleton width={100} />,
+          requestDate: <Skeleton width={120} />,
+        })
+      : appRequests?.map((request) => ({
+          requestId: request.id,
+          appName: request.appId.appName,
+          accessLevel: request.status,
+          requestDate: new Date(request.requestDate).toLocaleDateString(),
+        })) || [],
+    fieldTypes: [
+      ...Array(2).fill(FieldType.text),
+      FieldType.status,
+      FieldType.text,
     ],
-  
-  statusMap: AppRequestStatusMap,
-  displayedFields: ['requestId', 'appName', 'accessLevel', 'requestDate'],
-  actions: [
-       { name: 'View Details', onClick: () => setOpenDetailsModal(true) ,  },
 
-
-  ],
-    filters: [{ name: 'Access Level', items: ['All', 'Admin', 'Read'] }],
-  
-};
+    statusMap: AppRequestStatusMap,
+    displayedFields: ["requestId", "appName", "accessLevel", "requestDate"],
+    actions: [
+      { name: "View Details", onClick: () => setOpenDetailsModal(true) },
+    ],
+    filters: [{ name: "Access Level", items: ["All", "Admin", "Read"] }],
+  };
 
   const requestModalProps: ModalProps = {
     open: openRequestModal,
@@ -123,22 +123,24 @@ const useAppRequestsPage = () => {
       gridSpacing: 4,
       inputFields: [
         {
-          name: 'App Name',
-          type: 'select',
+          label: "App Name",
+          type: "select",
           options: fetchedApps.map((app) => ({
             label: app.label,
             value: app.value,
           })),
           value: formData.appId,
-          setValue: (value: string | number) => handleInputChange('appId', value),
+          setValue: (value: string | number | undefined) =>
+            handleInputChange("appId", value ?? ""),
           disabled: loading,
         },
         {
-          name: 'Reason',
-          type: 'text',
-          placeholder: 'Clear description of why you are returning it',
+          label: "Reason",
+          type: "text",
+          placeholder: "Clear description of why you are returning it",
           value: formData.reasonForRequest,
-          setValue: (value: string | number) => handleInputChange('reasonForRequest', value),
+          setValue: (value: string | number | undefined) =>
+            handleInputChange("reasonForRequest", value ?? ""),
         },
       ],
     },
@@ -149,19 +151,19 @@ const useAppRequestsPage = () => {
     },
     buttonTwo: {
       type: ButtonType.contained,
-      text: 'Request App',
+      text: "Request App",
       onClick: handleSubmitRequest,
     },
   };
 
- const detailsModalProps: ModalProps = {
+  const detailsModalProps: ModalProps = {
     open: openDetailsModal,
     onClose: () => setOpenDetailsModal(false),
     title: "App Details",
     subtitle: "View app details below",
     detailGroup: {
-      gridLayout: 'view-details-two',
-     details: [
+      gridLayout: "view-details-two",
+      details: [
         {
           name: "Assigned To",
           value: "Salem David",
@@ -182,7 +184,6 @@ const useAppRequestsPage = () => {
       ],
     },
   };
-
 
   const successModalProps: ModalProps = {
     open: openSuccessModal,
@@ -208,5 +209,3 @@ const useAppRequestsPage = () => {
 };
 
 export default useAppRequestsPage;
-
-

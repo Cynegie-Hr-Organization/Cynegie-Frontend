@@ -9,7 +9,7 @@ const MultiSelectField: React.FC<Omit<InputFieldProps, "type">> = ({
   options,
   placeholder,
 }) => {
-  return (
+  return control ? (
     <Controller
       name={name ?? ""}
       control={control}
@@ -24,6 +24,14 @@ const MultiSelectField: React.FC<Omit<InputFieldProps, "type">> = ({
           classNamePrefix="select"
         />
       )}
+    />
+  ) : (
+    <Select
+      options={options}
+      isMulti
+      placeholder={placeholder}
+      className="basic-multi-select"
+      classNamePrefix="select"
     />
   );
 };

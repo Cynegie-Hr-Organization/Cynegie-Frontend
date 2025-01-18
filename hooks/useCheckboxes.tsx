@@ -1,16 +1,19 @@
-import { ChangeEvent, useState } from "react";
-        {/*import { ChangeEvent, useState, useEffect } from 'react';*/}
+import { ChangeEvent, useEffect, useState } from "react";
 
-        {/*function generateRange(start: number, end: number): number[] {
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);*/}
+{
+  /*function generateRange(start: number, end: number): number[] {
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);*/
 }
+// }
 
 const useCheckboxes = <T,>(
   rows: T[],
   getCheckedItems?: (rows: T[]) => void,
   defaultCheckedItems?: T[]
 ) => {
-        {/*const [selectedItemsIndexes, setSelectedItemsIndexes] = useState<number[]>([]);*/}
+  {
+    /*const [selectedItemsIndexes, setSelectedItemsIndexes] = useState<number[]>([]);*/
+  }
   const [checkedItems, setCheckedItems] = useState<T[]>([]);
 
   useEffect(() => {
@@ -28,10 +31,12 @@ const useCheckboxes = <T,>(
     }
     setCheckedItems(items);
     getCheckedItems?.(items);
-        {/*  setSelectedItemsIndexes([]);
+    {
+      /*  setSelectedItemsIndexes([]);
     }
     const selectedItems = itemsIndexes.map((index) => rows[index]);
-    setCheckedItems(selectedItems);*/}
+    setCheckedItems(selectedItems);*/
+    }
   };
 
   const handleCheckboxChange = (
@@ -54,7 +59,8 @@ const useCheckboxes = <T,>(
     }
     setCheckedItems(items);
     getCheckedItems?.(items);
-        {/*setSelectedItemsIndexes((prevSelectedItems) => {
+    {
+      /*setSelectedItemsIndexes((prevSelectedItems) => {
       let itemsIndexes: number[] = [];
       if (event.target.checked) {
         itemsIndexes = [...prevSelectedItems, rowIndex];
@@ -62,17 +68,18 @@ const useCheckboxes = <T,>(
         itemsIndexes = prevSelectedItems.filter((index) => index !== rowIndex);
       }
       return itemsIndexes;
-    });*/}
+    });*/
+    }
   };
 
   const checkAllBoxProps = {
     onChange: handleCheckboxChangeAll,
     checked: checkedItems.length === rows.length,
     indeterminate: checkedItems.length > 0 && checkedItems.length < rows.length,
-                                                                    {/*checked: selectedItemsIndexes.length === rows?.length,
+    /*checked: selectedItemsIndexes.length === rows?.length,
     indeterminate:
       selectedItemsIndexes.length > 0 &&
-      selectedItemsIndexes.length < rows.length,*/}
+      selectedItemsIndexes.length < rows.length,*/
   };
 
   const checkBoxProps = (row: T) => {
@@ -87,10 +94,12 @@ const useCheckboxes = <T,>(
 
   const removeChecks = () => {
     setCheckedItems([]);
-        {/*setTimeout(() => {
+    {
+      /*setTimeout(() => {
       setCheckedItems([]);
       setSelectedItemsIndexes([]);
-    }, 0);  // Immediate delay to prevent an immediate re-trigger*/}
+    }, 0);  // Immediate delay to prevent an immediate re-trigger*/
+    }
   };
 
   return {

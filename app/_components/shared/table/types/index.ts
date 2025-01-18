@@ -31,6 +31,8 @@ export type TableProps<T = Record<string, any>> = {
   clearChecks?: boolean;
   onPermissionsClick?: (permissions: Permission[]) => void;
   onSearch?: (arg: string) => void;
+  page?: number; //TODO: Remove and use pagination meta instead
+  pageCount?: number; //TODO: Remove and use pagination meta instead
   defaultCheckedRows?: T[];
 };
 

@@ -1,42 +1,41 @@
 "import client";
-import { ButtonType } from '@/app/_components/shared/page/heading/types';
-import { PageProps } from '@/app/_components/shared/page/types';
-import { FieldType, TableProps } from '@/app/_components/shared/table/types';
-import { CPStatusMap,  icon, route } from '@/constants';
-import { useState } from 'react';
-import { CardGroupProps } from '@/app/_components/shared/section-with-cards/types';
-import SvgIcon from '@/app/_components/icons/container';
-import { useRouter } from 'next/navigation';
-import { ModalProps } from '../../../modal/types';
-import {  getAllMyRequest, salaryAdvanceRequests } from '@/app/api/services/employee/benefits';
-import { useQuery } from '@tanstack/react-query';
-import { toast } from '@/hooks/use-toast';
-import { Skeleton } from '@mui/material';
+import SvgIcon from "@/app/_components/icons/container";
+import { ButtonType } from "@/app/_components/shared/page/heading/types";
+import { PageProps } from "@/app/_components/shared/page/types";
+import { CardGroupProps } from "@/app/_components/shared/section-with-cards/types";
+import { FieldType, TableProps } from "@/app/_components/shared/table/types";
+import {
+  getAllMyRequest,
+  salaryAdvanceRequests,
+} from "@/app/api/services/employee/benefits";
+import { CPStatusMap, icon, route } from "@/constants";
+import { toast } from "@/hooks/use-toast";
+import { Skeleton } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { ModalProps } from "../../../modal/types";
 
 // Custom hook
 const useSalaryAdvancePage = () => {
   const [openRequestModal, setOpenRequestModal] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
-  
-  
-  const { data, isLoading, refetch } = useQuery({
-  queryKey: ['salary-advance-requests'], // Unique query key
-  queryFn: async () => {
-    const response = await getAllMyRequest('desc', 1, 10); 
-    console.log(response.data);
-    return response.data.items;
-  },
-  refetchOnWindowFocus: false, // Prevent refetching on window focus
-  staleTime: 60000, // Cache for 1 minute
-  
- 
-});
 
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["salary-advance-requests"], // Unique query key
+    queryFn: async () => {
+      const response = await getAllMyRequest("desc", 1, 10);
+      console.log(response.data);
+      return response.data.items;
+    },
+    refetchOnWindowFocus: false, // Prevent refetching on window focus
+    staleTime: 60000, // Cache for 1 minute
+  });
 
   const [formData, setFormData] = useState({
-    advanceTaken: '',
-    installment: '',
-    paymentFrequency: '',
+    advanceTaken: "",
+    installment: "",
+    paymentFrequency: "",
   });
 
   console.log(formData);
@@ -49,7 +48,6 @@ const useSalaryAdvancePage = () => {
   };
 
   const handleFormSubmit = async () => {
-
     const preparedData = {
       ...formData,
       advanceTaken: Number(formData.advanceTaken),
@@ -61,28 +59,27 @@ const useSalaryAdvancePage = () => {
       console.log(response);
       if (response.createdAt !== "") {
         toast({
-          title: 'Success!',
-          description: 'Your salary advance request has been submitted successfully!',
+          title: "Success!",
+          description:
+            "Your salary advance request has been submitted successfully!",
         });
         setOpenRequestModal(false);
         setOpenSuccessModal(true);
-            refetch()
-
+        refetch();
       } else {
         toast({
-          title: 'Error',
-          description: `Request failed: ${response?.statusText || 'Unknown error'}`,
+          title: "Error",
+          description: `Request failed: ${
+            response?.statusText || "Unknown error"
+          }`,
         });
       }
     } catch (error) {
-      console.error('Error submitting request:', error);
+      console.error("Error submitting request:", error);
     }
 
-    refetch()
+    refetch();
   };
-
-
-
 
   const router = useRouter();
 
@@ -118,8 +115,8 @@ const useSalaryAdvancePage = () => {
         iconColorVariant: "warning",
       },
       {
-        labelText: 'Rejected Requests',
-        value: '3',
+        labelText: "Rejected Requests",
+        value: "3",
         valueBelow: true,
         icon: svgIcon,
         iconColorVariant: "error",
@@ -137,27 +134,32 @@ const useSalaryAdvancePage = () => {
     ],
     bodyRowData: isLoading
       ? Array(5).fill({
-          advanceTaken: <Skeleton/>,
-          status: <Skeleton/>,
-          amountRepaid: <Skeleton/>,
-          nextPaymentDate: <Skeleton/>,
+          advanceTaken: <Skeleton />,
+          status: <Skeleton />,
+          amountRepaid: <Skeleton />,
+          nextPaymentDate: <Skeleton />,
         })
-     : Array.isArray(data)
-        ? data.map((item: any) => ({
+      : Array.isArray(data)
+      ? data.map((item: any) => ({
           advanceTaken: `₦${item.advanceTaken.toLocaleString()}`,
           status: `${item.status}`,
-        amountRepaid: `₦${item.amountRepaid.toLocaleString()}`,
-        nextPaymentDate: new Date(item.nextPaymentDate).toLocaleDateString(),
-      }))
-    : [],
+          amountRepaid: `₦${item.amountRepaid.toLocaleString()}`,
+          nextPaymentDate: new Date(item.nextPaymentDate).toLocaleDateString(),
+        }))
+      : [],
     fieldTypes: [
       FieldType.text,
       FieldType.status,
       ...Array(2).fill(FieldType.text),
     ],
-    displayedFields: ['advanceTaken', 'status', 'amountRepaid', 'nextPaymentDate'],
+    displayedFields: [
+      "advanceTaken",
+      "status",
+      "amountRepaid",
+      "nextPaymentDate",
+    ],
     statusMap: CPStatusMap,
-    actions: [{ name: 'No Actions', onClick: () => {} }],
+    actions: [{ name: "No Actions", onClick: () => {} }],
     filters: [
       {
         name: "Status",
@@ -169,38 +171,41 @@ const useSalaryAdvancePage = () => {
   const requestModalProps: ModalProps = {
     open: openRequestModal,
     onClose: () => setOpenRequestModal(false),
-    title: 'Request Salary Advance',
-    subtitle: 'Fill in the details below',
+    title: "Request Salary Advance",
+    subtitle: "Fill in the details below",
     form: {
       gridSpacing: 4,
       inputFields: [
         {
-          name: 'Advance to be Taken',
-          type: 'text',
+          label: "Advance to be Taken",
+          type: "text",
           value: formData.advanceTaken,
-          setValue: (value: string | number) => handleInputChange('advanceTaken', value),
+          setValue: (value: string | number | undefined) =>
+            handleInputChange("advanceTaken", value ?? ""),
         },
         {
-          name: 'Installment Amount',
-          type: 'text',
+          label: "Installment Amount",
+          type: "text",
           value: formData.installment,
-          setValue: (value: string | number) => handleInputChange('installment', value),
+          setValue: (value: string | number | undefined) =>
+            handleInputChange("installment", value ?? ""),
         },
         {
-          name: 'Repayment Frequency',
-          type: 'select',
+          label: "Repayment Frequency",
+          type: "select",
           options: [
-            { label: 'Monthly', value: 'MONTHLY' },
-            { label: 'Weekly', value: 'WEEKLY' },
+            { label: "Monthly", value: "MONTHLY" },
+            { label: "Weekly", value: "WEEKLY" },
           ],
           value: formData.paymentFrequency,
-          setValue: (value: string | number) => handleInputChange('paymentFrequency', value),
+          setValue: (value: string | number | undefined) =>
+            handleInputChange("paymentFrequency", value ?? ""),
         },
       ],
     },
     buttonOne: {
       type: ButtonType.contained,
-      text: 'Submit Request',
+      text: "Submit Request",
       onClick: handleFormSubmit,
     },
     centerButton: true,
