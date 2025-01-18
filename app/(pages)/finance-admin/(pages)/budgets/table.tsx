@@ -7,16 +7,9 @@ import { RiSearchLine } from "react-icons/ri";
 
 const BudgetsTable = () => {
   // const { selectedItems, toggleSelection, selectAll, clearSelection } = useSelection<string>()
-  const { data: budgets, isLoading } = useAllBudget();
   // const { totalItems } = budgets?.data ?? { totalItems: 0 }
+  const { data: budgets, isLoading } = useAllBudget();
 
-  // const handleSelectAll = () => {
-  //   if (selectedItems.size === totalItems) {
-  //     clearSelection();
-  //   } else {
-  //     selectAll(budgets?.data?.items?.map(budget => budget.id) ?? []);
-  //   }
-  // }
 
   return (
     <div className="common-card space-y-4">

@@ -2,5 +2,6 @@ export const queryKeys = {
   SUPER_ADMIN: 'super-admin',
   BUDGETS: 'budgets',
   BANKING: 'banking',
-  BENEFICIARIES: 'beneficiaries'
+  BENEFICIARIES: 'beneficiaries',
+  MY_TRANSFERS: 'my-transfers',
 }

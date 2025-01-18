@@ -1,10 +1,11 @@
-import { getMyBeneficiaries } from "@/app/_core/actions/finance/banking"
+import { getMyBeneficiaries, getMyTransfers } from "@/app/_core/actions/finance/banking"
 import { headers } from "@/app/_core/actions/session"
 import { handleError, Http } from "@/app/_core/axios"
 import { IRes } from "@/app/_core/interfaces/res"
 import { queryKeys } from "@/app/_core/queryKeys"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { getSession } from "next-auth/react"
+import { useSearchParams } from "next/navigation"
 import { toast } from "react-toastify"
 
 
@@ -91,7 +92,45 @@ export const useBankingMutations = () => {
 export const useBeneficiaries = () => {
   return useQuery({
     queryKey: [queryKeys.BENEFICIARIES],
-    queryFn: () => getMyBeneficiaries(),
+    queryFn: getMyBeneficiaries,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    initialData: undefined,
+    retry: false,
+  })
+}
+
+
+export const useMyTransfers = ({
+  queryKey = queryKeys.MY_TRANSFERS as string | string[],
+  endpoint = 'bank/my-transfers',
+  search
+}: {
+  queryKey?: string | string[]
+  endpoint?: string
+  search?: string
+}) => {
+  const searchParams = useSearchParams();
+
+  const sortOrder = searchParams.get('sortOrder') ?? 'asc';
+  const status = searchParams.get('status')?? 'PENDING';
+  const page = searchParams.get('page') ?? '1';
+  const limit = searchParams.get('limit') ?? '10';
+
+  const processedQuery = (key: string | string[]) => Array.isArray(key) ? key : [key]
+
+
+
+  return useQuery({
+    queryKey: [...processedQuery(queryKey), sortOrder, status, page, limit, search],
+    queryFn: () => getMyTransfers({
+      sortOrder: sortOrder,
+      status: status ?? 'Pending',
+      page: Number(page),
+      limit: Number(limit),
+      search: search,
+    }, { endpoint }),
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,

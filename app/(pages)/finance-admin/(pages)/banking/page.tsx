@@ -4,7 +4,7 @@ import AppButton from "@/app/_components/shared/button";
 import AppInputText from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import AppTabs from "@/app/_components/shared/tabs";
-import { useBankingMutations } from "@/app/_core/use-cases/finance/useBanking";
+import { useBankingMutations, useMyTransfers } from "@/app/_core/use-cases/finance/useBanking";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { ChartConfig } from "@/components/ui/chart";
 import { useIsMutating } from "@tanstack/react-query";
@@ -196,13 +196,18 @@ const BeneficiaryForm = () => {
 
 
 const TransferStatuses = () => {
-	type TransferStatusType = 'Pending' | 'Approved' | 'Failed' | 'Listing';
-	const [status, setStatus] = useState<TransferStatusType>('Pending');
+	const { data } = useMyTransfers({})
+
+	console.log(data)
+
+
+	type TransferStatusType = 'PENDING' | 'APPROVED' | 'FAILED' | 'LISTING';
+	const [status, setStatus] = useState<TransferStatusType>('PENDING');
 	const tabs = [
-		{ label: 'Pending Transfers', onClick: () => setStatus('Pending') },
-		{ label: 'Approved Transfers', onClick: () => setStatus('Approved'), },
-		{ label: 'Failed Transfers', onClick: () => setStatus('Failed'), },
-		{ label: 'Transfer Listing', onClick: () => setStatus('Listing'), },
+		{ label: 'Pending Transfers', onClick: () => setStatus('PENDING') },
+		{ label: 'Approved Transfers', onClick: () => setStatus('APPROVED'), },
+		{ label: 'Failed Transfers', onClick: () => setStatus('FAILED'), },
+		{ label: 'Transfer Listing', onClick: () => setStatus('LISTING'), },
 	]
 	return (
 
@@ -214,7 +219,7 @@ const TransferStatuses = () => {
 					tabHorizontalPadding="px-7"
 				/>
 			</div>
-			{(status === 'Pending' || status === 'Approved' || status === 'Failed' || status === 'Listing') && <TransactionsTable />}
+			{(status === 'PENDING' || status === 'APPROVED' || status === 'FAILED' || status === 'LISTING') && <TransactionsTable />}
 		</div>
 	)
 }

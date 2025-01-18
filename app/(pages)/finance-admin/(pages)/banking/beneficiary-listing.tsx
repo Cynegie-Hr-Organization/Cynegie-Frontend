@@ -7,6 +7,7 @@ import { AppSelect } from "@/app/_components/shared/select";
 import { IBeneficiary } from "@/app/_core/actions/finance/banking";
 import { useBeneficiaries } from "@/app/_core/use-cases/finance/useBanking";
 import { DrawerDialog } from "@/components/drawer/modal";
+import { localTime } from "@/lib/utils";
 import { useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { LuListFilter } from "react-icons/lu";
@@ -17,8 +18,6 @@ const BeneficiaryListing = () => {
   const { data } = useBeneficiaries();
   const { beneficiaries } = data ?? {};
 
-  console.log(data);
-
 
   return (
     <div className="space-y-3 max-h-[460px] h-max lg:h-full">
@@ -27,7 +26,11 @@ const BeneficiaryListing = () => {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
           <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
             <RiSearchLine className="text-gray-400" />
-            <input type="text" placeholder="Search here..." className="w-full h-9 px-2 outline-none" />
+            <input
+              type="text"
+              placeholder="Search here..."
+              className="w-full h-9 px-2 outline-none"
+            />
           </div>
 
           <AppDropdownMenu trigger={
@@ -91,7 +94,7 @@ const BeneficiaryListing = () => {
                     <td className='px-5 py-4'>{beneficiary?.accountName}</td>
                     <td className='px-5 py-4'>{beneficiary?.accountNumber}</td>
                     <td className='px-5 py-4'>{beneficiary?.ownedBy}</td>
-                    <td className='px-5 py-4'>{beneficiary?.dateAdded}</td>
+                    <td className='px-5 py-4'>{localTime(beneficiary?.dateAdded, 'Do MMM, yyyy')}</td>
                     <td className='px-5 py-4'>
                       <AppDropdownMenu
                         width="w-max"
