@@ -1,5 +1,5 @@
-'use client';
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 
 const useHandleRowChecks = <T,>() => {
   const [checkedRows, setCheckedRows] = useState<T[]>([]);

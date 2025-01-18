@@ -4,25 +4,28 @@ import { useRouter } from "next/navigation";
 import { FieldType, TableProps } from "@/app/_components/shared/table/types";
 import { useQuery } from "@tanstack/react-query";
 import Skeleton from "@mui/material/Skeleton";
-import { getAllAssignCourse } from "@/app/api/services/employee/learning";
-import { AppRequestStatusMap } from "@/constants";
+import {
+  completeCourse,
+  getAllAssignCourse,
+} from "@/app/api/services/employee/learning";
+import { CourseStatusMap } from "@/constants";
+import { useToast } from "@/hooks/use-toast";
 
 const useMyCoursesTable = () => {
   const router = useRouter();
 
-  // Fetch courses using useQuery
+  const { toast } = useToast();
+
   const { data: courses, isLoading } = useQuery({
     queryKey: ["assigned-courses"],
     queryFn: async () => {
       const response = await getAllAssignCourse("desc", 1, 10);
-      console.log(response)
+      console.log(response);
       return response.data.items;
     },
     refetchOnWindowFocus: false,
     staleTime: 60000,
   });
-
-  
 
   const tableProps: TableProps = {
     title: "My Courses",
@@ -35,15 +38,15 @@ const useMyCoursesTable = () => {
           status: <Skeleton width={100} />,
         })
       : Array.isArray(courses)
-  ? courses.map((course) => ({
-      title: course.courseTitle,
-      status: course.status,
-    }))
-  : [],
+        ? courses.map((course) => ({
+            id: course.id,
+            title: course.courseTitle,
+            status: course.status,
+          }))
+        : [],
     displayedFields: ["title", "status"],
     fieldTypes: [FieldType.text, FieldType.status],
-      statusMap: AppRequestStatusMap,
-  
+    statusMap: CourseStatusMap,
     actions: [
       {
         name: "Continue Course",
@@ -53,16 +56,49 @@ const useMyCoursesTable = () => {
       },
       {
         name: "View Details",
-        onClick: () =>
-          router.push("/employee/learning-development/view-course-details"),
+        onClick: () => {},
+        onDataReturned: (id) => {
+          router.push(
+            `/employee/learning-development/view-course-details/${id}`,
+          );
+        },
       },
       {
         name: "Mark as Completed",
         onClick: () => {
-          console.log("Mark as Completed");
+          console.log("Mark as Completed"); //TODO: Implement this
+        },
+        onDataReturned: async (id) => {
+          try {
+            const response = await completeCourse(id, "COMPLETED");
+            if (response.status === 200) {
+              toast({
+                title: "Success!",
+                description: "Course status updated successfully.",
+              });
+              console.log(
+                "Course marked as completed successfully:",
+                response.data,
+              );
+            } else {
+              toast({
+                title: "Warning!",
+                description: `Unexpected response status: ${response.status}`,
+              });
+              console.warn("Unexpected status in response:", response.status);
+            }
+          } catch (error) {
+            toast({
+              title: "Error!",
+              description:
+                "Failed to mark course as completed. Please try again.",
+            });
+            console.error("Failed to mark course as completed:", error);
+          }
         },
       },
     ],
+    fieldToReturnOnActionItemClick: "id",
     filters: [
       { name: "Completion Status", items: ["All", "Completed", "In Progress"] },
     ],

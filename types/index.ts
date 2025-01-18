@@ -15,6 +15,14 @@ export type ColorVariant =
   id: string;
 };
 
+export type FetchParams = {
+  page: number;
+  limit: number;
+  sortOrder: "asc" | "desc";
+  search?: string;
+};
+
+
 export type SummaryCard = {
   value: number;
   iconColorVariant: ColorVariant;

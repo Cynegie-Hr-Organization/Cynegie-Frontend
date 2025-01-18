@@ -1,14 +1,15 @@
-import { ChangeEvent, useState, useEffect } from 'react';
+import { ChangeEvent, useState, useEffect } from "react";
 
 function generateRange(start: number, end: number): number[] {
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 }
 
 const useCheckboxes = <T,>(
-  rows: T[],
-  getCheckedItems?: (rows: T[]) => void
+p0: Record<string, any>[], getCheckedRows: ((arg: Record<string, any>[]) => void) | undefined, defaultCheckedRows: Record<string, any>[] | undefined, rows: T[], getCheckedItems?: (rows: T[]) => void,
 ) => {
-  const [selectedItemsIndexes, setSelectedItemsIndexes] = useState<number[]>([]);
+  const [selectedItemsIndexes, setSelectedItemsIndexes] = useState<number[]>(
+    [],
+  );
   const [checkedItems, setCheckedItems] = useState<T[]>([]);
 
   useEffect(() => {
@@ -31,7 +32,7 @@ const useCheckboxes = <T,>(
 
   const handleCheckboxChange = (
     event: ChangeEvent<HTMLInputElement>,
-    rowIndex: number
+    rowIndex: number,
   ) => {
     setSelectedItemsIndexes((prevSelectedItems) => {
       let itemsIndexes: number[] = [];
@@ -64,7 +65,7 @@ const useCheckboxes = <T,>(
     setTimeout(() => {
       setCheckedItems([]);
       setSelectedItemsIndexes([]);
-    }, 0);  // Immediate delay to prevent an immediate re-trigger
+    }, 0); // Immediate delay to prevent an immediate re-trigger
   };
 
   return { checkAllBoxProps, checkBoxProps, checkedItems, removeChecks };

@@ -83,3 +83,20 @@ export const completeCourse = async (id : any , status : any) => {
 
   return response;
 }
+
+export const fetchCourseById = async (id: any) => {
+  const session = await getServerSession(authOptions);
+
+  const response = await request(
+    "GET",
+    `${baseUrl}/v1/course-management/${id}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.token}`,
+      },
+    },
+  );
+
+  return response;
+};

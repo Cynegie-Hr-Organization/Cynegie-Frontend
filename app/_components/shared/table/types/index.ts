@@ -1,13 +1,14 @@
-import { ColorVariant } from '@/types';
-import { FormProps } from '../../form/types';
-import { Permission } from '../cell/variants/permissions';
+import { ColorVariant } from "@/types";
+import { FormProps } from "../../form/types";
+import { Permission } from "../cell/variants/permissions";
 
 export type TableProps<T = Record<string, any>> = {
   title?: string;
   headerRowData: string[];
-  bodyRowData: T[];
+  bodyRowData: T[] | undefined;
   displayedFields: string[];
   fieldTypes: FieldType[];
+  skeletonSizes?: ("small" | "medium" | "large")[];
   hasCheckboxes?: boolean;
   hasActionsColumn?: boolean;
   getCheckedRows?: (arg: T[]) => void;
@@ -30,6 +31,8 @@ export type TableProps<T = Record<string, any>> = {
   hasPagination?: boolean;
   clearChecks?: boolean;
   onPermissionsClick?: (permissions: Permission[]) => void;
+  onSearch?: (arg: string) => void;
+  defaultCheckedRows?: T[];
 };
 
 export type Filter = {
@@ -44,13 +47,13 @@ export type TableAction = {
 };
 
 export enum FieldType {
-  text = 'text',
-  link = 'link',
-  progress = 'progress',
-  status = 'status',
-  attendanceStatus = 'attendance-status',
-  nextLesson = 'lesson',
-  permissions = 'permissions',
+  text = "text",
+  link = "link",
+  progress = "progress",
+  status = "status",
+  attendanceStatus = "attendance-status",
+  nextLesson = "lesson",
+  permissions = "permissions",
 }
 
 export type TablePaginationProps = {

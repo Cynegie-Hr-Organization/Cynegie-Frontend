@@ -1,98 +1,102 @@
-import { ButtonType } from '@/app/_components/shared/page/heading/types';
-import { PageProps } from '@/app/_components/shared/page/types';
-import { FieldType, TableProps } from '@/app/_components/shared/table/types';
-import { icon, route } from '@/constants';
-import { useEffect, useState } from 'react';
-import { CardGroupProps } from '@/app/_components/shared/section-with-cards/types';
-import SvgIcon from '@/app/_components/icons/container';
-import { useRouter } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
-import { ModalProps } from '../../../modal/types';
-import { getAllBenefits, getAllMyBenefitsRequest, requestbenefits } from '@/app/api/services/employee/benefits';
-import Skeleton from '@mui/material/Skeleton';
+import { ButtonType } from "@/app/_components/shared/page/heading/types";
+import { PageProps } from "@/app/_components/shared/page/types";
+import { FieldType, TableProps } from "@/app/_components/shared/table/types";
+import { icon, route } from "@/constants";
+import { useEffect, useState } from "react";
+import { CardGroupProps } from "@/app/_components/shared/section-with-cards/types";
+import SvgIcon from "@/app/_components/icons/container";
+import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { ModalProps } from "../../../modal/types";
+import {
+  getAllBenefits,
+  getAllMyBenefitsRequest,
+  requestbenefits,
+} from "@/app/api/services/employee/benefits";
+import Skeleton from "@mui/material/Skeleton";
+import { toast } from "react-toastify";
 
 const useBenefitsPage = () => {
   const [openRequestModal, setOpenRequestModal] = useState(false);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
-    const [benefits, setBenefits] = useState<any[]>([]);
+  const [allBenefits, setAllBenefits] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-    const [formData, setFormData] = useState({
-    benefit: '',
-    provider: '',
-    coveragePlan: '',
-    monthlyCost : ''
-  });
-
+  const [benefit, setBenefit] = useState<string | number | undefined>("");
+  const [provider, setProvider] = useState<string | number | undefined>("");
+  const [coveragePlan, setCoveragePlan] = useState<string | number | undefined>(
+    "",
+  );
+  const [monthlyCost, setMonthlyCost] = useState<string | number | undefined>(
+    "",
+  );
 
   const router = useRouter();
 
-  // Fetch apps data when the component mounts
-    useEffect(() => {
-      const fetchBenefits = async () => {
-        const fetchedBenefits = await getAllBenefits();
-        console.log(fetchedBenefits);
-        setBenefits(fetchedBenefits);
-        setLoading(false);
-      };
-  
-      fetchBenefits();
-    }, []);
+  useEffect(() => {
+    const fetchBenefits = async () => {
+      const fetchedBenefits = await getAllBenefits();
+      console.log(fetchedBenefits);
+      setAllBenefits(fetchedBenefits);
+      setLoading(false);
+    };
 
-const handleInputChange = (name: string, value: string | number) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-};
-  
+    fetchBenefits();
+  }, []);
+
   const handleSubmitRequest = async () => {
     const payload = {
-       ...formData,
-    monthlyCost : Number(formData.monthlyCost)
-    }
+      benefit,
+      provider,
+      coveragePlan,
+      monthlyCost: Number(monthlyCost),
+    };
     console.log(payload);
-      try {
-        const response = await requestbenefits(payload);
-        console.log(response);
-        if (response?.createdAt !== "") {
-          setOpenRequestModal(false);
-          setOpenSuccessModal(true);
-          refetch();
-        } else {
-          console.error('Request failed:', response?.message || 'Unknown error');
-        }
-      } catch (error) {
-        console.error('Error while making app request:', error);
+    try {
+      const response = await requestbenefits(payload);
+      console.log(response);
+      if (response?.createdAt.length > 0) {
+        setOpenRequestModal(false);
+        setOpenSuccessModal(true);
+        refetch();
+      } else {
+        toast.error("Request failed:", response?.message || "Unknown error");
       }
+    } catch (error) {
+      toast.error("Request failed:", (error as any).message || "Unknown error");
+    }
   };
 
-  const { data: benefitsRequests, refetch, isLoading } = useQuery({
-    queryKey: ['benefitsRequest'],
+  const {
+    data: benefitsRequests,
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ["benefitsRequest"],
     queryFn: async () => {
-      const response = await getAllMyBenefitsRequest('desc', 1, 10);
-      return response.data
+      const response = await getAllMyBenefitsRequest("desc", 1, 10);
+      return response.data;
     },
     refetchOnWindowFocus: false, // Prevent refetching on window focus
     staleTime: 60000, // Cache for 1 minute
-  })
-  
+  });
 
-
-  
+  const isFormComplete = () => {
+    return benefit && provider && coveragePlan && monthlyCost;
+  };
 
   const pageProps: PageProps = {
-    title: 'Benefits',
-    subtitle: 'All your benefits below',
+    title: "Benefits",
+    subtitle: "All your benefits below",
     hasButtons: true,
     leftButton: {
       type: ButtonType.outlined,
-      text: 'Salary Advance',
+      text: "Salary Advance",
       onClick: () => router.push(route.employee.benefits.salaryAdvance),
     },
     rightButton: {
       type: ButtonType.contained,
-      text: 'Request Benefits',
+      text: "Request Benefits",
       onClick: () => setOpenRequestModal(true),
     },
   };
@@ -103,64 +107,60 @@ const handleInputChange = (name: string, value: string | number) => {
     gridItemSize: { xs: 12, sm: 6, md: 3 },
     cards: [
       {
-        labelText: 'Total Benefits Enrolled',
-        value: '10',
+        labelText: "Total Benefits Enrolled",
+        value: "10",
         valueBelow: true,
         icon: giftIcon,
-        iconColorVariant: 'success',
+        iconColorVariant: "success",
       },
       {
-        labelText: 'Active Benefits',
-        value: '4',
+        labelText: "Active Benefits",
+        value: "4",
         valueBelow: true,
         icon: giftIcon,
-        iconColorVariant: 'info',
+        iconColorVariant: "info",
       },
       {
-        labelText: 'Pending Benefits',
-        value: '3',
+        labelText: "Pending Benefits",
+        value: "3",
         valueBelow: true,
         icon: giftIcon,
-        iconColorVariant: 'warning',
+        iconColorVariant: "warning",
       },
       {
-        labelText: 'Upcoming Expiration',
-        value: '2',
+        labelText: "Upcoming Expiration",
+        value: "2",
         valueBelow: true,
         icon: giftIcon,
-        iconColorVariant: 'error',
+        iconColorVariant: "error",
       },
     ],
   };
 
   const tableProps: TableProps = {
     hasActionsColumn: true,
-    headerRowData: [
-      'Benefit Name',
-      'Provider',
-      'Coverage Plan',
-    ],
+    headerRowData: ["Benefit Name", "Provider", "Coverage Plan"],
     bodyRowData: isLoading
       ? Array(5).fill({
-        name: <Skeleton />,
-        type: <Skeleton />,
-        provider: <Skeleton />,
-        coveragePlan : <Skeleton/>,
-      })
+          name: <Skeleton />,
+          type: <Skeleton />,
+          provider: <Skeleton />,
+          coveragePlan: <Skeleton />,
+        })
       : benefitsRequests?.map((request) => ({
-        name: request.benefit?.name,
-        provider: request.provider,
-        coveragePlan : request.coveragePlan,
-      })) || [],
+          name: request.benefit?.name,
+          provider: request.provider,
+          coveragePlan: request.coveragePlan,
+        })) || [],
     fieldTypes: Array(4).fill(FieldType.text),
-    displayedFields: ['name', 'provider', 'coveragePlan'],
+    displayedFields: ["name", "provider", "coveragePlan"],
     actions: [
-      { name: 'View Details', onClick: () => setOpenDetailsModal(true) },
+      { name: "View Details", onClick: () => setOpenDetailsModal(true) },
     ],
     filters: [
       {
-        name: 'Benefit Type',
-        items: ['Health', 'Pension', 'Retirement', 'Transport', 'Life'],
+        name: "Benefit Type",
+        items: ["Health", "Pension", "Retirement", "Transport", "Life"],
       },
     ],
   };
@@ -168,49 +168,49 @@ const handleInputChange = (name: string, value: string | number) => {
   const requestModalProps: ModalProps = {
     open: openRequestModal,
     onClose: () => setOpenRequestModal(false),
-    title: 'Request Benefit',
-    subtitle: 'Request benefit below',
+    title: "Request Benefit",
+    subtitle: "Request benefit below",
     form: {
       gridSpacing: 4,
       inputFields: [
-        
         {
-          name: 'Benefit Type',
-          type: 'select',
-          options: benefits.map((benefit) => ({
+          name: "Benefit Type",
+          type: "select",
+          options: allBenefits.map((benefit) => ({
             label: benefit.label,
             value: benefit.value,
           })),
-           value: formData.benefit,
-          setValue: (value: string | number) => handleInputChange('benefit', value),
+          value: benefit,
+          setValue: setBenefit,
           disabled: loading,
         },
         {
-          name: 'Provider',
-          type: 'text',
-          placeholder: 'Provider',
-          value: formData.provider,
-          setValue: (value: string | number) => handleInputChange('provider', value),
+          name: "Provider",
+          type: "text",
+          placeholder: "Provider",
+          value: provider,
+          setValue: setProvider,
         },
         {
-          name: 'Coverage Detail',
-          type: 'text',
-          placeholder: 'Sample description here',
-          value: formData.coveragePlan,
-          setValue: (value: string | number) => handleInputChange('coveragePlan', value),
+          name: "Coverage Detail",
+          type: "text",
+          placeholder: "Sample description here",
+          value: coveragePlan,
+          setValue: setCoveragePlan,
         },
         {
-          name: 'Monthly Cost',
-          type: 'text',
-          placeholder: '',
-          value: formData.monthlyCost,
-          setValue: (value: string | number) => handleInputChange('monthlyCost', value),
+          name: "Monthly Cost",
+          type: "text",
+          placeholder: "",
+          value: monthlyCost,
+          setValue: setMonthlyCost,
         },
       ],
     },
     buttonOne: {
-      type: ButtonType.contained,
-      text: 'Request Beneift',
+      type: isFormComplete() ? ButtonType.contained : ButtonType.disabled,
+
+      text: "Request Beneift",
       onClick: handleSubmitRequest,
     },
     centerButton: true,
@@ -219,40 +219,40 @@ const handleInputChange = (name: string, value: string | number) => {
   const detailsModalProps: ModalProps = {
     open: openDetailsModal,
     onClose: () => setOpenDetailsModal(false),
-    title: 'View Details',
-    subtitle: 'View details below',
+    title: "View Details",
+    subtitle: "View details below",
     detailGroup: {
       spaceBetweenLayout: true,
       details: [
         {
-          name: 'Benefit Name',
-          value: 'Retirment Plans',
+          name: "Benefit Name",
+          value: "Retirment Plans",
         },
         {
-          name: 'Benefit Type',
-          value: 'Financial',
+          name: "Benefit Type",
+          value: "Financial",
         },
         {
-          name: 'Provider',
-          value: 'Cynegie',
+          name: "Provider",
+          value: "Cynegie",
         },
         {
-          name: 'Start Date',
-          value: 'January 30, 2024',
+          name: "Start Date",
+          value: "January 30, 2024",
         },
         {
-          name: 'End Date',
-          value: 'December 21, 2024',
+          name: "End Date",
+          value: "December 21, 2024",
         },
         {
-          name: 'Employee Contribution',
-          value: 'N20,000',
+          name: "Employee Contribution",
+          value: "N20,000",
         },
       ],
     },
     buttonOne: {
       type: ButtonType.outlinedBlue,
-      text: 'Contact HR',
+      text: "Contact HR",
       onClick: () => setOpenDetailsModal(false),
     },
     centerButton: true,
@@ -263,11 +263,11 @@ const handleInputChange = (name: string, value: string | number) => {
     onClose: () => setOpenSuccessModal(false),
     hasHeading: false,
     reduceVerticalGap: true,
-    centerImage: '/icons/modal-success.svg',
-    centerTitle: 'App Requested',
-    centerMessage: 'Your request has been sent successfully',
+    centerImage: "/icons/modal-success.svg",
+    centerTitle: "App Requested",
+    centerMessage: "Your request has been sent successfully",
     buttonOne: {
-      text: 'Return to App Dashboard',
+      text: "Return to App Dashboard",
       type: ButtonType.contained,
       onClick: () => {
         setOpenSuccessModal(false);
