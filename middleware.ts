@@ -27,6 +27,5 @@ export default withAuth({
 });
 
 export const config = {
-  // matcher: ["/hr-admin/:path*", "/super-admin/:path*"], // Match paths for HR Admin and Super Admin
-  matcher: [],
+  matcher: ["/hr-admin/:path*", "/super-admin/:path*"], // Match paths for HR Admin and Super Admin
 };

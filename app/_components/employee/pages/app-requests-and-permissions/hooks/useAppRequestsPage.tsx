@@ -1,47 +1,67 @@
+import Skeleton from "@mui/material/Skeleton";
+import { useQuery } from "@tanstack/react-query";
+import { debounce } from "lodash";
+import { useEffect, useState } from "react";
+
 import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import { PageProps } from "@/app/_components/shared/page/types";
 import { FieldType, TableProps } from "@/app/_components/shared/table/types";
 import {
+  fetchAppRequestById,
   getAllMyAppRequest,
   getApps,
   requestApp,
 } from "@/app/api/services/employee/app-request";
 import { AppRequestStatusMap } from "@/constants";
-import Skeleton from "@mui/material/Skeleton";
-import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { FetchParams } from "@/types";
 import { ModalProps } from "../../../modal/types";
 
 const useAppRequestsPage = () => {
+  // State variables
   const [openRequestModal, setOpenRequestModal] = useState(false);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [fetchedApps, setFetchedApps] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [formData, setFormData] = useState({
-    appId: "",
-    reasonForRequest: "",
+  const [loading, setLoading] = useState(true);
+  const [appId, setAppId] = useState<string | number | undefined>("");
+  const [reasonForRequest, setReasonForRequest] = useState<
+    string | number | undefined
+  >("");
+  const [detailsData, setDetailsData] = useState<any | null>(null);
+  const [fetchParams, setFetchParams] = useState<FetchParams>({
+    page: 1,
+    limit: 10,
+    sortOrder: "desc",
+    search: undefined,
   });
 
-  // Fetch apps data when the component mounts
+  // Debounced search
+  const debouncedSearch = debounce((value: string) => {
+    setFetchParams((prev) => ({ ...prev, search: value || undefined }));
+  }, 300);
+
+  const handleSearch = (value: string) => {
+    debouncedSearch(value);
+  };
+
+  // Fetch apps on component mount
   useEffect(() => {
     const fetchApps = async () => {
-      const fetchedApps = await getApps();
-      setFetchedApps(fetchedApps);
-      setLoading(false);
+      try {
+        const apps = await getApps();
+        setFetchedApps(apps);
+      } catch (error) {
+        console.error("Failed to fetch apps:", error);
+      } finally {
+        setLoading(false);
+      }
     };
-
     fetchApps();
   }, []);
 
-  const handleInputChange = (name: string, value: string | number) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
+  // Submit app request
   const handleSubmitRequest = async () => {
+    const formData = { appId, reasonForRequest };
     try {
       const response = await requestApp(formData);
       if (response?.status === 201) {
@@ -56,21 +76,27 @@ const useAppRequestsPage = () => {
     }
   };
 
-  // Fetch app requests using useQuery
+  // Fetch app requests
   const {
     data: appRequests,
     refetch,
     isLoading,
   } = useQuery({
-    queryKey: ["app-requests"], // Unique query key
+    queryKey: ["app-requests", { ...fetchParams }],
     queryFn: async () => {
-      const response = await getAllMyAppRequest("desc", 1, 10);
+      const response = await getAllMyAppRequest(
+        fetchParams.sortOrder,
+        fetchParams.page,
+        fetchParams.limit,
+        fetchParams.search
+      );
       return response.data.items;
     },
-    refetchOnWindowFocus: false, // Prevent refetching on window focus
-    staleTime: 60000, // Cache for 1 minute
+    refetchOnWindowFocus: false,
+    staleTime: 60000,
   });
 
+  // Page properties
   const pageProps: PageProps = {
     title: "Your Apps & Request",
     subtitle: "All Apps and Requests Below",
@@ -83,21 +109,22 @@ const useAppRequestsPage = () => {
     rightButtonSm: true,
   };
 
+  // Table properties
   const tableProps: TableProps = {
     hasCheckboxes: true,
     hasActionsColumn: true,
-    headerRowData: ["Request ID", "App Name", "Access Level", "Request Date"],
+    headerRowData: ["Request ID", "App Name", "Status", "Request Date"],
     bodyRowData: isLoading
       ? Array(5).fill({
           requestId: <Skeleton width={100} />,
           appName: <Skeleton width={150} />,
-          accessLevel: <Skeleton width={100} />,
+          status: <Skeleton width={100} />,
           requestDate: <Skeleton width={120} />,
         })
       : appRequests?.map((request) => ({
           requestId: request.id,
           appName: request.appId.appName,
-          accessLevel: request.status,
+          status: request.status,
           requestDate: new Date(request.requestDate).toLocaleDateString(),
         })) || [],
     fieldTypes: [
@@ -105,20 +132,34 @@ const useAppRequestsPage = () => {
       FieldType.status,
       FieldType.text,
     ],
-
     statusMap: AppRequestStatusMap,
-    displayedFields: ["requestId", "appName", "accessLevel", "requestDate"],
+    displayedFields: ["requestId", "appName", "status", "requestDate"],
     actions: [
-      { name: "View Details", onClick: () => setOpenDetailsModal(true) },
+      {
+        name: "View Details",
+        onClick: () => setOpenDetailsModal(true),
+        onDataReturned: async (id) => {
+          try {
+            const data = await fetchAppRequestById(id);
+            setDetailsData(data.data);
+            setOpenDetailsModal(true);
+          } catch (error) {
+            console.error("Failed to fetch app request details:", error);
+          }
+        },
+      },
     ],
+    fieldToReturnOnActionItemClick: "requestId",
+    onSearch: handleSearch,
     filters: [{ name: "Access Level", items: ["All", "Admin", "Read"] }],
   };
 
+  // Modal properties
   const requestModalProps: ModalProps = {
     open: openRequestModal,
     onClose: () => setOpenRequestModal(false),
     title: "App Request",
-    subtitle: "Fill in the details below to return an app",
+    subtitle: "Fill in the details below to request an app",
     form: {
       gridSpacing: 4,
       inputFields: [
@@ -129,18 +170,16 @@ const useAppRequestsPage = () => {
             label: app.label,
             value: app.value,
           })),
-          value: formData.appId,
-          setValue: (value: string | number | undefined) =>
-            handleInputChange("appId", value ?? ""),
+          value: appId,
+          setValue: setAppId,
           disabled: loading,
         },
         {
           label: "Reason",
           type: "text",
-          placeholder: "Clear description of why you are returning it",
-          value: formData.reasonForRequest,
-          setValue: (value: string | number | undefined) =>
-            handleInputChange("reasonForRequest", value ?? ""),
+          placeholder: "Clear description of why you are requesting it",
+          value: reasonForRequest,
+          setValue: setReasonForRequest,
         },
       ],
     },
@@ -163,25 +202,19 @@ const useAppRequestsPage = () => {
     subtitle: "View app details below",
     detailGroup: {
       gridLayout: "view-details-two",
-      details: [
-        {
-          name: "Assigned To",
-          value: "Salem David",
-        },
-        {
-          name: "App Name",
-          value: "Figma",
-        },
-        {
-          name: "Request Id",
-          value: "W88401231AX",
-        },
-        {
-          name: "App Details",
-          value:
-            "Figma app aims to streamline and optimize human resource processes by providing an all-in-one platform for managing employee records, payroll, recruitment, performance evaluations, and compliance tracking.",
-        },
-      ],
+      details: detailsData
+        ? [
+            { name: "Request ID", value: detailsData.id || "N/A" },
+            { name: "App Name", value: detailsData.appId?.appName || "N/A" },
+            { name: "Access Level", value: detailsData.accessLevel || "N/A" },
+            {
+              name: "Request Date",
+              value:
+                new Date(detailsData.requestDate).toLocaleDateString() || "N/A",
+            },
+            { name: "Status", value: detailsData.status || "N/A" },
+          ]
+        : [],
     },
   };
 
@@ -196,9 +229,7 @@ const useAppRequestsPage = () => {
     buttonOne: {
       text: "Return to App Dashboard",
       type: ButtonType.contained,
-      onClick: () => {
-        setOpenSuccessModal(false);
-      },
+      onClick: () => setOpenSuccessModal(false),
     },
     centerButton: true,
   };

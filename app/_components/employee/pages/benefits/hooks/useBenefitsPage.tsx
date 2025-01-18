@@ -13,60 +13,57 @@ import Skeleton from "@mui/material/Skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { ModalProps } from "../../../modal/types";
 
 const useBenefitsPage = () => {
   const [openRequestModal, setOpenRequestModal] = useState(false);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
-  const [benefits, setBenefits] = useState<any[]>([]);
+  const [allBenefits, setAllBenefits] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [formData, setFormData] = useState({
-    benefit: "",
-    provider: "",
-    coveragePlan: "",
-    monthlyCost: "",
-  });
+  const [benefit, setBenefit] = useState<string | number | undefined>("");
+  const [provider, setProvider] = useState<string | number | undefined>("");
+  const [coveragePlan, setCoveragePlan] = useState<string | number | undefined>(
+    ""
+  );
+  const [monthlyCost, setMonthlyCost] = useState<string | number | undefined>(
+    ""
+  );
 
   const router = useRouter();
 
-  // Fetch apps data when the component mounts
   useEffect(() => {
     const fetchBenefits = async () => {
       const fetchedBenefits = await getAllBenefits();
       console.log(fetchedBenefits);
-      setBenefits(fetchedBenefits);
+      setAllBenefits(fetchedBenefits);
       setLoading(false);
     };
 
     fetchBenefits();
   }, []);
 
-  const handleInputChange = (name: string, value: string | number) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
   const handleSubmitRequest = async () => {
     const payload = {
-      ...formData,
-      monthlyCost: Number(formData.monthlyCost),
+      benefit,
+      provider,
+      coveragePlan,
+      monthlyCost: Number(monthlyCost),
     };
     console.log(payload);
     try {
       const response = await requestbenefits(payload);
       console.log(response);
-      if (response?.createdAt !== "") {
+      if (response?.createdAt.length > 0) {
         setOpenRequestModal(false);
         setOpenSuccessModal(true);
         refetch();
       } else {
-        console.error("Request failed:", response?.message || "Unknown error");
+        toast.error("Request failed:", response?.message || "Unknown error");
       }
     } catch (error) {
-      console.error("Error while making app request:", error);
+      toast.error("Request failed:", (error as any).message || "Unknown error");
     }
   };
 
@@ -83,6 +80,10 @@ const useBenefitsPage = () => {
     refetchOnWindowFocus: false, // Prevent refetching on window focus
     staleTime: 60000, // Cache for 1 minute
   });
+
+  const isFormComplete = () => {
+    return benefit && provider && coveragePlan && monthlyCost;
+  };
 
   const pageProps: PageProps = {
     title: "Benefits",
@@ -175,43 +176,40 @@ const useBenefitsPage = () => {
         {
           label: "Benefit Type",
           type: "select",
-          options: benefits.map((benefit) => ({
+          options: allBenefits.map((benefit) => ({
             label: benefit.label,
             value: benefit.value,
           })),
-          value: formData.benefit,
-          setValue: (value: string | number | undefined) =>
-            handleInputChange("benefit", value ?? ""),
+          value: benefit,
+          setValue: setBenefit,
           disabled: loading,
         },
         {
           label: "Provider",
           type: "text",
           placeholder: "Provider",
-          value: formData.provider,
-          setValue: (value: string | number | undefined) =>
-            handleInputChange("provider", value ?? ""),
+          value: provider,
+          setValue: setProvider,
         },
         {
           label: "Coverage Detail",
           type: "text",
           placeholder: "Sample description here",
-          value: formData.coveragePlan,
-          setValue: (value: string | number | undefined) =>
-            handleInputChange("coveragePlan", value ?? ""),
+          value: coveragePlan,
+          setValue: setCoveragePlan,
         },
         {
           label: "Monthly Cost",
           type: "text",
           placeholder: "",
-          value: formData.monthlyCost,
-          setValue: (value: string | number | undefined) =>
-            handleInputChange("monthlyCost", value ?? ""),
+          value: monthlyCost,
+          setValue: setMonthlyCost,
         },
       ],
     },
     buttonOne: {
-      type: ButtonType.contained,
+      type: isFormComplete() ? ButtonType.contained : ButtonType.disabled,
+
       text: "Request Beneift",
       onClick: handleSubmitRequest,
     },

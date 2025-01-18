@@ -10,48 +10,64 @@ import {
 } from "@/app/api/services/employee/benefits";
 import { CPStatusMap, icon, route } from "@/constants";
 import { toast } from "@/hooks/use-toast";
+import { FetchParams } from "@/types";
 import { Skeleton } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import { debounce } from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ModalProps } from "../../../modal/types";
 
-// Custom hook
 const useSalaryAdvancePage = () => {
+  const router = useRouter();
   const [openRequestModal, setOpenRequestModal] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
+  const [advanceTaken, setAdvanceTaken] = useState<string | number | undefined>(
+    ""
+  );
+  const [installment, setInstallment] = useState<string | number | undefined>(
+    ""
+  );
+  const [paymentFrequency, setPaymentFrequency] = useState<
+    string | number | undefined
+  >("");
+  const [fetchParams, setFetchParams] = useState<FetchParams>({
+    page: 1,
+    limit: 10,
+    sortOrder: "desc",
+    search: undefined,
+  });
+
+  // Debounced search
+  const debouncedSearch = debounce((value: string) => {
+    setFetchParams((prev) => ({ ...prev, search: value || undefined }));
+  }, 300);
+
+  const handleSearch = (value: string) => {
+    debouncedSearch(value);
+  };
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["salary-advance-requests"], // Unique query key
+    queryKey: ["salary-advance-requests", { ...fetchParams }],
     queryFn: async () => {
-      const response = await getAllMyRequest("desc", 1, 10);
+      const response = await getAllMyRequest(
+        fetchParams.sortOrder,
+        fetchParams.page,
+        fetchParams.limit,
+        fetchParams.search
+      );
       console.log(response.data);
       return response.data.items;
     },
-    refetchOnWindowFocus: false, // Prevent refetching on window focus
-    staleTime: 60000, // Cache for 1 minute
+    refetchOnWindowFocus: false,
+    staleTime: 60000,
   });
-
-  const [formData, setFormData] = useState({
-    advanceTaken: "",
-    installment: "",
-    paymentFrequency: "",
-  });
-
-  console.log(formData);
-
-  const handleInputChange = (field: string, value: string | number) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
 
   const handleFormSubmit = async () => {
     const preparedData = {
-      ...formData,
-      advanceTaken: Number(formData.advanceTaken),
-      installment: Number(formData.installment),
+      paymentFrequency,
+      advanceTaken: Number(advanceTaken),
+      installment: Number(installment),
     };
 
     try {
@@ -80,8 +96,6 @@ const useSalaryAdvancePage = () => {
 
     refetch();
   };
-
-  const router = useRouter();
 
   const pageProps: PageProps = {
     backText: "Back to Benefits",
@@ -160,6 +174,7 @@ const useSalaryAdvancePage = () => {
     ],
     statusMap: CPStatusMap,
     actions: [{ name: "No Actions", onClick: () => {} }],
+    onSearch: handleSearch,
     filters: [
       {
         name: "Status",
@@ -179,16 +194,14 @@ const useSalaryAdvancePage = () => {
         {
           label: "Advance to be Taken",
           type: "text",
-          value: formData.advanceTaken,
-          setValue: (value: string | number | undefined) =>
-            handleInputChange("advanceTaken", value ?? ""),
+          value: advanceTaken,
+          setValue: setAdvanceTaken,
         },
         {
           label: "Installment Amount",
           type: "text",
-          value: formData.installment,
-          setValue: (value: string | number | undefined) =>
-            handleInputChange("installment", value ?? ""),
+          value: installment,
+          setValue: setInstallment,
         },
         {
           label: "Repayment Frequency",
@@ -197,9 +210,8 @@ const useSalaryAdvancePage = () => {
             { label: "Monthly", value: "MONTHLY" },
             { label: "Weekly", value: "WEEKLY" },
           ],
-          value: formData.paymentFrequency,
-          setValue: (value: string | number | undefined) =>
-            handleInputChange("paymentFrequency", value ?? ""),
+          value: paymentFrequency,
+          setValue: setPaymentFrequency,
         },
       ],
     },

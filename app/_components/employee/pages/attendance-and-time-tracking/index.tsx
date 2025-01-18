@@ -26,38 +26,23 @@ const EmployeeAttendanceAndTimeTracking = () => {
  const handleClockIn = async () => {
   try {
     const payload = { date: new Date().toISOString() };
-    const response = await clockIn(payload); // Store the response
-    console.log('Clock In Response:', response); // Log the response
+    const response = await clockIn(payload); 
+    console.log('Clock In Response:', response);
     setToastMessage('You have successfully clocked in!');
     setToastStatus('Successful');
     setOpenToast(true);
   } catch (error) {
-    console.error('Clock In Error:', error); // Log the error
+    console.error('Clock In Error:', error);
     setToastMessage('Failed to clock in. Please try again.');
     setToastStatus('Error');
     setOpenToast(true);
   }
 };
 
-// const handleClockOut = async () => {
-//   try {
-//     const payload = { date: new Date().toISOString() };
-//     const response = await clockOut(payload); 
-//     console.log('Clock Out Response:', response); // Log the response
-//     setToastMessage('You have successfully clocked out!');
-//     setToastStatus('Successful');
-//     setOpenClockOutToast(true);
-//   } catch (error) {
-//     console.error('Clock Out Error:', error); 
-//     setToastMessage('Failed to clock out. Please try again.');
-//     setToastStatus('Error');
-//     setOpenClockOutToast(true);
-//   }
-// };
+
   
   const handleClockOut = async () => {
   try {
-    // Fetch all attendance records
     const attendanceRecords = await fetchAttendanceMine();
 
     if (!attendanceRecords || attendanceRecords.length === 0) {
@@ -72,10 +57,8 @@ const EmployeeAttendanceAndTimeTracking = () => {
     }
 
     const payload = { id: lastAttendanceRecord.id, date: new Date().toISOString() };
-    console.log(payload);
     const response = await clockOut(payload.id); 
-    console.log('Clock Out Response:', response); // Log the response
-    
+    console.log('Clock Out Response:', response); // TODO: Remove this line
     setToastMessage('You have successfully clocked out!');
     setToastStatus('Successful');
     setOpenClockOutToast(true);
@@ -84,7 +67,7 @@ const EmployeeAttendanceAndTimeTracking = () => {
     setToastMessage('Failed to clock out. Please try again.');
     setToastStatus('Error');
     setOpenClockOutToast(true);
-  }
+  } 
 };
 
 

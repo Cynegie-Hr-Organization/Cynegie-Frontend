@@ -14,6 +14,13 @@ export type CreatedBy = {
   id: string;
 };
 
+export type FetchParams = {
+  page: number;
+  limit: number;
+  sortOrder: "asc" | "desc";
+  search?: string;
+};
+
 export type SummaryCard = {
   value: number;
   iconColorVariant: ColorVariant;
@@ -149,13 +156,6 @@ export interface FetchJob {
   message: string;
   data: Job;
 }
-
-export type FetchParams = {
-  page: number;
-  limit: number;
-  sortOrder: "asc" | "desc";
-  search?: string;
-};
 
 interface User {
   email: string;

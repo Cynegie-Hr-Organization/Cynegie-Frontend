@@ -71,6 +71,10 @@ const AddItems: React.FC<AddItemsProps> = ({
     addedItems ?? []
   );
 
+  const handleSearchQuery = (query: string) => {
+    console.log("Search Query:", query); // Replace with actual search logic
+  };
+
   const [availableItems, setAvailableItems] = useState<string[]>(() => {
     const itemNames = addedItems?.map((item) => item.name);
     return getAvailableItems(itemNames ?? []) ?? [];
@@ -86,13 +90,20 @@ const AddItems: React.FC<AddItemsProps> = ({
     string | number | undefined
   >("");
 
-  const displayedAvailableItems = availableItems.filter(
-    (item) => typeof searchQuery === "string" && item.includes(searchQuery)
+  const displayedAvailableItems = availableItems
+    .filter(
+      (item) => typeof searchQuery === "string" && item.includes(searchQuery)
+    )
+    .map((item) => ({ name: item }));
+
+  const { checkedItems, checkBoxProps, removeChecks } = useCheckboxes<
+    Record<string, any>
+  >(
+    availableItems.map((item) => ({ name: item })), // p0
+    undefined // getCheckedRows
+    // undefined, // defaultCheckedRows
+    // availableItems.map((item) => ({ name: item })) // rows
   );
-
-  const { checkedItems, checkBoxProps, removeChecks } =
-    useCheckboxes(availableItems);
-
   const handleDeleteClick = (item: AddedItem) => {
     //Remove deleted item from local added items
     setLocalAddedItems(
@@ -105,8 +116,8 @@ const AddItems: React.FC<AddItemsProps> = ({
 
   const handleAddItems = () => {
     if (checkedItems.length > 0) {
-      const checkedItemsToAdd = checkedItems.map((item) => ({
-        name: item,
+      const checkedItemsToAdd: AddedItem[] = checkedItems.map((item) => ({
+        name: item as unknown as string,
         value: "",
       }));
       setLocalAddedItems([...localAddedItems, ...checkedItemsToAdd]);
@@ -114,7 +125,7 @@ const AddItems: React.FC<AddItemsProps> = ({
         getAvailableItems([
           ...checkedItems,
           ...localAddedItems.map((localItem) => localItem.name),
-        ]) ?? []
+        ] as string[]) ?? []
       );
       removeChecks();
     }
@@ -266,20 +277,13 @@ const AddItems: React.FC<AddItemsProps> = ({
               <div className="flex flex-col gap-2 w-[200px] py-2">
                 {!(availableItems.length < 1) && (
                   <div className="mx-2 mt-1">
-                    <SearchField
-                      value={
-                        typeof searchQuery === "string"
-                          ? searchQuery
-                          : undefined
-                      }
-                      setValue={setSearchQuery}
-                    />
+                    <SearchField getSearchQuery={handleSearchQuery} />
                   </div>
                 )}
                 {displayedAvailableItems.map((item) => (
-                  <div key={item} className={`flex gap-1 items-center`}>
+                  <div key={item.name} className={`flex gap-1 items-center`}>
                     <Checkbox {...checkBoxProps(item)} />
-                    {item}
+                    {item.name}
                   </div>
                 ))}
                 {(availableItems.length < 1 ||

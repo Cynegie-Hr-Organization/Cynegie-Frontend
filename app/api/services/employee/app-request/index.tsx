@@ -9,13 +9,11 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/options";
 
 
-// Define the structure for the appId object
 interface AppId {
   appName: string;
   id: string;
 }
 
-// Define the structure for a single app request item
 interface AppRequestItem {
   employee: string;
   appId: AppId;
@@ -28,7 +26,6 @@ interface AppRequestItem {
   id: string;
 }
 
-// Define the response structure for fetching all app requests
 interface AppRequestsResponse {
   status: number;
   message: string;
@@ -106,3 +103,18 @@ export const getAllMyAppRequest = async (
 
   return response as AppRequestsResponse;
 };
+
+
+export const fetchAppRequestById = async (id: any) => {
+  const session = await getServerSession(authOptions);
+
+  const response = await request("GET", `${baseUrl}/v1/request/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  });
+
+  return response;
+};
+

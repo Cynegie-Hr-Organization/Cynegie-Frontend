@@ -2,7 +2,6 @@
 
 import Modal from "@/app/_components/employee/modal";
 import EmployeeLearningAndDevelopmentCourseDetails from "@/app/_components/employee/pages/learning-and-development/pages/course-details";
-import courseDetails from "@/app/_components/employee/pages/learning-and-development/pages/course-details/data/course";
 import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import { route } from "@/constants";
 import { useRouter } from "next/navigation";
@@ -20,7 +19,6 @@ export default function EmployeeLearningAndDevelopmentViewCourseDetailsPage() {
           router.push(route.employee.learningDevelopment.home)
         }
         backText="Back to My Courses"
-        details={courseDetails}
         buttonGroup={{
           leftButton: {
             type: ButtonType.outlined,

@@ -1,8 +1,21 @@
 import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import { PageProps } from "@/app/_components/shared/page/types";
 import { FieldType, TableProps } from "@/app/_components/shared/table/types";
+import {
+  deleteLeaveRequestById,
+  fetchLeaveRequestById,
+  getAllLeaveRequest,
+  getLeaveType,
+  requestLeave,
+} from "@/app/api/services/employee/leave";
 import { APRStatusMap, color } from "@/constants";
-import { useState } from "react";
+import { FetchParams } from "@/types";
+import Skeleton from "@mui/material/Skeleton";
+import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { debounce } from "lodash";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { ModalProps } from "../../../modal/types";
 import { LeaveManagementChartProps } from "../chart";
 
@@ -11,6 +24,125 @@ const useLeaveManagementPage = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openLeaveDetailsModal, setOpenLeaveDetailsModal] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
+  const [leaveTypes, setLeaveTypes] = useState<any[]>([]);
+  const [deleteRequestId, setDeleteRequestId] = useState<
+    string | number | null
+  >(null); // New state for delete request ID
+
+  const [loading, setLoading] = useState<boolean>(true);
+  const [detailsData, setDetailsData] = useState<any | null>(null);
+  const [leaveType, setLeaveType] = useState<string | number | undefined>("");
+  const [leavePeriod, setLeavePeriod] = useState({
+    startDate: "",
+    endDate: "",
+  });
+  const [numberOfDays, setNumberOfDays] = useState<string | number | undefined>(
+    ""
+  );
+  const [reliefOfficer, setReliefOfficer] = useState<
+    string | number | undefined
+  >("");
+  const [fetchParams, setFetchParams] = useState<FetchParams>({
+    page: 1,
+    limit: 10,
+    sortOrder: "desc",
+    search: undefined,
+  });
+
+  // Debounced search
+  const debouncedSearch = debounce((value: string) => {
+    setFetchParams((prev) => ({ ...prev, search: value || undefined }));
+  }, 300);
+
+  const handleSearch = (value: string) => {
+    debouncedSearch(value);
+  };
+
+  const isFormComplete = () => {
+    return (
+      leaveType &&
+      leavePeriod.endDate &&
+      leavePeriod.startDate &&
+      numberOfDays &&
+      reliefOfficer
+    );
+  };
+
+  useEffect(() => {
+    const fetchLeaveTypes = async () => {
+      const fetchedLeaveTypes = await getLeaveType();
+      setLeaveTypes(fetchedLeaveTypes);
+      setLoading(false);
+    };
+
+    fetchLeaveTypes();
+  }, []);
+
+  const handleSubmitRequest = async () => {
+    const payload = {
+      leaveType,
+      startDate: new Date(leavePeriod.startDate).toISOString(),
+      endDate: new Date(leavePeriod.endDate).toISOString(),
+      numberOfDays: Number(numberOfDays),
+      reliefOfficer,
+    };
+
+    console.log(payload);
+
+    try {
+      const response = await requestLeave(payload);
+      if (response?.createdAt !== "") {
+        refetch();
+        setOpenRequestTimeOffModal(false);
+        setOpenSuccessModal(true);
+      } else {
+        console.error("Request failed:", response?.message || "Unknown error");
+      }
+      setOpenRequestTimeOffModal(false);
+      setOpenSuccessModal(true);
+    } catch (error) {
+      console.error("Error while submitting leave request:", error);
+    }
+  };
+
+  const {
+    data: leaveRequest,
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ["leave-requests", { ...fetchParams }],
+    queryFn: async () => {
+      const response = await getAllLeaveRequest(
+        fetchParams.sortOrder,
+        fetchParams.page,
+        fetchParams.limit,
+        fetchParams.search
+      );
+      console.log(response.data.data);
+      return response.data.data;
+    },
+    refetchOnWindowFocus: false,
+    staleTime: 60000, // Cache for 1 minute
+  });
+
+  const handleDeleteRequest = async (id: any) => {
+    try {
+      const response = await deleteLeaveRequestById(id);
+      if (response.message) {
+        console.log("Leave request deleted successfully", response);
+        toast.success("Leave request deleted successfully");
+        refetch(); // Refresh the data
+        setOpenDeleteModal(false);
+      } else {
+        console.error(
+          "Failed to delete leave request:",
+          response?.message || "Unknown error"
+        );
+      }
+    } catch (error) {
+      console.error("Error during deletion:", error);
+    }
+  };
 
   const pageData: PageProps = {
     title: "Leave Management",
@@ -55,28 +187,30 @@ const useLeaveManagementPage = () => {
     title: "Leave History",
     hasActionsColumn: true,
     headerRowData: ["Request Date", "Leave Type", "Duration", "Status"],
-    bodyRowData: [
-      {
-        date: "12 Jun 2024",
-        type: "Maternity Leave",
-        duration: "60 days",
-        status: "Pending",
-      },
-      {
-        date: "12 Jun 2024",
-        type: "Maternity Leave",
-        duration: "60 days",
-        status: "Approved",
-      },
-      {
-        date: "12 Jun 2024",
-        type: "Maternity Leave",
-        duration: "60 days",
-        status: "Rejected",
-      },
-    ],
+    bodyRowData: isLoading
+      ? Array(5).fill({
+          requestDate: <Skeleton width={100} />,
+          leaveType: <Skeleton width={150} />,
+          duration: <Skeleton width={120} />,
+
+          status: <Skeleton width={100} />,
+        })
+      : leaveRequest?.map((request: any) => ({
+          requestId: request?.id,
+          requestDate: new Date(request?.startDate).toLocaleDateString(
+            "en-US",
+            {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            }
+          ),
+          leaveType: request.leaveType?.name,
+          duration: `${request?.numberOfDays} days`,
+          status: request?.status,
+        })) || [],
     fieldTypes: [...Array(3).fill(FieldType.text), FieldType.status],
-    displayedFields: ["date", "type", "duration", "status"],
+    displayedFields: ["requestDate", "leaveType", "duration", "status"],
     statusMap: APRStatusMap,
     fieldToGetAction: "status",
     fieldActionMap: {
@@ -84,25 +218,64 @@ const useLeaveManagementPage = () => {
         {
           name: "View Request Details",
           onClick: () => setOpenLeaveDetailsModal(true),
+          onDataReturned: async (id) => {
+            try {
+              console.log("Fetching leave request details:", id);
+              const data = await fetchLeaveRequestById(id);
+              console.log(data);
+              setDetailsData(data);
+              setOpenLeaveDetailsModal(true);
+            } catch (error) {
+              console.error("Failed to fetch leave request details:", error);
+            }
+          },
         },
       ],
-      Pending: [
+      PENDING: [
         {
           name: "View Request Details",
           onClick: () => setOpenLeaveDetailsModal(true),
+          onDataReturned: async (id) => {
+            try {
+              console.log("Fetching leave request details:", id);
+              const data = await fetchLeaveRequestById(id);
+              console.log(data);
+              setDetailsData(data);
+              setOpenLeaveDetailsModal(true);
+            } catch (error) {
+              console.error("Failed to fetch leave request details:", error);
+            }
+          },
         },
         {
           name: "Delete",
           onClick: () => setOpenDeleteModal(true),
+          onDataReturned: (id) => {
+            setOpenDeleteModal(true);
+            setDeleteRequestId(id);
+          },
         },
       ],
       Rejected: [
         {
           name: "View Request Details",
+          onDataReturned: async (id) => {
+            try {
+              console.log("Fetching leave request details:", id);
+              const data = await fetchLeaveRequestById(id);
+              console.log(data);
+              setDetailsData(data);
+              setOpenLeaveDetailsModal(true);
+            } catch (error) {
+              console.error("Failed to fetch leave request details:", error);
+            }
+          },
           onClick: () => setOpenLeaveDetailsModal(true),
         },
       ],
     },
+    fieldToReturnOnActionItemClick: "requestId",
+    onSearch: handleSearch,
     filters: [
       {
         name: "Status",
@@ -124,56 +297,50 @@ const useLeaveManagementPage = () => {
           type: "select",
           selectValControlledFromOutside: false,
           placeholder: "Select",
-          options: [
-            {
-              label: "Maternity/Paternity Leave",
-              value: 3,
-            },
-            {
-              label: "Annual Leave",
-              value: 2,
-            },
-            {
-              label: "Sick Leave",
-              value: 1,
-            },
-            {
-              label: "Exam Leave",
-              value: 0,
-            },
-          ],
+          options: leaveTypes.map((leave) => ({
+            label: leave.label,
+            value: leave.value,
+          })),
+          value: leaveType,
+          setValue: setLeaveType,
+          disabled: loading,
         },
         {
-          label: "Start Date",
+          label: "Leave Period Start",
           type: "date",
-          placeholder: "Select",
+          getDate: (date) =>
+            setLeavePeriod((prev) => ({
+              ...prev,
+              startDate: dayjs(date).format("YYYY-MM-DD"),
+            })),
+          value: leavePeriod.startDate,
+          disabled: loading,
         },
         {
-          label: "End Date",
+          label: "Leave Period End",
           type: "date",
-          placeholder: "Select",
+          getDate: (date) =>
+            setLeavePeriod((prev) => ({
+              ...prev,
+              endDate: dayjs(date).format("YYYY-MM-DD"),
+            })),
+          value: leavePeriod.endDate,
+          disabled: loading,
         },
+
         {
-          label: "Reason",
+          label: "Number of Days",
           type: "text",
           placeholder: "Placeholder",
+          value: numberOfDays,
+          setValue: setNumberOfDays,
         },
         {
           label: "Relief Officer",
-          type: "select",
-          selectValControlledFromOutside: false,
-          placeholder: "Select",
-          options: [
-            {
-              label: "Sandra Allibaba",
-              value: 0,
-            },
-          ],
-        },
-        {
-          label: "Relief Officer's Email",
           type: "text",
           placeholder: "Placeholder",
+          value: reliefOfficer,
+          setValue: setReliefOfficer,
         },
       ],
     },
@@ -183,11 +350,11 @@ const useLeaveManagementPage = () => {
       onClick: () => setOpenRequestTimeOffModal(false),
     },
     buttonTwo: {
-      type: ButtonType.disabled,
+      type: isFormComplete() ? ButtonType.contained : ButtonType.disabled,
+      //  type:  ButtonType.contained ,
       text: "Submit",
       onClick: () => {
-        setOpenSuccessModal(true);
-        setOpenRequestTimeOffModal(false);
+        handleSubmitRequest();
       },
     },
   };
@@ -226,7 +393,12 @@ const useLeaveManagementPage = () => {
     buttonTwo: {
       type: ButtonType.deleteContained,
       text: "Delete Leave Request",
-      onClick: () => setOpenDeleteModal(false),
+      onClick: () => {
+        if (deleteRequestId) {
+          console.log("click");
+          handleDeleteRequest(deleteRequestId);
+        }
+      },
     },
   };
 
@@ -237,19 +409,38 @@ const useLeaveManagementPage = () => {
     subtitle: "Fill in the details below to request time off",
     detailGroup: {
       gridLayout: "view-details",
-      details: [
-        { name: "Leave Type", value: "Sick Leave" },
-        { name: "Leave Duration", value: "10 days" },
-        { name: "Status", value: "Approved" },
-        {
-          name: "Start Date",
-          value: `22-Jun-2024`,
-        },
-        {
-          name: "End Date",
-          value: `18-Jul-2024`,
-        },
-      ],
+      details: detailsData
+        ? [
+            { name: "Leave Type", value: detailsData.leaveType?.name || "N/A" },
+            {
+              name: "Leave Duration",
+              value: detailsData?.numberOfDays || "N/A",
+            },
+            { name: "Status", value: detailsData?.status || "N/A" },
+            {
+              name: "Start Date",
+              value: new Date(detailsData?.startDate).toLocaleDateString(
+                "en-US",
+                {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                }
+              ),
+            },
+            {
+              name: "End Date",
+              value: new Date(detailsData?.endDate).toLocaleDateString(
+                "en-US",
+                {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                }
+              ),
+            },
+          ]
+        : [],
     },
   };
 

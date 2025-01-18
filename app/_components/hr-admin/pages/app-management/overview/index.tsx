@@ -37,6 +37,10 @@ const appUsageChartData = [
   { item: "Google Meet", usage: 100 },
 ];
 
+const handleSearchQuery = (query: string) => {
+  console.log("Search Query:", query); // Replace with actual search logic
+};
+
 const extraDark = color.info.extraDark;
 const dark = color.info.dark;
 const light = color.info.light;
@@ -155,7 +159,7 @@ const HrAdminAppManagementOverview = () => {
                   addItemsSelectContent={
                     <div className="w-[240px] h-[370px]">
                       <div className="mx-2 pt-3">
-                        <SearchField />
+                        <SearchField getSearchQuery={handleSearchQuery} />
                       </div>
                       <div className="flex flex-col gap-4 pb-4 pt-2">
                         {Array(6)
