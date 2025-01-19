@@ -51,18 +51,15 @@ const handlePasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       console.log("User session data:", user);
 
       const redirectPath = getRedirectPath(user?.user?.role || []);
-      console.log("Redirect path:", redirectPath);
 
       if (redirectPath) {
         router.push(redirectPath);
       } else {
-        console.error("Invalid redirect path.");
         toast.error("User role not found. Please contact support.", {
           className: "text-blue-600",
         });
       }
     } else {
-      console.error("Login failed:", res);
       toast.error("Login failed. Please check your credentials.", {
         className: "text-blue-600",
       });

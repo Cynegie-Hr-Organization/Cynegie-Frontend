@@ -1,36 +1,36 @@
 "use client";
-import { Stack } from "@mui/material";
-import PayrollReportsTable from "../../tables/payroll-reports";
+import Page from "@/app/_components/shared/page";
+import { ButtonType } from "@/app/_components/shared/page/heading/types";
+import Table from "@/app/_components/shared/table";
+import { FieldType } from "@/app/_components/shared/table/types";
 import { useRouter } from "next/navigation";
 
 const HrAdminPayrollReportsPage = () => {
   const router = useRouter();
   return (
-    <Stack gap={3} mb={10} mt={6}>
-      <Stack direction="row" alignItems="center">
-        <div style={{ flexGrow: 1 }} className="section-heading">
-          Payroll Reports
-        </div>
-        <button
-          onClick={() =>
-            router.push("/hr-admin/payroll/generate-payroll-report")
-          }
-          style={{
-            borderRadius: "8px",
-            border: "1.5px solid #98A2B3",
-            color: "#FFFFFF",
-            fontSize: "16px",
-            fontWeight: 600,
-            padding: "10px 0px",
-            width: "250px",
-            backgroundColor: "#0035C3",
-          }}
-        >
-          Generate Custom Report
-        </button>
-      </Stack>
-      <PayrollReportsTable />
-    </Stack>
+    <Page
+      title="Payroll Reports"
+      hasButtons
+      rightButton={{
+        type: ButtonType.contained,
+        text: "Generate Custom Report",
+        onClick: () => router.push("/hr-admin/payroll/generate-payroll-report"),
+      }}
+    >
+      <Table
+        hasActionsColumn
+        headerRowData={[
+          "Report Name",
+          "Date Generated",
+          "Payroll Period",
+          "No of Employees",
+          "Status",
+        ]}
+        displayedFields={Array(4).fill("")}
+        fieldTypes={Array(4).fill(FieldType.text)}
+        bodyRowData={[]}
+      />
+    </Page>
   );
 };
 

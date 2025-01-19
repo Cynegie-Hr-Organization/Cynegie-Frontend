@@ -1,12 +1,12 @@
-import React from 'react';
-import { FilterPopoverContentProps } from '../../types';
-import { MenuItem, Select, Stack } from '@mui/material';
-import Button from '../../../button-group/button';
-import { ButtonType } from '@/app/_components/shared/page/heading/types';
-import Form from '../../../form';
+import React from "react";
+import { FilterPopoverContentProps } from "../../types";
+import { MenuItem, Select, Stack } from "@mui/material";
+import Button from "../../../button-group/button";
+import { ButtonType } from "@/app/_components/shared/page/heading/types";
+import Form from "../../../form";
 
 const FilterPopoverContent: React.FC<FilterPopoverContentProps> = (props) => {
-  const { filters, formFilters } = props;
+  const { filters, formFilters, onResetClick, onFilterClick } = props;
 
   return (
     <Stack padding={5} gap={5}>
@@ -17,15 +17,15 @@ const FilterPopoverContent: React.FC<FilterPopoverContentProps> = (props) => {
               <div
                 style={{
                   fontWeight: 400,
-                  fontSize: '12px',
-                  color: '#303030',
+                  fontSize: "12px",
+                  color: "#303030",
                 }}
               >
                 {filter.name}
               </div>
               <Select
                 defaultValue={filter.items[0]}
-                sx={{ height: '40px', borderRadius: '5px', width: '200px' }}
+                sx={{ height: "40px", borderRadius: "5px", width: "200px" }}
               >
                 {filter.items.map((item) => (
                   <MenuItem key={item} value={item}>
@@ -38,13 +38,17 @@ const FilterPopoverContent: React.FC<FilterPopoverContentProps> = (props) => {
         </Stack>
       )}
       {formFilters && (
-        <div className='w-[250px]'>
+        <div className="w-[250px]">
           <Form {...formFilters} gridSpacing={2} />
         </div>
       )}
-      <Stack direction='row' justifyContent='space-between'>
-        <Button text='Reset' />
-        <Button type={ButtonType.contained} text='Filter' />
+      <Stack direction="row" justifyContent="space-between">
+        <Button text="Reset" onClick={onResetClick} />
+        <Button
+          type={ButtonType.contained}
+          text="Filter"
+          onClick={onFilterClick}
+        />
       </Stack>
     </Stack>
   );

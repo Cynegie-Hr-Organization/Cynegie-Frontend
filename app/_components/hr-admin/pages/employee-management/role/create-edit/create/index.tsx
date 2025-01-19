@@ -1,12 +1,12 @@
-'use client';
-import HrAdminEmployeeManagementCreateEditRole from '..';
+"use client";
+import HrAdminEmployeeManagementCreateEditRole from "..";
 
-const HrAdminEmployeeManagementCreateRole = () => {
+const HrAdminEmployeeManagementCreateRole: React.FC = () => {
   return (
     <HrAdminEmployeeManagementCreateEditRole
-      title='Create Role'
-      buttonText='Create Role'
-      type='create'
+      title="Create Role"
+      buttonText="Create Role"
+      type="create"
     />
   );
 };

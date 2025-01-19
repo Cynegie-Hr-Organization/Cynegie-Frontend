@@ -1,221 +1,221 @@
-'use client';
-import HrAdminEmployeeDirectoryAddEditEmployee from '..';
-import SvgIcon from '@/app/_components/icons/container';
-import { icon } from '@/constants';
+"use client";
+import SvgIcon from "@/app/_components/icons/container";
+import { icon } from "@/constants";
+import HrAdminEmployeeDirectoryAddEditEmployee from "..";
 
 const HrAdminEmployeeDirectoryAddEmployee = () => {
   return (
     <HrAdminEmployeeDirectoryAddEditEmployee
-      title='Add Employee'
+      title="Add Employee"
       bioData={[
         {
-          name: 'First Name',
-          type: 'text',
-          placeholder: 'Enter first name',
+          label: "First Name",
+          type: "text",
+          placeholder: "Enter first name",
         },
         {
-          name: 'Middle Name',
-          type: 'text',
-          placeholder: 'Enter middle name',
+          label: "Middle Name",
+          type: "text",
+          placeholder: "Enter middle name",
         },
         {
-          name: 'Last Name',
-          type: 'text',
-          placeholder: 'Enter last name',
+          label: "Last Name",
+          type: "text",
+          placeholder: "Enter last name",
         },
         {
-          name: 'Email Address',
-          type: 'text',
-          placeholder: 'Enter email',
+          label: "Email Address",
+          type: "text",
+          placeholder: "Enter email",
         },
         {
-          name: 'Phone Number',
-          type: 'text',
-          placeholder: 'Enter phone number',
+          label: "Phone Number",
+          type: "text",
+          placeholder: "Enter phone number",
         },
-        { name: 'Date of Birth', type: 'date' },
-        { name: 'Country', type: 'select', placeholder: 'Select' },
+        { label: "Date of Birth", type: "date" },
+        { label: "Country", type: "select", placeholder: "Select" },
         {
-          name: 'Street Address',
-          type: 'text',
-          placeholder: 'Enter address',
+          label: "Street Address",
+          type: "text",
+          placeholder: "Enter address",
         },
-        { name: 'City', type: 'text', placeholder: 'Enter city' },
-        { name: 'State', type: 'select', placeholder: 'Select' },
+        { label: "City", type: "text", placeholder: "Enter city" },
+        { label: "State", type: "select", placeholder: "Select" },
         {
-          name: 'Postal Code',
-          type: 'text',
-          placeholder: 'Enter postal code',
-        },
-        {
-          name: 'Nationality',
-          type: 'text',
-          placeholder: 'Enter nationality',
+          label: "Postal Code",
+          type: "text",
+          placeholder: "Enter postal code",
         },
         {
-          name: 'Marital Status',
-          type: 'select',
-          placeholder: 'Select',
+          label: "Nationality",
+          type: "text",
+          placeholder: "Enter nationality",
         },
-        { name: 'ID Upload', type: 'drag-upload' },
-        { name: 'Passport', type: 'drag-upload' },
+        {
+          label: "Marital Status",
+          type: "select",
+          placeholder: "Select",
+        },
+        { label: "ID Upload", type: "drag-upload" },
+        { label: "Passport", type: "drag-upload" },
       ]}
       nextOfKin={[
         {
-          name: 'First Name',
-          type: 'text',
-          placeholder: 'Enter first name',
+          label: "First Name",
+          type: "text",
+          placeholder: "Enter first name",
         },
         {
-          name: 'Last Name',
-          type: 'text',
-          placeholder: 'Enter last name',
+          label: "Last Name",
+          type: "text",
+          placeholder: "Enter last name",
         },
         {
-          name: 'Gender',
-          type: 'select',
-          placeholder: 'Select',
+          label: "Gender",
+          type: "select",
+          placeholder: "Select",
         },
         {
-          name: 'Email Address',
-          type: 'text',
-          placeholder: 'Enter email',
+          label: "Email Address",
+          type: "text",
+          placeholder: "Enter email",
         },
         {
-          name: 'Phone Number',
-          type: 'text',
-          placeholder: 'Enter phone number',
+          label: "Phone Number",
+          type: "text",
+          placeholder: "Enter phone number",
         },
         {
-          name: 'Relationship',
-          type: 'select',
-          placeholder: 'Select',
+          label: "Relationship",
+          type: "select",
+          placeholder: "Select",
         },
       ]}
       employment={[
         {
-          name: 'Job Title',
-          type: 'text',
-          placeholder: 'Enter job title',
+          label: "Job Title",
+          type: "text",
+          placeholder: "Enter job title",
         },
         {
-          name: 'Department',
-          type: 'select',
+          label: "Department",
+          type: "select",
         },
         {
-          name: 'Manager/Supervisor',
-          type: 'select',
+          label: "Manager/Supervisor",
+          type: "select",
         },
         {
-          name: 'Employment Type',
-          type: 'select',
+          label: "Employment Type",
+          type: "select",
         },
         {
-          name: 'Employment Status',
-          type: 'select',
+          label: "Employment Status",
+          type: "select",
         },
         {
-          name: 'Hire Date',
-          type: 'date',
+          label: "Hire Date",
+          type: "date",
         },
         {
-          name: 'Work Location/Branch',
-          type: 'select',
+          label: "Work Location/Branch",
+          type: "select",
         },
         {
-          name: 'Work Schedule',
-          type: 'select',
+          label: "Work Schedule",
+          type: "select",
         },
         {
-          name: 'Staff ID',
-          type: 'text',
-          placeholder: 'CYN123',
+          label: "Staff ID",
+          type: "text",
+          placeholder: "CYN123",
           disabled: true,
         },
         {
-          name: 'Probation Period',
-          type: 'text',
-          placeholder: 'Enter probation period',
+          label: "Probation Period",
+          type: "text",
+          placeholder: "Enter probation period",
         },
         {
-          name: 'Contract End Date',
-          type: 'date',
+          label: "Contract End Date",
+          type: "date",
         },
         {
-          name: 'Work Email',
-          type: 'text',
-          placeholder: 'Enter work email',
+          label: "Work Email",
+          type: "text",
+          placeholder: "Enter work email",
         },
         {
-          name: 'Work Phone Number',
-          type: 'text',
-          placeholder: 'Enter phone number',
+          label: "Work Phone Number",
+          type: "text",
+          placeholder: "Enter phone number",
         },
         {
-          name: 'Job Description',
-          type: 'drag-upload',
+          label: "Job Description",
+          type: "drag-upload",
         },
       ]}
       compensation={[
         {
-          name: 'Base Salary',
-          type: 'text',
-          placeholder: 'Enter base salary',
+          label: "Base Salary",
+          type: "text",
+          placeholder: "Enter base salary",
         },
-        { name: 'Salary Frequency', type: 'select' },
+        { label: "Salary Frequency", type: "select" },
         {
-          name: 'Bonus Structure',
-          type: 'text',
-          placeholder: 'Enter bonus structure',
-        },
-        {
-          name: 'Commission',
-          type: 'text',
-          placeholder: 'Enter commission',
+          label: "Bonus Structure",
+          type: "text",
+          placeholder: "Enter bonus structure",
         },
         {
-          name: 'Stock Options',
-          type: 'text',
-          placeholder: 'Enter stock options',
-        },
-        { name: 'Effective Date of Compensation', type: 'date' },
-        { name: 'Pay Grade/Level', type: 'select' },
-        { name: 'Payment Method', type: 'select' },
-        { name: 'Bank Account Name', type: 'select' },
-        {
-          name: 'Bank Account Number',
-          type: 'text',
-          placeholder: 'Enter account number',
+          label: "Commission",
+          type: "text",
+          placeholder: "Enter commission",
         },
         {
-          name: 'Routing Number',
-          type: 'text',
-          placeholder: 'Enter routing number',
+          label: "Stock Options",
+          type: "text",
+          placeholder: "Enter stock options",
         },
-        { name: 'Tax Filing Status', type: 'select' },
+        { label: "Effective Date of Compensation", type: "date" },
+        { label: "Pay Grade/Level", type: "select" },
+        { label: "Payment Method", type: "select" },
+        { label: "Bank Account Name", type: "select" },
         {
-          name: 'Tax Identification Number (TIN)',
-          type: 'text',
-          placeholder: 'Enter TIN',
+          label: "Bank Account Number",
+          type: "text",
+          placeholder: "Enter account number",
         },
         {
-          name: 'Overtime',
-          type: 'select',
+          label: "Routing Number",
+          type: "text",
+          placeholder: "Enter routing number",
+        },
+        { label: "Tax Filing Status", type: "select" },
+        {
+          label: "Tax Identification Number (TIN)",
+          type: "text",
+          placeholder: "Enter TIN",
+        },
+        {
+          label: "Overtime",
+          type: "select",
         },
       ]}
       allowances={[
         {
-          name: 'Allowances',
-          type: 'add-items',
+          label: "Allowances",
+          type: "add-items",
           addItemsProps: {
-            addText: 'Include More Allowance',
-            type: 'no-select',
-            addedItems: [{ name: '', value: '' }],
-            inputFieldType: 'text',
+            addText: "Include More Allowance",
+            type: "no-select",
+            addedItems: [{ name: "", value: "" }],
+            inputFieldType: "text",
             showFieldLabels: false,
             hasSecondaryField: true,
-            inputFieldPlacehdoler: 'Enter name of allowance',
-            secondaryFieldPlaceholder: 'Amount',
+            inputFieldPlacehdoler: "Enter name of allowance",
+            secondaryFieldPlaceholder: "Amount",
             startIndexToShowDelete: 1,
             secondaryFieldStartAdornment: (
               <SvgIcon path={icon.naira} width={15} height={13.33} />
@@ -226,17 +226,17 @@ const HrAdminEmployeeDirectoryAddEmployee = () => {
       ]}
       deductions={[
         {
-          name: 'Deductions',
-          type: 'add-items',
+          label: "Deductions",
+          type: "add-items",
           addItemsProps: {
-            addText: 'Include More Deductions',
-            type: 'no-select',
-            addedItems: [{ name: '', value: '' }],
-            inputFieldType: 'text',
+            addText: "Include More Deductions",
+            type: "no-select",
+            addedItems: [{ name: "", value: "" }],
+            inputFieldType: "text",
             showFieldLabels: false,
             hasSecondaryField: true,
-            inputFieldPlacehdoler: 'Enter name of deduction',
-            secondaryFieldPlaceholder: 'Amount',
+            inputFieldPlacehdoler: "Enter name of deduction",
+            secondaryFieldPlaceholder: "Amount",
             startIndexToShowDelete: 1,
             secondaryFieldStartAdornment: (
               <SvgIcon path={icon.naira} width={15} height={13.33} />
@@ -247,15 +247,15 @@ const HrAdminEmployeeDirectoryAddEmployee = () => {
       ]}
       documents={[
         {
-          type: 'add-items',
+          type: "add-items",
           addItemsProps: {
-            addText: 'Add More Documents',
-            type: 'no-select',
+            addText: "Add More Documents",
+            type: "no-select",
             addedItems: [
-              { name: 'ID Upload', value: '' },
-              { name: 'Proof of Contract', value: '' },
+              { name: "ID Upload", value: "" },
+              { name: "Proof of Contract", value: "" },
             ],
-            inputFieldType: 'drag-upload',
+            inputFieldType: "drag-upload",
             showFieldLabels: true,
             startIndexToShowDelete: 2,
             secondaryFieldStartAdornment: (
@@ -266,26 +266,26 @@ const HrAdminEmployeeDirectoryAddEmployee = () => {
         },
       ]}
       equipment={[
-        { name: 'Device Category', type: 'select' },
-        { name: 'Device Type', type: 'select' },
+        { label: "Device Category", type: "select" },
+        { label: "Device Type", type: "select" },
       ]}
       access={[
         {
-          type: 'add-items',
+          type: "add-items",
           addItemsProps: {
-            addText: 'Add More Access',
-            type: 'no-select',
-            addedItems: [{ name: 'Tool', value: '' }],
-            allItems: ['Behance', 'Figma', 'Maichimp', 'Slack'],
+            addText: "Add More Access",
+            type: "no-select",
+            addedItems: [{ name: "Tool", value: "" }],
+            allItems: ["Behance", "Figma", "Maichimp", "Slack"],
             hasSelectOptions: true,
-            inputFieldType: 'select',
-            inputFieldName: 'Tool',
-            secondaryFieldType: 'text',
-            secondaryFieldPlaceholder: 'Enter ID',
+            inputFieldType: "select",
+            inputFieldName: "Tool",
+            secondaryFieldType: "text",
+            secondaryFieldPlaceholder: "Enter ID",
             showFieldLabels: true,
             startIndexToShowDelete: 1,
             hasSecondaryField: true,
-            secondaryFieldName: 'ID',
+            secondaryFieldName: "ID",
             gridCols: { xs: 1, lg: 3 },
           },
         },

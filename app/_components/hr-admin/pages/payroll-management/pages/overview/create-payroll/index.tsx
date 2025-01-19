@@ -1,166 +1,571 @@
 "use client";
-import { ChevronLeft } from "@mui/icons-material";
-import { Grid2, Stack } from "@mui/material";
-import React, { useState } from "react";
-import SelectEmployeesForPayrollTable from "../../../tables/select-employees-for-payroll";
-import { useRouter } from "next/navigation";
-import { DatePicker, DateRangePicker, Input } from "rsuite";
-import "rsuite/dist/rsuite.min.css";
+import Modal from "@/app/_components/employee/modal";
+import Button from "@/app/_components/shared/button-group/button";
+import Form from "@/app/_components/shared/form";
+import Page from "@/app/_components/shared/page";
+import { ButtonType } from "@/app/_components/shared/page/heading/types";
+import Table from "@/app/_components/shared/table";
+import { FieldType } from "@/app/_components/shared/table/types";
+import { route } from "@/constants";
+import { FetchParams } from "@/types";
+import { Divider, Stack } from "@mui/material";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import CalendarIcon from "@/app/_components/icons/calendar";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import {
+  createPayroll,
+  CreatePayrollPayload,
+  editPayroll,
+  getMyEmployees,
+  getPayroll,
+} from "../api";
 
-const HrAdminCreatePayrollPage = () => {
+type MappedEmployee = {
+  id: string | null;
+  name: string;
+  department: string;
+  grossPay: string;
+  deduction: string;
+  netPay: string;
+};
+
+const HrAdminCreatePayrollPage = ({
+  editPayrollId,
+}: {
+  editPayrollId?: string;
+}) => {
   const router = useRouter();
-  const [selectedRows, setSelectedRows] = useState<number[]>([0]);
-  const [dateRange, setDateRange] = React.useState<{
-    startDate: Date;
-    endDate: Date;
-  }>({
-    startDate: dayjs().startOf("month").toDate(),
-    endDate: dayjs().endOf("month").toDate(),
+  const [activeTab, setActiveTab] = useState(0);
+
+  const [payrollName, setPayrollName] = useState("");
+  const [payrollPeriod, setPayrollPeriod] = useState(
+    editPayrollId
+      ? {
+          startDate: dayjs().toISOString(),
+          endDate: dayjs().toISOString(),
+        }
+      : { startDate: "", endDate: "" }
+  );
+  const [paymentDate, setPaymentDate] = useState(
+    editPayrollId ? "0000-00-00" : ""
+  );
+
+  const [fetchParams, setFetchParams] = useState<FetchParams>({
+    page: 1,
+    limit: 10,
+    sortOrder: "asc",
+    search: undefined,
   });
 
-  console.log(dateRange);
-  // const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-  //   null
-  // );
+  const { data: myEmployeesData } = useQuery({
+    queryKey: ["myEmployees", fetchParams],
+    queryFn: () => getMyEmployees(fetchParams),
+  });
+
+  const { data: selectedPayrollData } = useQuery({
+    queryKey: ["payroll", editPayrollId],
+    ...(editPayrollId && { queryFn: () => getPayroll(editPayrollId) }),
+  });
+
+  const [employees, setEmployees] = useState<MappedEmployee[]>();
+  const [editEmployees, setEditEmployees] = useState<MappedEmployee[]>();
+
+  const [checkedRows, setCheckedRows] = useState<
+    (MappedEmployee | Record<string, string>)[]
+  >([]);
+
+  const [departmentFilter, setDepartmentFilter] = useState<string>();
+  const [usedDepartmentFilter, setUsedDepartmentFilter] = useState<string>();
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (selectedPayrollData) {
+      setPayrollName(selectedPayrollData.data.payrollName);
+      setPayrollPeriod({
+        startDate: dayjs(selectedPayrollData.data.startDate).format(
+          "YYYY-MM-DD"
+        ),
+        endDate: dayjs(selectedPayrollData.data.endDate).format("YYYY-MM-DD"),
+      });
+      setPaymentDate(
+        dayjs(selectedPayrollData.data.paymentDate).format("YYYY-MM-DD")
+      );
+      if (employees) {
+        setEditEmployees(employees);
+        const employeeIds = selectedPayrollData.data.employees as string[];
+        setCheckedRows(
+          employees.filter((employee) =>
+            employeeIds.includes(employee.id ?? "")
+          )
+        );
+      }
+    }
+  }, [selectedPayrollData]);
+
+  useEffect(() => {
+    if (myEmployeesData) {
+      if (myEmployeesData.data) {
+        setEmployees(
+          myEmployeesData.data.map((employee) => ({
+            id: employee.id,
+            name:
+              employee.personalInfo.firstName +
+              " " +
+              employee.personalInfo.lastName,
+            department: employee.employmentInformation.department,
+            grossPay: `₦${0}`,
+            deduction: `₦${0}`,
+            netPay: `₦${0}`,
+          }))
+        );
+      }
+    }
+  }, [myEmployeesData]);
+
+  useEffect(() => {
+    if (employees) {
+      if (selectedPayrollData) {
+        setEditEmployees(employees);
+      }
+    }
+  }, [selectedPayrollData, employees]);
+
+  const enableButton = () => {
+    if (
+      payrollName.length != 0 &&
+      checkedRows.length > 0 &&
+      payrollPeriod.startDate.length != 0 &&
+      payrollPeriod.endDate.length != 0 &&
+      paymentDate.length != 0 &&
+      payrollPeriod.startDate != "Invalid Date" &&
+      payrollPeriod.endDate != "Invalid Date" &&
+      payrollPeriod.startDate < payrollPeriod.endDate
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [createLoading, setCreateLoading] = useState(false);
+  const [openSuccessModal, setOpenSuccessModal] = useState(false);
+
+  const createPayrollMutation = useMutation({
+    mutationFn: (payload: CreatePayrollPayload) => createPayroll(payload),
+    onMutate: () => setCreateLoading(true),
+    onSuccess: () => {
+      queryClient.resetQueries({ queryKey: ["payrolls"] });
+      setCreateLoading(false);
+      setOpenSuccessModal(true);
+    },
+    onError: () => {
+      setCreateLoading(false);
+    },
+  });
+
+  const editPayrollMutation = useMutation({
+    mutationFn: (payload: CreatePayrollPayload) =>
+      editPayroll(selectedPayrollData?.data.id ?? "", payload),
+    onMutate: () => setCreateLoading(true),
+    onSuccess: () => {
+      queryClient.resetQueries({ queryKey: ["payrolls"] });
+      queryClient.invalidateQueries({ queryKey: ["payroll", editPayrollId] });
+      setCreateLoading(false);
+      setOpenSuccessModal(true);
+    },
+    onError: () => {
+      setCreateLoading(false);
+    },
+  });
 
   return (
-    <Stack gap={3} mb={10}>
-      <Stack
-        direction="row"
-        alignItems="center"
-        gap={1}
-        sx={{ display: { xs: "none", sm: "flex" }, cursor: "pointer" }}
-        onClick={() => router.push("/hr-admin/payroll/overview")}
-      >
-        <ChevronLeft sx={{ color: "#8D8484", height: "36px", width: "36px" }} />
-        <div style={{ color: "#667185", fontWeight: 400, fontSize: "16px" }}>
-          Back to Payroll Management
-        </div>
-      </Stack>
-      <Stack gap={2}>
-        <div className="section-heading">Create Payroll</div>
-        <div className="common-card">
-          <Grid2 spacing={2} container>
-            {[
-              { label: "Payroll Name", placeholder: "Enter" },
-              { label: "Payroll Period", placeholder: "Select period" },
-              { label: "Payment Date", placeholder: "Select date" },
-            ].map((item, index) => (
-              <Grid2 key={index} size={{ xs: 12, md: 4 }}>
-                <div className="flex flex-col gap-5">
-                  <div className="text-[#101928] font-semibold text-sm">
-                    {" "}
+    <div>
+      {activeTab == 0 && (
+        <Page
+          backText="Back to Payroll Management"
+          title={editPayrollId ? "Edit Payroll" : "Create Payroll"}
+          onBackTextClick={() =>
+            router.push(route.hrAdmin.payroll.overview.home)
+          }
+        >
+          <Form
+            isCard
+            gridItemSize={{ xs: 12, md: 4 }}
+            {...(editPayrollId && {
+              loading: selectedPayrollData ? false : true,
+            })}
+            gridSpacing={3}
+            inputFields={[
+              {
+                label: "Payroll Name",
+                type: "text",
+                placeholder: "Enter",
+                value: payrollName,
+                setValue: (arg) => {
+                  if (typeof arg === "string" && arg !== undefined) {
+                    setPayrollName(arg);
+                  }
+                },
+              },
+              {
+                label: "Payroll Period",
+                type: "date-range",
+                getDateRange: (range) =>
+                  setPayrollPeriod({
+                    startDate: dayjs(range.startDate).format("YYYY-MM-DD"),
+                    endDate: dayjs(range.endDate).format("YYYY-MM-DD"),
+                  }),
+                ...((editPayrollId || payrollPeriod.startDate.length > 1) && {
+                  dateRangeValue: [
+                    dayjs(payrollPeriod.startDate).toDate(),
+                    dayjs(payrollPeriod.endDate).toDate(),
+                  ],
+                }),
+              },
+              {
+                label: "Payment Date",
+                type: "date",
+                ...(editPayrollId
+                  ? { value: paymentDate }
+                  : { defaultValue: paymentDate }),
+                getDate: (date) =>
+                  setPaymentDate(dayjs(date).format("YYYY-MM-DD")),
+              },
+            ]}
+          />
+          <Table
+            hasCheckboxes
+            hasPagination={false}
+            title="Select Employees for Payroll Cycle"
+            headerRowData={[
+              "Employee Name",
+              "Department",
+              "Gross Pay",
+              "Deduction",
+              "Net Pay",
+            ]}
+            fieldTypes={Array(5).fill(FieldType.text)}
+            bodyRowData={editPayrollId ? editEmployees : employees}
+            displayedFields={[
+              "name",
+              "department",
+              "grossPay",
+              "deduction",
+              "netPay",
+            ]}
+            onSearch={(query) =>
+              setFetchParams({ ...fetchParams, search: query })
+            }
+            getCheckedRows={(rows) => setCheckedRows(rows)}
+            defaultCheckedRows={checkedRows}
+          />
+        </Page>
+      )}
+      {activeTab == 1 && (
+        <Page
+          backText={`Back to ${editPayrollId ? "Edit" : "Create"} Payroll`}
+          title="Review Payroll"
+          onBackTextClick={() => setActiveTab(0)}
+        >
+          <Form
+            isCard
+            gridItemSize={{ xs: 12, md: 4 }}
+            gridSpacing={3}
+            inputFields={[
+              {
+                label: "Payroll Name",
+                type: "text",
+                placeholder: "Enter",
+                value: payrollName,
+                setValue: (arg) => {
+                  if (typeof arg === "string") setPayrollName(arg);
+                },
+                disabled: true,
+              },
+              {
+                label: "Payroll Period",
+                type: "date-range",
+                disabled: true,
+                getDateRange: (range) =>
+                  setPayrollPeriod({
+                    startDate: dayjs(range.startDate).format("YYYY-MM-DD"),
+                    endDate: dayjs(range.endDate).format("YYYY-MM-DD"),
+                  }),
+                placeholder: `${dayjs(payrollPeriod.startDate).format(
+                  "DD MMM"
+                )} - ${dayjs(payrollPeriod.endDate).format("DD MMM YYYY")}`,
+              },
+              {
+                label: "Payment Date",
+                type: "date",
+                value: paymentDate,
+                getDate: (date) =>
+                  setPaymentDate(dayjs(date).format("YYYY-MM-DD")),
+                disabled: true,
+              },
+            ]}
+          />
+          <Table
+            hasActionsColumn
+            hasPagination={false}
+            headerRowData={[
+              "Employee Name",
+              "Department",
+              "Gross Pay",
+              "Net Pay",
+              "Bonus",
+              "Untaxed Bonus",
+              "Deductions",
+              "Prorate Deduction",
+              "Tax",
+              "Overtime",
+            ]}
+            fieldTypes={Array(10).fill(FieldType.text)}
+            bodyRowData={myEmployeesData?.data
+              .map((employee) => ({
+                id: employee.id,
+                name:
+                  employee.personalInfo.firstName +
+                  " " +
+                  employee.personalInfo.lastName,
+                department: employee.employmentInformation.department,
+                grossPay: `₦${0}`,
+                netPay: `₦${0}`,
+                bonus: `₦${0}`,
+                untaxedBonus: `₦${0}`,
+                deductions: `₦${0}`,
+                prorateDeductions: `₦${0}`,
+                tax: `₦${0}`,
+                overtime: employee.compensation.overtime,
+              }))
+              .filter((employee) =>
+                checkedRows?.map((row) => row.id).includes(employee.id)
+              )
+              .filter((employee) =>
+                employee.name.toLowerCase().includes(searchQuery.toLowerCase())
+              )
+              .filter((employee) =>
+                employee.department
+                  .toLowerCase()
+                  .includes(usedDepartmentFilter?.toLowerCase() ?? "")
+              )}
+            displayedFields={[
+              "name",
+              "department",
+              "grossPay",
+              "netPay",
+              "bonus",
+              "untaxedBonus",
+              "deductions",
+              "prorateDeductions",
+              "tax",
+              "overtime",
+            ]}
+            onSearch={(query) => setSearchQuery(query)}
+            formFilter={{
+              inputFields: [
+                {
+                  label: "Department",
+                  type: "select",
+                  placeholder: departmentFilter,
+                  value: departmentFilter,
+                  setValue: (arg) => {
+                    if (typeof arg === "string") setDepartmentFilter(arg);
+                  },
+                  selectValControlledFromOutside: true,
+                  options: [
+                    ...new Set(
+                      checkedRows.map((employee) => employee.department)
+                    ),
+                  ].map((department) => ({
+                    label: department,
+                    value: department.toLowerCase(),
+                  })),
+                },
+              ],
+            }}
+            onFilterClick={() => setUsedDepartmentFilter(departmentFilter)}
+            onResetClick={() => {
+              setDepartmentFilter(undefined);
+              setUsedDepartmentFilter(undefined);
+            }}
+            getCheckedRows={(rows) => setCheckedRows(rows)}
+            actions={[
+              { name: "Adjust Compenstation", onClick: () => {} },
+              {
+                name: "Remove Employee",
+                onClick: () => {},
+                onDataReturned: (id) =>
+                  setCheckedRows(
+                    checkedRows.filter((checkedRow) => checkedRow.id !== id)
+                  ),
+              },
+            ]}
+            fieldToReturnOnActionItemClick="id"
+          />
+        </Page>
+      )}
+      {activeTab == 2 && (
+        <Page
+          backText="Back to Payroll Review"
+          onBackTextClick={() => setActiveTab(1)}
+          title="Payroll Summary"
+        >
+          <Stack
+            gap={2}
+            sx={{
+              backgroundColor: "#0035C3",
+              borderRadius: "10px",
+              padding: "30px",
+            }}
+          >
+            <div style={{ fontSize: "14px", fontWeight: 400, color: "#FFF" }}>
+              Total Debit
+            </div>
+            <div style={{ fontSize: "28px", fontWeight: 500, color: "#FFF" }}>
+              N1,286,000.00
+            </div>
+          </Stack>
+          <Stack className="common-card" px={4} gap={3} pt={5}>
+            <div
+              style={{ color: "#101928", fontWeight: 500, fontSize: "20px" }}
+            >
+              Detail Payment
+            </div>
+            <Stack gap={2}>
+              {[
+                { label: "Total Gross Pay", value: "N1,440,000.00" },
+                { label: "Total Tax Deductions", value: "N144,000.00" },
+                { label: "Total Pension Deductions", value: "N90,000.00" },
+                { label: "Total Other Deductions", value: "N23,000.00" },
+                { label: "Total Bonuses", value: "N62,000.00" },
+              ].map((item, index) => (
+                <Stack key={index} direction="row" alignItems="center">
+                  <div
+                    style={{
+                      flexGrow: 1,
+                      color: "#101928",
+                      fontWeight: 400,
+                      fontSize: "16px",
+                    }}
+                  >
                     {item.label}
                   </div>
-                  {index == 0 ? (
-                    // <TextField
-                    //   key={index}
-                    //   sx={{
-                    //     borderRadius: '6px',
-                    //     '&:hover': {
-                    //       border: '0.5px solid #3498FF',
-                    //     },
-                    //   }}
-                    //   inputProps={{
-                    //     style: {
-                    //       height: '3px',
-                    //       fontSize: '14px',
-                    //       fontWeight: 400,
-                    //     },
-                    //   }}
-                    //   placeholder={item.placeholder}
-                    // />
-                    <Input
-                      placeholder={item.placeholder}
-                      key={index}
-                      style={{ borderRadius: "6px" }}
-                    />
-                  ) : index == 1 ? (
-                    <DateRangePicker
-                      style={{
-                        borderRadius: "6px",
-                        // width: '40px',
-                        // padding: '0px'
-                      }}
-                      preventOverflow
-                      showOneCalendar
-                      cleanable={false}
-                      ranges={[]}
-                      format="dd MMM yyyy"
-                      placeholder={item.placeholder}
-                      onChange={(e) => {
-                        if (e) {
-                          setDateRange({ startDate: e[0], endDate: e[1] });
-                        }
-                      }}
-                      character=" – "
-                      caretAs={CalendarIcon}
-                    />
-                  ) : (
-                    <DatePicker
-                      key={index}
-                      placeholder={item.placeholder}
-                      style={{
-                        borderRadius: "6px",
-                      }}
-                      format="dd MMM yyyy"
-                      cleanable={false}
-                      caretAs={CalendarIcon}
-                    />
-                  )}
-                </div>
-              </Grid2>
-            ))}
-          </Grid2>
+                  <div
+                    style={{
+                      color: "#101928",
+                      fontWeight: 700,
+                      fontSize: "18px",
+                    }}
+                  >
+                    {item.value}
+                  </div>
+                </Stack>
+              ))}
+            </Stack>
+            <Divider />
+            <Stack direction="row" alignItems="center">
+              <div
+                style={{
+                  flexGrow: 1,
+                  color: "#101928",
+                  fontWeight: 400,
+                  fontSize: "16px",
+                }}
+              >
+                Total Payroll Cost
+              </div>
+              <div
+                style={{
+                  color: "#101928",
+                  fontWeight: 700,
+                  fontSize: "28px",
+                }}
+              >
+                N1,286,000.00
+              </div>
+            </Stack>
+          </Stack>
+        </Page>
+      )}
+      <Page>
+        <div className="flex justify-center sm:justify-end mt-[-70]">
+          {/** TODO: Add Save and Continue Later Button */}
+          <Button
+            type={
+              enableButton()
+                ? createLoading
+                  ? ButtonType.disabledLoading
+                  : ButtonType.contained
+                : ButtonType.disabled
+            }
+            text={
+              activeTab < 2
+                ? "Continue"
+                : createLoading
+                ? ""
+                : editPayrollId
+                ? "Edit Payroll"
+                : "Finalize Payroll"
+            }
+            onClick={() => {
+              if (activeTab < 2) {
+                window.scrollTo({
+                  top: 0,
+                });
+                setActiveTab(activeTab + 1);
+              } else {
+                if (editPayrollId) {
+                  editPayrollMutation.mutateAsync({
+                    payrollName: payrollName,
+                    startDate: payrollPeriod.startDate,
+                    endDate: payrollPeriod.endDate,
+                    status: "pending",
+                    paymentDate: paymentDate,
+                    employees: checkedRows.map((row) => row.id),
+                  });
+                } else {
+                  createPayrollMutation.mutateAsync({
+                    payrollName: payrollName,
+                    startDate: payrollPeriod.startDate,
+                    endDate: payrollPeriod.endDate,
+                    status: "pending",
+                    paymentDate: paymentDate,
+                    employees: checkedRows.map((row) => row.id),
+                  });
+                }
+              }
+            }}
+          />
         </div>
-      </Stack>
-      <Stack gap={2}>
-        <div className="card-title-small">
-          Select Employees for Payroll Cycle
-        </div>
-        <SelectEmployeesForPayrollTable
-          getSelectedRows={(rows) => setSelectedRows(rows)}
-        />
-      </Stack>
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="flex-end"
-        gap={2}
-      >
-        <button
-          style={{
-            borderRadius: "8px",
-            border: "1.5px solid #98A2B3",
-            color: "#344054",
-            fontSize: "16px",
-            fontWeight: 600,
-            padding: "10px 0px",
-            width: "250px",
-            backgroundColor: "#FFFFFF",
-          }}
-        >
-          Save & Continue Later
-        </button>
-        <button
-          onClick={() => router.push("/hr-admin/payroll/review-payroll")}
-          style={{
-            borderRadius: "8px",
-            border: "1.5px solid #98A2B3",
-            color: selectedRows.length > 1 ? "#FFF" : "#344054",
-            fontSize: "16px",
-            fontWeight: 600,
-            padding: "10px 0px",
-            width: "250px",
-            backgroundColor: selectedRows.length > 1 ? "#0035C3" : "#98A2B3",
-          }}
-        >
-          Continue
-        </button>
-      </Stack>
-    </Stack>
+      </Page>
+      <Modal
+        open={openSuccessModal}
+        onClose={() => {}}
+        hasHeading={false}
+        centerImage="/icons/success-tick.svg"
+        centerTitle="You're all set"
+        centerMessage={` ${
+          editPayrollId
+            ? "The payroll has been"
+            : `Payroll ${dayjs(payrollPeriod.startDate).format(
+                "DD MMM"
+              )} - ${dayjs(payrollPeriod.endDate).format(
+                "DD MMM YYYY"
+              )} has been`
+        } ${editPayrollId ? " edited successfully" : "sent for approval"}`}
+        centerButton
+        buttonOne={{
+          type: ButtonType.contained,
+          text: "Back to Payroll Overview",
+          onClick: () => router.push(route.hrAdmin.payroll.overview.home),
+        }}
+      />
+    </div>
   );
 };
 

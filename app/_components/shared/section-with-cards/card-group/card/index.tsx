@@ -1,7 +1,8 @@
-import Value from './value';
-import CardLabel from './label';
-import React from 'react';
-import { CardProps } from '../../types';
+import { Skeleton } from "@mui/material";
+import React from "react";
+import { CardProps } from "../../types";
+import CardLabel from "./label";
+import Value from "./value";
 
 const Card: React.FC<CardProps> = (props) => {
   const {
@@ -19,21 +20,26 @@ const Card: React.FC<CardProps> = (props) => {
     isPercentage = false,
     largeLabelText = false,
     additionalInfo,
+    loading,
   } = props;
   return (
     <div
       className={`flex ${
-        valueBelow ? 'flex-col-reverse' : 'flex-col'
-      } gap-4 common-card h-full`}
+        valueBelow ? "flex-col-reverse" : "flex-col"
+      } gap-6 common-card h-full`}
     >
-      <Value
-        lineBelow={lineBelowValue}
-        lineColor={valueLineColor}
-        value={value}
-        denominator={denominator}
-        isPercentage={isPercentage}
-        additionalInfo={additionalInfo}
-      />
+      {loading ? (
+        <Skeleton variant="text" height={30} width={80} />
+      ) : (
+        <Value
+          lineBelow={lineBelowValue}
+          lineColor={valueLineColor}
+          value={value}
+          denominator={denominator}
+          isPercentage={isPercentage}
+          additionalInfo={additionalInfo}
+        />
+      )}
       <CardLabel
         icon={icon}
         iconColorVariant={iconColorVariant}

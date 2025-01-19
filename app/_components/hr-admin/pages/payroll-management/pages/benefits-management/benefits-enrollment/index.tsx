@@ -1,7 +1,7 @@
 "use client";
 import { Stack } from "@mui/material";
 import { useRouter } from "next/navigation";
-import PayrollBenefitsEnrollmentTable from "../../../tables/benefits-enrollment";
+// import PayrollBenefitsEnrollmentTable from "../../../tables/benefits-enrollment";
 
 const HrAdminPayrollBenefitsEnrollmentPage = () => {
   const router = useRouter();
@@ -32,7 +32,7 @@ const HrAdminPayrollBenefitsEnrollmentPage = () => {
         <div className="card-title-small">
           Select Employees for the benefits
         </div>
-        <PayrollBenefitsEnrollmentTable />
+        {/* <PayrollBenefitsEnrollmentTable /> */}
       </Stack>
     </Stack>
   );

@@ -1,72 +1,70 @@
-import { Divider, Grid2 } from '@mui/material';
-import { ChevronDown } from 'lucide-react';
-import { useState } from 'react';
-import { CourseDetailsProps } from '../types';
-import DetailName from '@/app/_components/shared/detail-group/detail/value';
+import { Divider, Grid } from "@mui/material";
+import { CourseDetailsProps } from "../types";
+import React from "react";
 
 const CourseDetails: React.FC<CourseDetailsProps> = (props) => {
-  const { name, text, list, sections, duration, sectionType } = props;
-  const showLessonState = useState(false);
+  const { name, text, list, duration } = props;
+
   return (
     <>
-      <Grid2 className='pt-4' container>
-        <Grid2 size={{ xs: 6 }}>
-          <DetailName value={name ?? ''} />
-        </Grid2>
-        <Grid2 size={{ xs: 6 }}>
-          {text && <p>{text}</p>}
-          {list?.map((item) => (
-            <p key={item}>{item}</p>
+      <Grid container spacing={2} className="pt-4">
+        {/* Course Name */}
+        {name && (
+          <>
+            <Grid item xs={6} className="text-left">
+              <strong>Course Name</strong>
+            </Grid>
+            <Grid item xs={6} className="text-right">
+              <p>{name}</p>
+            </Grid>
+          </>
+        )}
+
+        {/* Text */}
+        {text && (
+          <>
+            <Grid item xs={6} className="text-left">
+              <strong>Course Description</strong>
+            </Grid>
+            <Grid item xs={6} className="text-right">
+              <p>{text}</p>
+            </Grid>
+          </>
+        )}
+
+        {/* List */}
+        {list?.length && (
+          <>
+            <Grid item xs={6} className="text-left">
+              <strong>Course Url</strong>
+            </Grid>
+            <Grid item xs={6} className="text-right">
+              {list.map((item, index) => (
+                <p key={index}>{item}</p>
+              ))}
+            </Grid>
+          </>
+        )}
+
+        {/* Duration */}
+        {duration &&
+          [
+            { label: "Start Date", value: duration.start },
+            { label: "End Date", value: duration.end },
+          ].map((date) => (
+            <React.Fragment key={date.label}>
+              <Grid item xs={6} className="text-left">
+                <strong>{date.label}</strong>
+              </Grid>
+              <Grid item xs={6} className="text-right">
+                <p>{date.value}</p>
+              </Grid>
+            </React.Fragment>
           ))}
-          {sections?.map((section, moduleIndex) => {
-            const [showLessons, setshowLessons] = showLessonState;
-            return (
-              <div key={moduleIndex}>
-                <div className='flex gap-1'>
-                  <p className='flex gap-1 items-center flex-wrap'>
-                    <span>
-                      <b>
-                        {sectionType} {moduleIndex + 1}
-                      </b>
-                    </span>
-                    <span>{section.name}</span>
-                  </p>
-                  {section.subSections && (
-                    <ChevronDown
-                      onClick={() => setshowLessons(!showLessons)}
-                      style={{
-                        cursor: 'pointer',
-                        rotate: showLessons ? '180deg' : '0deg',
-                      }}
-                    />
-                  )}
-                </div>
-                {section.subSections.map(
-                  (subSection, lessonIndex) =>
-                    showLessons && (
-                      <p key={lessonIndex} className='flex gap-1'>
-                        <span>
-                          Lesson {moduleIndex + 1}.{lessonIndex + 1}:
-                        </span>
-                        <span>{subSection}</span>
-                      </p>
-                    )
-                )}
-              </div>
-            );
-          })}
-          {duration &&
-            [
-              { label: 'Start Date', value: duration.start },
-              { label: 'End Date', value: duration.end },
-            ].map((date: { label: string; value: string }) => (
-              <p key={date.label}>
-                {date.label}: {date.value}
-              </p>
-            ))}
-        </Grid2>
-      </Grid2>
-      <Divider sx={{ mx: -2.5 }} />
+      </Grid>
+
+      {/* Divider */}
+      <Divider sx={{ mx: -2.5, mt: 2 }} />
     </>
   );
 };

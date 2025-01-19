@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import Modal from '@/app/_components/employee/modal';
-import Page from '@/app/_components/shared/page';
-import { ButtonType } from '@/app/_components/shared/page/heading/types';
-import Table from '@/app/_components/shared/table';
-import { FieldType } from '@/app/_components/shared/table/types';
-import { icon, route } from '@/constants';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import Modal from "@/app/_components/employee/modal";
+import Page from "@/app/_components/shared/page";
+import { ButtonType } from "@/app/_components/shared/page/heading/types";
+import Table from "@/app/_components/shared/table";
+import { FieldType } from "@/app/_components/shared/table/types";
+import { icon, route } from "@/constants";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const HrAdminAppManagementRequest = () => {
   const router = useRouter();
@@ -16,20 +16,20 @@ const HrAdminAppManagementRequest = () => {
   const [openDecommissionModal, setOpenDecommissionModal] = useState(false);
   return (
     <Page
-      backText='Back to App Dashboard'
+      backText="Back to App Dashboard"
       onBackTextClick={() => router.push(route.hrAdmin.appManagement.overview)}
-      title='App Request'
-      subtitle='All App Requests Below'
+      title="App Request"
+      subtitle="All App Requests Below"
     >
       <Table
         hasCheckboxes
         hasActionsColumn
         headerRowData={[
-          'Request ID',
-          'Employee',
-          'App Name',
-          'Status',
-          'Request Date',
+          "Request ID",
+          "Employee",
+          "App Name",
+          "Status",
+          "Request Date",
         ]}
         fieldTypes={[
           ...Array(3).fill(FieldType.text),
@@ -37,48 +37,48 @@ const HrAdminAppManagementRequest = () => {
           FieldType.text,
         ]}
         displayedFields={[
-          'requestID',
-          'employee',
-          'appName',
-          'status',
-          'requestDate',
+          "requestID",
+          "employee",
+          "appName",
+          "status",
+          "requestDate",
         ]}
         bodyRowData={Array(8).fill({
-          requestID: '202201301610',
-          employee: 'Ayomide Alibaba',
-          appName: 'Figma',
-          status: 'Pending',
-          requestDate: '30 July 2024',
+          requestID: "202201301610",
+          employee: "Ayomide Alibaba",
+          appName: "Figma",
+          status: "Pending",
+          requestDate: "30 July 2024",
         })}
-        statusMap={{ Pending: 'warning' }}
+        statusMap={{ Pending: "warning" }}
         formFilter={{
           gridSpacing: 3,
           inputFields: [
             {
-              name: 'App Name',
-              type: 'select',
+              label: "App Name",
+              type: "select",
             },
             {
-              name: 'Department',
-              type: 'select',
+              label: "Department",
+              type: "select",
             },
             {
-              name: 'Status',
-              type: 'select',
+              label: "Status",
+              type: "select",
             },
           ],
         }}
         actions={[
           {
-            name: 'View Details',
+            name: "View Details",
             onClick: () => setOpenDetailsModal(true),
           },
           {
-            name: 'Approve Request',
+            name: "Approve Request",
             onClick: () => {},
           },
           {
-            name: 'Reject Request',
+            name: "Reject Request",
             onClick: () => {},
           },
         ]}
@@ -87,52 +87,52 @@ const HrAdminAppManagementRequest = () => {
         <Modal
           open={openDetailsModal}
           onClose={() => setOpenDetailsModal(false)}
-          title='View Details'
-          subtitle='View details below'
+          title="View Details"
+          subtitle="View details below"
           form={{
             gridSpacing: 3,
             inputFields: [
               {
-                name: 'App Name',
-                type: 'text',
-                value: 'Figma',
+                label: "App Name",
+                type: "text",
+                value: "Figma",
                 disabled: true,
               },
               {
-                name: 'Request ID',
-                type: 'text',
-                value: '202201301610',
+                label: "Request ID",
+                type: "text",
+                value: "202201301610",
                 disabled: true,
               },
               {
-                name: 'Employee Name',
-                type: 'text',
-                value: 'John Doe',
+                label: "Employee Name",
+                type: "text",
+                value: "John Doe",
                 disabled: true,
               },
               {
-                name: 'Number of Licenses',
-                type: 'text',
-                value: '20',
+                label: "Number of Licenses",
+                type: "text",
+                value: "20",
                 disabled: true,
               },
               {
-                name: 'Assigned Licenses',
-                type: 'text',
-                value: '15',
+                label: "Assigned Licenses",
+                type: "text",
+                value: "15",
                 disabled: true,
               },
               {
-                name: 'Available Licenses',
-                type: 'text',
-                value: '5',
+                label: "Available Licenses",
+                type: "text",
+                value: "5",
                 disabled: true,
               },
             ],
           }}
           buttonOne={{
             type: ButtonType.deleteWithIcon,
-            text: 'Decommission App',
+            text: "Decommission App",
             onClick: () => {
               setOpenDetailsModal(false);
               setOpenDecommissionModal(true);
@@ -140,7 +140,7 @@ const HrAdminAppManagementRequest = () => {
           }}
           buttonTwo={{
             type: ButtonType.contained,
-            text: 'Edit App',
+            text: "Edit App",
             onClick: () => {
               setOpenDetailsModal(false);
               setOpenEditModal(true);
@@ -152,51 +152,51 @@ const HrAdminAppManagementRequest = () => {
         <Modal
           open={openEditModal}
           onClose={() => setOpenEditModal(false)}
-          title='Edit Details'
-          subtitle='Edit details below'
+          title="Edit Details"
+          subtitle="Edit details below"
           form={{
             gridSpacing: 3,
             inputFields: [
               {
-                name: 'App Name',
-                type: 'text',
-                defaultValue: 'Figma',
+                label: "App Name",
+                type: "text",
+                defaultValue: "Figma",
               },
               {
-                name: 'License Type',
-                type: 'text',
-                defaultValue: 'Public License',
+                label: "License Type",
+                type: "text",
+                defaultValue: "Public License",
               },
               {
-                name: 'Assigned To',
-                type: 'text',
-                defaultValue: 'John Doe',
+                label: "Assigned To",
+                type: "text",
+                defaultValue: "John Doe",
               },
               {
-                name: 'Number of Licenses',
-                type: 'text',
-                defaultValue: '20',
+                label: "Number of Licenses",
+                type: "text",
+                defaultValue: "20",
               },
               {
-                name: 'Assigned Licenses',
-                type: 'text',
-                defaultValue: '15',
+                label: "Assigned Licenses",
+                type: "text",
+                defaultValue: "15",
               },
               {
-                name: 'Available Licenses',
-                type: 'text',
-                defaultValue: '5',
+                label: "Available Licenses",
+                type: "text",
+                defaultValue: "5",
               },
             ],
           }}
           buttonOne={{
             type: ButtonType.outlined,
-            text: 'Cancel',
+            text: "Cancel",
             onClick: () => setOpenEditModal(false),
           }}
           buttonTwo={{
             type: ButtonType.contained,
-            text: 'Save Changes',
+            text: "Save Changes",
             onClick: () => setOpenEditModal(false),
           }}
         />
@@ -208,16 +208,16 @@ const HrAdminAppManagementRequest = () => {
           hasHeading={false}
           reduceVerticalGap
           centerImage={icon.deleteX}
-          centerTitle='Decommision App'
-          centerMessage='If you decommission this app, it will be inactive and not assigned to any employee'
+          centerTitle="Decommision App"
+          centerMessage="If you decommission this app, it will be inactive and not assigned to any employee"
           buttonOne={{
             type: ButtonType.outlined,
-            text: 'Cancel',
+            text: "Cancel",
             onClick: () => setOpenDecommissionModal(false),
           }}
           buttonTwo={{
             type: ButtonType.deleteContained,
-            text: 'Decommision App',
+            text: "Decommision App",
             onClick: () => setOpenDecommissionModal(false),
           }}
         />

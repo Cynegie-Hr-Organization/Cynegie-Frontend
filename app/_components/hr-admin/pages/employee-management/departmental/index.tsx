@@ -1,11 +1,11 @@
-'use client';
-import Modal from '@/app/_components/employee/modal';
-import Page from '@/app/_components/shared/page';
-import { ButtonType } from '@/app/_components/shared/page/heading/types';
-import Table from '@/app/_components/shared/table';
-import { FieldType } from '@/app/_components/shared/table/types';
-import { icon } from '@/constants';
-import { useState } from 'react';
+"use client";
+import Modal from "@/app/_components/employee/modal";
+import Page from "@/app/_components/shared/page";
+import { ButtonType } from "@/app/_components/shared/page/heading/types";
+import Table from "@/app/_components/shared/table";
+import { FieldType } from "@/app/_components/shared/table/types";
+import { icon } from "@/constants";
+import { useState } from "react";
 
 const HrAdminEmployeeDepartmental = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -16,11 +16,11 @@ const HrAdminEmployeeDepartmental = () => {
 
   return (
     <Page
-      title='Departmental Management'
+      title="Departmental Management"
       hasButtons
       rightButton={{
         type: ButtonType.contained,
-        text: 'Create New Department',
+        text: "Create New Department",
         onClick: () => {
           setOpenModal(true);
           setCreateClicked(true);
@@ -33,37 +33,37 @@ const HrAdminEmployeeDepartmental = () => {
       <Table
         hasActionsColumn
         headerRowData={[
-          'S/N',
-          'Department',
-          'Department Manager',
-          'Headcount',
-          'Total Departmental No',
+          "S/N",
+          "Department",
+          "Department Manager",
+          "Headcount",
+          "Total Departmental No",
         ]}
         fieldTypes={Array(5).fill(FieldType.text)}
         displayedFields={[
-          'sn',
-          'department',
-          'departmentalManager',
-          'headcount',
-          'totalDepartmentalNo',
+          "sn",
+          "department",
+          "departmentalManager",
+          "headcount",
+          "totalDepartmentalNo",
         ]}
         bodyRowData={Array(5).fill({
-          sn: '01',
-          department: 'Product',
-          departmentalManager: 'Ayomide Alibaba',
-          headcount: '23',
-          totalDepartmentalNo: '23',
+          sn: "01",
+          department: "Product",
+          departmentalManager: "Ayomide Alibaba",
+          headcount: "23",
+          totalDepartmentalNo: "23",
         })}
         actions={[
           {
-            name: 'Edit',
+            name: "Edit",
             onClick: () => {
               setOpenModal(true);
               setCreateClicked(false);
             },
           },
           {
-            name: 'Delete',
+            name: "Delete",
             onClick: () => {
               setCreateConfirmClicked(false);
               setOpenConfirmationModal(true);
@@ -75,51 +75,51 @@ const HrAdminEmployeeDepartmental = () => {
       <Modal
         open={openModal}
         onClose={() => setOpenModal(false)}
-        title={createClicked ? 'Create New Department' : 'Edit Details'}
+        title={createClicked ? "Create New Department" : "Edit Details"}
         subtitle={
           createClicked
-            ? 'Fill in details to create new department'
-            : 'Edit details below'
+            ? "Fill in details to create new department"
+            : "Edit details below"
         }
         form={{
           gridSpacing: 3,
           inputFields: [
             {
-              name: 'Department Name',
-              placeholder: 'Department Name',
-              type: 'text',
-              ...(!createClicked && { value: 'Product' }),
+              label: "Department Name",
+              placeholder: "Department Name",
+              type: "text",
+              ...(!createClicked && { value: "Product" }),
             },
             {
-              name: 'Department Manager',
-              placeholder: 'Department Manager',
-              type: 'text',
-              ...(!createClicked && { value: 'Salami Abubakar' }),
+              label: "Department Manager",
+              placeholder: "Department Manager",
+              type: "text",
+              ...(!createClicked && { value: "Salami Abubakar" }),
             },
             {
-              name: 'Total Departmental No',
-              placeholder: 'Total Departmental No',
-              type: 'text',
-              ...(!createClicked && { value: '30' }),
+              label: "Total Departmental No",
+              placeholder: "Total Departmental No",
+              type: "text",
+              ...(!createClicked && { value: "30" }),
             },
-            { name: 'Add Employees', type: 'multi-select' },
+            { label: "Add Employees", type: "multi-select" },
           ],
         }}
         buttonOne={{
           type: ButtonType.outlined,
-          text: 'Cancel',
+          text: "Cancel",
           onClick: () => setOpenModal(false),
         }}
         buttonTwo={{
           type: ButtonType.contained,
-          text: 'Save',
+          text: "Save",
           onClick: () => {
             setCreateConfirmClicked(true);
             setOpenModal(false);
             setOpenConfirmationModal(true);
           },
         }}
-        buttonGroupPosition='center'
+        buttonGroupPosition="center"
       />
       <Modal
         open={openConfirmationModal}
@@ -128,19 +128,19 @@ const HrAdminEmployeeDepartmental = () => {
         centerImage={createConfirmClicked ? icon.successTick : icon.deleteX}
         centerTitle={
           createConfirmClicked
-            ? 'You have successfully created the department'
-            : 'Delete Department?'
+            ? "You have successfully created the department"
+            : "Delete Department?"
         }
         centerMessage={
           createConfirmClicked
-            ? 'You can now proceed to dashboard to continue'
-            : 'If you delete this department, it will be removed from the department list and it will be inaccessible'
+            ? "You can now proceed to dashboard to continue"
+            : "If you delete this department, it will be removed from the department list and it will be inaccessible"
         }
         {...(createConfirmClicked
           ? {
               buttonOne: {
                 type: ButtonType.contained,
-                text: 'Continue to Dashboard',
+                text: "Continue to Dashboard",
                 onClick: () => setOpenConfirmationModal(false),
               },
               centerButton: true,
@@ -149,19 +149,19 @@ const HrAdminEmployeeDepartmental = () => {
               form: {
                 inputFields: [
                   {
-                    name: 'Why are you deleting this department?',
-                    type: 'message',
+                    label: "Why are you deleting this department?",
+                    type: "message",
                   },
                 ],
               },
               buttonOne: {
                 type: ButtonType.outlined,
-                text: 'Cancel',
+                text: "Cancel",
                 onClick: () => setOpenConfirmationModal(false),
               },
               buttonTwo: {
                 type: ButtonType.deleteContained,
-                text: 'Delete Department',
+                text: "Delete Department",
                 onClick: () => setOpenConfirmationModal(false),
               },
               reduceVerticalGap: true,

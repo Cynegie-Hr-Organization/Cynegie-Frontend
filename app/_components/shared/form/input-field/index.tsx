@@ -1,19 +1,21 @@
-import { InputFieldProps } from '@/app/_components/employee/modal/types';
-import FieldLabel from '../../detail-group/detail/value';
-import TextField from '@/app/_components/employee/input-fields/text';
-import MessageField from '@/app/_components/employee/input-fields/message';
-import SelectField from '@/app/_components/employee/input-fields/select';
-import CustomDatePicker from '@/app/_components/ui/date-picker';
-import CustomTimePicker from '@/app/_components/ui/time-picker';
-import RadioField from '@/app/_components/employee/input-fields/radio-group';
-import { Dayjs } from 'dayjs';
-import DragUpload from '../../drag-upload';
-import { MultiSelect } from '../../multi-select-dropdown';
-import AddItems from '../../custom-popover/content/add-items';
-import CheckboxField from '@/app/_components/employee/input-fields/checkbox-group';
+import CheckboxField from "@/app/_components/employee/input-fields/checkbox-group";
+import DateRangeField from "@/app/_components/employee/input-fields/date-range";
+import MessageField from "@/app/_components/employee/input-fields/message";
+import MultiSelectField from "@/app/_components/employee/input-fields/multi-select";
+import RadioField from "@/app/_components/employee/input-fields/radio-group";
+import SelectField from "@/app/_components/employee/input-fields/select";
+import TextField from "@/app/_components/employee/input-fields/text";
+import { InputFieldProps } from "@/app/_components/employee/modal/types";
+import CustomDatePicker from "@/app/_components/ui/date-picker";
+import CustomTimePicker from "@/app/_components/ui/time-picker";
+import { Skeleton } from "@mui/material";
+import dayjs, { Dayjs } from "dayjs";
+import AddItems from "../../custom-popover/content/add-items";
+import FieldLabel from "../../detail-group/detail/value";
+import DragUpload from "../../drag-upload";
 
 const InputField: React.FC<InputFieldProps> = ({
-  name,
+  label: name,
   type,
   placeholder,
   options,
@@ -26,66 +28,114 @@ const InputField: React.FC<InputFieldProps> = ({
   getCurrentValue,
   startAdornment,
   checkboxItems,
+  getDateRange,
+  getDate,
+  dateRangeValue,
+  dateRangeDefaultValue,
+  loading,
+  register,
+  errors,
+  control,
+  hookFormField,
+  required,
+  controllerRules,
 }) => {
   return (
-    <div className='flex flex-col gap-2'>
-      <FieldLabel wrapText value={name ?? ''} />
-      {type === 'text' && (
-        <TextField
-          placeholder={placeholder}
-          value={value}
-          setValue={setValue}
-          disabled={disabled}
-          defaultValue={defaultValue}
-          startAdornment={startAdornment}
-          
-        />
+    <div className="flex flex-col gap-2">
+      <FieldLabel required={required} wrapText value={name ?? ""} />
+      {loading ? (
+        <Skeleton height={40} sx={{ width: "auto" }} />
+      ) : (
+        <>
+          {type === "text" && (
+            <TextField
+              label={name}
+              placeholder={placeholder}
+              value={value}
+              setValue={setValue}
+              disabled={disabled}
+              defaultValue={defaultValue}
+              startAdornment={startAdornment}
+              register={register}
+              errors={errors}
+              required={required}
+            />
+          )}
+          {type == "message" && (
+            <MessageField
+              placeholder={placeholder}
+              value={value}
+              setValue={setValue}
+            />
+          )}
+          {type == "select" && (
+            <SelectField
+              options={options}
+              placeholder={placeholder ?? "Select"}
+              value={value}
+              defaultValue={defaultValue}
+              setValue={setValue}
+              valueControlledFromOutside={selectValControlledFromOutside}
+              getCurrentValue={getCurrentValue}
+              control={control}
+              hookFormField={hookFormField}
+              name={name}
+              errors={errors}
+              controllerRules={controllerRules}
+            />
+          )}
+          {type == "radio" && <RadioField options={options ?? []} />}
+          {type == "checkbox" && <CheckboxField items={checkboxItems ?? []} />}
+          {type == "date" && (
+            <CustomDatePicker
+              // value={dayjs(value)}
+              {...(value && { value: dayjs(value) })}
+              {...(defaultValue && { defaultValue: dayjs(defaultValue) })}
+              disabled={disabled}
+              // onChange={(newValue) => getDate?.(newValue)}
+              {...(getDate && { onChange: (newValue) => getDate?.(newValue) })}
+              hookFormField={hookFormField}
+              control={control}
+              controllerRules={controllerRules}
+              name={name}
+              errors={errors}
+            />
+          )}
+          {type == "date-range" && (
+            <DateRangeField
+              placeholder={placeholder}
+              getDateRange={getDateRange}
+              disabled={disabled}
+              value={dateRangeValue}
+              defaultValue={dateRangeDefaultValue}
+            />
+          )}
+          {type == "time" && (
+            <CustomTimePicker
+              value={null}
+              onChange={function (newValue: Dayjs | null): void {
+                console.log(newValue?.toISOString());
+              }}
+            />
+          )}
+          {type == "drag-upload" && (
+            <div>
+              <DragUpload />
+            </div>
+          )}
+          {type == "multi-select" && (
+            <MultiSelectField
+              options={options}
+              label={name}
+              control={control}
+              placeholder={placeholder}
+            />
+          )}
+          {type === "add-items" && addItemsProps && (
+            <AddItems {...addItemsProps} />
+          )}
+        </>
       )}
-      {type == 'message' && (
-        <MessageField
-          placeholder={placeholder}
-          value={value}
-          setValue={setValue}
-        />
-      )}
-      {type == 'select' && (
-        <SelectField
-          options={options}
-          placeholder={placeholder ?? 'Select'}
-          value={value}
-          defaultValue={defaultValue}
-          setValue={setValue}
-          valueControlledFromOutside={selectValControlledFromOutside}
-          getCurrentValue={getCurrentValue}
-        />
-      )}
-      {type == 'radio' && <RadioField options={options ?? []} />}
-      {type == 'checkbox' && <CheckboxField items={checkboxItems ?? []} />}
-      {type == 'date' && (
-        <CustomDatePicker
-          value={null}
-          onChange={function (newValue: Dayjs | null): void {
-            console.log(newValue);
-          }}
-        />
-      )}
-      {type == 'time' && (
-        <CustomTimePicker
-          value={null}
-          onChange={function (newValue: Dayjs | null): void {
-            console.log(newValue);
-          }}
-        />
-      )}
-      {type == 'drag-upload' && (
-        <div>
-          <DragUpload />
-        </div>
-      )}
-      {type == 'multi-select' && (
-        <MultiSelect options={[]} value={[]} onChange={() => {}} />
-      )}
-      {type === 'add-items' && addItemsProps && <AddItems {...addItemsProps} />}
     </div>
   );
 };

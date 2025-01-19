@@ -1,13 +1,14 @@
-import { ColorVariant } from '@/types';
-import { FormProps } from '../../form/types';
-import { Permission } from '../cell/variants/permissions';
+import { ColorVariant } from "@/types";
+import { FormProps } from "../../form/types";
+import { Permission } from "../cell/variants/permissions";
 
 export type TableProps<T = Record<string, any>> = {
   title?: string;
   headerRowData: string[];
-  bodyRowData: T[];
+  bodyRowData: T[] | undefined;
   displayedFields: string[];
   fieldTypes: FieldType[];
+  skeletonSizes?: ("small" | "medium" | "large")[];
   hasCheckboxes?: boolean;
   hasActionsColumn?: boolean;
   getCheckedRows?: (arg: T[]) => void;
@@ -20,8 +21,7 @@ export type TableProps<T = Record<string, any>> = {
   /** fieldToGetAction is passed to the getActionsBasedOnField function inside the GeneralTable. Both are required to have certain actions appear based on a particular field. */
   fieldToGetAction?: string;
   getActionsBasedOnField?: (arg: string | number) => TableAction[] | undefined;
-  pageCount?: number;
-  page?: number;
+  paginationMeta?: TablePaginationProps;
   fieldToGetSlug?: string;
   statusMap?: StatusMap;
   fieldActionMap?: StatusActionMap;
@@ -30,6 +30,10 @@ export type TableProps<T = Record<string, any>> = {
   hasPagination?: boolean;
   clearChecks?: boolean;
   onPermissionsClick?: (permissions: Permission[]) => void;
+  onSearch?: (arg: string) => void;
+  page?: number; //TODO: Remove and use pagination meta instead
+  pageCount?: number; //TODO: Remove and use pagination meta instead
+  defaultCheckedRows?: T[];
 };
 
 export type Filter = {
@@ -44,18 +48,25 @@ export type TableAction = {
 };
 
 export enum FieldType {
-  text = 'text',
-  link = 'link',
-  progress = 'progress',
-  status = 'status',
-  attendanceStatus = 'attendance-status',
-  nextLesson = 'lesson',
-  permissions = 'permissions',
+  text = "text",
+  link = "link",
+  progress = "progress",
+  status = "status",
+  attendanceStatus = "attendance-status",
+  nextLesson = "lesson",
+  permissions = "permissions",
 }
 
 export type TablePaginationProps = {
+  itemCount?: number;
+  totalPages?: number;
   page?: number;
-  pageCount?: number;
+  limit?: number;
+  itemsOnPage?: number;
+  onPrevClick?: () => void;
+  onNextClick?: () => void;
+  loading?: boolean;
+  onChangeLimit?: (limit: number) => void;
 };
 
 export type StatusMap = { [key: string]: ColorVariant };

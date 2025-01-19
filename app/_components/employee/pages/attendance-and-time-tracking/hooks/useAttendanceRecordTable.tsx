@@ -45,23 +45,23 @@ const [attendanceData, setAttendanceData] = useState<AttendanceRecord[]>([]);
     : []; // Default empty array in case no data is fetched
 
   const attendanceRecordTableData: TableProps = {
-    title: 'Attendance Record',
+    title: "Attendance Record",
     hasCheckboxes: true,
     hasActionsColumn: true,
     headerRowData: [
-      'Date',
-      'Clock In Time',
-      'Clock Out Time',
-      'Hours Worked',
-      'Status',
+      "Date",
+      "Clock In Time",
+      "Clock Out Time",
+      "Hours Worked",
+      "Status",
     ],
     bodyRowData: transformedAttendanceData,
     displayedFields: [
-      'date',
-      'clockInTime',
-      'clockOutTime',
-      'hoursWorked',
-      'status',
+      "date",
+      "clockInTime",
+      "clockOutTime",
+      "hoursWorked",
+      "status",
     ],
     fieldTypes: [
       FieldType.text,
@@ -72,10 +72,10 @@ const [attendanceData, setAttendanceData] = useState<AttendanceRecord[]>([]);
     ],
     actions: [
       {
-        name: 'Request correction',
+        name: "Request correction",
         onClick: () => setOpenCorrectionModal(true),
       },
-      { name: 'View Details', onClick: () => setOpenDetailsModal(true) },
+      { name: "View Details", onClick: () => setOpenDetailsModal(true) },
     ],
     filters: [{ name: 'Status', items: ['Present', 'Late', 'Absent'] }],
     fieldToReturnOnActionItemClick: 'status',
@@ -86,8 +86,8 @@ const [attendanceData, setAttendanceData] = useState<AttendanceRecord[]>([]);
   const detailsModalData: ModalProps = {
     open: openDetailsModal,
     onClose: () => setOpenDetailsModal(false),
-    title: 'View Attendance Details',
-    subtitle: 'View attendance details below',
+    title: "View Attendance Details",
+    subtitle: "View attendance details below",
     detailGroup: {
       details: [
         { name: 'Date', value: '08/01/2025' },
@@ -102,30 +102,30 @@ const [attendanceData, setAttendanceData] = useState<AttendanceRecord[]>([]);
           value: `---`,
         },
       ],
-      gridLayout: 'view-details',
+      gridLayout: "view-details",
     },
   };
 
   const correctionModalData: ModalProps = {
     open: openCorrectionModal,
     onClose: () => setOpenCorrectionModal(false),
-    title: 'Request Correction',
-    subtitle: 'Fill the details below',
+    title: "Request Correction",
+    subtitle: "Fill the details below",
     form: {
       inputFields: [
-        { name: 'Date', type: 'date' },
-        { name: 'Correct Clock In Time', type: 'time' },
-        { name: 'Correct Clock Out Time', type: 'time' },
-        { name: 'Reason for Correction', type: 'message' },
-        { name: 'Attachments', type: 'drag-upload' },
+        { label: "Date", type: "date" },
+        { label: "Correct Clock In Time", type: "time" },
+        { label: "Correct Clock Out Time", type: "time" },
+        { label: "Reason for Correction", type: "message" },
+        { label: "Attachments", type: "drag-upload" },
       ],
       isCard: false,
       gridSpacing: 3,
-      layout: 'request-correction',
+      layout: "request-correction",
     },
     buttonOne: {
       type: ButtonType.outlined,
-      text: 'Cancel',
+      text: "Cancel",
       onClick: () => setOpenCorrectionModal(false),
     },
     buttonTwo: {
@@ -142,11 +142,11 @@ const [attendanceData, setAttendanceData] = useState<AttendanceRecord[]>([]);
     open: openSuccessModal,
     onClose: setOpenSuccessModal,
     hasHeading: false,
-    centerImage: '/icons/modal-success.svg',
-    centerTitle: 'Your request for correction has been successfully submitted',
+    centerImage: "/icons/modal-success.svg",
+    centerTitle: "Your request for correction has been successfully submitted",
     buttonOne: {
       type: ButtonType.contained,
-      text: 'Continue to Dashboard',
+      text: "Continue to Dashboard",
       onClick: () => setOpenSuccessModal(false),
     },
     centerButton: true,

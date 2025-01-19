@@ -1,5 +1,5 @@
-import { InputFieldProps } from '@/app/_components/employee/modal/types';
-import { ColorVariant } from '@/types';
+import { InputFieldProps } from "@/app/_components/employee/modal/types";
+import { ColorVariant } from "@/types";
 
 export type SectionWithCardsProps = {
   title: string;
@@ -27,6 +27,7 @@ export type CardProps = {
   denominator?: number;
   isPercentage?: boolean;
   additionalInfo?: CardAdditionalInfo;
+  loading?: boolean;
 };
 
 export type CardAdditionalInfo = {
@@ -60,7 +61,7 @@ export type CardLabelIconProps = {
   containerWidth?: number;
 };
 
-export type CardTitleProps = { text: string; size?: 'small' | 'large' };
+export type CardTitleProps = { text: string; size?: "small" | "large" };
 
 export type CardPeriodProps = {
   text: string;
@@ -74,14 +75,14 @@ export type CardHeaderProps = {
   period?: string;
   hasDivider?: boolean;
   periodFont?: { size?: number; weight?: number; color?: string };
-  titleSize?: 'small' | 'large';
+  titleSize?: "small" | "large";
   periodClick?: () => void;
 };
 
 export type SectionCardContainerProps = {
   headerIcon?: React.ReactElement;
   title: string;
-  titleSize?: 'small' | 'large';
+  titleSize?: "small" | "large";
   period?: string;
   periodFont?: { size?: number; weight?: number; color?: string };
   periodClick?: () => void;
@@ -94,6 +95,9 @@ export type CardGroupProps = {
   cards?: CardProps[];
   hasIcon?: boolean;
   gridItemSize?: GridItemSize;
+  cardLargeLabelText?: boolean;
+  cardValueBelow?: boolean;
+  loading?: boolean;
 };
 
 type GridItemSize = { xs?: number; sm?: number; md?: number; lg?: number };

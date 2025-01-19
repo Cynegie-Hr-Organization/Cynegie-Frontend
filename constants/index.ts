@@ -1,7 +1,8 @@
-import { StatusMap } from '@/app/_components/shared/table/types';
-import { ChartOptions } from 'chart.js';
+import { StatusMap } from "@/app/_components/shared/table/types";
+import { FetchParams } from "@/types";
+import { ChartOptions } from "chart.js";
 
-export const iconBaseUrl = '/icons/';
+export const iconBaseUrl = "/icons/";
 
 export const icon = {
   graduatingCap: `${iconBaseUrl}graduating-cap.svg`,
@@ -54,91 +55,91 @@ export const icon = {
 
 export const color = {
   primary: {
-    dark: '#0035C3',
+    dark: "#0035C3",
   },
   success: {
-    dark: '#099137',
-    light: '#E7F6EC',
+    dark: "#099137",
+    light: "#E7F6EC",
   },
   info: {
-    extraDark: '#00268A',
-    dark: '#0035C3',
-    light: '#E6EBF9',
+    extraDark: "#00268A",
+    dark: "#0035C3",
+    light: "#E6EBF9",
   },
   warning: {
-    dark: '#FF9900',
-    light: '#FFF5E6',
+    dark: "#FF9900",
+    light: "#FFF5E6",
   },
   error: {
-    dark: '#CB1A14',
-    light: '#FBEAE9',
+    dark: "#CB1A14",
+    light: "#FBEAE9",
   },
   grey: {
-    dark: '#000000',
-    light: '#E6EBF9',
+    dark: "#000000",
+    light: "#E6EBF9",
   },
   purple: {
-    dark: '#000000',
-    light: '#EADAFF',
+    dark: "#000000",
+    light: "#EADAFF",
   },
   ash: {
-    dark: '#000000',
-    light: '#DEE3FF',
+    dark: "#000000",
+    light: "#DEE3FF",
   },
   button: {
     contained: {
-      backgroundColor: '#0035C3',
-      color: '#FFFFFF',
+      backgroundColor: "#0035C3",
+      color: "#FFFFFF",
     },
     outlined: {
-      backgroundColor: '#FFFFFF',
-      color: '#475367',
-      borderColor: '#98A2B3',
+      backgroundColor: "#FFFFFF",
+      color: "#475367",
+      borderColor: "#98A2B3",
     },
     filter: {
-      backgroundColor: '#FFFFFF',
-      color: '#344054',
-      borderColor: '#D0D5DD',
+      backgroundColor: "#FFFFFF",
+      color: "#344054",
+      borderColor: "#D0D5DD",
     },
     disabled: {
-      backgroundColor: '#98A2B3',
-      color: '#101928',
-      borderColor: '#98A2B3',
+      backgroundColor: "#98A2B3",
+      color: "#101928",
+      borderColor: "#98A2B3",
     },
   },
   progress: {
-    filled: '#475367',
-    unfilled: '#F0F2F5',
+    filled: "#475367",
+    unfilled: "#F0F2F5",
   },
   inputfield: {
     disabled: {
-      backgroundColor: '#F0F2F5',
-      color: '#98A2B3',
+      backgroundColor: "#F7F7FA",
+      color: "#98A2B3",
     },
   },
   pieChart: {
-    info: '#8AA2E3',
-    success: '#5FC381',
-    error: '#E26E6A',
-    warning: '#FFBB54',
-    grey: '#CDC4C4',
+    info: "#8AA2E3",
+    success: "#5FC381",
+    error: "#E26E6A",
+    warning: "#FFBB54",
+    grey: "#CDC4C4",
   },
   barChart: {
-    lightBlue: '#B0C0EC',
-    midBlue: '#335DCF',
-    darkBlue: '#0030B1',
+    lightBlue: "#B0C0EC",
+    midBlue: "#335DCF",
+    darkBlue: "#0030B1",
   },
   icon: {
-    grey: '#667185',
+    grey: "#667185",
   },
 };
 
 export const defaultDonutChartData = {
-  labels: ['', ''],
+  labels: ["", ""],
   datasets: [
     {
       data: [0, 0],
-      backgroundColor: [color.info.dark, '#F0F2F5'],
+      backgroundColor: [color.info.dark, "#F0F2F5"],
       borderWidth: 0,
       borderRadius: [0, 0],
       spacing: -10,
@@ -146,7 +147,7 @@ export const defaultDonutChartData = {
   ],
 };
 
-export const defaultDonutChartOptions: ChartOptions<'doughnut'> = {
+export const defaultDonutChartOptions: ChartOptions<"doughnut"> = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
@@ -158,80 +159,98 @@ export const defaultDonutChartOptions: ChartOptions<'doughnut'> = {
     },
   },
   events: [],
-  cutout: '85%',
+  cutout: "85%",
 };
 
 export const APRStatusMap: StatusMap = {
-  Approved: 'success',
-  Pending: 'warning',
-  Rejected: 'error',
+  Approved: "success",
+  Pending: "warning",
+  Rejected: "error",
 };
 
-
-
 export const CISStatusMap: StatusMap = {
-  Completed: 'success',
-  'In Progress': 'warning',
-  'Not Started': 'error',
+  Completed: "success",
+  "In Progress": "warning",
+  "Not Started": "error",
 };
 
 export const CPStatusMap: StatusMap = {
-  Completed: 'success',
-  Pending: 'warning',
+  Completed: "success",
+  Pending: "warning",
 };
 
 export const AttendanceStatusMap: StatusMap = {
-  Present: 'grey',
-  Late: 'info',
-  Absent: 'error',
+  Present: "grey",
+  Late: "info",
+  Absent: "error",
 };
 
 export const ReadAdminStatusMap: StatusMap = {
-  Read: 'warning',
-  Admin: 'info',
+  Read: "warning",
+  Admin: "info",
 };
+
+export const CourseStatusMap: StatusMap = {
+  CANCELLED: "warning",
+  DRAFT: "info",
+  COMPLETED: "success",
+  Read: "warning",
+  Admin: "info",
+};
+
 export const AppRequestStatusMap: StatusMap = {
-  INACTIVE: 'error',
-  ACTIVE: 'success',
+  INACTIVE: "error",
+  ACTIVE: "success",
 };
 
 export const PDStatusMap: StatusMap = {
-  Done: 'success',
-  Pending: 'warning',
+  Done: "success",
+  Pending: "warning",
 };
 
 export const tableFilter = {
-  department: { name: 'Department', items: ['All', 'Sales', 'Finance', 'IT'] },
+  department: { name: "Department", items: ["All", "Sales", "Finance", "IT"] },
   status: {
-    name: 'Status',
-    items: ['All', 'Approved', 'Pending', 'Rejected'],
+    name: "Status",
+    items: ["All", "Approved", "Pending", "Rejected"],
   },
 };
 
 const basePath = {
-  employee: '/employee/',
-  hrAdmin: '/hr-admin/',
-  performanceManagement: 'performance-management/',
-  learningDevelopment: 'learning-development/',
-  benefits: 'benefits/',
-  upcomingWidget: 'upcoming-widget/',
-  task: 'task/',
-  performanceSummary: 'performance-summary/',
-  attendance: 'attendance/',
-  leave: 'leave-management/',
-  profile: 'profile/',
-  device: 'device-management/',
-  appRequest: 'app-request/',
-  employeeManagement: 'employee-management/',
-  approvalManagement: 'approval/',
-  attendanceManagement: 'attendance/',
-  roleManagement: 'role/',
-  directory: 'directory/',
-  appManagement: 'app-management/',
+  employee: "/employee/",
+  hrAdmin: "/hr-admin/",
+  performanceManagement: "performance-management/",
+  learningDevelopment: "learning-development/",
+  benefits: "benefits/",
+  upcomingWidget: "upcoming-widget/",
+  task: "task/",
+  performanceSummary: "performance-summary/",
+  attendance: "attendance/",
+  leave: "leave-management/",
+  profile: "profile/",
+  device: "device-management/",
+  appRequest: "app-request/",
+  employeeManagement: "employee-management/",
+  approvalManagement: "approval/",
+  attendanceManagement: "attendance/",
+  roleManagement: "role/",
+  directory: "directory/",
+  appManagement: "app-management/",
+  payroll: "payroll/",
+  editPayroll: "edit-payroll/",
+  viewPayroll: "view/",
 };
 
 export const route = {
   hrAdmin: {
+    payroll: {
+      overview: {
+        home: `${basePath.hrAdmin}${basePath.payroll}overview`,
+        createPayroll: `${basePath.hrAdmin}${basePath.payroll}create-payroll`,
+      },
+      "edit-payroll": `${basePath.hrAdmin}${basePath.payroll}${basePath.editPayroll}`,
+      "view-payroll": `${basePath.hrAdmin}${basePath.payroll}${basePath.viewPayroll}`,
+    },
     employeeManagement: {
       approvalManagement: {
         home: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.approvalManagement}`,
@@ -312,4 +331,10 @@ export const route = {
       home: `${basePath.employee}${basePath.appRequest}`,
     },
   },
+};
+
+export const initFetchParams: FetchParams = {
+  page: 1,
+  limit: 10,
+  sortOrder: "asc",
 };

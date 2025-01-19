@@ -1,18 +1,24 @@
 export type ColorVariant =
-  | 'info'
-  | 'success'
-  | 'warning'
-  | 'error'
-  | 'grey'
-  | 'purple'
-  | 'ash';
+  | "info"
+  | "success"
+  | "warning"
+  | "error"
+  | "grey"
+  | "purple"
+  | "ash";
 
-
-  export type CreatedBy = {
+export type CreatedBy = {
   email: string;
   firstName: string;
   lastName: string;
   id: string;
+};
+
+export type FetchParams = {
+  page: number;
+  limit: number;
+  sortOrder: "asc" | "desc";
+  search?: string;
 };
 
 export type SummaryCard = {
@@ -28,6 +34,46 @@ export type CompanyRegistrationData = {
   firstName: string;
   lastName: string;
   companyName: string;
+};
+
+export type Department = {
+  departmentName: string;
+  departmentManager: string;
+  employees: string[];
+  userLimit: number;
+  status: string;
+  deletedAt: string | null;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+};
+
+export type Benefit = {
+  name: string;
+  benefitType: string;
+  departments: Pick<Department, "id">[];
+  employmentType: string;
+  jobLevel: string;
+  startDate: string;
+  endDate: string;
+  employerContribution: number;
+  employeeContribution: number;
+  status: "approved" | "pending" | "rejected";
+  employees: Employee[];
+  deletedAt: string | null;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+  totalEmployees: number;
+  employeesByStatus: {};
+};
+
+export type BenefitResponse = {
+  benefit: Omit<Benefit, "totalEmployees" | "employeesByStatus">;
+  totalEmployees: number;
+  totalUtilization: number;
 };
 
 export interface CreateJobProps {
@@ -52,14 +98,56 @@ export interface Job extends CreateJobProps {
   status: string;
 }
 
+export interface FetchResponse<T> {
+  status: number;
+  message: string;
+  data: T;
+}
+
 export interface PaginatedResponse<T> {
   status: number;
   message: string;
-  data: {
+  data:
+    | {
+        totalPages: number;
+        count: number;
+        currentPage: number;
+        data: T[];
+      }
+    | T[];
+}
+
+export interface PaginatedResponse2<T> {
+  status: number;
+  message: string;
+  data: T[];
+  meta: {
+    itemCount: number;
     totalPages: number;
-    count: number;
-    currentPage: number;
-    data: T[];
+    page: number;
+    limit: number;
+  };
+}
+
+export interface PaginatedResponse3<T> {
+  data: T[];
+  meta: {
+    page: number;
+    limit: number;
+    itemCount: number;
+    pageCount: number;
+  };
+}
+
+export interface PaginatedResponse4<T> {
+  data: T[];
+  meta: {
+    page: number;
+    limit: number;
+    itemCount: number;
+    pageCount: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
   };
 }
 
@@ -98,7 +186,7 @@ export interface Device {
 export interface DeviceRequest {
   userId: User;
   deviceId: Device;
-  status: 'PENDING' | 'APPROVED' | 'DENIED';
+  status: "PENDING" | "APPROVED" | "DENIED";
   requestedDate: string; // ISO date format
   createdAt: string; // ISO date format
   updatedAt: string; // ISO date format
@@ -119,7 +207,7 @@ export interface Software {
     name: string;
     status: string;
   };
-  status: 'ACTIVE' | 'INACTIVE';
+  status: "ACTIVE" | "INACTIVE";
   deletedAt: string | null;
   createdAt: string;
   updatedAt: string;
@@ -130,11 +218,11 @@ export interface SecurityAlert {
   alertTitle: string;
   description: string;
   date: string;
-  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'; // Enum for severity levels
+  severity: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL"; // Enum for severity levels
   company: {
     id: string;
     name: string;
-    status: 'active' | 'inactive';
+    status: "active" | "inactive";
     createdAt: string;
     updatedAt: string;
   };
@@ -182,8 +270,6 @@ export interface DeviceMetrics {
     REJECTED: number;
   };
 }
-
-
 
 export interface Candidate {
   firstName: string;
@@ -329,6 +415,25 @@ export type ReviewCycle = {
   createdAt: string;
   updatedAt: string;
   id: string;
+};
+
+export type Payroll = {
+  payrollName: string;
+  startDate: string;
+  endDate: string;
+  approvalDate?: string;
+  status: "approved" | "pending" | "rejected";
+  paymentDate: string;
+  employees: Employee[] | string[];
+  deletedAt: string | null;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+  totalGrossPay: number;
+  totalNetPay: number;
+  totalDeductions: number;
+  employeesInfo?: { employeeId: string; employeeInfo: Employee }[];
 };
 
 type PaginationMeta = {

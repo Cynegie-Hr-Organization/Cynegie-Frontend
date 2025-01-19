@@ -1,5 +1,5 @@
-import React from 'react';
-import { TableAction } from '../../../table/types';
+import React from "react";
+import { TableAction } from "../../../table/types";
 
 export type PageHeadingProps = {
   type?: HeadingType;
@@ -19,6 +19,7 @@ export type PageHeadingProps = {
 };
 
 export type ButtonProps = {
+  isSubmit?: boolean;
   type?: ButtonType;
   text?: string;
   icon?: React.ReactElement;
@@ -51,9 +52,10 @@ export enum ButtonType {
   black,
   download,
   actions,
+  disabledLoading,
 }
 
-export type HeadingType = 'page' | 'modal' | 'card';
+export type HeadingType = "page" | "modal" | "card";
 
 export type HeadingBackProps = {
   text: string;
