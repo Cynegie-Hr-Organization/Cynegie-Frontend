@@ -2,6 +2,7 @@
 
 import { DeleteSvg } from "@/app/_components/icons/custom-icons";
 import AppButton from "@/app/_components/shared/button";
+import { Spinner } from "@/app/_components/shared/buttons";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppSelect } from "@/app/_components/shared/select";
 import { IBeneficiary } from "@/app/_core/actions/finance/banking";
@@ -15,7 +16,7 @@ import { RiSearchLine } from "react-icons/ri";
 
 const BeneficiaryListing = () => {
 
-  const { data } = useBeneficiaries();
+  const { data, isLoading } = useBeneficiaries();
   const { beneficiaries } = data ?? {};
 
 
@@ -75,54 +76,61 @@ const BeneficiaryListing = () => {
             } />
         </div>
 
-        <div className='-mx-5 mt-4 overflow-x-scroll'>
-          <table className='w-full border-collapse'>
-            <thead className='bg-[#F7F9FC]'>
-              <tr>
-                <th className='px-5 py-3 text-left'>Name</th>
-                <th className='px-5 py-3 text-left'>Account Number</th>
-                <th className='px-5 py-3 text-left'>Bank Name</th>
-                <th className='px-5 py-3 text-left'>Date Added</th>
-                <th className='px-5 py-3 text-left'>Actions</th>
-              </tr>
-            </thead>
 
-            <tbody>
-              {beneficiaries?.map((beneficiary) => {
-                return (
-                  <tr key={beneficiary.id} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
-                    <td className='px-5 py-4'>{beneficiary?.accountName}</td>
-                    <td className='px-5 py-4'>{beneficiary?.accountNumber}</td>
-                    <td className='px-5 py-4'>{beneficiary?.ownedBy}</td>
-                    <td className='px-5 py-4'>{localTime(beneficiary?.dateAdded, 'Do MMM, yyyy')}</td>
-                    <td className='px-5 py-4'>
-                      <AppDropdownMenu
-                        width="w-max"
-                        trigger={
-                          <button className="border border-gray-300 rounded-lg p-2 w-max hover:ring-1 hover:ring-gray-400 outline-none">
-                            <HiDotsVertical />
-                          </button>
-                        }
-                        menuItems={
-                          <DeleteModal
-                            beneficiary={beneficiary}
-                            trigger={
-                              <button
-                                className="w-full p-2 text-left hover:bg-gray-50 text-red-500 text-sm">
-                                Delete Beneficiary
-                              </button>
-                            }
-                            handleDelete={() => { }}
-                          />
-                        }
-                      />
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
+        {isLoading ? (
+          <div className="flex justify-center items-center h-full">
+            <Spinner className="text-primary" />
+          </div>
+        ) : (
+          <div className='-mx-5 mt-4 overflow-x-scroll'>
+            <table className='w-full border-collapse'>
+              <thead className='bg-[#F7F9FC]'>
+                <tr>
+                  <th className='px-5 py-3 text-left'>Name</th>
+                  <th className='px-5 py-3 text-left'>Account Number</th>
+                  <th className='px-5 py-3 text-left'>Bank Name</th>
+                  <th className='px-5 py-3 text-left'>Date Added</th>
+                  <th className='px-5 py-3 text-left'>Actions</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {beneficiaries?.map((beneficiary) => {
+                  return (
+                    <tr key={beneficiary.id} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
+                      <td className='px-5 py-4'>{beneficiary?.accountName}</td>
+                      <td className='px-5 py-4'>{beneficiary?.accountNumber}</td>
+                      <td className='px-5 py-4'>{beneficiary?.ownedBy}</td>
+                      <td className='px-5 py-4'>{localTime(beneficiary?.dateAdded, 'Do MMM, yyyy')}</td>
+                      <td className='px-5 py-4'>
+                        <AppDropdownMenu
+                          width="w-max"
+                          trigger={
+                            <button className="border border-gray-300 rounded-lg p-2 w-max hover:ring-1 hover:ring-gray-400 outline-none">
+                              <HiDotsVertical />
+                            </button>
+                          }
+                          menuItems={
+                            <DeleteModal
+                              beneficiary={beneficiary}
+                              trigger={
+                                <button
+                                  className="w-full p-2 text-left hover:bg-gray-50 text-red-500 text-sm">
+                                  Delete Beneficiary
+                                </button>
+                              }
+                              handleDelete={() => { }}
+                            />
+                          }
+                        />
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );
