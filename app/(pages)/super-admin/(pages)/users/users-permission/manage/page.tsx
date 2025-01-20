@@ -16,7 +16,7 @@ import { ITAdminOptions } from "./(options)/it-admin-option";
 
 
 const UserPermission = () => {
-
+  const router = useRouter();
   const [isFormValid, setIsFormValid] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
@@ -317,7 +317,7 @@ const UserPermission = () => {
         btn1Label="Cancel"
         btn2Label="Grant Permission"
         disabledbtn2={!isFormValid}
-        onBtn1Click={() => { }}
+        onBtn1Click={() => router.back()}
         onBtn2Click={() => { }}
       />
     </div>
