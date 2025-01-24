@@ -46,12 +46,11 @@ const handlePasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     });
     console.log("SignIn response:", res);
 
-    if (res && res.ok) {
+    if (res?.ok) {
       const user = await getSession();
       console.log("User session data:", user);
 
       const redirectPath = getRedirectPath(user?.user?.role || []);
-
       if (redirectPath) {
         router.push(redirectPath);
       } else {
@@ -59,20 +58,41 @@ const handlePasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
           className: "text-blue-600",
         });
       }
+    } else if (res?.error) {
+      // Handle specific error messages
+      if (res.error === "CredentialsSignin") {
+        toast.error("Invalid login credentials. Please try again.", {
+          className: "text-blue-600",
+        });
+      } else {
+        toast.error(
+          "Login failed due to a server issue. Please try again later.",
+          { className: "text-blue-600" }
+        );
+      }
     } else {
-      toast.error("Login failed. Please check your credentials.", {
+      toast.error("Login failed. Please try again.", {
         className: "text-blue-600",
       });
     }
   } catch (error) {
     console.error("An unexpected error occurred:", error);
-    toast.error("An unexpected error occurred. Please try again.", {
-      className: "text-blue-600",
-    });
+
+    // Detect network errors
+    if (error instanceof TypeError && error.message === "Failed to fetch") {
+      toast.error("Network error. Please check your connection and try again.", {
+        className: "text-blue-600",
+      });
+    } else {
+      toast.error("An unexpected error occurred. Please try again.", {
+        className: "text-blue-600",
+      });
+    }
   } finally {
     setIsLoading(false);
   }
 };
+
 
 
   return (

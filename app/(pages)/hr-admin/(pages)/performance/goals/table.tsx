@@ -30,6 +30,8 @@ const GoalTable = () => {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
+  console.log(data);
+
   const goals = data?.data?.items || [];
   const totalItems = data?.data?.totalItems || 0;
 
@@ -159,7 +161,7 @@ const GoalTable = () => {
                     <Checkbox className="rounded-md border-gray-300" />
                   </td>
                   <td className="px-4 py-4">{goal.goalName}</td>
-                  <td className="px-4 py-4">{`${goal.employees?.personalInfo?.firstName} ${goal.employees?.personalInfo?.lastName}`}</td>
+                  <td className="px-4 py-4">{`${goal?.employees[0]?.personalInfo?.firstName} ${goal.employees[0]?.personalInfo?.lastName}`}</td>
                   <td className="px-4 py-4">
                     {new Date(goal.dueDate).toLocaleDateString()}
                   </td>

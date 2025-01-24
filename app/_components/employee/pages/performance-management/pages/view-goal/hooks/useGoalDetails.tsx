@@ -1,20 +1,50 @@
+import { useParams } from 'next/navigation'; // Use the correct hook for Next.js
+import { useQuery } from '@tanstack/react-query';
 import Table from '@/app/_components/shared/table';
 import { FieldType } from '@/app/_components/shared/table/types';
 import { Tab } from '@/app/_components/shared/tab-format/types';
 import { GoalDetailsProps } from '../goal-details/types';
 import { color } from '@/constants';
+import { fetchGoalsById } from '@/app/api/services/employee/performance-mgt';
+import { Skeleton } from '@mui/material';
+
+
 
 const useGoalDetails = () => {
+
+  const { id } = useParams();
+
+  console.log(id);
+  
+    const { data, isLoading } = useQuery({
+    queryKey: ['goalDetails', id],
+    queryFn: () => fetchGoalsById(id),
+    enabled: !!id, 
+    });
+  
+  const goalData = data?.data;  
+  console.log(goalData);
+  const skeletonLoader = (
+    <Skeleton variant="text" width={100} height={20} />
+  );
+
   const keyResultsTableData = {
     headerRowData: ['Key Results', 'Target', 'Due Date', 'Status'],
     hasActionsColumn: false,
     hasCheckboxes: false,
-    bodyRowData: Array(3).fill({
-      name: 'Increase employee engagement',
-      target: '14.00%',
-      dueDate: '31 Jul 2024',
-      progress: 10,
-    }),
+    bodyRowData: isLoading
+      ? Array(5).fill({
+          name: skeletonLoader,
+          target: skeletonLoader,
+          dueDate: skeletonLoader,
+          progress: skeletonLoader,
+        })
+      : goalData?.keyResults.map((result: any) => ({
+          name: result.result || 'N/A',
+          target: `${result.targetValue || 'N/A'}`,
+          dueDate: new Date(result.dueDate).toLocaleDateString() || 'N/A',
+          progress: 0, // Replace with actual progress if available
+        })) || [],
     fieldTypes: [
       FieldType.text,
       FieldType.text,
@@ -34,11 +64,17 @@ const useGoalDetails = () => {
     headerRowData: ['Milestones', 'Due Date', 'Status'],
     hasActionsColumn: false,
     hasCheckboxes: false,
-    bodyRowData: Array(3).fill({
-      name: 'Increase employee engagement',
-      dueDate: '31 Jul 2024',
-      progress: 10,
-    }),
+    bodyRowData: isLoading
+      ? Array(5).fill({
+          name: skeletonLoader,
+          dueDate: skeletonLoader,
+          progress: skeletonLoader,
+        })
+      : goalData?.milestones.map((milestone: any) => ({
+          name: milestone.milestoneName || 'N/A',
+          dueDate: new Date(milestone.dueDate).toLocaleDateString() || 'N/A',
+          progress: 0, // Replace with actual progress if available
+        })) || [],
     fieldTypes: [FieldType.text, FieldType.text, FieldType.progress],
     displayedFields: ['name', 'dueDate', 'progress'],
     filters: [
@@ -56,13 +92,12 @@ const useGoalDetails = () => {
 
   const goalDetails: GoalDetailsProps = {
     generalDetails: {
-      name: 'Increase Employee Satisfaction',
-      description:
-        'Implement strategies to increase overall employee satisfaction by 20% by the end of the year',
-      department: 'HR Team',
-      dueDate: '12 Dec 2024',
-      priority: 'High',
-      userPictures: Array(5).fill('/image/team/mattew.png'),
+      name: goalData?.goalName || 'N/A',
+      description: goalData?.description || 'N/A',
+      department:  '',
+      dueDate: new Date(goalData?.dueDate).toLocaleDateString() || 'N/A',
+      priority: goalData?.priority || 'N/A',
+      userPictures: goalData?.employees.map((emp: any) => emp.personalInfo?.email) || [],
     },
     alignmentDetails: {
       alignedGoal: {

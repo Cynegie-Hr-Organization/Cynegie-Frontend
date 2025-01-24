@@ -1,124 +1,90 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DropResult } from 'react-beautiful-dnd';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { getTasks, changeTaskStatusById } from '@/app/api/services/employee/tasks';
 import { BoardData } from '../types';
 
 const useKanbanBoard = () => {
-  const isMoveUnacceptable = (start: string, finish: string) => {
-    if (start === 'Pending Task' && finish === 'Training Course') return true;
-    if (start === 'Pending Task' && finish === 'Completed Course') return true;
-    if (start === 'Completed Task' && finish === 'Training Course') return true;
-    if (start === 'Completed Task' && finish === 'Completed Course')
-      return true;
-    if (start === 'Training Course' && finish === 'Pending Task') return true;
-    if (start === 'Training Course' && finish === 'Completed Task') return true;
-    if (start === 'Completed Course' && finish === 'Pending Task') return true;
-    if (start === 'Completed Course' && finish === 'Completed Task')
-      return true;
-  };
-  const initialData: BoardData = {
-    tasks: {
-      'task-1': {
-        id: 'task-1',
-        name: 'App Usability Testing with Maze',
-        status: 'Pending',
-        app: 'Slack',
-        userPictures: [
-          '/image/persons/person-1.png',
-          '/image/persons/person-1.png',
-          '/image/persons/person-3.png',
-        ],
-        dueDate: 'January 21st, 2024',
-        noOfComments: 2,
-      },
-      'task-2': {
-        id: 'task-2',
-        name: 'App Usability Testing with Maze',
-        status: 'Pending',
-        app: 'Slack',
-        userPictures: [
-          '/image/persons/person-1.png',
-          '/image/persons/person-1.png',
-          '/image/persons/person-3.png',
-        ],
-        dueDate: 'January 21st, 2024',
-        noOfComments: 2,
-      },
-      'task-3': {
-        id: 'task-3',
-        name: 'App Usability Testing with Maze',
-        status: 'Pending',
-        app: 'Slack',
-        userPictures: [
-          '/image/persons/person-1.png',
-          '/image/persons/person-1.png',
-          '/image/persons/person-3.png',
-        ],
-        dueDate: 'January 21st, 2024',
-        noOfComments: 2,
-      },
-      'task-4': {
-        id: 'task-4',
-        name: 'App Usability Testing with Maze',
-        status: 'Pending',
-        app: 'Slack',
-        userPictures: [
-          '/image/persons/person-1.png',
-          '/image/persons/person-1.png',
-          '/image/persons/person-3.png',
-        ],
-        dueDate: 'January 21st, 2024',
-        noOfComments: 2,
-      },
-      'task-5': {
-        id: 'task-5',
-        name: 'App Usability Testing with Maze',
-        status: 'Done',
-        app: 'Slack',
-        userPictures: [
-          '/image/persons/person-1.png',
-          '/image/persons/person-1.png',
-          '/image/persons/person-3.png',
-        ],
-        dueDate: 'January 21st, 2024',
-        noOfComments: 2,
-      },
+  const queryClient = useQueryClient();
+
+  const { data: tasksData, isLoading } = useQuery({
+    queryKey: ['tasks'],
+    queryFn: getTasks,
+  });
+
+  console.log('tasksData:', tasksData);
+
+  const mutation = useMutation({
+    mutationFn: ({ id, status }: { id: string; status: string }) => changeTaskStatusById(id, status.toLowerCase()),
+    onSuccess: (data) => {
+      console.log('Mutation successful:', data);
+      queryClient.invalidateQueries({ queryKey: ['tasks'] });
     },
+    onError: (error) => {
+      console.error('Mutation failed:', error);
+    },
+  });
+
+  const initialData: BoardData = {
+    tasks: {},
     columns: {
       'pending-task': {
         id: 'pending-task',
         title: 'Pending Task',
-        status: 'Pending',
-        taskIds: ['task-1', 'task-2'],
+        status: 'pending',
+        taskIds: [],
       },
       'completed-task': {
         id: 'completed-task',
         title: 'Completed Task',
-        status: 'Done',
-        taskIds: ['task-3'],
-      },
-      'training-course': {
-        id: 'training-course',
-        title: 'Training Course',
-        status: 'Pending',
-        taskIds: ['task-4'],
-      },
-      'completed-course': {
-        id: 'completed-course',
-        title: 'Completed Course',
-        status: 'Done',
-        taskIds: ['task-5'],
+        status: 'completed',
+        taskIds: [],
       },
     },
-    columnOrder: [
-      'pending-task',
-      'completed-task',
-      'training-course',
-      'completed-course',
-    ],
+    columnOrder: ['pending-task', 'completed-task'],
   };
 
   const [boardData, setBoardData] = useState<BoardData>(initialData);
+
+  useEffect(() => {
+    if (!isLoading && tasksData) {
+      const tasks = tasksData.reduce((acc: any, task: any) => {
+        acc[task.id] = {
+          id: task.id,
+          name: task.taskName,
+          status: task.status,
+          description: task.description,
+          label: task.label,
+          dueDate: new Date(task.dueDate).toLocaleDateString(),
+          employees: task.employees,
+        };
+        return acc;
+      }, {});
+
+      const pendingTaskIds = tasksData.filter((task: any) => task.status === 'pending').map((task: any) => task.id);
+      const completedTaskIds = tasksData.filter((task: any) => task.status === 'completed').map((task: any) => task.id);
+
+      setBoardData({
+        tasks,
+        columns: {
+          'pending-task': {
+            id: 'pending-task',
+            title: 'Pending Task',
+            status: 'pending',
+            taskIds: pendingTaskIds,
+          },
+          'completed-task': {
+            id: 'completed-task',
+            title: 'Completed Task',
+            status: 'completed',
+            taskIds: completedTaskIds,
+          },
+        },
+        columnOrder: ['pending-task', 'completed-task'],
+      });
+    }
+  }, [isLoading, tasksData]);
 
   // Handle drag-and-drop logic
   const onDragEnd = (result: DropResult) => {
@@ -159,12 +125,7 @@ const useKanbanBoard = () => {
       return;
     }
 
-    // If moving to unallowed column
-    if (isMoveUnacceptable(start.title, finish.title)) {
-      return;
-    }
-
-    // If moving to a different allowed column
+    // If moving to a different column
     const startTaskIds = Array.from(start.taskIds);
     startTaskIds.splice(source.index, 1);
     const newStart = {
@@ -187,9 +148,12 @@ const useKanbanBoard = () => {
         [newFinish.id]: newFinish,
       },
     }));
+
+    // Update task status on the server
+    mutation.mutate({ id: draggableId, status: finish.status });
   };
 
-  return { boardData, setBoardData, onDragEnd };
+  return { boardData, setBoardData, onDragEnd, isLoading };
 };
 
 export default useKanbanBoard;

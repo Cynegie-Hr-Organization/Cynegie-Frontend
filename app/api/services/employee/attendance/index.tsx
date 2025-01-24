@@ -64,3 +64,18 @@ export const fetchAttendanceMine = async (): Promise<AttendanceRecord[]> => {
 
   return response as AttendanceRecord[];
 };
+
+
+
+export const fetchAttendanceById = async (id : any): Promise<AttendanceRecord> => {
+  const session = await getServerSession(authOptions);
+
+  const response = await request("GET", `${baseUrl}/v1/attendance/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  });
+
+  return response as AttendanceRecord;
+};

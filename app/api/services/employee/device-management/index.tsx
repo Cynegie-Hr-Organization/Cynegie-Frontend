@@ -11,8 +11,8 @@ export const getAllDeviceRequest = async (
   sortOrder: string = "desc",
   page: number,
   limit: number,
+    search?: string,
   status?: string,
-  search?: string,
 ) => {
   const session = await getServerSession(authOptions);
 
@@ -25,8 +25,8 @@ export const getAllDeviceRequest = async (
       sortOrder,
       page,
       limit,
-      status,
       search,
+      status,
     },
   });
 

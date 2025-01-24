@@ -57,7 +57,7 @@ const TaskCard: React.FC<Task> = ({
             color: '#909090',
           }}
         >
-          {status === 'Pending' ? 'Not started yet' : 'Completed'}
+          {status === 'PENDING' ? 'Not started yet' : 'Completed'}
         </div>
         <div>
           <AvatarGroup avatars={userPictures} />
