@@ -4,4 +4,6 @@ export const queryKeys = {
   BANKING: 'banking',
   BENEFICIARIES: 'beneficiaries',
   MY_TRANSFERS: 'my-transfers',
+  VENDORS: 'vendors',
+  VENDOR: 'vendor'
 }

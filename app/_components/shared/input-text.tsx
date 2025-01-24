@@ -1,3 +1,5 @@
+import { Spinner } from "@/app/_components/shared/buttons";
+
 const AppInputText = ({
   label,
   id,
@@ -6,7 +8,8 @@ const AppInputText = ({
   type = "text",
   onChange,
   value,
-  disabled
+  disabled,
+  isLoadingContent = false
 }: {
   label: string;
   id: string;
@@ -15,7 +18,8 @@ const AppInputText = ({
   type?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: string | number;
-  disabled?: boolean
+  disabled?: boolean;
+  isLoadingContent?: boolean;
 }) => {
   return (
     <div className="space-y-1 w-full">
@@ -25,15 +29,22 @@ const AppInputText = ({
       >
         {label}
       </label>
-      <input
-        type={type}
-        id={id}
-        placeholder={placeholder}
-        className="w-full border border-gray-300 rounded-md p-2 placeholder:text-xs text-xs outline-none focus:border-primary transition-all duration-300 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300"
-        onChange={onChange}
-        value={value}
-        disabled={disabled}
-      />
+      <div className="relative overflow-hidden rounded-md border border-gray-300">
+        {isLoadingContent && (
+          <div className="absolute inset-0 w-full h-full flex items-center pl-2 bg-white">
+            <Spinner className="size-4 text-primary" />
+          </div>
+        )}
+        <input
+          type={type}
+          id={id}
+          placeholder={placeholder}
+          className="w-full rounded-md p-2 placeholder:text-xs text-xs outline-none focus:border-primary transition-all duration-300 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300"
+          onChange={onChange}
+          value={value}
+          disabled={disabled}
+        />
+      </div>
     </div>
   );
 };

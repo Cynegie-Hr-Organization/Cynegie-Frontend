@@ -1,8 +1,8 @@
 
-import { headers } from "@/app/_core/actions/session";
-import { Http } from "@/app/_core/axios";
 import { IRes } from "@/app/_core/interfaces/res";
 import { IUser } from "@/app/_core/interfaces/user";
+import { Http } from "@/app/_core/utils/axios";
+import { headers } from "@/app/_core/utils/session";
 import { getSession } from "next-auth/react";
 
 export const getCashflowTrends = async () => {

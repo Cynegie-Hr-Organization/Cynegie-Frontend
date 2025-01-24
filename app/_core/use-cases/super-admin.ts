@@ -1,6 +1,6 @@
-import { queryKeys } from "@/app/_core/queryKeys"
+import { queryKeys } from "@/app/_core/utils/queryKeys"
 import { useQuery } from "@tanstack/react-query"
-import { getCashflowTrends } from "../actions/superAdmin"
+import { getCashflowTrends } from "../actions/super-admin/superAdmin"
 
 export const useCashflowTrends = () => {
   return useQuery({

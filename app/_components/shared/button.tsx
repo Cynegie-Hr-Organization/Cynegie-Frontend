@@ -4,7 +4,7 @@ import React from 'react';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 interface AppButtonProps {
-  label: string;
+  label?: string;
   type?: "button" | "submit" | "reset";
   onClick?: () => void;
   leftIcon?: React.ReactNode;

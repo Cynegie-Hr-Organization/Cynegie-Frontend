@@ -78,7 +78,7 @@ const NavLinks = ({ onNavLinkClick, isMobile }: { onNavLinkClick: () => void, is
 
   return (
     <div className="transition-all duration-300 ease-in-out">
-      <ul className="flex flex-col gap-2">
+      <ul className="flex flex-col gap-y-2 md:gap-y-0 xl:gap-y-1">
         {menuLinks.map((item: DashboardMenu) => {
           const isActive = isPathActive(item.path, item.subMenu);
 

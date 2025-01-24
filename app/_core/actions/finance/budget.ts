@@ -1,8 +1,8 @@
 
-import { headers } from "@/app/_core/actions/session";
-import { Http } from "@/app/_core/axios";
 import { IBudget } from "@/app/_core/interfaces/budget";
 import { IPaginatedRes } from "@/app/_core/interfaces/res";
+import { Http } from "@/app/_core/utils/axios";
+import { headers } from "@/app/_core/utils/session";
 import { getSession } from "next-auth/react";
 
 export const getAllBudget = async () => {
