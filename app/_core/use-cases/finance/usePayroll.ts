@@ -53,7 +53,7 @@ export const usePayrollMutations = ({ id }: { id?: string }) => {
         headers: await headers(session?.token ?? '')
       })
     },
-    onSuccess: async (data) => {
+    onSuccess: async () => {
       toast.success('Vendor created successfully', { className: 'bg-red-500' });
       await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDORS] });
     },
