@@ -1,8 +1,8 @@
 import { color } from "@/constants";
 import { ColorVariant } from "@/types";
+import { UserRole } from "@/types/enum";
+import { rolesMap } from "@/types/form";
 import dayjs from "dayjs";
-import { UserRole } from '@/types/enum';
-import { rolesMap } from '@/types/form';
 
 export function getMonthRange(monthIndex: number, year: number): string {
   const monthNames = [
@@ -101,11 +101,19 @@ export function getHumanReadableDateRange(
   )}`;
 }
 
-
 export const getRedirectPath = (roles: string[]): string | null => {
   const primaryRole = roles.includes(UserRole.EMPLOYEE)
     ? UserRole.EMPLOYEE
-    : roles.find(role => rolesMap[role]) || null;
+    : roles.find((role) => rolesMap[role]) || null;
 
   return primaryRole ? rolesMap[primaryRole] : null;
+};
+
+export const currencyFormatter = new Intl.NumberFormat("en-NG", {
+  style: "currency",
+  currency: "NGN",
+});
+
+export const sum = (array: number[]) => {
+  return array.reduce((total, currentVal) => total + currentVal);
 };

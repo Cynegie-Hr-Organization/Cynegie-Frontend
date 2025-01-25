@@ -8,6 +8,7 @@ import Table from "@/app/_components/shared/table";
 import { FieldType } from "@/app/_components/shared/table/types";
 import { route } from "@/constants";
 import { FetchParams } from "@/types";
+import { currencyFormatter, sum } from "@/utils";
 import { Divider, Stack } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -24,10 +25,11 @@ import {
 type MappedEmployee = {
   id: string | null;
   name: string;
-  department: string;
-  grossPay: string;
-  deduction: string;
-  netPay: string;
+  departmentId: string;
+  departmentName: string;
+  grossPay: number;
+  deduction: number;
+  netPay: number;
 };
 
 const HrAdminCreatePayrollPage = ({
@@ -72,7 +74,7 @@ const HrAdminCreatePayrollPage = ({
   const [editEmployees, setEditEmployees] = useState<MappedEmployee[]>();
 
   const [checkedRows, setCheckedRows] = useState<
-    (MappedEmployee | Record<string, string>)[]
+    (MappedEmployee | Record<string, any>)[]
   >([]);
 
   const [departmentFilter, setDepartmentFilter] = useState<string>();
@@ -114,10 +116,12 @@ const HrAdminCreatePayrollPage = ({
               employee.personalInfo.firstName +
               " " +
               employee.personalInfo.lastName,
-            department: employee.employmentInformation.department,
-            grossPay: `₦${0}`,
-            deduction: `₦${0}`,
-            netPay: `₦${0}`,
+            departmentId: employee.employmentInformation.department.id,
+            departmentName:
+              employee.employmentInformation.department.departmentName,
+            grossPay: employee.grossPay,
+            deduction: employee.totalDeductions,
+            netPay: employee.netPay,
           }))
         );
       }
@@ -141,7 +145,7 @@ const HrAdminCreatePayrollPage = ({
       paymentDate.length != 0 &&
       payrollPeriod.startDate != "Invalid Date" &&
       payrollPeriod.endDate != "Invalid Date" &&
-      payrollPeriod.startDate < payrollPeriod.endDate
+      payrollPeriod.startDate <= payrollPeriod.endDate
     ) {
       return true;
     } else {
@@ -248,11 +252,14 @@ const HrAdminCreatePayrollPage = ({
               "Deduction",
               "Net Pay",
             ]}
-            fieldTypes={Array(5).fill(FieldType.text)}
+            fieldTypes={[
+              ...Array(2).fill(FieldType.text),
+              ...Array(3).fill(FieldType.naira),
+            ]}
             bodyRowData={editPayrollId ? editEmployees : employees}
             displayedFields={[
               "name",
-              "department",
+              "departmentName",
               "grossPay",
               "deduction",
               "netPay",
@@ -324,7 +331,11 @@ const HrAdminCreatePayrollPage = ({
               "Tax",
               "Overtime",
             ]}
-            fieldTypes={Array(10).fill(FieldType.text)}
+            fieldTypes={[
+              ...Array(2).fill(FieldType.text),
+              ...Array(7).fill(FieldType.naira),
+              FieldType.text,
+            ]}
             bodyRowData={myEmployeesData?.data
               .map((employee) => ({
                 id: employee.id,
@@ -332,14 +343,16 @@ const HrAdminCreatePayrollPage = ({
                   employee.personalInfo.firstName +
                   " " +
                   employee.personalInfo.lastName,
-                department: employee.employmentInformation.department,
-                grossPay: `₦${0}`,
-                netPay: `₦${0}`,
-                bonus: `₦${0}`,
-                untaxedBonus: `₦${0}`,
-                deductions: `₦${0}`,
-                prorateDeductions: `₦${0}`,
-                tax: `₦${0}`,
+                departmentId: employee.employmentInformation.department.id,
+                departmentName:
+                  employee.employmentInformation.department.departmentName,
+                grossPay: employee.grossPay,
+                netPay: employee.netPay,
+                bonus: 0,
+                untaxedBonus: 0,
+                deductions: employee.totalDeductions,
+                prorateDeductions: 0,
+                tax: 0,
                 overtime: employee.compensation.overtime,
               }))
               .filter((employee) =>
@@ -349,13 +362,13 @@ const HrAdminCreatePayrollPage = ({
                 employee.name.toLowerCase().includes(searchQuery.toLowerCase())
               )
               .filter((employee) =>
-                employee.department
+                employee.departmentName
                   .toLowerCase()
                   .includes(usedDepartmentFilter?.toLowerCase() ?? "")
               )}
             displayedFields={[
               "name",
-              "department",
+              "departmentName",
               "grossPay",
               "netPay",
               "bonus",
@@ -377,13 +390,9 @@ const HrAdminCreatePayrollPage = ({
                     if (typeof arg === "string") setDepartmentFilter(arg);
                   },
                   selectValControlledFromOutside: true,
-                  options: [
-                    ...new Set(
-                      checkedRows.map((employee) => employee.department)
-                    ),
-                  ].map((department) => ({
-                    label: department,
-                    value: department.toLowerCase(),
+                  options: [...new Set(checkedRows)].map((employee) => ({
+                    label: employee.departmentName,
+                    value: employee.id,
                   })),
                 },
               ],
@@ -427,7 +436,7 @@ const HrAdminCreatePayrollPage = ({
               Total Debit
             </div>
             <div style={{ fontSize: "28px", fontWeight: 500, color: "#FFF" }}>
-              N1,286,000.00
+              --
             </div>
           </Stack>
           <Stack className="common-card" px={4} gap={3} pt={5}>
@@ -438,11 +447,14 @@ const HrAdminCreatePayrollPage = ({
             </div>
             <Stack gap={2}>
               {[
-                { label: "Total Gross Pay", value: "N1,440,000.00" },
-                { label: "Total Tax Deductions", value: "N144,000.00" },
-                { label: "Total Pension Deductions", value: "N90,000.00" },
-                { label: "Total Other Deductions", value: "N23,000.00" },
-                { label: "Total Bonuses", value: "N62,000.00" },
+                {
+                  label: "Total Gross Pay",
+                  value: checkedRows.map((employee) => employee.grossPay),
+                },
+                { label: "Total Tax Deductions", value: "--" },
+                { label: "Total Pension Deductions", value: "--" },
+                { label: "Total Other Deductions", value: "--" },
+                { label: "Total Bonuses", value: "--" },
               ].map((item, index) => (
                 <Stack key={index} direction="row" alignItems="center">
                   <div
@@ -462,7 +474,9 @@ const HrAdminCreatePayrollPage = ({
                       fontSize: "18px",
                     }}
                   >
-                    {item.value}
+                    {typeof item.value === "string"
+                      ? item.value
+                      : currencyFormatter.format(sum(item.value))}
                   </div>
                 </Stack>
               ))}
@@ -486,7 +500,7 @@ const HrAdminCreatePayrollPage = ({
                   fontSize: "28px",
                 }}
               >
-                N1,286,000.00
+                --
               </div>
             </Stack>
           </Stack>

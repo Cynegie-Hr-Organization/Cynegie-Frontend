@@ -26,7 +26,7 @@ const InputField: React.FC<InputFieldProps> = ({
   defaultValue,
   addItemsProps,
   getCurrentValue,
-  startAdornment,
+  startadornment: startAdornment,
   checkboxItems,
   getDateRange,
   getDate,
@@ -55,7 +55,7 @@ const InputField: React.FC<InputFieldProps> = ({
               setValue={setValue}
               disabled={disabled}
               defaultValue={defaultValue}
-              startAdornment={startAdornment}
+              startadornment={startAdornment}
               register={register}
               errors={errors}
               required={required}

@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
+import { Compensation } from "./api-index";
+
 export type ColorVariant =
   | "info"
   | "success"
@@ -350,7 +351,7 @@ interface PersonalInfo {
 export interface Employee {
   employmentInformation: string;
   personalInfo: PersonalInfo;
-  compensation: string;
+  compensation: Compensation | string;
   documents: string[];
   NextOfKin: string[];
   accessRights: string[];
@@ -482,4 +483,62 @@ export interface TrainingCompletionRate {
 export interface MonthlyCompletionRate {
   month: string;
   completionRate: number;
+}
+
+export interface BenefitsSummary {
+  totalBenefits: number;
+  totalEmployees: number;
+  benefitsByStatus: {
+    pending: number;
+    active: number;
+    expired: number;
+    cancelled: number;
+    rejected: number;
+    approved: number;
+  };
+}
+
+export interface SalaryAdvanceSummary {
+  approvedTotalAdvanceTaken: number;
+  pendingTotalAdvanceTaken: number;
+  pendingCount: number;
+  approvedCount: number;
+}
+
+export interface SalaryAdvanceRequest {
+  _id: string;
+  employeeId: {
+    email: string;
+    firstName: string;
+    id: string;
+  };
+  advanceTaken: number;
+  status: string;
+  amountRepaid: number;
+  nextPaymentDate: string;
+  repaymentStatus: string;
+}
+
+export interface PaginatedResponse5<T> {
+  totalRequests: number;
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
+  requests: T[];
+}
+
+export interface PayrollSummary {
+  pending: number;
+  rejected: number;
+  approved: number;
+  draft: number;
+  processed: number;
+  totalPayroll: number;
+  totalCostByStatus: {
+    pending: number;
+    rejected: number;
+    approved: number;
+    draft: number;
+    processed: number;
+  };
 }

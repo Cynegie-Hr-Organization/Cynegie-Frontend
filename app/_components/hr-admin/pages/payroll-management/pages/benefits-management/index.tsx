@@ -15,6 +15,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { getBenefitsSummary } from "../overview/api";
 import {
   addBenefit,
   AddBenefitPayload,
@@ -60,6 +61,11 @@ const HrAdminPayrollBenefitsManagementPage = () => {
 
   const startDate = watch("startDate");
   const endDate = watch("End Date");
+
+  const { data: benefitsSummaryData } = useQuery({
+    queryKey: ["benefits", "summary"],
+    queryFn: () => getBenefitsSummary(),
+  });
 
   const { data: benefitsData } = useQuery({
     queryKey: ["benefits", fetchParams],
@@ -148,17 +154,17 @@ const HrAdminPayrollBenefitsManagementPage = () => {
       <CardGroup
         cardValueBelow
         gridItemSize={{ sm: 6, md: 3 }}
-        loading={benefitsData ? false : true}
+        loading={benefitsSummaryData ? false : true}
         cards={[
           {
             labelText: "Total Benefits",
-            value: `${benefitsData?.meta.itemCount}`,
+            value: `${benefitsSummaryData?.totalBenefits}`,
             icon: <SvgIcon path="/icons/group.svg" width={16} height={16} />,
             iconColorVariant: "purple",
           },
           {
             labelText: "Employees Enrolled",
-            value: "N/A",
+            value: `${benefitsSummaryData?.totalEmployees}`,
             icon: (
               <SvgIcon path="/icons/paper-money.svg" width={16} height={16} />
             ),
@@ -166,7 +172,7 @@ const HrAdminPayrollBenefitsManagementPage = () => {
           },
           {
             labelText: "Pending Enrollments",
-            value: "N/A",
+            value: `N/A`,
             icon: (
               <SvgIcon path="/icons/paper-money.svg" width={16} height={16} />
             ),
@@ -174,7 +180,7 @@ const HrAdminPayrollBenefitsManagementPage = () => {
           },
           {
             labelText: "Pending Approvals",
-            value: "N/A",
+            value: `${benefitsSummaryData?.benefitsByStatus.pending}`,
             icon: (
               <SvgIcon path="/icons/paper-money.svg" width={16} height={16} />
             ),
