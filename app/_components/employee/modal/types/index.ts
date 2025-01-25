@@ -61,7 +61,7 @@ export type InputFieldProps = {
   defaultValue?: string | number;
   addItemsProps?: AddItemsProps;
   getCurrentValue?: (arg: string | number) => void;
-  startAdornment?: React.ReactElement;
+  startadornment?: React.ReactElement;
   checkboxItems?: string[];
   getDateRange?: (range: { startDate: Date; endDate: Date }) => void;
   getDate?: (date: Dayjs | null) => void;

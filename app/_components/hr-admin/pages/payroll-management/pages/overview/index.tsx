@@ -8,8 +8,9 @@ import CardGroup from "@/app/_components/shared/section-with-cards/card-group";
 import Table from "@/app/_components/shared/table";
 import { FieldType } from "@/app/_components/shared/table/types";
 import Toast from "@/app/_components/shared/toast";
-import { color, icon, initFetchParams, route } from "@/constants";
+import { icon, initFetchParams, route } from "@/constants";
 import { FetchParams } from "@/types";
+import { currencyFormatter } from "@/utils";
 import { Box, Button, Grid2, MenuItem, Select, Stack } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -20,7 +21,7 @@ import "rsuite/dist/rsuite.min.css";
 import BonusAndIncentivesChart from "../../charts/bonuses-and-incentives-chart";
 import PayrollOverviewChartLarge from "../../charts/payroll-overview/large";
 import PayrollOverviewChartMobile from "../../charts/payroll-overview/mobile";
-import { deletePayroll, getPayrolls } from "./api";
+import { deletePayroll, getPayrolls, getPayrollSummary } from "./api";
 import "./style.css";
 
 const HrAdminPayrollOverviewPage = () => {
@@ -40,6 +41,11 @@ const HrAdminPayrollOverviewPage = () => {
   const { data } = useQuery({
     queryKey: ["payrolls", fetchParams],
     queryFn: () => getPayrolls(fetchParams),
+  });
+
+  const { data: payrollSummary } = useQuery({
+    queryKey: ["payrolls", "summary"],
+    queryFn: () => getPayrollSummary(),
   });
 
   const [payrolls, setPayrolls] = useState<
@@ -149,34 +155,38 @@ const HrAdminPayrollOverviewPage = () => {
     >
       <CardGroup
         gridItemSize={{ xs: 12, sm: 6, md: 3 }}
+        loading={payrollSummary ? false : true}
+        //TODO: additionalInfo fields commented out pending availability from the API
         cards={[
           {
             labelText: "Total Payroll Cost",
-            value: "₦34,886,000",
-            additionalInfo: {
-              left: { text: "+20% ", color: "#099137" },
-              right: { text: "Last Month", color: "" },
-            },
+            value: currencyFormatter.format(
+              payrollSummary?.totalCostByStatus.approved ?? 0
+            ),
+            // additionalInfo: {
+            //   left: { text: "+20% ", color: "#099137" },
+            //   right: { text: "Last Month", color: "" },
+            // },
           },
           {
             labelText: "Completed Payments",
-            value: "40",
-            additionalInfo: {
-              left: { text: "₦90,251,000 ", color: color.success.dark },
-              right: { text: "Paid", color: "" },
-            },
+            value: payrollSummary?.approved ?? 0,
+            // additionalInfo: {
+            //   left: { text: "₦90,251,000 ", color: color.success.dark },
+            //   right: { text: "Paid", color: "" },
+            // },
           },
           {
             labelText: "Pending Payments",
-            value: "12",
-            additionalInfo: {
-              left: { text: "₦7,251,000 ", color: color.warning.dark },
-              right: { text: "Pending", color: "" },
-            },
+            value: payrollSummary?.pending ?? 0,
+            // additionalInfo: {
+            //   left: { text: "₦7,251,000 ", color: color.warning.dark },
+            //   right: { text: "Pending", color: "" },
+            // },
           },
           {
             labelText: "Total Payrolls",
-            value: "124",
+            value: payrollSummary?.totalPayroll ?? 0,
           },
         ]}
         cardLargeLabelText
@@ -379,7 +389,7 @@ const HrAdminPayrollOverviewPage = () => {
                           fontSize: "11.4px",
                         }}
                       >
-                        Bonuses
+                        {index == 0 ? "Bonuses" : "Incentives"}
                       </Box>
                       <Box
                         sx={{
@@ -443,7 +453,6 @@ const HrAdminPayrollOverviewPage = () => {
       </Grid2>
       <Table
         hasActionsColumn
-        hasCheckboxes
         headerRowData={[
           "Payroll Name",
           "Payroll Period",
@@ -522,7 +531,10 @@ const HrAdminPayrollOverviewPage = () => {
             },
           ],
         }}
-        onResetClick={() => setStatusFilter(undefined)}
+        onResetClick={() => {
+          setStatusFilter(undefined);
+          setFetchParams({ ...fetchParams, status: undefined });
+        }}
         onFilterClick={() =>
           setFetchParams({ ...fetchParams, status: statusFilter })
         }

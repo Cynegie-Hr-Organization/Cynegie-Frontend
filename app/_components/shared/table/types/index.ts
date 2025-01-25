@@ -55,6 +55,7 @@ export enum FieldType {
   attendanceStatus = "attendance-status",
   nextLesson = "lesson",
   permissions = "permissions",
+  naira = "naira",
 }
 
 export type TablePaginationProps = {

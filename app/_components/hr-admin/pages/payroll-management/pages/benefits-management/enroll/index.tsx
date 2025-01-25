@@ -16,7 +16,8 @@ import { enrollToBenefit } from "../api";
 type MappedEmployee = {
   id: string | null;
   name: string;
-  department: string;
+  departmentId: string;
+  departmentName: string;
   grossPay: string;
   deduction: string;
   netPay: string;
@@ -72,7 +73,9 @@ const HrAdminEnrollToBenefitPage: React.FC = () => {
               employee.personalInfo.firstName +
               " " +
               employee.personalInfo.lastName,
-            department: employee.employmentInformation.department,
+            departmentId: employee.employmentInformation.department.id,
+            departmentName:
+              employee.employmentInformation.department.departmentName,
             grossPay: `₦${0}`,
             deduction: `₦${0}`,
             netPay: `₦${0}`,
@@ -120,7 +123,7 @@ const HrAdminEnrollToBenefitPage: React.FC = () => {
         bodyRowData={employees}
         displayedFields={[
           "name",
-          "department",
+          "departmentName",
           "grossPay",
           "deduction",
           "netPay",

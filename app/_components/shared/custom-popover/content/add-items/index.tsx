@@ -210,7 +210,7 @@ const AddItems: React.FC<AddItemsProps> = ({
                 type={secondaryFieldType ?? inputFieldType}
                 defaultValue={item.value}
                 placeholder={secondaryFieldPlaceholder}
-                startAdornment={
+                startadornment={
                   <div style={{ marginRight: 5 }}>
                     {secondaryFieldStartAdornment}
                   </div>

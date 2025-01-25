@@ -44,7 +44,10 @@ const ViewPayrollDetailsPage = () => {
           grossPay: "N/A",
           deduction: "N/A",
           netPay: "N/A",
-          overtimePay: "N/A",
+          overtimePay:
+            typeof employee.employeeInfo.compensation !== "string"
+              ? employee.employeeInfo.compensation.overtime
+              : "",
           status: "pending",
         }))
       );
@@ -93,6 +96,7 @@ const ViewPayrollDetailsPage = () => {
       <CardGroup
         cardValueBelow
         gridItemSize={{ xs: 12, sm: 6, md: 4, lg: 4 }}
+        loading={payrollData ? false : true}
         cards={[
           {
             hasIcon: true,
@@ -140,6 +144,8 @@ const ViewPayrollDetailsPage = () => {
         ]}
         bodyRowData={employees}
         statusMap={{ pending: "warning" }}
+        hasSearchFilter={false}
+        hasPagination={false}
       />
     </Page>
   );

@@ -1,3 +1,5 @@
+import { Department } from ".";
+
 export type CompanyRegistrationData = {
   email: string;
   password: string;
@@ -185,11 +187,15 @@ export type Employee = {
   createdAt: string;
   updatedAt: string;
   id: string | null;
+  grossPay: number;
+  netPay: number;
+  totalAllowance: number;
+  totalDeductions: number;
 };
 
 type EmploymentInformation = {
   jobTitle: string;
-  department: string; // Department ID
+  department: Pick<Department, "id" | "departmentName">; // Department ID
   manager: string;
   employmentType: "full_time" | "part_time" | "contract";
   employmentStatus: "active" | "on_leave" | "terminated";
@@ -225,7 +231,7 @@ type PersonalInfo = {
   id: string | null;
 };
 
-type Compensation = {
+export type Compensation = {
   baseSalary: number;
   salaryFrequency: "annual" | "monthly" | "weekly" | "hourly";
   overtime: string; // e.g., "time_and_half"

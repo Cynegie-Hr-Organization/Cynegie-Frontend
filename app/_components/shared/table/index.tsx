@@ -1,5 +1,6 @@
 "use client";
 import useCheckboxes from "@/hooks/useCheckboxes";
+import { currencyFormatter } from "@/utils";
 import { FilterList } from "@mui/icons-material";
 import {
   Checkbox,
@@ -124,6 +125,10 @@ const Table: React.FC<TableProps> = ({
                 onClick={onPermissionsClick}
               />
             );
+
+        case FieldType.naira:
+          if (typeof rowVal === "number")
+            return currencyFormatter.format(rowVal);
       }
     }
   };
@@ -163,7 +168,7 @@ const Table: React.FC<TableProps> = ({
               </div>
             </div>
             {(filters || formFilter) && (
-              <div className="hover:cursor-pointer">
+              <div className="hover:cursor-pointer relative z-10">
                 <Popover
                   type={PopoverType.filter}
                   triggerButton={
