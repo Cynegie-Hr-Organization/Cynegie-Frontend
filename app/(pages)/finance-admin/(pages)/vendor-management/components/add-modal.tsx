@@ -24,7 +24,7 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
       onSuccess: () => {
         setIsOpenAddVendorModal(false)
       },
-      onError: (error) => {
+      onError: () => {
         setIsOpenAddVendorModal(false)
       }
     })

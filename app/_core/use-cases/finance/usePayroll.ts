@@ -70,7 +70,7 @@ export const usePayrollMutations = ({ id }: { id?: string }) => {
         headers: await headers(session?.token ?? '')
       })
     },
-    onSuccess: async (data) => {
+    onSuccess: async () => {
       toast.success('Vendor details updated successfully', { className: 'bg-red-500' });
       await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDORS] });
       await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDOR, id] });
@@ -88,7 +88,7 @@ export const usePayrollMutations = ({ id }: { id?: string }) => {
         headers: await headers(session?.token ?? '')
       })
     },
-    onSuccess: async (data) => {
+    onSuccess: async () => {
       toast.success('Vendor deleted successfully');
       await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDORS] });
     },
