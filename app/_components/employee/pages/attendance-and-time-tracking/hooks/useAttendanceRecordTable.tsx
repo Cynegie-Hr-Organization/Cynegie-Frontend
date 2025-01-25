@@ -1,22 +1,21 @@
 import { useEffect, useState } from 'react';
 import { FieldType, TableProps } from '@/app/_components/shared/table/types';
-// import { AttendanceStatusMap } from '@/constants';
 import { ButtonType } from '../../../../shared/page/heading/types';
 import { ModalProps } from '../../../modal/types';
-import { AttendanceRecord, fetchAttendanceMine } from '@/app/api/services/employee/attendance';
+import { AttendanceRecord, fetchAttendanceById, fetchAttendanceMine } from '@/app/api/services/employee/attendance';
+import { formatDate } from '@/lib/utils';
 
 const useAttendanceRecordTable = () => {
 const [attendanceData, setAttendanceData] = useState<AttendanceRecord[]>([]);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
   const [openCorrectionModal, setOpenCorrectionModal] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
+const [detailsData , setDetailsData] = useState<any | null>(null);
 
-  // Fetch attendance data from the API
   useEffect(() => {
     const loadAttendanceData = async () => {
       try {
         const data = await fetchAttendanceMine();
-        // Sort the data in descending order based on the 'date'
         const sortedData = data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
         setAttendanceData(sortedData);
       } catch (error) {
@@ -26,10 +25,9 @@ const [attendanceData, setAttendanceData] = useState<AttendanceRecord[]>([]);
     loadAttendanceData();
   }, []);
 
-  // Transform API data for table usage
-  // Check if attendanceData is not empty and then transform it
   const transformedAttendanceData = attendanceData.length > 0 
     ? attendanceData.map((record) => ({
+      id : record.id,
         date: new Date(record.date).toLocaleDateString(),
         clockInTime: record.clockIn
           ? new Date(record.clockIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -40,9 +38,9 @@ const [attendanceData, setAttendanceData] = useState<AttendanceRecord[]>([]);
         hoursWorked: record.clockIn && record.clockOut
           ? `${Math.round((new Date(record.clockOut).getTime() - new Date(record.clockIn).getTime()) / 3600000)} hours`
           : 'N/A',
-        status: '---', // or any other logic to determine the status
+        status: '---', 
       }))
-    : []; // Default empty array in case no data is fetched
+    : []; 
 
   const attendanceRecordTableData: TableProps = {
     title: "Attendance Record",
@@ -75,12 +73,29 @@ const [attendanceData, setAttendanceData] = useState<AttendanceRecord[]>([]);
         name: "Request correction",
         onClick: () => setOpenCorrectionModal(true),
       },
-      { name: "View Details", onClick: () => setOpenDetailsModal(true) },
+      {
+        name: "View Details",
+        onClick: () => setOpenDetailsModal(true),
+        onDataReturned: async (id) => {
+          try
+          {
+            const response = await fetchAttendanceById(id);
+            console.log(response);
+            setDetailsData(response);
+            setOpenDetailsModal(true)
+          }
+          catch (error)
+          {
+            console.error("Failed to fetch leave request details:", error);
+          }
+        }
+
+      },
     ],
     filters: [{ name: 'Status', items: ['Present', 'Late', 'Absent'] }],
-    fieldToReturnOnActionItemClick: 'status',
+    fieldToReturnOnActionItemClick: 'id',
     page: 1,
-    pageCount: Math.ceil(transformedAttendanceData.length / 10), // Example pagination logic
+    pageCount: Math.ceil(transformedAttendanceData.length / 10), 
   };
 
   const detailsModalData: ModalProps = {
@@ -90,18 +105,26 @@ const [attendanceData, setAttendanceData] = useState<AttendanceRecord[]>([]);
     subtitle: "View attendance details below",
     detailGroup: {
       details: [
-        { name: 'Date', value: '08/01/2025' },
-        { name: 'Clock In Time', value: '16:04	 AM' },
-        { name: 'Clock Out Time', value: '19:14	 PM' },
-        {
-          name: 'Hours Worked',
-          value: `3 hours`,
-        },
-        {
-          name: 'Status',
-          value: `---`,
+  { name: 'Date', value: `${formatDate(detailsData?.date)}` },
+  { name: 'Clock In Time', value: `${formatDate(detailsData?.clockIn)}` },
+  { name: 'Clock Out Time', value: `${formatDate(detailsData?.clockOut)}` },
+  {
+    name: 'Hours Worked',
+    value:
+      detailsData?.clockIn && detailsData?.clockOut
+        ? `${Math.round(
+            (new Date(detailsData.clockOut).getTime() -
+              new Date(detailsData.clockIn).getTime()) /
+              3600000
+          )} hours`
+        : 'N/A',
+  },
+  {
+    name: 'Status',
+    value: `${detailsData?.status ?? '---'}`,
         },
       ],
+
       gridLayout: "view-details",
     },
   };

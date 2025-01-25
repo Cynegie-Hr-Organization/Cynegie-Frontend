@@ -174,6 +174,12 @@ export const CISStatusMap: StatusMap = {
   "Not Started": "error",
 };
 
+export const SAStatusMap: StatusMap = {
+  completed: "success",
+  "in_progress": "warning",
+  "not_started": "error",
+};
+
 export const CPStatusMap: StatusMap = {
   Completed: "success",
   Pending: "warning",
@@ -203,9 +209,14 @@ export const AppRequestStatusMap: StatusMap = {
   ACTIVE: "success",
 };
 
+export const GoalStatusMap: StatusMap = {
+  not_started: "error",
+  completed: "success",
+};
+
 export const PDStatusMap: StatusMap = {
-  Done: "success",
-  Pending: "warning",
+  COMPLETED: "success",
+  PENDING: "warning",
 };
 
 export const tableFilter = {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 export type ColorVariant =
   | "info"
   | "success"
@@ -378,7 +379,7 @@ export interface Goal {
   description: string;
   goalType: string;
   priority: string;
-  employees: Employee;
+  employees: Employee[];
   dueDate: string;
   status: string;
   alignment: string;

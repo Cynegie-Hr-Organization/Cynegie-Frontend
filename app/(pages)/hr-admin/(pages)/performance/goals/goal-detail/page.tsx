@@ -119,7 +119,7 @@ const PerformanceReviewCard: React.FC<PerformanceReviewCardProps> = ({
               <div className="space-y-3">
                 <p className="text-sm text-gray-700">
                   Assigned To:{" "}
-                  {`${goal?.employees?.personalInfo?.firstName} ${goal?.employees?.personalInfo?.lastName}`}
+                  {`${goal?.employees[0]?.personalInfo?.firstName} ${goal?.employees[0]?.personalInfo?.lastName}`}
                 </p>
               </div>
 
