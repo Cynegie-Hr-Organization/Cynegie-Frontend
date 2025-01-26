@@ -40,7 +40,7 @@ const PayrollManagement = () => {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 my-6">
       <PageHeader
         title="Payroll Management"
         description="Manage your payroll and organization"

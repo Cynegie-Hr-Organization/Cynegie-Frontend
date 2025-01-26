@@ -3,14 +3,13 @@
 import { SuccessSvg } from "@/app/_components/icons/custom-icons";
 import AppButton from "@/app/_components/shared/button";
 import { DrawerDialog } from "@/components/drawer/modal";
-import { DrawerTitle } from "@/components/ui/drawer";
 import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 
 const PayrollApproval = () => {
   const router = useRouter();
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 my-6">
       <button onClick={() => router.back()} className="flex items-center gap-2">
         <IoIosArrowBack size={24} /> Back to Payroll Management
       </button>
@@ -81,7 +80,7 @@ const SuccessModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
     <DrawerDialog
       trigger={trigger}
-      header={<DrawerTitle className="flex justify-center"><SuccessSvg /></DrawerTitle>}
+      header={<span className="flex justify-center"><SuccessSvg /></span>}
       footer={
         <div className="flex justify-center w-full">
           <AppButton label="Continue To Payroll Dasbboard" className="btn-primary md:w-[242px] text-sm text-nowrap" onClick={() => router.push('/finance-admin/payroll-management')} />
