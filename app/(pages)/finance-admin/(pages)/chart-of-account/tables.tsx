@@ -4,7 +4,7 @@ import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 
 
@@ -256,7 +256,7 @@ export const LedgerAccountsTable = () => {
 
 const NewLedgerAccountModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <DialogTitle className="">
@@ -336,7 +336,7 @@ const NewLedgerAccountModal = ({ trigger }: { trigger: React.ReactNode }) => {
           selectedDate={new Date()}
         />
       </form>
-    </DrawerDialog>
+    </AppModal>
   )
 }
 
@@ -362,7 +362,7 @@ function PopoverMenu() {
 
 const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <span className="text-lg font-bold text-center">
@@ -389,13 +389,13 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
           console.log(e.target.value)
         }} value="" />
       </div>
-    </DrawerDialog>
+    </AppModal>
   )
 }
 
 const PreviewModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={<DialogTitle className="text-lg font-bold pl-4">
         <p>Transaction Details</p>
@@ -410,7 +410,7 @@ const PreviewModal = ({ trigger }: { trigger: React.ReactNode }) => {
         <TransactionDetailItem label="Catergory" value="Revenue" />
         <TransactionDetailItem label="Status" pillValue="Completed" />
       </div>
-    </DrawerDialog>
+    </AppModal>
   )
 }
 

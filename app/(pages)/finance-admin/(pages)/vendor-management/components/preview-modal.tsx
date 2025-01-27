@@ -1,6 +1,6 @@
 import { Spinner } from "@/app/_components/shared/buttons";
 import { useGetVendor } from "@/app/_core/use-cases/finance/useVendors";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 
 
 
@@ -8,7 +8,7 @@ const PreviewModal: React.FC<{ trigger: React.ReactNode, vendorId: string }> = (
   const { data: vendor, isLoading: isLoadingCurrentVendor } = useGetVendor({ id: vendorId });
 
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={<span className="text-lg font-bold pl-4">Vendor Details</span>}>
 
@@ -34,7 +34,7 @@ const PreviewModal: React.FC<{ trigger: React.ReactNode, vendorId: string }> = (
           </div>
         ) : <p>This vendor does not exist</p>
       )}
-    </DrawerDialog>
+    </AppModal>
   )
 }
 

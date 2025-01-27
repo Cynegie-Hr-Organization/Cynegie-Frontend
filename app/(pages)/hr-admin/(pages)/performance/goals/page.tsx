@@ -1,14 +1,14 @@
 "use client";
 
-import { LuPlusCircle, LuTrash } from "react-icons/lu";
-import { IoIosArrowDown } from "react-icons/io";
-import AppButton from "../../../../../_components/shared/button";
-import ReviewTable from "./table";
-import { DrawerDialog } from "@/components/drawer/modal";
-import { DialogTitle } from "@/components/ui/dialog";
-import { AppDropdownMenu } from "../../../../../_components/shared/dropdown-menu";
-import { useRouter } from "next/navigation";
 import { DeleteSvg } from "@/app/_components/icons/custom-icons";
+import { AppModal } from "@/components/drawer/modal";
+import { DialogTitle } from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
+import { IoIosArrowDown } from "react-icons/io";
+import { LuPlusCircle, LuTrash } from "react-icons/lu";
+import AppButton from "../../../../../_components/shared/button";
+import { AppDropdownMenu } from "../../../../../_components/shared/dropdown-menu";
+import ReviewTable from "./table";
 
 const PerformanceGoalsPage = () => {
   return (
@@ -91,7 +91,7 @@ const PageHeader = () => {
 
 const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <DialogTitle className="text-lg font-bold text-center">
@@ -122,7 +122,7 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
       }
     >
       <></>
-    </DrawerDialog>
+    </AppModal>
   );
 };
 

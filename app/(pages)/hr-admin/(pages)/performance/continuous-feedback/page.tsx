@@ -3,13 +3,13 @@
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppFileUpload } from "@/app/_components/shared/file-upload";
-import { DrawerDialog } from "@/components/drawer/modal";
+import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-text";
+import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import { IoIosArrowDown } from "react-icons/io";
 import { LuPlusCircle, LuTrash } from "react-icons/lu";
 import ContinuousFeedbackTable from "./table";
-import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-text";
 
 const ContinuousFeedbackPage = () => {
   return (
@@ -90,7 +90,7 @@ const RecognizeAchievementModal = ({
   trigger: React.ReactNode;
 }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <DialogTitle className="text-lg font-bold text-center">
@@ -150,13 +150,13 @@ const RecognizeAchievementModal = ({
           <AppFileUpload label="Attachment" onChange={() => { }} />
         </div>
       </form>
-    </DrawerDialog>
+    </AppModal>
   );
 };
 
 const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <DialogTitle className="text-lg font-bold text-center">
@@ -187,7 +187,7 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
       }
     >
       <></>
-    </DrawerDialog>
+    </AppModal>
   );
 };
 

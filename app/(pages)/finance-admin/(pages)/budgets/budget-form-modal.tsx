@@ -5,7 +5,7 @@ import { AppSelect } from "@/app/_components/shared/select";
 import { IBudgetCreate } from "@/app/_core/interfaces/budget";
 import { useBudgetMutations } from "@/app/_core/use-cases/finance/useBudget";
 import { handleError } from "@/app/_core/utils/axios";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { useIsMutating } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -32,7 +32,7 @@ const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
   }
 
   return (
-    <DrawerDialog
+    <AppModal
       open={isOpen}
       setOpen={setIsOpen}
       trigger={trigger}
@@ -105,7 +105,7 @@ const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
           />
         </div>
       </form>
-    </DrawerDialog>
+    </AppModal>
   )
 }
 

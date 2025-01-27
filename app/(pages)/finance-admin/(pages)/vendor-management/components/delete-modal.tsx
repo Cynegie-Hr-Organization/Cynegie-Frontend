@@ -2,7 +2,7 @@ import { DeleteSvg } from "@/app/_components/icons/custom-icons"
 import AppButton from "@/app/_components/shared/button"
 import { IVendor } from "@/app/_core/actions/finance/vendor"
 import { useVendorMutations } from "@/app/_core/use-cases/finance/useVendors"
-import { DrawerDialog } from "@/components/drawer/modal"
+import { AppModal } from "@/components/drawer/modal"
 import { useState } from "react"
 
 const DeleteModal = ({ trigger, vendor }: { trigger: React.ReactNode, vendor: IVendor }) => {
@@ -20,7 +20,7 @@ const DeleteModal = ({ trigger, vendor }: { trigger: React.ReactNode, vendor: IV
 
 
   return (
-    <DrawerDialog
+    <AppModal
       open={isOpen}
       setOpen={setIsOpen}
       trigger={trigger}
@@ -52,7 +52,7 @@ const DeleteModal = ({ trigger, vendor }: { trigger: React.ReactNode, vendor: IV
       }
     >
       <></>
-    </DrawerDialog>
+    </AppModal>
   )
 }
 

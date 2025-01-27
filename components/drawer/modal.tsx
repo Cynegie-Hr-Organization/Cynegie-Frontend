@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 
 import { useMediaQuery } from "@/app/_hooks/use-media-query";
 // import { Button } from "@/components/ui/button"
@@ -29,7 +28,7 @@ import { ReactNode } from "react";
 
 
 
-export function DrawerDialog({
+export function AppModal({
   children,
   trigger,
   header,

@@ -1,21 +1,21 @@
 "use client"
 
 import AppButton from "@/app/_components/shared/button";
-import { useRouter } from "next/navigation";
-import PayrollReportOverviewTable from "./table";
-import { IoIosArrowBack } from "react-icons/io";
-import { DrawerDialog } from "@/components/drawer/modal";
-import { DialogTitle } from "@/components/ui/dialog";
-import { LuDownload } from "react-icons/lu";
 import AppCheckbox from "@/app/_components/shared/checkbox";
-import { CgFileDocument } from "react-icons/cg";
-import { TbCalendar, TbCalendarCheck } from "react-icons/tb";
-import { PiUsersBold } from "react-icons/pi";
-import { AppPieChart } from "./piechart";
+import { AppModal } from "@/components/drawer/modal";
 import { ChartConfig } from "@/components/ui/chart";
-import { GoDotFill } from "react-icons/go";
-import { BarChartComponent } from "./bar-chart";
+import { DialogTitle } from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { CgFileDocument } from "react-icons/cg";
+import { GoDotFill } from "react-icons/go";
+import { IoIosArrowBack } from "react-icons/io";
+import { LuDownload } from "react-icons/lu";
+import { PiUsersBold } from "react-icons/pi";
+import { TbCalendar, TbCalendarCheck } from "react-icons/tb";
+import { BarChartComponent } from "./bar-chart";
+import { AppPieChart } from "./piechart";
+import PayrollReportOverviewTable from "./table";
 
 
 
@@ -199,7 +199,7 @@ const DownloadModal = ({ trigger }: { trigger: React.ReactNode }) => {
 
 
     return (
-        <DrawerDialog
+        <AppModal
             trigger={trigger}
             header={<DialogTitle className="text-lg font-bold text-center">Download Report</DialogTitle>}
             footer={
@@ -230,7 +230,7 @@ const DownloadModal = ({ trigger }: { trigger: React.ReactNode }) => {
                     />
                 </div>
             </div>
-        </DrawerDialog>
+        </AppModal>
     )
 }
 

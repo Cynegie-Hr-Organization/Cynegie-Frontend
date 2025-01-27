@@ -6,7 +6,7 @@ import CardLayout from "@/app/_components/shared/cards";
 import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { AppSwitch } from "@/app/_components/shared/switch";
 import { createTemplate } from "@/app/api/services/performance/template";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -169,7 +169,7 @@ const AddQuestionModal = ({
   };
 
   return (
-    <DrawerDialog
+    <AppModal
       trigger={
         <button
           type="button"
@@ -226,7 +226,7 @@ const AddQuestionModal = ({
           </div>
         </div>
       </form>
-    </DrawerDialog>
+    </AppModal>
   );
 };
 

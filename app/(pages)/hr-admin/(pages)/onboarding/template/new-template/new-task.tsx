@@ -1,17 +1,15 @@
-import { LuListFilter, LuPlusCircle } from "react-icons/lu";
-import { GoDotFill, GoPlus } from "react-icons/go";
-import { PiCalendar } from "react-icons/pi";
-import { Avatar } from "@mui/material";
-import { PopoverTrigger } from "@/components/ui/popover";
-import { PopoverContent } from "@/components/ui/popover";
-import { Popover } from "@/components/ui/popover";
-import { HiDotsHorizontal } from "react-icons/hi";
-import { BsPerson } from "react-icons/bs";
-import { ReusableSelect } from "./components/ReusableSelect";
-import { CiCalendarDate } from "react-icons/ci";
-import { ReactNode } from "react";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Avatar } from "@mui/material";
+import { ReactNode } from "react";
+import { BsPerson } from "react-icons/bs";
+import { CiCalendarDate } from "react-icons/ci";
+import { GoDotFill, GoPlus } from "react-icons/go";
+import { HiDotsHorizontal } from "react-icons/hi";
+import { LuListFilter, LuPlusCircle } from "react-icons/lu";
+import { PiCalendar } from "react-icons/pi";
+import { ReusableSelect } from "./components/ReusableSelect";
 
 const NewTask = () => {
   return (
@@ -160,7 +158,7 @@ function PopoverMenu() {
 
 function AddTaskModal({ children }: { children: ReactNode }) {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={children}
       header={
         <DialogTitle className="">
@@ -281,13 +279,13 @@ function AddTaskModal({ children }: { children: ReactNode }) {
           </div>
         </div>
       </form>
-    </DrawerDialog>
+    </AppModal>
   );
 }
 
 export function EditTaskModal({ triggers }: { triggers: ReactNode }) {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={triggers}
       header={
         <DialogTitle className="">
@@ -408,13 +406,13 @@ export function EditTaskModal({ triggers }: { triggers: ReactNode }) {
           </div>
         </div>
       </form>
-    </DrawerDialog>
+    </AppModal>
   );
 }
 
 function ViewTaskModal({ children }: { children: ReactNode }) {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={children}
       header={
         <DialogTitle className="">
@@ -532,7 +530,7 @@ function ViewTaskModal({ children }: { children: ReactNode }) {
           </div>
         </div>
       </>
-    </DrawerDialog>
+    </AppModal>
   );
 }
 

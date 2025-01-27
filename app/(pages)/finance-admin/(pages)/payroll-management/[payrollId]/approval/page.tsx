@@ -2,7 +2,7 @@
 
 import { SuccessSvg } from "@/app/_components/icons/custom-icons";
 import AppButton from "@/app/_components/shared/button";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { DrawerTitle } from "@/components/ui/drawer";
 import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
@@ -79,7 +79,7 @@ const FooterButtons = ({ btn1Label, btn2Label, onBtn1Click, onBtn2Click, classNa
 const SuccessModal = ({ trigger }: { trigger: React.ReactNode }) => {
   const router = useRouter()
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={<DrawerTitle className="flex justify-center"><SuccessSvg /></DrawerTitle>}
       footer={
@@ -92,7 +92,7 @@ const SuccessModal = ({ trigger }: { trigger: React.ReactNode }) => {
         <h3 className="text-lg font-bold">Payroll Cycle has been Approved Successfully </h3>
         <p className="text-sm text-gray-400">Payment will be processed according to the scheduled start date</p>
       </div>
-    </DrawerDialog>
+    </AppModal>
   )
 }
 

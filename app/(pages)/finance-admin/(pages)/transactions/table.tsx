@@ -8,7 +8,7 @@ import { DeleteSvg } from "@/app/_components/icons/custom-icons";
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppInputTextArea } from "@/app/_components/shared/input-text";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DialogTitle } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -149,7 +149,7 @@ function PopoverMenu() {
 
 const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <span className="text-lg font-bold text-center">
@@ -176,13 +176,13 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
           console.log(e.target.value)
         }} value="" />
       </div>
-    </DrawerDialog>
+    </AppModal>
   )
 }
 
 const PreviewModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={<DialogTitle className="text-lg font-bold pl-4">
         <p>Transaction Details</p>
@@ -197,7 +197,7 @@ const PreviewModal = ({ trigger }: { trigger: React.ReactNode }) => {
         <TransactionDetailItem label="Catergory" value="Revenue" />
         <TransactionDetailItem label="Status" pillValue="Completed" />
       </div>
-    </DrawerDialog>
+    </AppModal>
   )
 }
 

@@ -2,7 +2,7 @@ import AppButton from "@/app/_components/shared/button";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import AppInputText from "@/app/_components/shared/input-text";
 import { useGetVendor, useVendorMutations } from "@/app/_core/use-cases/finance/useVendors";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { useEffect, useState } from "react";
 
 const EditVendorModal: React.FC<{ trigger: React.ReactNode, vendorId: string }> = ({ trigger, vendorId }) => {
@@ -48,7 +48,7 @@ const EditVendorModal: React.FC<{ trigger: React.ReactNode, vendorId: string }> 
   }
 
   return (
-    <DrawerDialog
+    <AppModal
       open={open}
       setOpen={setOpen}
       trigger={trigger}
@@ -148,7 +148,7 @@ const EditVendorModal: React.FC<{ trigger: React.ReactNode, vendorId: string }> 
           />
         </div>
       </form>
-    </DrawerDialog>
+    </AppModal>
   )
 }
 

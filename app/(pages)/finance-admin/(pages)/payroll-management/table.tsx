@@ -1,9 +1,9 @@
 import AppButton from "@/app/_components/shared/button";
+import AppCheckbox from "@/app/_components/shared/checkbox";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
-import { DrawerDialog } from "@/components/drawer/modal";
-import { Checkbox } from "@/components/ui/checkbox";
+import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useRouter } from "next/navigation";
@@ -69,7 +69,11 @@ const PayrollManagementTable = () => {
           <thead className='bg-[#F7F9FC]'>
             <tr>
               <th className='px-6 py-3 text-left'>
-                <Checkbox className={"rounded-md border-gray-300"} />
+                <AppCheckbox
+                  id=""
+                  checked
+                  onChange={() => { }}
+                />
               </th>
               <th className='px-4 py-3 text-left'>Payroll Name</th>
               <th className='px-4 py-3 text-left'>Payroll Period</th>
@@ -85,7 +89,11 @@ const PayrollManagementTable = () => {
               return (
                 <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
                   <td className='px-6 py-4'>
-                    <Checkbox className={"rounded-md border-gray-300"} />
+                    <AppCheckbox
+                      id=""
+                      checked
+                      onChange={() => { }}
+                    />
                   </td>
                   <td className='px-4 py-4'>
                     <p className='text-sm'>Finance Sept 2024 Payroll</p>
@@ -106,7 +114,7 @@ const PayrollManagementTable = () => {
                     <p className='text-sm font-semibold text-amber-600 bg-amber-50 rounded-full px-2 py-1 w-fit text-nowrap'>In Progress</p>
                   </td>
                   <td className='px-4 py-4'>
-                    <PopoverMenu />
+                    <PopoverMenu payrollId={''} />
                   </td>
                 </tr>
               );
@@ -119,7 +127,7 @@ const PayrollManagementTable = () => {
 }
 
 
-function PopoverMenu() {
+function PopoverMenu({ payrollId }: { payrollId: string }) {
   const router = useRouter()
   return (
     <Popover>
@@ -130,9 +138,9 @@ function PopoverMenu() {
       </PopoverTrigger>
 
       <PopoverContent className='w-40 bg-white space-y-2 cursor-pointer rounded-lg flex flex-col items-start text-[#475367]'>
-        <button onClick={() => router.push('/finance-admin/payroll-management/approval')} className=''>Approve</button>
+        <button onClick={() => router.push(`/finance-admin/payroll-management/${payrollId}/approval`)} className=''>Approve</button>
         <RejectModal trigger={<button>Reject</button>} />
-        <button onClick={() => router.push('/finance-admin/payroll-management/123')}>View Details</button>
+        <button onClick={() => router.push(`/finance-admin/payroll-management/${payrollId}`)}>View Details</button>
       </PopoverContent>
     </Popover>
   );
@@ -142,7 +150,7 @@ function PopoverMenu() {
 
 const RejectModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <DialogTitle className="text-lg font-bold -mx-4 lg:mx-0 lg:px-6  pt-4 lg:pt-6">
@@ -166,7 +174,7 @@ const RejectModal = ({ trigger }: { trigger: React.ReactNode }) => {
           console.log(e.target.value)
         }} value="" />
       </div>
-    </DrawerDialog>
+    </AppModal>
   )
 }
 

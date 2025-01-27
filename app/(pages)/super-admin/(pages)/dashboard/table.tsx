@@ -2,7 +2,7 @@ import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppSelect } from "@/app/_components/shared/select";
 import AppTabs from "@/app/_components/shared/tabs";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useState } from "react";
@@ -332,7 +332,7 @@ const PreviewModal = ({ trigger }: { trigger: React.ReactNode }) => {
   };
 
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <DialogTitle className="text-lg font-bold pl-4">
@@ -358,7 +358,7 @@ const PreviewModal = ({ trigger }: { trigger: React.ReactNode }) => {
           );
         })}
       </div>
-    </DrawerDialog>
+    </AppModal>
   )
 }
 

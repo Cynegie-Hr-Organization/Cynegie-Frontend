@@ -1,23 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { GradientLineChart } from "@/app/_components/hr-admin/pages/dashboard/chart";
 import AppButton from "@/app/_components/shared/button";
-import { IoIosArrowBack } from "react-icons/io";
+import { AppSelect } from "@/app/_components/shared/select";
+import {
+  getTrainingCompletionMonthlyRate,
+  getTrainingCompletionRate,
+} from "@/app/api/services/performance/kpi";
+import { AppModal } from "@/components/drawer/modal";
+import { DialogTitle } from "@/components/ui/dialog";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { GoDotFill } from "react-icons/go";
+import { IoIosArrowBack } from "react-icons/io";
+import { LuDownload } from "react-icons/lu";
+import Skeleton from "react-loading-skeleton";
 import { AppBarChart } from "../barchart";
 import { PieChart2 } from "./piechart2";
-import { GoDotFill } from "react-icons/go";
-import { LuDownload } from "react-icons/lu";
-import { DrawerDialog } from "@/components/drawer/modal";
-import { DialogTitle } from "@/components/ui/dialog";
-import { AppSelect } from "@/app/_components/shared/select";
-import { useQuery } from "@tanstack/react-query";
-import Skeleton from "react-loading-skeleton";
-import {
-  getTrainingCompletionRate,
-  getTrainingCompletionMonthlyRate,
-} from "@/app/api/services/performance/kpi";
 
 interface GradientChart {
   month: string;
@@ -109,7 +109,7 @@ const KpiDetailsPage = () => {
                     { label: "Last 30 Days", value: "last-30-days" },
                     { label: "Last 6 Months", value: "last-6-months" },
                   ]}
-                  onChange={() => {}}
+                  onChange={() => { }}
                 />
               </div>
               <div className="max-h-[323.27px] w-full">
@@ -167,7 +167,7 @@ const KpiDetailsPage = () => {
                   { label: "Last 30 Days", value: "last-30-days" },
                   { label: "Last 6 Months", value: "last-6-months" },
                 ]}
-                onChange={() => {}}
+                onChange={() => { }}
               />
             </div>
             <div className="max-h-[400px]">
@@ -205,7 +205,7 @@ const PageHeader = ({
 
 const DownloadModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <DialogTitle className="text-lg font-bold text-center">
@@ -237,7 +237,7 @@ const DownloadModal = ({ trigger }: { trigger: React.ReactNode }) => {
           <label htmlFor="excel">Excel</label>
         </div>
       </div>
-    </DrawerDialog>
+    </AppModal>
   );
 };
 

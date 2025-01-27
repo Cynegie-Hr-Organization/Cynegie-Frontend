@@ -1,20 +1,17 @@
 "use client";
 
-import { LuListFilter, LuPlusCircle } from "react-icons/lu";
-import { GoPlus } from "react-icons/go";
-import { Avatar } from "@mui/material";
-import { PopoverTrigger } from "@/components/ui/popover";
-import { PopoverContent } from "@/components/ui/popover";
-import { Popover } from "@/components/ui/popover";
-import { HiDotsHorizontal } from "react-icons/hi";
-import { BsPerson } from "react-icons/bs";
-import { ReusableSelect } from "./components/ReusableSelect";
-import { CiCalendarDate } from "react-icons/ci";
-import { ReactNode } from "react";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
-import { useState } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Avatar } from "@mui/material";
+import { ReactNode, useState } from "react";
+import { BsPerson } from "react-icons/bs";
+import { CiCalendarDate } from "react-icons/ci";
+import { GoPlus } from "react-icons/go";
+import { HiDotsHorizontal } from "react-icons/hi";
 import { IoCloseCircle } from "react-icons/io5";
+import { LuListFilter, LuPlusCircle } from "react-icons/lu";
+import { ReusableSelect } from "./components/ReusableSelect";
 
 const NewDocument = () => {
   return (
@@ -99,7 +96,7 @@ function AddDocumentModal({ children }: { children: ReactNode }) {
   };
 
   return (
-    <DrawerDialog
+    <AppModal
       trigger={children}
       header={
         <DialogTitle className="">
@@ -208,7 +205,7 @@ function AddDocumentModal({ children }: { children: ReactNode }) {
           />
         </div>
       </form>
-    </DrawerDialog>
+    </AppModal>
   );
 }
 
@@ -229,7 +226,7 @@ export function EditDocumentModal({ triggers }: { triggers: ReactNode }) {
     );
   };
   return (
-    <DrawerDialog
+    <AppModal
       trigger={triggers}
       header={
         <DialogTitle>
@@ -304,7 +301,7 @@ export function EditDocumentModal({ triggers }: { triggers: ReactNode }) {
             >
               {selectedFiles.length === 0 ? (
                 <p className='text-sm text-gray-500'>
-                 click to upload
+                  click to upload
                 </p>
               ) : (
                 <p className="text-sm text-primary mt-2">+ Add more files</p>
@@ -338,13 +335,13 @@ export function EditDocumentModal({ triggers }: { triggers: ReactNode }) {
           />
         </div>
       </form>
-    </DrawerDialog>
+    </AppModal>
   );
 }
 
 function ViewTaskModal({ children }: { children: ReactNode }) {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={children}
       header={
         <DialogTitle className="">
@@ -462,7 +459,7 @@ function ViewTaskModal({ children }: { children: ReactNode }) {
           </div>
         </div>
       </>
-    </DrawerDialog>
+    </AppModal>
   );
 }
 

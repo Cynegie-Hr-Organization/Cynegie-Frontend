@@ -5,7 +5,7 @@ import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -205,7 +205,7 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       open={isOpen}
       setOpen={setIsOpen}
@@ -246,7 +246,7 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
           onChange={(e) => console.log(e.target.value)}
         />
       </div>
-    </DrawerDialog>
+    </AppModal>
   )
 }
 

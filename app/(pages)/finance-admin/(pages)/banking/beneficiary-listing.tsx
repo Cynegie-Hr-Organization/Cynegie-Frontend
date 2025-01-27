@@ -7,7 +7,7 @@ import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppSelect } from "@/app/_components/shared/select";
 import { IBeneficiary } from "@/app/_core/actions/finance/banking";
 import { useBeneficiaries } from "@/app/_core/use-cases/finance/useBanking";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { localTime } from "@/lib/utils";
 import { useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
@@ -148,7 +148,7 @@ const DeleteModal = ({ trigger, handleDelete, beneficiary }: {
 
 
   return (
-    <DrawerDialog
+    <AppModal
       open={openModal}
       setOpen={setOpenModal}
       trigger={trigger}

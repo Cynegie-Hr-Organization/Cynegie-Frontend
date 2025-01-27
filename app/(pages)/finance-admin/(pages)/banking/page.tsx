@@ -5,7 +5,7 @@ import AppInputText from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import AppTabs from "@/app/_components/shared/tabs";
 import { useBankingMutations, useMyTransfers } from "@/app/_core/use-cases/finance/useBanking";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { ChartConfig } from "@/components/ui/chart";
 import { dehydrate, HydrationBoundary, useIsMutating, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -460,7 +460,7 @@ const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger })
 
 
 	return (
-		<DrawerDialog
+		<AppModal
 			open={isOpenModal}
 			setOpen={setIsOpenModal}
 			trigger={trigger}
@@ -583,7 +583,7 @@ const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger })
 					/>
 				</div>
 			</form>
-		</DrawerDialog>
+		</AppModal>
 	)
 }
 
