@@ -12,7 +12,7 @@ import AppMenubar from "@/app/_components/shared/menubar";
 import { RiSearchLine } from "react-icons/ri";
 
 const JobsTabTable = ({
-  jobs,
+  jobs = [],
   columns,
   isFetching,
   totalPages,
@@ -25,9 +25,8 @@ const JobsTabTable = ({
 }: any) => {
   const router = useRouter();
   const [isFilterDropdownOpen, setFilterDropdownOpen] = React.useState(false);
-  const [isModalOpen, setIsModalOpen] = React.useState(false); // State for modal visibility
-
-  const [selectedJobId, setSelectedJobId] = useState<string | null>(null); // Selected job ID
+  const [isModalOpen, setIsModalOpen] = React.useState(false); 
+  const [selectedJobId, setSelectedJobId] = useState<string | null>(null); 
 
   const filterDropdownRef = React.useRef<HTMLDivElement>(null);
 
@@ -157,57 +156,65 @@ const JobsTabTable = ({
               </tr>
             </thead>
             <tbody>
-              {jobs.map((job: any, index: number) => (
-                <tr
-                  key={index}
-                  className="border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]"
-                >
-                  <td className="px-6 py-2">{job.title}</td>
-                  <td className="px-6 py-2">{job.department}</td>
-                  <td className="px-6 py-2">
-                    {new Date(job.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </td>
-                  <td className="px-4 py-2">
-                    <span
-                      className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
-                        job.status === "Active"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
-                      }`}
-                    >
-                      {job.status === "Active" ? "Open" : "Closed"}
-                    </span>
-                  </td>
-                  <td className="px-4 py-2 text-center">
-                    <AppMenubar
-                      menuItems={[
-                        {
-                          key: "view-details",
-                          label: "View Details",
-                          onClick: () => handleViewDetails(job.id),
-                        },
-                        {
-                          key: "edit",
-                          label: "Edit",
-                          onClick: () => handleEditDetails(job.id),
-                        },
-                        {
-                          key: "delete",
-                          label: "Delete",
-                          onClick: () => handleDeleteClick(job.id),
-                          className: "text-red-500",
-                        },
-                      ]}
-                    >
-                      <MdMoreVert size={24} className="text-gray-800" />
-                    </AppMenubar>
+              {Array.isArray(jobs) && jobs.length > 0 ? (
+                jobs.map((job: any, index: number) => (
+                  <tr
+                    key={index}
+                    className="border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]"
+                  >
+                    <td className="px-6 py-2">{job.title}</td>
+                    <td className="px-6 py-2">{job.department}</td>
+                    <td className="px-6 py-2">
+                      {new Date(job.createdAt).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </td>
+                    <td className="px-4 py-2">
+                      <span
+                        className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
+                          job.status === "Active"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
+                      >
+                        {job?.status === "Active" ? "Open" : "Closed"}
+                      </span>
+                    </td>
+                    <td className="px-4 py-2 text-center">
+                      <AppMenubar
+                        menuItems={[
+                          {
+                            key: "view-details",
+                            label: "View Details",
+                            onClick: () => handleViewDetails(job?.id),
+                          },
+                          {
+                            key: "edit",
+                            label: "Edit",
+                            onClick: () => handleEditDetails(job?.id),
+                          },
+                          {
+                            key: "delete",
+                            label: "Delete",
+                            onClick: () => handleDeleteClick(job?.id),
+                            className: "text-red-500",
+                          },
+                        ]}
+                      >
+                        <MdMoreVert size={24} className="text-gray-800" />
+                      </AppMenubar>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={columns.length + 1} className="text-center py-4">
+                    No jobs found.
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         )}
