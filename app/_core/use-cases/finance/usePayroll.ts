@@ -1,4 +1,4 @@
-import { getPayroll, getPayrolls, IPayroll } from "@/app/_core/actions/finance/payroll"
+import { getPayroll, getPayrolls, getPayrollStatusCount, IPayroll } from "@/app/_core/actions/finance/payroll"
 import { handleError, Http } from "@/app/_core/utils/axios"
 import { queryKeys } from "@/app/_core/utils/queryKeys"
 import { headers } from "@/app/_core/utils/session"
@@ -39,6 +39,17 @@ export const usePayroll = () => {
 }
 
 
+export const usePayrollCount = () => {
+  return useQuery({
+    queryKey: [queryKeys.PAYROLLS_COUNT],
+    queryFn: () => getPayrollStatusCount(),
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    initialData: undefined,
+    retry: false,
+  })
+}
 
 
 export const useGetPayroll = ({ id, key }: { id?: string, key?: string }) => {

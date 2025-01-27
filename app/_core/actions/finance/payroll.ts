@@ -34,6 +34,21 @@ export const getPayrolls = async (querykey: {
 }
 
 
+export const getPayrollStatusCount = async () => {
+  try {
+    const session = await getSession();
+    const { data } = await Http.get<PayrollStatusCounts>(`payroll/status-count`, {
+      headers: await headers(session?.token ?? ''),
+    });
+
+    return data;
+
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+
 export const getPayroll = async ({ id }: { id: string }) => {
   if (!id) throw new Error('id is required');
 
@@ -51,7 +66,7 @@ export const getPayroll = async ({ id }: { id: string }) => {
 }
 
 
-export type PayrollStatus = 'pending' | 'completed' | 'cancelled'
+export type PayrollStatus = 'pending' | 'rejected' | 'approved' | 'draft' | 'processed';
 
 export interface IPayroll {
   payrollName: string;
@@ -70,6 +85,21 @@ export interface IPayroll {
   totalDeductions: number;
 }
 
+export interface PayrollStatusCounts {
+  pending: number;
+  rejected: number;
+  approved: number;
+  draft: number;
+  processed: number;
+  totalPayroll: number;
+  totalCostByStatus: {
+    pending: number;
+    rejected: number;
+    approved: number;
+    draft: number;
+    processed: number;
+  };
+}
 
 
 

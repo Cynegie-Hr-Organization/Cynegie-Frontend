@@ -8,4 +8,5 @@ export const queryKeys = {
   VENDOR: 'vendor',
   PAYROLLS: 'payrolls',
   PAYROLL: 'payroll',
+  PAYROLLS_COUNT: 'payrolls-count',
 }
