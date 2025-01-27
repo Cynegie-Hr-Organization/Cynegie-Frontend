@@ -12,7 +12,7 @@ import PayrollManagementTable from "./table";
 
 const PayrollManagement = () => {
   const { data, isLoading } = usePayrollCount();
-  const { pending, processed, approved, draft, rejected, totalPayroll } = data ?? {}
+  const { pending, processed, rejected } = data ?? {}
 
   const pageCards = [
     {
