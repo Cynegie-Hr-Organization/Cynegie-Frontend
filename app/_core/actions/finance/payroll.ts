@@ -52,9 +52,11 @@ export const getPayrollStatusCount = async () => {
 export const getPayroll = async ({ id }: { id: string }) => {
   if (!id) throw new Error('id is required');
 
+
   try {
     const session = await getSession();
-    const { data } = await Http.get<IPayroll>(`payroll/${id}`, {
+
+    const { data } = await Http.get<IRes<IPayroll>>(`payroll/${id}`, {
       headers: await headers(session?.token ?? ''),
     });
 

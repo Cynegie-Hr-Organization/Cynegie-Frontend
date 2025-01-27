@@ -2,10 +2,10 @@
 
 import EditVendorModal from "@/app/(pages)/finance-admin/(pages)/vendor-management/components/edit-modal";
 import PreviewModal from "@/app/(pages)/finance-admin/(pages)/vendor-management/components/preview-modal";
+import TableSkeleton from "@/app/_components/shared/skelentons/table";
 import { IVendor } from "@/app/_core/actions/finance/vendor";
 import { useVendors } from "@/app/_core/use-cases/finance/useVendors";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Skeleton } from "@/components/ui/skeleton";
 import { HiDotsVertical } from "react-icons/hi";
 import DeleteModal from "./delete-modal";
 
@@ -18,7 +18,7 @@ export const VendorTable = () => {
     <div className="common-card overflow-x-scroll space-y-4">
       <div className='-mx-5 mt-4'>
         {isLoading ? (
-          <TableSkelenton />
+          <TableSkeleton />
         ) :
           <table className='w-full border-collapse'>
             <thead className='bg-[#F7F9FC]'>
@@ -82,21 +82,21 @@ const PopoverMenu: React.FC<{ vendor: IVendor }> = ({ vendor }) => {
         </button>
       </PopoverTrigger>
 
-      <PopoverContent className='w-40 bg-white cursor-pointer rounded-lg flex flex-col items-start text-[#475367] px-0 py-0'>
+      <PopoverContent className='w-40 bg-white cursor-pointer rounded-lg flex flex-col items-start text-[#475367] p-2'>
         <PreviewModal
           vendorId={vendor?.id}
           trigger={
-            <button className='hover:bg-gray-100 py-2 px-4 w-full text-start'>View Details</button>
+            <button className='hover:bg-gray-100 rounded-lg p-2 w-full text-start'>View Details</button>
           } />
         <EditVendorModal
           vendorId={vendor?.id}
           trigger={
-            <button className='hover:bg-gray-100 py-2 px-4 w-full text-start'>Edit Details</button>
+            <button className='hover:bg-gray-100 rounded-lg p-2 w-full text-start'>Edit Details</button>
           } />
         <DeleteModal
           vendor={vendor}
           trigger={
-            <button className='hover:bg-gray-100 py-2 px-4 w-full text-start text-red-500'>Deactivate</button>
+            <button className='hover:bg-red-50 rounded-lg p-2 w-full text-start text-red-500'>Deactivate</button>
           } />
       </PopoverContent>
     </Popover>
@@ -104,50 +104,5 @@ const PopoverMenu: React.FC<{ vendor: IVendor }> = ({ vendor }) => {
 }
 
 
-
-const TableSkelenton = () => {
-  return (
-    <table className='w-full border-collapse'>
-      <thead className='bg-[#F7F9FC]'>
-        <tr>
-          <th className='px-6 py-3 text-left'>
-            <Skeleton className="w-4 h-4 rounded-md bg-neutral-400" />
-          </th>
-          <th className='px-4 py-3 text-left'>
-            <Skeleton className="w-24 h-4 rounded-md bg-neutral-400" />
-          </th>
-          <th className='px-4 py-3 text-left'>
-            <Skeleton className="w-24 h-4 rounded-md bg-neutral-400" />
-          </th>
-          <th className='px-4 py-3 text-left'>
-            <Skeleton className="w-32 h-4 rounded-md bg-neutral-400" />
-          </th>
-          <th className='px-4 py-3 text-left'>
-            <Skeleton className="w-24 h-4 rounded-md bg-neutral-400" />
-          </th>
-          <th className='px-4 py-3 text-left'>
-            <Skeleton className="w-20 h-4 rounded-md bg-neutral-400" />
-          </th>
-          <th className='px-4 py-3 text-left'>
-            <Skeleton className="w-10 h-4 rounded-md bg-neutral-400" />
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {Array.from({ length: 5 }).map((_, idx) => (
-          <tr key={idx} className='border-b border-[#E4E7EC]'>
-            <td className='px-6 py-4'><Skeleton className="w-4 h-4 rounded-md bg-neutral-300" /></td>
-            <td className='px-4 py-4'><Skeleton className="w-24 h-2 rounded-md bg-neutral-300" /></td>
-            <td className='px-4 py-4'><Skeleton className="w-24 h-2 rounded-md bg-neutral-300" /></td>
-            <td className='px-4 py-4'><Skeleton className="w-32 h-2 rounded-md bg-neutral-300" /></td>
-            <td className='px-4 py-4'><Skeleton className="w-24 h-2 rounded-md bg-neutral-300" /></td>
-            <td className='px-4 py-4'><Skeleton className="w-20 h-2 rounded-full bg-neutral-300" /></td>
-            <td className='px-4 py-4'><Skeleton className="w-10 h-2 rounded-md bg-neutral-300" /></td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  )
-}
 
 export default VendorTable;

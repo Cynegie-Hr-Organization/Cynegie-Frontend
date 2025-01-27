@@ -5,9 +5,10 @@ import { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import TableSkeleton from "@/app/_components/shared/skelentons/table";
 import { usePayroll } from "@/app/_core/use-cases/finance/usePayroll";
+import useSelection from "@/app/_hooks/useSelection";
 import { AppModal } from "@/components/drawer/modal";
-import { DialogTitle } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { localTime } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { HiDotsVertical } from "react-icons/hi";
 import { LuListFilter } from "react-icons/lu";
@@ -18,9 +19,19 @@ import { RiSearchLine } from "react-icons/ri";
 
 
 const PayrollManagementTable = () => {
-
+  const { selectedItems, toggleSelection, selectAll, clearSelection } = useSelection<string>()
   const { data, isLoading: isPayrollsLoading } = usePayroll();
   const { data: payrolls } = data ?? {};
+  const totalItems = payrolls?.length ?? 0
+
+
+  const handleSelectAll = () => {
+    if (selectedItems.size === totalItems) {
+      clearSelection()
+    } else {
+      selectAll(payrolls?.map(payroll => payroll.id) || [])
+    }
+  }
 
 
   return (
@@ -81,8 +92,8 @@ const PayrollManagementTable = () => {
                 <th className='px-6 py-3 text-left'>
                   <AppCheckbox
                     id=""
-                    checked
-                    onChange={() => { }}
+                    checked={selectedItems.size === totalItems}
+                    onChange={handleSelectAll}
                   />
                 </th>
                 <th className='px-4 py-3 text-left'>Payroll Name</th>
@@ -95,36 +106,45 @@ const PayrollManagementTable = () => {
               </tr>
             </thead>
             <tbody>
-              {(payrolls && payrolls.length > 0) ? payrolls.map((_, idx) => {
+              {(payrolls && payrolls.length > 0) ? payrolls.map((payroll, idx) => {
+                const { payrollName, startDate, endDate, paymentDate, totalNetPay, status, employees, id } = payroll;
+
                 return (
                   <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
                     <td className='px-6 py-4'>
                       <AppCheckbox
-                        id=""
-                        checked
-                        onChange={() => { }}
+                        id={`payroll-item-${id}`}
+                        checked={selectedItems.has(id)}
+                        onChange={() => toggleSelection(id)}
                       />
                     </td>
                     <td className='px-4 py-4'>
-                      <p className='text-sm'>Finance Sept 2024 Payroll</p>
+                      <p className='text-sm'>{payrollName}</p>
                     </td>
                     <td className='px-4 py-4'>
-                      <p className='text-sm'>1st Sept - 31st Sept</p>
+                      <p className='text-sm'>{localTime(startDate, 'dd MMM, yyyy')} - {localTime(endDate, 'dd MMM, yyyy')}</p>
                     </td>
                     <td className='px-4 py-4'>
-                      <p className='text-sm'>17 Apr, 2023</p>
+                      <p className='text-sm'>{localTime(paymentDate, 'dd MMM, yyyy')}3</p>
                     </td>
                     <td className='px-4 py-4'>
-                      <p className='text-sm'>22</p>
+                      <p className='text-sm'>{employees.length}</p>
                     </td>
                     <td className='px-4 py-4'>
-                      <p className='text-sm'>₦18,205,000</p>
+                      <p className='text-sm'>₦{totalNetPay}</p>
                     </td>
                     <td className='px-4 py-4'>
-                      <p className='text-sm font-semibold text-amber-600 bg-amber-50 rounded-full px-2 py-1 w-fit text-nowrap'>In Progress</p>
+                      <p className={`text-sm font-semibold rounded-full px-2 py-1 w-fit text-nowrap ${{
+                        'pending': ' text-amber-700 bg-amber-50 capitalize',
+                        'approved': ' text-green-700 bg-green-50 capitalize',
+                        'rejected': ' text-red-700 bg-red-50 capitalize',
+                        'declined': ' text-red-700 bg-red-50 capitalize',
+                        'draft': ' text-slate-700 bg-slate-50 capitalize',
+                        'processed': ' text-green-700 bg-green-50 capitalize'
+                      }[status]}`}>{status}</p>
                     </td>
                     <td className='px-4 py-4'>
-                      <PopoverMenu payrollId={''} />
+                      <PopoverMenu payrollId={id} />
                     </td>
                   </tr>
                 );
@@ -150,15 +170,15 @@ function PopoverMenu({ payrollId }: { payrollId: string }) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button className='cursor-pointer outline-none p-1 border border-gray-300 rounded-lg'>
+        <button className='cursor-pointer outline-none p-2 border border-gray-300 rounded-lg'>
           <HiDotsVertical />
         </button>
       </PopoverTrigger>
 
-      <PopoverContent className='w-40 bg-white space-y-2 cursor-pointer rounded-lg flex flex-col items-start text-[#475367]'>
-        <button onClick={() => router.push(`/finance-admin/payroll-management/${payrollId}/approval`)} className=''>Approve</button>
-        <RejectModal trigger={<button>Reject</button>} />
-        <button onClick={() => router.push(`/finance-admin/payroll-management/${payrollId}`)}>View Details</button>
+      <PopoverContent className='w-40 bg-white cursor-pointer rounded-lg flex flex-col items-start text-[#475367] p-2'>
+        <button className='hover:bg-gray-100 w-full text-left text-sm p-2 rounded-md' onClick={() => router.push(`/finance-admin/payroll-management/${payrollId}/approval`)}>Approve</button>
+        <RejectModal trigger={<button className='hover:bg-red-50 text-red-500 w-full text-left text-sm p-2 rounded-md'>Reject</button>} />
+        <button className="hover:bg-gray-100 w-full text-left text-sm p-2 rounded-md" onClick={() => router.push(`/finance-admin/payroll-management/${payrollId}`)}>View Details</button>
       </PopoverContent>
     </Popover>
   );
@@ -171,14 +191,14 @@ const RejectModal = ({ trigger }: { trigger: React.ReactNode }) => {
     <AppModal
       trigger={trigger}
       header={
-        <DialogTitle className="text-lg font-bold -mx-4 lg:mx-0 lg:px-6  pt-4 lg:pt-6">
+        <span className="text-lg font-bold -mx-4 lg:mx-0 lg:px-6  pt-4 lg:pt-6">
           <span className="flex flex-col gap-y-1">
             <span>Confirm Rejection</span>
             <span className="text-sm text-gray-400 max-w-[367px]">
               Please provide a reason for rejecting this Payroll
             </span>
           </span>
-        </DialogTitle>
+        </span>
       }
       footer={
         <div className="flex flex-col md:flex-row items-center justify-center gap-2 pb-4 lg:pb-6">

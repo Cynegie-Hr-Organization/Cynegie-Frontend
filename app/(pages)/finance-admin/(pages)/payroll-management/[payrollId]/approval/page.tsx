@@ -2,15 +2,22 @@
 
 import { SuccessSvg } from "@/app/_components/icons/custom-icons";
 import AppButton from "@/app/_components/shared/button";
+import { useGetPayroll } from "@/app/_core/use-cases/finance/usePayroll";
 import { AppModal } from "@/components/drawer/modal";
 import { DrawerTitle } from "@/components/ui/drawer";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 
 const PayrollApproval = () => {
   const router = useRouter();
+  const { payrollId } = useParams();
+  const { data: payroll } = useGetPayroll({ id: payrollId as string })
+
+  const { totalGrossPay, totalNetPay } = payroll?.data ?? {}
+
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 my-8">
       <button onClick={() => router.back()} className="flex items-center gap-2">
         <IoIosArrowBack size={24} /> Back to Payroll Management
       </button>
@@ -29,13 +36,13 @@ const PayrollApproval = () => {
 
         <div className="bg-white rounded-[10px] md:p-4 lg:p-6 p-2 space-y-4 py-5">
           <h6 className="text-lg font-bold">Detail Payment</h6>
-          <TransactionDetailItem label="Total Gross Pay" value="₦1,440,000.00" />
-          <TransactionDetailItem label="Total Tax Deductions" value="144,000" />
+          <TransactionDetailItem label="Total Gross Pay" value={totalGrossPay ? `₦${totalGrossPay}` : '...'} />
+          <TransactionDetailItem label="Total Tax Deductions" value={"144,000"} />
           <TransactionDetailItem label="Total Pension Deductions" value="₦90,000.00" />
           <TransactionDetailItem label="Total Other Deductions" value="₦23,000.00" />
           <TransactionDetailItem label="Total Bonuses" value="₦62,000" />
           <hr className="border-b-1 border-gray-200" />
-          <TransactionDetailItem label="Total Payroll Cost" value="₦1,286,000.00" />
+          <TransactionDetailItem label="Total Payroll Cost" value={totalNetPay ? `₦${totalNetPay}` : '...'} />
         </div>
 
         <FooterButtons
