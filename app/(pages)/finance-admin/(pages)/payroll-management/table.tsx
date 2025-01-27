@@ -3,6 +3,8 @@ import AppCheckbox from "@/app/_components/shared/checkbox";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
+import TableSkeleton from "@/app/_components/shared/skelentons/table";
+import { usePayroll } from "@/app/_core/use-cases/finance/usePayroll";
 import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -16,6 +18,11 @@ import { RiSearchLine } from "react-icons/ri";
 
 
 const PayrollManagementTable = () => {
+
+  const { data, isLoading: isPayrollsLoading } = usePayroll();
+  const { data: payrolls } = data ?? {};
+
+
   return (
     <div className="common-card overflow-x-scroll space-y-4">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
@@ -64,64 +71,75 @@ const PayrollManagementTable = () => {
           } />
       </div>
 
-      <div className='-mx-5 mt-4'>
-        <table className='w-full border-collapse'>
-          <thead className='bg-[#F7F9FC]'>
-            <tr>
-              <th className='px-6 py-3 text-left'>
-                <AppCheckbox
-                  id=""
-                  checked
-                  onChange={() => { }}
-                />
-              </th>
-              <th className='px-4 py-3 text-left'>Payroll Name</th>
-              <th className='px-4 py-3 text-left'>Payroll Period</th>
-              <th className='px-4 py-3 text-left'>Payment date</th>
-              <th className='px-4 py-3 text-left'>Total Employees</th>
-              <th className='px-4 py-3 text-left'>Total Amount</th>
-              <th className='px-4 py-3 text-left'>Approval Status</th>
-              <th className='px-4 py-3 text-left'>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Array.from(Array(5)).map((_, idx) => {
-              return (
-                <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
-                  <td className='px-6 py-4'>
-                    <AppCheckbox
-                      id=""
-                      checked
-                      onChange={() => { }}
-                    />
-                  </td>
-                  <td className='px-4 py-4'>
-                    <p className='text-sm'>Finance Sept 2024 Payroll</p>
-                  </td>
-                  <td className='px-4 py-4'>
-                    <p className='text-sm'>1st Sept - 31st Sept</p>
-                  </td>
-                  <td className='px-4 py-4'>
-                    <p className='text-sm'>17 Apr, 2023</p>
-                  </td>
-                  <td className='px-4 py-4'>
-                    <p className='text-sm'>22</p>
-                  </td>
-                  <td className='px-4 py-4'>
-                    <p className='text-sm'>₦18,205,000</p>
-                  </td>
-                  <td className='px-4 py-4'>
-                    <p className='text-sm font-semibold text-amber-600 bg-amber-50 rounded-full px-2 py-1 w-fit text-nowrap'>In Progress</p>
-                  </td>
-                  <td className='px-4 py-4'>
-                    <PopoverMenu payrollId={''} />
+      {isPayrollsLoading ? (
+        <TableSkeleton />
+      ) : (
+        <div className='-mx-5 mt-4'>
+          <table className='w-full border-collapse'>
+            <thead className='bg-[#F7F9FC]'>
+              <tr>
+                <th className='px-6 py-3 text-left'>
+                  <AppCheckbox
+                    id=""
+                    checked
+                    onChange={() => { }}
+                  />
+                </th>
+                <th className='px-4 py-3 text-left'>Payroll Name</th>
+                <th className='px-4 py-3 text-left'>Payroll Period</th>
+                <th className='px-4 py-3 text-left'>Payment date</th>
+                <th className='px-4 py-3 text-left'>Total Employees</th>
+                <th className='px-4 py-3 text-left'>Total Amount</th>
+                <th className='px-4 py-3 text-left'>Approval Status</th>
+                <th className='px-4 py-3 text-left'>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(payrolls && payrolls.length > 0) ? payrolls.map((_, idx) => {
+                return (
+                  <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
+                    <td className='px-6 py-4'>
+                      <AppCheckbox
+                        id=""
+                        checked
+                        onChange={() => { }}
+                      />
+                    </td>
+                    <td className='px-4 py-4'>
+                      <p className='text-sm'>Finance Sept 2024 Payroll</p>
+                    </td>
+                    <td className='px-4 py-4'>
+                      <p className='text-sm'>1st Sept - 31st Sept</p>
+                    </td>
+                    <td className='px-4 py-4'>
+                      <p className='text-sm'>17 Apr, 2023</p>
+                    </td>
+                    <td className='px-4 py-4'>
+                      <p className='text-sm'>22</p>
+                    </td>
+                    <td className='px-4 py-4'>
+                      <p className='text-sm'>₦18,205,000</p>
+                    </td>
+                    <td className='px-4 py-4'>
+                      <p className='text-sm font-semibold text-amber-600 bg-amber-50 rounded-full px-2 py-1 w-fit text-nowrap'>In Progress</p>
+                    </td>
+                    <td className='px-4 py-4'>
+                      <PopoverMenu payrollId={''} />
+                    </td>
+                  </tr>
+                );
+              }) : (
+                <tr>
+                  <td colSpan={8} className='px-4 py-4'>
+                    <p className='text-sm'>No Payroll found</p>
                   </td>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+              )
+              }
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   )
 }

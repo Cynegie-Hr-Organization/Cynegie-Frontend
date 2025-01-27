@@ -22,16 +22,15 @@ export const getPayrolls = async (querykey: {
   try {
     const session = await getSession();
 
-    const { data } = await Http.get<IRes<IPayroll>>(endpoint + queryKey, {
+    const { data } = await Http.get<IRes<IPayroll[]>>(endpoint + queryKey, {
       headers: await headers(session?.token ?? ''),
     });
 
-    console.log('payroll-data', data)
+    return data;
 
-    return data
-
-  } catch (error) { throw handleError(error) }
-
+  } catch (error) {
+    throw handleError(error)
+  }
 }
 
 
