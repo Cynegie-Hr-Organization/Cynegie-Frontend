@@ -6,15 +6,30 @@ import { queryKeys } from "@/app/_core/utils/queryKeys";
 import { headers } from "@/app/_core/utils/session";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 
 
 
 
-export const useAllBudget = () => {
+export const useAllBudget = ({ }) => {
+
+  const searchParams = useSearchParams();
+  const sortOrder = searchParams.get('sortOrder') ?? 'asc';
+  const page = searchParams.get('page');
+  const limit = searchParams.get('limit');
+  const status = searchParams.get('status');
+  const search = searchParams.get('search') ?? 'Annual Budget';
+
   return useQuery({
     queryKey: [queryKeys.BUDGETS],
-    queryFn: () => getAllBudget(),
+    queryFn: () => getAllBudget({
+      sortOrder,
+      page: Number(page ?? 1),
+      limit: Number(limit ?? 5),
+      search: search ?? undefined,
+      status: status ?? undefined,
+    }),
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,

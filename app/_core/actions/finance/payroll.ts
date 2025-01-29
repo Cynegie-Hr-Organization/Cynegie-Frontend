@@ -44,7 +44,7 @@ export const getPayrollStatusCount = async () => {
     return data;
 
   } catch (error) {
-    handleError(error);
+    throw error;
   }
 }
 
@@ -66,6 +66,7 @@ export const getPayroll = async ({ id }: { id: string }) => {
     throw error;
   }
 }
+
 
 
 export type PayrollStatus = 'pending' | 'rejected' | 'approved' | 'draft' | 'processed';

@@ -2,6 +2,7 @@
 
 import EditVendorModal from "@/app/(pages)/finance-admin/(pages)/vendor-management/components/edit-modal";
 import PreviewModal from "@/app/(pages)/finance-admin/(pages)/vendor-management/components/preview-modal";
+import EmptyTable from "@/app/_components/shared/empty-table";
 import TableSkeleton from "@/app/_components/shared/skelentons/table";
 import { IVendor } from "@/app/_core/actions/finance/vendor";
 import { useVendors } from "@/app/_core/use-cases/finance/useVendors";
@@ -16,10 +17,10 @@ export const VendorTable = () => {
 
   return (
     <div className="common-card overflow-x-scroll space-y-4">
-      <div className='-mx-5 mt-4'>
-        {isLoading ? (
-          <TableSkeleton />
-        ) :
+      {isLoading ? (
+        <TableSkeleton />
+      ) : (
+        <div className='-mx-5 mt-4'>
           <table className='w-full border-collapse'>
             <thead className='bg-[#F7F9FC]'>
               <tr>
@@ -62,13 +63,12 @@ export const VendorTable = () => {
                   </tr>
                 );
               }) : (
-                <tr>
-                  <td colSpan={7} className="text-center py-4">No vendors found</td>
-                </tr>
+                <EmptyTable message="No vendors found" />
               )}
             </tbody>
-          </table>}
-      </div>
+          </table>
+        </div>
+      )}
     </div>
   )
 }

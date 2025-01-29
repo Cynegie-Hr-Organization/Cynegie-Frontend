@@ -1,6 +1,7 @@
 import AppButton from "@/app/_components/shared/button";
 import AppCheckbox from "@/app/_components/shared/checkbox";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
+import EmptyTable from "@/app/_components/shared/empty-table";
 import { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import TableSkeleton from "@/app/_components/shared/skelentons/table";
@@ -10,6 +11,7 @@ import { AppModal } from "@/components/drawer/modal";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { localTime } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
@@ -20,7 +22,14 @@ import { RiSearchLine } from "react-icons/ri";
 
 const PayrollManagementTable = () => {
   const { selectedItems, toggleSelection, selectAll, clearSelection } = useSelection<string>()
-  const { data, isLoading: isPayrollsLoading } = usePayroll();
+  const [filter, setFilter] = useState({
+    status: ''
+  })
+
+  const { data, isLoading: isPayrollsLoading } = usePayroll({
+    statusOverride: filter.status
+  });
+
   const { data: payrolls } = data ?? {};
   const totalItems = payrolls?.length ?? 0
 
@@ -36,129 +45,114 @@ const PayrollManagementTable = () => {
 
   return (
     <div className="common-card overflow-x-scroll space-y-4">
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
-        <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
-          <RiSearchLine className="text-gray-400" />
-          <input type="text" placeholder="Search here..." className="w-full h-9 px-2 outline-none" />
-        </div>
-
-        <AppDropdownMenu trigger={
-          <button type="button" className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
-            <LuListFilter /> Filter
-          </button>
-        }
-          menuItems={
-            <div className="p-4 space-y-10">
-              <div className="space-y-4">
-                <AppSelect listItems={[
-                  { label: "High", value: "high" },
-                  { label: "Medium", value: "medium" },
-                  { label: "Low", value: "low" },
-                ]}
-                  label="Priority"
-                  placeholder="High"
-                  onChange={function (value: string): void {
-                    console.log(value)
-                  }} />
-
-                <AppSelect
-                  listItems={[
-                    { label: "Completed", value: "completed" },
-                    { label: "In Progress", value: "in-progress" },
-                    { label: "Not Started", value: "not-started" },
-                  ]}
-                  label="Status"
-                  placeholder="Pending"
-                  onChange={function (value: string): void {
-                    console.log(value)
-                  }} />
-              </div>
-
-              <div className="flex items-center justify-between gap-4">
-                <AppButton label="Reset" className="btn-secondary w-[90px]" />
-                <AppButton label="Filter" className="btn-primary w-[90px]" />
-              </div>
-            </div>
-          } />
-      </div>
-
       {isPayrollsLoading ? (
         <TableSkeleton />
       ) : (
-        <div className='-mx-5 mt-4'>
-          <table className='w-full border-collapse'>
-            <thead className='bg-[#F7F9FC]'>
-              <tr>
-                <th className='px-6 py-3 text-left'>
-                  <AppCheckbox
-                    id=""
-                    checked={selectedItems.size === totalItems}
-                    onChange={handleSelectAll}
-                  />
-                </th>
-                <th className='px-4 py-3 text-left'>Payroll Name</th>
-                <th className='px-4 py-3 text-left'>Payroll Period</th>
-                <th className='px-4 py-3 text-left'>Payment date</th>
-                <th className='px-4 py-3 text-left'>Total Employees</th>
-                <th className='px-4 py-3 text-left'>Total Amount</th>
-                <th className='px-4 py-3 text-left'>Approval Status</th>
-                <th className='px-4 py-3 text-left'>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(payrolls && payrolls.length > 0) ? payrolls.map((payroll, idx) => {
-                const { payrollName, startDate, endDate, paymentDate, totalNetPay, status, employees, id } = payroll;
+        <>
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
+            <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
+              <RiSearchLine className="text-gray-400" />
+              <input type="text" placeholder="Search here..." className="w-full h-9 px-2 outline-none" />
+            </div>
 
-                return (
-                  <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
-                    <td className='px-6 py-4'>
-                      <AppCheckbox
-                        id={`payroll-item-${id}`}
-                        checked={selectedItems.has(id)}
-                        onChange={() => toggleSelection(id)}
-                      />
-                    </td>
-                    <td className='px-4 py-4'>
-                      <p className='text-sm'>{payrollName}</p>
-                    </td>
-                    <td className='px-4 py-4'>
-                      <p className='text-sm'>{localTime(startDate, 'dd MMM, yyyy')} - {localTime(endDate, 'dd MMM, yyyy')}</p>
-                    </td>
-                    <td className='px-4 py-4'>
-                      <p className='text-sm'>{localTime(paymentDate, 'dd MMM, yyyy')}3</p>
-                    </td>
-                    <td className='px-4 py-4'>
-                      <p className='text-sm'>{employees.length}</p>
-                    </td>
-                    <td className='px-4 py-4'>
-                      <p className='text-sm'>₦{totalNetPay}</p>
-                    </td>
-                    <td className='px-4 py-4'>
-                      <p className={`text-sm font-semibold rounded-full px-2 py-1 w-fit text-nowrap ${{
-                        'pending': ' text-amber-700 bg-amber-50 capitalize',
-                        'approved': ' text-green-700 bg-green-50 capitalize',
-                        'rejected': ' text-red-700 bg-red-50 capitalize',
-                        'declined': ' text-red-700 bg-red-50 capitalize',
-                        'draft': ' text-slate-700 bg-slate-50 capitalize',
-                        'processed': ' text-green-700 bg-green-50 capitalize'
-                      }[status]}`}>{status}</p>
-                    </td>
-                    <td className='px-4 py-4'>
-                      <PopoverMenu payrollId={id} />
-                    </td>
-                  </tr>
-                );
-              }) : (
+            <AppDropdownMenu trigger={
+              <button type="button" className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
+                <LuListFilter /> Filter
+              </button>
+            }
+              menuItems={
+                <div className="p-4 space-y-5">
+                  <div className="space-y-4">
+                    <AppSelect
+                      listItems={[
+                        { label: "Pending", value: "pending" },
+                        { label: "Approved", value: "approved" },
+                        { label: "Rejected", value: "rejected" },
+                      ]}
+                      label="Status"
+                      placeholder="Pending"
+                      onChange={(value) => setFilter({ ...filter, status: value })} />
+                  </div>
+
+                  <div className="flex items-center justify-between gap-4">
+                    <AppButton label="Reset" className="btn-secondary w-[90px]" />
+                    <AppButton label="Filter" className="btn-primary w-[90px]" />
+                  </div>
+                </div>
+              } />
+          </div>
+
+
+          <div className='-mx-5 mt-4'>
+            <table className='w-full border-collapse'>
+              <thead className='bg-[#F7F9FC]'>
                 <tr>
-                  <td colSpan={8} className='px-4 py-4'>
-                    <p className='text-sm'>No Payroll found</p>
-                  </td>
+                  <th className='px-6 py-3 text-left'>
+                    <AppCheckbox
+                      id=""
+                      checked={selectedItems.size === totalItems}
+                      onChange={handleSelectAll}
+                    />
+                  </th>
+                  <th className='px-4 py-3 text-left'>Payroll Name</th>
+                  <th className='px-4 py-3 text-left'>Payroll Period</th>
+                  <th className='px-4 py-3 text-left'>Payment date</th>
+                  <th className='px-4 py-3 text-left'>Total Employees</th>
+                  <th className='px-4 py-3 text-left'>Total Amount</th>
+                  <th className='px-4 py-3 text-left'>Approval Status</th>
+                  <th className='px-4 py-3 text-left'>Actions</th>
                 </tr>
-              )
-              }
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {(payrolls && payrolls.length > 0) ? payrolls.map((payroll, idx) => {
+                  const { payrollName, startDate, endDate, paymentDate, totalNetPay, status, employees, id } = payroll;
+
+                  return (
+                    <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
+                      <td className='px-6 py-4'>
+                        <AppCheckbox
+                          id={`payroll-item-${id}`}
+                          checked={selectedItems.has(id)}
+                          onChange={() => toggleSelection(id)}
+                        />
+                      </td>
+                      <td className='px-4 py-4'>
+                        <p className='text-sm'>{payrollName}</p>
+                      </td>
+                      <td className='px-4 py-4'>
+                        <p className='text-sm'>{localTime(startDate, 'dd MMM, yyyy')} - {localTime(endDate, 'dd MMM, yyyy')}</p>
+                      </td>
+                      <td className='px-4 py-4'>
+                        <p className='text-sm'>{localTime(paymentDate, 'dd MMM, yyyy')}3</p>
+                      </td>
+                      <td className='px-4 py-4'>
+                        <p className='text-sm'>{employees.length}</p>
+                      </td>
+                      <td className='px-4 py-4'>
+                        <p className='text-sm'>₦{totalNetPay}</p>
+                      </td>
+                      <td className='px-4 py-4'>
+                        <p className={`text-sm font-semibold rounded-full px-2 py-1 w-fit text-nowrap ${{
+                          'pending': ' text-amber-700 bg-amber-50 capitalize',
+                          'approved': ' text-green-700 bg-green-50 capitalize',
+                          'rejected': ' text-red-700 bg-red-50 capitalize',
+                          'declined': ' text-red-700 bg-red-50 capitalize',
+                          'draft': ' text-slate-700 bg-slate-50 capitalize',
+                          'processed': ' text-green-700 bg-green-50 capitalize'
+                        }[status]}`}>{status}</p>
+                      </td>
+                      <td className='px-4 py-4'>
+                        <PopoverMenu payrollId={id} />
+                      </td>
+                    </tr>
+                  );
+                }) : (
+                  <EmptyTable message="No Payrolls found" />
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </div>
   )

@@ -2,9 +2,8 @@
 
 import { SuccessSvg } from "@/app/_components/icons/custom-icons";
 import AppButton from "@/app/_components/shared/button";
-import { useGetPayroll } from "@/app/_core/use-cases/finance/usePayroll";
+import { useGetPayroll, usePayrollMutations } from "@/app/_core/use-cases/finance/usePayroll";
 import { AppModal } from "@/components/drawer/modal";
-import { DrawerTitle } from "@/components/ui/drawer";
 import { useParams, useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 
@@ -12,8 +11,19 @@ const PayrollApproval = () => {
   const router = useRouter();
   const { payrollId } = useParams();
   const { data: payroll } = useGetPayroll({ id: payrollId as string })
+  const { approvePayroll } = usePayrollMutations({})
 
-  const { totalGrossPay, totalNetPay } = payroll?.data ?? {}
+  const { totalGrossPay, totalNetPay, id } = payroll?.data ?? {}
+
+  const handleApprove = () => {
+    return (
+      approvePayroll.mutate({ id: id ?? '', }, {
+        onSuccess: () => {
+          alert('all done here')
+        }
+      })
+    );
+  }
 
 
   return (
@@ -48,7 +58,7 @@ const PayrollApproval = () => {
         <FooterButtons
           btn1Label="Cancel"
           btn2Label="Approve"
-          onBtn1Click={() => { }}
+          onBtn1Click={() => handleApprove()}
           onBtn2Click={() => { }}
         />
       </div>
@@ -88,7 +98,7 @@ const SuccessModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
     <AppModal
       trigger={trigger}
-      header={<DrawerTitle className="flex justify-center"><SuccessSvg /></DrawerTitle>}
+      header={<span className="flex justify-center"><SuccessSvg /></span>}
       footer={
         <div className="flex justify-center w-full">
           <AppButton label="Continue To Payroll Dasbboard" className="btn-primary md:w-[242px] text-sm text-nowrap" onClick={() => router.push('/finance-admin/payroll-management')} />

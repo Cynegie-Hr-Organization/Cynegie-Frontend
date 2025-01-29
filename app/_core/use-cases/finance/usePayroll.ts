@@ -12,11 +12,11 @@ import { toast } from "react-toastify"
 
 
 
-export const usePayroll = () => {
+export const usePayroll = ({ statusOverride, searchOverride }: { statusOverride?: string, searchOverride?: string }) => {
   const searchParams = useSearchParams();
   const sortOrder = searchParams.get('sortOrder') ?? 'asc';
-  const status = searchParams.get('status') ?? undefined;
-  const search = searchParams.get('search') ?? '';
+  const status = statusOverride ?? searchParams.get('status') ?? undefined;
+  const search = searchOverride ?? searchParams.get('search') ?? undefined;
   const page = searchParams.get('page') ?? '1';
   const limit = searchParams.get('limit') ?? '5';
 
@@ -109,6 +109,42 @@ export const usePayrollMutations = ({ id }: { id?: string }) => {
   })
 
 
+  const approvePayroll = useMutation({
+    mutationKey: ['approve-payroll'],
+    mutationFn: async ({ id }: { id: string }) => {
+      if (!id) throw new Error('id is required');
+
+      const session = await getSession();
+      return Http.patch<IPayroll>(`payroll/${id}/approve`, {}, {
+        headers: await headers(session?.token ?? '')
+      })
+    },
+    onSuccess: async () => {
+      toast.success('Payroll approved successfully');
+      await queryClient.invalidateQueries({ queryKey: [queryKeys.PAYROLLS] });
+    },
+    onError: (error) => handleError(error)
+  })
+
+
+  const rejectPayroll = useMutation({
+    mutationKey: ['reject-payroll'],
+    mutationFn: async ({ id, rejectionReason }: { id: string, rejectionReason: string }) => {
+      if (!id || !rejectionReason) throw new Error('id and rejection reason is required');
+
+      const session = await getSession();
+      return Http.patch<IPayroll>(`payroll/${id}/reject`, { rejectionReason }, {
+        headers: await headers(session?.token ?? '')
+      })
+    },
+    onSuccess: async () => {
+      toast.success('Payroll rejected successfully');
+      await queryClient.invalidateQueries({ queryKey: [queryKeys.PAYROLLS] });
+    },
+    onError: (error) => handleError(error)
+  })
+
+
   const deletePayroll = useMutation({
     mutationKey: ['delete-payroll'],
     mutationFn: async ({ id }: { id: string }) => {
@@ -129,6 +165,8 @@ export const usePayrollMutations = ({ id }: { id?: string }) => {
   return {
     addPayroll,
     updatePayroll,
-    deletePayroll,
+    approvePayroll,
+    rejectPayroll,
+    deletePayroll
   }
 }
