@@ -203,9 +203,7 @@ const BeneficiaryForm = () => {
 
 
 const TransferStatuses = () => {
-	const { data } = useMyTransfers({})
-
-	console.log(data)
+	const { data } = useMyTransfers({});
 
 
 	type TransferStatusType = 'PENDING' | 'APPROVED' | 'FAILED' | 'LISTING';

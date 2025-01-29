@@ -69,12 +69,13 @@ export const useBankingMutations = () => {
       })
     },
     onSuccess: async (data) => {
+      // console.log(data)
       toast.success(data.data.message);
       toast.success('beneficiary added successfully');
 
       if (!data?.status) throw new Error(data.data.message ?? `Unable to add beneficiary, please try again`);
 
-      await queryClient.invalidateQueries({ queryKey: [queryKeys.BANKING] });
+      await queryClient.invalidateQueries({ queryKey: [queryKeys.BENEFICIARIES] });
     },
     onError: (error) => handleError(error)
   })

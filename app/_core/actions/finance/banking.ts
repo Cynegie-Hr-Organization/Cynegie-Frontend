@@ -9,7 +9,7 @@ export const getMyBeneficiaries = async () => {
     const { data } = await Http.get<IPaginatedBeneficiaries>('bank/my-beneficiary', {
       headers: await headers(session?.token ?? ''),
     });
-
+    
     return data
 
   } catch (error) {
@@ -43,7 +43,7 @@ export const getMyTransfers = async (querykey: {
       headers: await headers(session?.token ?? ''),
     });
 
-    console.log('wierd-data', data)
+    // console.log('wierd-data', data)
 
     return data
 
