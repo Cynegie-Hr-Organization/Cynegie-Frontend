@@ -15,11 +15,11 @@ import { toast } from "react-toastify";
 export const useAllBudget = ({ }) => {
 
   const searchParams = useSearchParams();
-  const sortOrder = searchParams.get('sortOrder') ?? 'asc';
+  const sortOrder = searchParams.get('sortOrder') ?? 'desc';
   const page = searchParams.get('page');
   const limit = searchParams.get('limit');
   const status = searchParams.get('status');
-  const search = searchParams.get('search') ?? 'Annual Budget';
+  const search = searchParams.get('search') ?? undefined;
 
   return useQuery({
     queryKey: [queryKeys.BUDGETS],

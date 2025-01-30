@@ -12,7 +12,7 @@ const BudgetsTable = () => {
 
 
   return (
-    <div className="common-card space-y-4">
+    <div className="common-card space-y-4 overflow-x-auto">
       {isLoading ? (
         <TableSkelenton />
       ) : (
@@ -39,7 +39,7 @@ const BudgetsTable = () => {
               </thead>
 
               <tbody>
-                {(budgets && budgets.length > 0) ? budgets.reverse().map((budget, idx) => {
+                {(budgets && budgets.length > 0) ? budgets.map((budget, idx) => {
                   const { department, startDate, endDate, allocation, status } = budget;
                   const { departmentName } = department;
 
@@ -134,3 +134,7 @@ const TableSkelenton = () => {
 
 
 export default BudgetsTable;
+
+function useAsync(arg0: () => Promise<Partial<import("next-auth").User> | undefined>, arg1: never[]) {
+  throw new Error("Function not implemented.");
+}
