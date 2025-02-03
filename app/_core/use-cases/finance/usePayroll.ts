@@ -3,7 +3,7 @@ import { handleError, Http } from "@/app/_core/utils/axios"
 import { queryKeys } from "@/app/_core/utils/queryKeys"
 import { headers } from "@/app/_core/utils/session"
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { getSession } from "next-auth/react"
 import { useSearchParams } from "next/navigation"
 import { toast } from "react-toastify"
@@ -74,6 +74,9 @@ export const useGetPayroll = ({ id, key }: { id?: string, key?: string }) => {
 export const usePayrollMutations = ({ id }: { id?: string }) => {
 
   const queryClient = useQueryClient();
+  const isMutating = useIsMutating()
+
+  const isLoading = isMutating > 0;
 
   const addPayroll = useMutation({
     mutationKey: ['add-payroll'],
@@ -167,6 +170,7 @@ export const usePayrollMutations = ({ id }: { id?: string }) => {
     updatePayroll,
     approvePayroll,
     rejectPayroll,
-    deletePayroll
+    deletePayroll,
+    isLoading
   }
 }

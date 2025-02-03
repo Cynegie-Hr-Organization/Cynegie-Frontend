@@ -5,7 +5,7 @@ import EmptyTable from "@/app/_components/shared/empty-table";
 import { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import TableSkeleton from "@/app/_components/shared/skelentons/table";
-import { usePayroll } from "@/app/_core/use-cases/finance/usePayroll";
+import { usePayroll, usePayrollMutations } from "@/app/_core/use-cases/finance/usePayroll";
 import useSelection from "@/app/_hooks/useSelection";
 import { AppModal } from "@/components/drawer/modal";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -161,6 +161,8 @@ const PayrollManagementTable = () => {
 
 function PopoverMenu({ payrollId }: { payrollId: string }) {
   const router = useRouter()
+
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -171,7 +173,9 @@ function PopoverMenu({ payrollId }: { payrollId: string }) {
 
       <PopoverContent className='w-40 bg-white cursor-pointer rounded-lg flex flex-col items-start text-[#475367] p-2'>
         <button className='hover:bg-gray-100 w-full text-left text-sm p-2 rounded-md' onClick={() => router.push(`/finance-admin/payroll-management/${payrollId}/approval`)}>Approve</button>
-        <RejectModal trigger={<button className='hover:bg-red-50 text-red-500 w-full text-left text-sm p-2 rounded-md'>Reject</button>} />
+        <RejectModal
+          payrollId={payrollId}
+          trigger={<button className='hover:bg-red-50 text-red-500 w-full text-left text-sm p-2 rounded-md'>Reject</button>} />
         <button className="hover:bg-gray-100 w-full text-left text-sm p-2 rounded-md" onClick={() => router.push(`/finance-admin/payroll-management/${payrollId}`)}>View Details</button>
       </PopoverContent>
     </Popover>
@@ -180,9 +184,25 @@ function PopoverMenu({ payrollId }: { payrollId: string }) {
 
 
 
-const RejectModal = ({ trigger }: { trigger: React.ReactNode }) => {
+const RejectModal = ({ trigger, payrollId }: { trigger: React.ReactNode, payrollId: string }) => {
+  const { rejectPayroll } = usePayrollMutations({ id: payrollId })
+  const [rejectionReason, setRejectionReason] = useState('');
+  const [toggleRejectionModal, setToggleRejectionModal] = useState(false);
+
+  const handlePayrollRejection = () => {
+    rejectPayroll.mutate({
+      id: payrollId,
+      rejectionReason
+    }, {
+      onSuccess: () => {
+        setToggleRejectionModal(false)
+      }
+    })
+  }
   return (
     <AppModal
+      open={toggleRejectionModal}
+      setOpen={setToggleRejectionModal}
       trigger={trigger}
       header={
         <span className="text-lg font-bold -mx-4 lg:mx-0 lg:px-6  pt-4 lg:pt-6">
@@ -196,15 +216,27 @@ const RejectModal = ({ trigger }: { trigger: React.ReactNode }) => {
       }
       footer={
         <div className="flex flex-col md:flex-row items-center justify-center gap-2 pb-4 lg:pb-6">
-          <AppButton label="Cancel" className="bg-white border-2 border-gray-400 text-gray-500 md:w-[150px] w-full" />
-          <AppButton label="Confirm Rejection" className="bg-red-700 text-white md:w-[150px] w-full border border-red-700" />
+          <AppButton
+            label="Cancel"
+            className="bg-white border-2 border-gray-400 text-gray-500 md:w-[150px] w-full"
+            onClick={() => setToggleRejectionModal(false)}
+          />
+          <AppButton
+            label="Confirm Rejection"
+            className="bg-red-700 text-white md:w-[150px] w-full border border-red-700"
+            onClick={handlePayrollRejection}
+          />
         </div>
       }
     >
       <div className="lg:p-6">
-        <AppInputTextArea label="Rejection Reason" id="reason" placeholder="Enter reason" onChange={function (e) {
-          console.log(e.target.value)
-        }} value="" />
+        <AppInputTextArea
+          label="Rejection Reason"
+          id="rejection-reason"
+          placeholder="Enter reason"
+          value={rejectionReason}
+          onChange={(e) => setRejectionReason(e.target.value)}
+        />
       </div>
     </AppModal>
   )

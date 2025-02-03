@@ -11,19 +11,13 @@ const PayrollApproval = () => {
   const router = useRouter();
   const { payrollId } = useParams();
   const { data: payroll } = useGetPayroll({ id: payrollId as string })
-  const { approvePayroll } = usePayrollMutations({})
+  const { approvePayroll, isLoading: isApprovingPayroll } = usePayrollMutations({})
 
   const { totalGrossPay, totalNetPay, id } = payroll?.data ?? {}
 
-  const handleApprove = () => {
-    return (
-      approvePayroll.mutate({ id: id ?? '', }, {
-        onSuccess: () => {
-          alert('all done here')
-        }
-      })
-    );
-  }
+
+
+  const handleApprove = () => approvePayroll.mutate({ id: id ?? '', });
 
 
   return (
@@ -58,8 +52,8 @@ const PayrollApproval = () => {
         <FooterButtons
           btn1Label="Cancel"
           btn2Label="Approve"
-          onBtn1Click={() => handleApprove()}
-          onBtn2Click={() => { }}
+          onBtn1Click={() => router.back()}
+          onBtn2Click={() => handleApprove()}
         />
       </div>
     </div>
@@ -88,7 +82,15 @@ const FooterButtons = ({ btn1Label, btn2Label, onBtn1Click, onBtn2Click, classNa
         className="btn-secondary"
         onClick={onBtn1Click}
       />
-      <SuccessModal trigger={<AppButton label={btn2Label} className="disabled:btn-inactive btn-primary" onClick={onBtn2Click} />} />
+      <SuccessModal
+        trigger={
+          <AppButton
+            label={btn2Label}
+            className="disabled:btn-inactive btn-primary"
+            onClick={onBtn2Click}
+          />
+        }
+      />
     </div>
   )
 }

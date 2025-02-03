@@ -1,4 +1,4 @@
-import { getMyBeneficiaries, getMyTransfers } from "@/app/_core/actions/finance/banking"
+import { getMyBeneficiaries, getMyTransfers, IAddBeneficiary, IBankAccount, IBankTransfer } from "@/app/_core/actions/finance/banking"
 import { IRes } from "@/app/_core/interfaces/res"
 import { handleError, Http } from "@/app/_core/utils/axios"
 import { queryKeys } from "@/app/_core/utils/queryKeys"
@@ -138,35 +138,4 @@ export const useMyTransfers = ({
     initialData: undefined,
     retry: false,
   })
-}
-
-
-
-
-
-interface IBankAccount {
-  accountName: string,
-  businessType: string,
-  currency: string,
-  companyEmail: string,
-  companyRegistrationNumber: string,
-  companyAddress: string,
-  secondaryContact: string,
-  transactionPin: string
-}
-
-
-export interface IBankTransfer {
-  beneficiary: string;
-  accountName: string;
-  accountNumber: string;
-  bankName: string;
-  sourceBank: string;
-  amount: number;
-}
-
-export interface IAddBeneficiary {
-  accountName: string,
-  accountNumber: string,
-  bankName: string
 }
