@@ -71,7 +71,9 @@ export const useVendorMutations = ({ id }: { id?: string }) => {
       })
     },
     onSuccess: async (data) => {
-      toast.success('Vendor details updated successfully', { className: 'bg-red-500' });
+      if (Object.prototype.hasOwnProperty.call(data, 'message')) {
+        toast.success('successful' as string);
+      }
       await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDORS] });
       await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDOR, id] });
     },
@@ -79,26 +81,44 @@ export const useVendorMutations = ({ id }: { id?: string }) => {
   })
 
 
+  const activateVendor = useMutation({
+    mutationKey: ['activate-vendor'],
+    mutationFn: async ({ id }: { id: string }) => {
+      const session = await getSession();
+
+
+      return Http.patch<IVendor>(`vendors/${id}/activate`, {}, {
+        headers: await headers(session?.token ?? '')
+      })
+    },
+    onSuccess: async () => {
+      toast.success('Vendor activated successfully');
+      await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDORS] });
+    },
+    onError: (error) => { throw handleError(error) }
+  })
+
   const deactivateVendor = useMutation({
     mutationKey: ['deactivate-vendor'],
     mutationFn: async ({ id }: { id: string }) => {
       const session = await getSession();
 
-      return Http.delete<IVendor>(`vendors/${id}`, {
+      return Http.patch<IVendor>(`vendors/${id}/deactivate`, {}, {
         headers: await headers(session?.token ?? '')
       })
     },
     onSuccess: async (data) => {
-      toast.success('Vendor deleted successfully');
+      toast.success('Vendor deactivated successfully');
       await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDORS] });
     },
-    onError: (error) => handleError(error)
+    onError: (error) => { throw handleError(error) }
   })
 
 
   return {
     addVendor,
     updateVendor,
+    activateVendor,
     deactivateVendor,
   }
 }

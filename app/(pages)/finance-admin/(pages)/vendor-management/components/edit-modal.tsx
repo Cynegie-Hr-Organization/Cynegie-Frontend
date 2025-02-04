@@ -4,6 +4,7 @@ import AppInputText from "@/app/_components/shared/input-text";
 import { useGetVendor, useVendorMutations } from "@/app/_core/use-cases/finance/useVendors";
 import { AppModal } from "@/components/drawer/modal";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const EditVendorModal: React.FC<{ trigger: React.ReactNode, vendorId: string }> = ({ trigger, vendorId }) => {
   const { data: vendor, isLoading: isLoadingVendor } = useGetVendor({ id: vendorId });
@@ -42,7 +43,10 @@ const EditVendorModal: React.FC<{ trigger: React.ReactNode, vendorId: string }> 
 
   const handleSubmit = () => {
     updateVendor.mutate({ id: vendorId, body: formData }, {
-      onSuccess: () => setOpen(false),
+      onSuccess: () => {
+        setOpen(false)
+        toast.success('successful' as string);
+      },
       onError: (error) => console.log(error)
     })
   }

@@ -1,6 +1,7 @@
 "use client"
 
 import EditVendorModal from "@/app/(pages)/finance-admin/(pages)/vendor-management/components/edit-modal";
+import OtherActionsModal, { vendorStatus } from "@/app/(pages)/finance-admin/(pages)/vendor-management/components/other-actions-modal";
 import PreviewModal from "@/app/(pages)/finance-admin/(pages)/vendor-management/components/preview-modal";
 import EmptyTable from "@/app/_components/shared/empty-table";
 import TableSkeleton from "@/app/_components/shared/skelentons/table";
@@ -9,7 +10,6 @@ import { useVendors } from "@/app/_core/use-cases/finance/useVendors";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { HiDotsVertical } from "react-icons/hi";
 import { RiSearchLine } from "react-icons/ri";
-import DeleteModal from "./delete-modal";
 
 
 
@@ -17,7 +17,7 @@ export const VendorTable = () => {
   const { data: vendors, isLoading } = useVendors()
 
   return (
-    <div className="common-card space-y-4">
+    <div className="common-card space-y-4 overflow-x-auto">
       {isLoading ? (
         <TableSkeleton />
       ) : (
@@ -59,8 +59,9 @@ export const VendorTable = () => {
                       </td>
                       <td className='px-4 py-4'>
                         <p className={`text-xs font-semibold rounded-full px-2 py-1 w-fit text-nowrap capitalize ${{
-                          INACTIVE: "text-amber-600 bg-amber-50",
-                          ACTIVE: "text-[#036B26] bg-[#E7F6EC]",
+                          "pending": "bg-amber-50 text-amber-700",
+                          "active": "bg-green-50 text-green-700",
+                          "inactive": "bg-red-50 text-red-700",
                         }[vendor?.status]}`}>{vendor?.status}
                         </p>
                       </td>
@@ -103,10 +104,12 @@ const PopoverMenu: React.FC<{ vendor: IVendor }> = ({ vendor }) => {
           trigger={
             <button className='hover:bg-gray-100 rounded-lg p-2 w-full text-start'>Edit Details</button>
           } />
-        <DeleteModal
+        <OtherActionsModal
           vendor={vendor}
           trigger={
-            <button className='hover:bg-red-50 rounded-lg p-2 w-full text-start text-red-500'>Deactivate</button>
+            <button className='hover:bg-red-50 rounded-lg p-2 w-full text-start text-red-500'>
+              {vendor.status === vendorStatus.ACTIVE_VENDOR ? 'Deactivate' : 'Activate'}
+            </button>
           } />
       </PopoverContent>
     </Popover>

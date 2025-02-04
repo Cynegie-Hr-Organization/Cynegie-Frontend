@@ -38,16 +38,16 @@ export const getVendor = async ({ id }: { id: string }) => {
 
 
 export interface IVendor {
-  id: string
-  vendorName: string
-  phoneNumber: string
-  contactEmail: string
-  vendorAddress: string
-  status: 'ACTIVE' | 'INACTIVE'
-  paymentTerms: string
-  contactPerson: string
-  deletedAt: null | string
-  company: string
-  createdAt: string
-  updatedAt: string
+  id: string;
+  vendorName: string;
+  phoneNumber: string;
+  contactEmail: string;
+  vendorAddress: string;
+  status: 'active' | 'inactive' | 'pending';
+  paymentTerms: string;
+  contactPerson: string;
+  deletedAt: null | string;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
 }
