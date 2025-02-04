@@ -10,4 +10,5 @@ export const queryKeys = {
   PAYROLL: 'payroll',
   PAYROLLS_COUNT: 'payrolls-count',
   FINANCE_SETTINGS: 'finance-settings',
+  APPROVALS: 'approvals'
 }
