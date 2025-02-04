@@ -14,7 +14,7 @@ export const getFinanceSettings = async () => {
 
     return data
   } catch (error) {
-    throw error;
+    throw handleError(error);
   }
 }
 

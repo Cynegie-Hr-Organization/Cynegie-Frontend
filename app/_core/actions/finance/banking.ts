@@ -46,7 +46,7 @@ export const getMyTransfers = async (querykey: {
 
     return data
 
-  } catch (error) { throw error }
+  } catch (error) { throw handleError(error) }
 
 }
 

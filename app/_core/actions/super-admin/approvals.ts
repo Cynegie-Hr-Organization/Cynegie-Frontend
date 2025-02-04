@@ -1,4 +1,4 @@
-import { Http } from "@/app/_core/utils/axios";
+import { handleError, Http } from "@/app/_core/utils/axios";
 import { headers } from "@/app/_core/utils/session";
 import { getSession } from "next-auth/react";
 
@@ -12,7 +12,7 @@ export const getApprovals = async () => {
     return data;
 
   } catch (error) {
-    throw error;
+    throw handleError(error);
   }
 }
 

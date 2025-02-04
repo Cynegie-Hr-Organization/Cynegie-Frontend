@@ -44,7 +44,7 @@ export const getPayrollStatusCount = async () => {
     return data;
 
   } catch (error) {
-    throw error;
+    throw handleError(error);
   }
 }
 
@@ -63,7 +63,7 @@ export const getPayroll = async ({ id }: { id: string }) => {
     return data;
 
   } catch (error) {
-    throw error;
+    throw handleError(error);
   }
 }
 

@@ -1,7 +1,7 @@
 
 import { IRes } from "@/app/_core/interfaces/res";
 import { IUser } from "@/app/_core/interfaces/user";
-import { Http } from "@/app/_core/utils/axios";
+import { handleError, Http } from "@/app/_core/utils/axios";
 import { headers } from "@/app/_core/utils/session";
 import { getSession } from "next-auth/react";
 
@@ -15,6 +15,6 @@ export const getCashflowTrends = async () => {
     return data;
 
   } catch (error) {
-    throw error;
+    throw handleError(error);
   }
 }
