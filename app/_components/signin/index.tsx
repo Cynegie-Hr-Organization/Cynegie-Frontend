@@ -50,8 +50,11 @@ const handlePasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       const user = await getSession();
       console.log("User session data:", user);
 
-      const redirectPath = getRedirectPath(user?.user?.role || []);
-      if (redirectPath) {
+// Normalize roles to lowercase before passing to getRedirectPath
+      const roles = (user?.user?.role || []).map(role => role.toLowerCase());
+      const redirectPath = getRedirectPath(roles);
+      if (redirectPath)
+      {
         router.push(redirectPath);
       } else {
         toast.error("User role not found. Please contact support.", {

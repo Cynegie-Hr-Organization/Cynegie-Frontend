@@ -95,3 +95,17 @@ export const deleteLeaveRequestById = async (id: any) => {
 
   return response;
 };
+
+
+export const getAllLeaveMetrics = async () => {
+  const session = await getServerSession(authOptions);
+
+  const response = await request("GET", `${baseUrl}/v1/leave/current-year-summary`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  });
+
+  return response;
+};

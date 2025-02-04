@@ -9,17 +9,27 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/options";
 
 
-export type AttendanceRecord = {
-  employee: string;
+export interface AttendanceRecord {
+  attendanceId: string;
+  employeeName: string;
+  staffId: string;
+  department: string;
+  jobTitle: string;
   date: string;
   clockIn?: string;
   clockOut?: string;
-  deletedAt?: string | null;
-  company: string;
-  createdAt: string;
-  updatedAt: string;
-  id: string;
-};
+  totalHoursWorked?: number | null;
+  attendanceStatus: string;
+  overtime: number;
+}
+
+export interface AttendanceResponse {
+  data: AttendanceRecord[];
+  total: number;
+  page: number;
+  limit: number;
+  statusCounts: Record<string, number>;
+}
 
 
 
@@ -52,7 +62,16 @@ export const clockOut = async (id: any) => {
 
 
 
-export const fetchAttendanceMine = async (): Promise<AttendanceRecord[]> => {
+export const fetchAttendanceMine = async (
+  sortOrder: string = "desc",
+  page: number = 1,
+  limit: number = 10,
+  status?: string,
+  search?: string,
+  date?: string,
+  department?: string,
+  jobTitle?: string
+): Promise<AttendanceResponse> => {
   const session = await getServerSession(authOptions);
 
   const response = await request("GET", `${baseUrl}/v1/attendance/mine`, {
@@ -60,11 +79,20 @@ export const fetchAttendanceMine = async (): Promise<AttendanceRecord[]> => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${session?.token}`,
     },
+    params: {
+      sortOrder,
+      page,
+      limit,
+      status,
+      search,
+      date,
+      department,
+      jobTitle,
+    },
   });
 
-  return response as AttendanceRecord[];
+  return response as AttendanceResponse;
 };
-
 
 
 export const fetchAttendanceById = async (id : any): Promise<AttendanceRecord> => {
@@ -78,4 +106,19 @@ export const fetchAttendanceById = async (id : any): Promise<AttendanceRecord> =
   });
 
   return response as AttendanceRecord;
+};
+
+export const getCurrentAttendanceRecords = async () => {
+
+  const session = await getServerSession(authOptions);
+
+  const response = await request("GET", `${baseUrl}/v1/attendance/weekly-summary`, 
+    {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  });
+
+  return response;
 };

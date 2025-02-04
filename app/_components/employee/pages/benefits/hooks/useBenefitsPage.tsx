@@ -5,6 +5,7 @@ import { CardGroupProps } from "@/app/_components/shared/section-with-cards/type
 import { FieldType, TableProps } from "@/app/_components/shared/table/types";
 import {
   getAllBenefits,
+  getAllBenefitsMetrics,
   getAllMyBenefitsRequest,
   requestbenefits,
 } from "@/app/api/services/employee/benefits";
@@ -15,6 +16,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { ModalProps } from "../../../modal/types";
+import { FetchParams } from "@/types";
+import { debounce } from "lodash";
 
 const useBenefitsPage = () => {
   const [openRequestModal, setOpenRequestModal] = useState(false);
@@ -30,6 +33,23 @@ const useBenefitsPage = () => {
   const [monthlyCost, setMonthlyCost] = useState<string | number | undefined>(
     ""
   );
+// Debounced search
+  const debouncedSearch = debounce((value: string) => {
+    setFetchParams((prev) => ({ ...prev, search: value || undefined }));
+  }, 300);
+
+  const handleSearch = (value: string) => {
+    debouncedSearch(value);
+  };
+
+  const [fetchParams, setFetchParams] = useState<FetchParams>({
+      page: 1,
+      limit: 10,
+      sortOrder: 'desc',
+      search: undefined,
+  });
+  
+
 
   const router = useRouter();
 
@@ -44,6 +64,18 @@ const useBenefitsPage = () => {
     fetchBenefits();
   }, []);
 
+
+  const { data: benefitsMetrics, isLoading: isMetricsLoading } = useQuery({
+    queryKey: ['benefitsMetrics'],
+    queryFn: async () => {  
+      const response = await getAllBenefitsMetrics(); 
+      return response;
+      },
+    staleTime: 3000,
+    refetchOnWindowFocus: false,
+  });
+  console.log(benefitsMetrics);
+  
   const handleSubmitRequest = async () => {
     const payload = {
       benefit,
@@ -68,18 +100,25 @@ const useBenefitsPage = () => {
   };
 
   const {
-    data: benefitsRequests,
-    refetch,
-    isLoading,
-  } = useQuery({
-    queryKey: ["benefitsRequest"],
-    queryFn: async () => {
-      const response = await getAllMyBenefitsRequest("desc", 1, 10);
-      return response.data;
-    },
-    refetchOnWindowFocus: false, // Prevent refetching on window focus
-    staleTime: 60000, // Cache for 1 minute
-  });
+  data: benefitsRequests,
+  refetch,
+  isLoading,
+} = useQuery({
+  queryKey: ['benefitsRequest', { ...fetchParams }],
+  queryFn: async () => {
+    const response = await getAllMyBenefitsRequest(
+      fetchParams.sortOrder,
+      fetchParams.page,
+      fetchParams.limit,
+      fetchParams.search
+    );
+    console.log(response);
+    return response.data;
+  },
+  refetchOnWindowFocus: false, // Prevent refetching on window focus
+  staleTime: 60000, // Cache for 1 minute
+});
+  
 
   const isFormComplete = () => {
     return benefit && provider && coveragePlan && monthlyCost;
@@ -108,31 +147,38 @@ const useBenefitsPage = () => {
     cards: [
       {
         labelText: "Total Benefits Enrolled",
-        value: "10",
+        value: benefitsMetrics?.totalBenefits || "0",
         valueBelow: true,
         icon: giftIcon,
         iconColorVariant: "success",
+        loading: isMetricsLoading,
       },
       {
         labelText: "Active Benefits",
-        value: "4",
+        value: benefitsMetrics?.benefitsByStatus?.active || "0",
         valueBelow: true,
         icon: giftIcon,
         iconColorVariant: "info",
+                loading: isMetricsLoading,
+
       },
       {
         labelText: "Pending Benefits",
-        value: "3",
+        value: benefitsMetrics?.benefitsByStatus?.pending || "0",
         valueBelow: true,
         icon: giftIcon,
         iconColorVariant: "warning",
+                loading: isMetricsLoading,
+
       },
       {
-        labelText: "Upcoming Expiration",
-        value: "2",
+        labelText: "Rejected Benefits",
+        value: benefitsMetrics?.benefitsByStatus?.rejected || "0",
         valueBelow: true,
         icon: giftIcon,
         iconColorVariant: "error",
+                loading: isMetricsLoading,
+
       },
     ],
   };
@@ -157,6 +203,7 @@ const useBenefitsPage = () => {
     actions: [
       { name: "View Details", onClick: () => setOpenDetailsModal(true) },
     ],
+    onSearch: handleSearch,
     filters: [
       {
         name: "Benefit Type",

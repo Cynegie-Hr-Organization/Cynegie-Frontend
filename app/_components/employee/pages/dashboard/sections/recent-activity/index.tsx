@@ -1,28 +1,24 @@
 import { Stack } from '@mui/material';
 import { Task } from '../../../task/kanban-board/types';
 import TaskCard from '../../../task/kanban-board/cards/task';
+import useKanbanBoard from '../../../task/kanban-board/hooks/useKanbanBoard';
 
 const RecentActivityCardDetails = () => {
+  const { boardData, isLoading } = useKanbanBoard();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  const tasks = Object.values(boardData.tasks).slice(0, 2); // Get the first 2 tasks
+
   return (
     <Stack gap={2}>
-      {Array(2)
-        .fill({
-          name: 'App Usability Testing with Maze',
-          status: 'Pending',
-          app: 'Slack',
-          userPictures: [
-            'image/persons/person-1.png',
-            'image/persons/person-1.png',
-            'image/persons/person-3.png',
-          ],
-          dueDate: 'January 21st, 2024',
-          noOfComments: 2,
-        } as Task)
-        .map((task, index) => (
-          <div key={index}>
-            <TaskCard {...task} />
-          </div>
-        ))}
+      {tasks.map((task: Task, index: number) => (
+        <div key={index}>
+          <TaskCard {...task} />
+        </div>
+      ))}
     </Stack>
   );
 };

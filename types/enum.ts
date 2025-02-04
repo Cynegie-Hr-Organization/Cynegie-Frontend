@@ -1,8 +1,8 @@
 export enum UserRole {
-  HR_ADMIN = "Hr_Admin",
-  SUPER_ADMIN = "SUPER_ADMIN",
-  IT_ADMIN = "IT_ADMIN",
-  EMPLOYEE = "Employee"
+  HR_ADMIN = "hr_admin",
+  SUPER_ADMIN = "super_admin",
+  IT_ADMIN = "it-admin",
+  EMPLOYEE = "employee"
 }
 
 export enum SortOrder {

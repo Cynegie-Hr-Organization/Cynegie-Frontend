@@ -7,7 +7,7 @@ import { DetailGroupProps } from "@/app/_components/shared/detail-group/types";
 import { FormProps } from "@/app/_components/shared/form/types";
 import { ButtonProps } from "@/app/_components/shared/page/heading/types";
 import { Dayjs } from "dayjs";
-import { FormEventHandler, SetStateAction } from "react";
+import { Dispatch, FormEventHandler, SetStateAction } from "react";
 import {
   Control,
   FieldErrors,
@@ -54,8 +54,8 @@ export type InputFieldProps = {
   placeholder?: string;
   options?: InputFieldOption[];
   value?: string | number;
-  // setValue?: Dispatch<SetStateAction<string | number | undefined>>;
-  setValue?: (arg: InputFieldValue) => void;
+  setValue?: Dispatch<SetStateAction<string | number | undefined>>;
+  // setValue?: (arg: InputFieldValue) => void;
   selectValControlledFromOutside?: boolean;
   disabled?: boolean;
   defaultValue?: string | number;

@@ -5,71 +5,18 @@ import { Grid2 } from '@mui/material';
 import LeaveBalance from './leave-balance';
 import TotalHoursWorked from './total-hours-worked';
 import SectionWithCards from '@/app/_components/shared/section-with-cards';
-import currentAttendanceRecordsSectionData from './current-attendance-records/data';
 import Page from '@/app/_components/shared/page';
 import { ButtonType } from '../../../shared/page/heading/types';
 import Table from '@/app/_components/shared/table';
 import useAttendanceRecordTable from './hooks/useAttendanceRecordTable';
+import useClockInOut from './hooks/useClockInOut';
 import Modal from '../../modal';
 import { TableAction } from '@/app/_components/shared/table/types';
 import Toast from '@/app/_components/shared/toast';
-import { useState } from 'react';
-import { clockIn, clockOut, fetchAttendanceMine } from '@/app/api/services/employee/attendance';
 
 const EmployeeAttendanceAndTimeTracking = () => {
-  const { attendanceRecordTableData, modalsData } = useAttendanceRecordTable();
-  const [openToast, setOpenToast] = useState(false);
-  const [openClockOutToast, setOpenClockOutToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastStatus, setToastStatus] = useState<'Successful' | 'Error'>('Successful');
-
- const handleClockIn = async () => {
-  try {
-    const payload = { date: new Date().toISOString() };
-    const response = await clockIn(payload); 
-    console.log('Clock In Response:', response);
-    setToastMessage('You have successfully clocked in!');
-    setToastStatus('Successful');
-    setOpenToast(true);
-  } catch (error) {
-    console.error('Clock In Error:', error);
-    setToastMessage('Failed to clock in. Please try again.');
-    setToastStatus('Error');
-    setOpenToast(true);
-  }
-};
-
-
-  
-  const handleClockOut = async () => {
-  try {
-    const attendanceRecords = await fetchAttendanceMine();
-
-    if (!attendanceRecords || attendanceRecords.length === 0) {
-      throw new Error("No attendance records found.");
-    }
-
-    // Sort records by date (or updatedAt) in descending order and get the latest record's ID
-    const lastAttendanceRecord = attendanceRecords.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
-    
-    if (!lastAttendanceRecord) {
-      throw new Error("No attendance record found.");
-    }
-
-    const payload = { id: lastAttendanceRecord.id, date: new Date().toISOString() };
-    const response = await clockOut(payload.id); 
-    console.log('Clock Out Response:', response); // TODO: Remove this line
-    setToastMessage('You have successfully clocked out!');
-    setToastStatus('Successful');
-    setOpenClockOutToast(true);
-  } catch (error) {
-    console.error('Clock Out Error:', error); 
-    setToastMessage('Failed to clock out. Please try again.');
-    setToastStatus('Error');
-    setOpenClockOutToast(true);
-  } 
-};
-
+  const { attendanceRecordTableData, modalsData, currentAttendanceRecordsSectionData } = useAttendanceRecordTable();
+  const { handleClockIn, handleClockOut, openToast, setOpenToast, toastMessage, toastStatus } = useClockInOut();
 
   const pageActions: TableAction[] = [
     { name: 'Clock In', onClick: handleClockIn },
@@ -120,12 +67,6 @@ const EmployeeAttendanceAndTimeTracking = () => {
       <Toast
         open={openToast}
         onClose={() => setOpenToast(false)}
-        status={toastStatus}
-        message={toastMessage}
-      />
-      <Toast
-        open={openClockOutToast}
-        onClose={() => setOpenClockOutToast(false)}
         status={toastStatus}
         message={toastMessage}
       />

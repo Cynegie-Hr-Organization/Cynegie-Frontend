@@ -82,7 +82,10 @@ const usePerformanceManagementPage = () => {
       onClick: () =>
         router.push(route.employee.performanceManagement.developmentPlan),
     },
-    // { name: 'Create Goals', onClick: () => {} },
+    {
+      name: 'Create Goals', onClick: () => 
+              router.push(route.employee.performanceManagement.createGoals),
+     },
   ];
 
   const performanceManagementPageData: PageProps = {
@@ -187,7 +190,8 @@ const usePerformanceManagementPage = () => {
         })) || [],
         fieldTypes: [FieldType.text, FieldType.text, FieldType.status],
         displayedFields: ['assessmentName', 'dueDate', 'status'],
-        statusMap: SAStatusMap,
+    statusMap: SAStatusMap,
+        fieldToReturnOnActionItemClick : 'id',
         fieldActionMap: {
           'in_progress': [
             {
@@ -199,8 +203,14 @@ const usePerformanceManagementPage = () => {
           'not_started': [
             {
               name: 'Start',
-              onClick: () =>
-                router.push(route.employee.performanceManagement.selfAssessment),
+              onDataReturned: async (id) => {
+                router.push(
+                  `${route.employee.performanceManagement.selfAssessment}/${id}`
+                );
+              },
+              onClick: () => {
+                
+              }
             },
           ],
           completed: [

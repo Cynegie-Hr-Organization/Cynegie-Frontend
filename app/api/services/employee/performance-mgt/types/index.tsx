@@ -78,3 +78,35 @@ export interface GoalResponse {
   page: number;
   limit: number;
 }
+
+export interface AssessmentById {
+  assessmentName: string;
+  type: string;
+  template: {
+    templateName: string;
+    instructions: string;
+    deleted: boolean;
+    createdBy: string;
+    questions: Array<{
+      question: string;
+      description: string;
+      responseCriteria: string;
+      options: string[];
+      allowComments: boolean;
+      createdAt: string;
+      updatedAt: string;
+      id: string;
+    }>;
+    company: string;
+    createdAt: string;
+    updatedAt: string;
+    id: string;
+  };
+  dueDate: string;
+  status: string;
+  deletedAt: string | null;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}

@@ -42,6 +42,7 @@ export type CardValueProps = {
   denominator?: number;
   isPercentage?: boolean;
   additionalInfo?: CardAdditionalInfo;
+  loading?: boolean;
 };
 
 export type CardLabelProps = {

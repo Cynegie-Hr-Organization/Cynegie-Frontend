@@ -164,7 +164,6 @@ export const getAllMyBenefitsRequest = async (
   sortOrder: string = "desc",
   page: number,
   limit: number,
-  status?: string,
   search?: string
 ): Promise<GetAllMyAppResponse> => {
   const session = await getServerSession(authOptions);
@@ -178,10 +177,24 @@ export const getAllMyBenefitsRequest = async (
       sortOrder,
       page,
       limit,
-      status,
       search,
     },
   });
 
   return response as GetAllMyAppResponse;
 };
+
+
+
+export const getAllBenefitsMetrics = async () => {
+  const session = await getServerSession(authOptions);
+
+  const response = await request("GET", `${baseUrl}/v1/benefits/summary`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  });
+  
+  return response;
+}

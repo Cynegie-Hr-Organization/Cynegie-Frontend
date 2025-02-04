@@ -254,7 +254,7 @@ export default function CreateJobForm({ setScreenInView }: CreateJobFormProps) {
             className="w-full md:w-auto px-4 md:px-20 py-2 text-base font-semibold bg-[#0035C3] text-white rounded-lg hover:bg-blue-600 focus:outline-none"
             onClick={handleContinueClick}
           >
-            Save Changes
+            Send
           </button>
         </div>
       </form>

@@ -26,7 +26,7 @@ interface AppRequestItem {
   id: string;
 }
 
-interface AppRequestsResponse {
+export interface AppRequestsResponse {
   status: number;
   message: string;
   data: {
@@ -50,10 +50,9 @@ export const getApps = async () => {
     },
   });
     
-    
   const apps = response?.data?.items.map((item: any) => ({
     label: item.appName, 
-    value: item.id, // Using app ID as value
+    value: item.id, 
   })) || [];
 
   return apps ;

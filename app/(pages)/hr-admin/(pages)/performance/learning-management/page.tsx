@@ -56,6 +56,7 @@ const PageHeader = ({
 
 const AssignCourseModal = ({ trigger }: { trigger: ReactNode }) => {
   const { employees } = useFetchEmployees();
+  console.log(employees);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -142,8 +143,8 @@ const AssignCourseModal = ({ trigger }: { trigger: ReactNode }) => {
         <AppMultipleSelect
           label="Employee Name"
           placeholder="Select Employee"
-          items={employees.map((emp: any) => ({
-            label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
+          items={employees?.map((emp: any) => ({
+            label: `${emp?.personalInfo?.firstName} ${emp?.personalInfo?.lastName}`,
             value: emp.id as string,
           }))}
           selectedValues={formData.employees ? [formData.employees] : []}

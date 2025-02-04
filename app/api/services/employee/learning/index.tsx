@@ -47,7 +47,6 @@ export const getAllAssignCourse = async (
   page: number,
   limit: number,
   search?: string,
-  status: string = "ACTIVE"
 ): Promise<GetAllAssignCourseResponse> => {
   const session = await getServerSession(authOptions);
 
@@ -60,7 +59,6 @@ export const getAllAssignCourse = async (
       sortOrder,
       page,
       limit,
-      status,
       search,
     },
   }) as Promise<GetAllAssignCourseResponse>;
@@ -71,7 +69,7 @@ export const getAllAssignCourse = async (
 export const completeCourse = async (id : any , status : any) => {
   const session = await getServerSession(authOptions);
 
-  const response = await request("POST", `${baseUrl}/v1/course-management/${id}/status`, {
+  const response = await request("PUT", `${baseUrl}/v1/course-management/${id}/status`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${session?.token}`,
@@ -90,6 +88,26 @@ export const fetchCourseById = async (id: any) => {
   const response = await request(
     "GET",
     `${baseUrl}/v1/course-management/${id}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.token}`,
+      },
+    },
+  );
+
+  return response;
+};
+
+
+
+
+export const getAllMetrics = async () => {
+  const session = await getServerSession(authOptions);
+
+  const response = await request(
+    "GET",
+    `${baseUrl}/v1/course-management/analytics`,
     {
       headers: {
         "Content-Type": "application/json",

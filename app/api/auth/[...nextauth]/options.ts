@@ -82,7 +82,9 @@ export const authOptions: AuthOptions = {
   providers: [CredentialsProvider(credentialsProviderOptions)],
   callbacks: {
     async jwt({ token, user }) {
-      if (user) {
+      if (user)
+      {
+        token.id = user.id || "";
         token.name = user.email || "";
         token.access = user.token.accessToken || "";
         token.refresh = user.token.refreshToken || "";
@@ -95,6 +97,7 @@ export const authOptions: AuthOptions = {
     },
     async session({ session, token }) {
       session.user = {
+        id: token.id as string,
         email: token.name as string,
         role: token.roles as string[],
         firstName: token.firstName as string,

@@ -20,7 +20,7 @@ const EmployeeProfile = () => {
         </Alert>
         <div className='flex flex-col items-center gap-2'>
           <Avatar src='' sx={{ width: '74px', height: '74px' }} />
-          <div className='card-title-small'>{userDetails?.name ?? ''}</div>
+          <div className='card-title-small'>{userDetails?.firstName ?? ''}</div>
         </div>
         <div className='card-title-small'>Bio Data</div>
         <Form {...formProps} />

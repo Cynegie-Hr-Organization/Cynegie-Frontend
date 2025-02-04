@@ -16,15 +16,15 @@ const useMyCoursesTable = () => {
 
   const { toast } = useToast();
 
-  const { data: courses, isLoading } = useQuery({
-    queryKey: ["assigned-courses"],
+  const { data: courses, refetch, isLoading } = useQuery({
+    queryKey: ["my-courses"],
     queryFn: async () => {
       const response = await getAllAssignCourse("desc", 1, 10);
       console.log(response);
       return response.data.items;
     },
     refetchOnWindowFocus: false,
-    staleTime: 60000,
+    staleTime: 30000,
   });
 
   const tableProps: TableProps = {
@@ -71,7 +71,10 @@ const useMyCoursesTable = () => {
         onDataReturned: async (id) => {
           try {
             const response = await completeCourse(id, "COMPLETED");
-            if (response.status === 200) {
+            console.log(response);
+            if (response.created !== "")
+            {
+              refetch();
               toast({
                 title: "Success!",
                 description: "Course status updated successfully.",

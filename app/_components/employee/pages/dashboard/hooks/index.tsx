@@ -10,6 +10,7 @@ import { icon, route } from '@/constants';
 import { useEffect, useState } from 'react';
 import { getUserDetails } from '@/utils/getUserDetails';
 import SvgIcon from '@/app/_components/icons/container';
+import useRequests from './useAllMetrics';
 
 const useEmployeeDashboardPage = () => {
   const router = useRouter();
@@ -17,6 +18,8 @@ const useEmployeeDashboardPage = () => {
     name: string;
     email: string;
   } | null>(null);
+
+  const { deviceRequests, appRequests, isDeviceLoading, isAppLoading } = useRequests();
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -95,17 +98,15 @@ const useEmployeeDashboardPage = () => {
         periodClick: () => router.push(route.employee.device.home),
         children: (
           <DetailGroup
+            loading={isDeviceLoading}
             details={[
-              { name: 'Device Type', value: 'Laptop' },
-              { name: 'Device Name', value: 'Macbook 2021' },
-              { name: 'Timeline', value: '21/Jun/2024 - 21/Dec/2024' },
-              { name: 'Status', value: 'Assigned' },
-              {
-                name: 'Details',
-                value: 'Device name HP Elitebook Processor......',
-              },
+              { name: 'Device Name', value: deviceRequests[0]?.deviceId.deviceName },
+              { name: 'Description', value: deviceRequests[0]?.deviceId.description },
+              { name: 'Location', value: deviceRequests[0]?.deviceId.location },
+              { name: 'Status', value: deviceRequests[0]?.status },
+              { name: 'Requested Date', value: new Date(deviceRequests[0]?.requestedDate).toLocaleDateString() },
             ]}
-          ></DetailGroup>
+          />
         ),
       },
       {
@@ -120,17 +121,14 @@ const useEmployeeDashboardPage = () => {
         periodClick: () => router.push(route.employee.appRequest.home),
         children: (
           <DetailGroup
+            loading={isAppLoading}
             details={[
-              { name: 'App Name', value: 'Figma' },
-              { name: 'App ID', value: '202201301610' },
-              { name: 'Timeline', value: '21/Jun/2024' },
-              { name: 'Status', value: 'Admin' },
-              {
-                name: 'Details',
-                value: 'Figma Update for version 1.0 is disab......',
-              },
+              { name: 'App Name', value: appRequests[0]?.appId.appName },
+              { name: 'App ID', value: appRequests[0]?.appId.id },
+              { name: 'Status', value: appRequests[0]?.status },
+              { name: 'Request Date', value: new Date(appRequests[0]?.requestDate).toLocaleDateString() },
             ]}
-          ></DetailGroup>
+          />
         ),
       },
       {

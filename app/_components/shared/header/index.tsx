@@ -76,7 +76,7 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
     setCurrentRole(role);
 
     // Navigate directly to the role's respective dashboard path
-    const redirectPath = rolesMap[role];
+    const redirectPath = rolesMap[role.toLowerCase()];
     if (redirectPath) {
       router.push(redirectPath);
     } else {

@@ -107,3 +107,32 @@ export const getAllMySelfAssessment = async (
 
   return response as GetAllMySelfAssessmentResponse;
 };
+
+
+export const getAssessmentById = async (id: any) => {
+  const session = await getServerSession(authOptions);
+
+  const response = await request("GET", `${baseUrl}/v1/assessments/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  });
+
+  return response;
+};
+
+
+export const answerAssessmentById = async (data : any) => {
+  const session = await getServerSession(authOptions);
+
+  const response = await request("POST", `${baseUrl}/v1/answers`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: data,
+  });
+
+  return response;
+};

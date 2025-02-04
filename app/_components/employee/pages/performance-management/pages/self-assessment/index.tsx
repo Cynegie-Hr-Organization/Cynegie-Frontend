@@ -4,12 +4,61 @@ import Form from "@/app/_components/shared/form";
 import Page from "@/app/_components/shared/page";
 import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import { route } from "@/constants";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useMutation } from '@tanstack/react-query';
+import { AssessmentById } from "@/app/api/services/employee/performance-mgt/types";
+import { answerAssessmentById, getAssessmentById } from "@/app/api/services/employee/performance-mgt";
 
 const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
   const router = useRouter();
+  const { id } = useParams();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [assessment, setAssessment] = useState<AssessmentById | null>(null);
+  const [response, setResponse] = useState<string | number | undefined>("");
+  const [ questionId, setQuestionId ] = useState<string>("");
+
+  const fetchAssessmentMutation = useMutation({
+    mutationFn: () => getAssessmentById(id),
+    onSuccess: (response) => {
+      setAssessment(response.data);
+      setQuestionId(response.data.template.questions[0].id);
+      console.log('Assessment fetched successfully:', response);
+    },
+    onError: (error) => {
+      console.error('Failed to fetch assessment:', error);
+    },
+  });
+
+  useEffect(() => {
+    fetchAssessmentMutation.mutate();
+  }, [id]);
+
+  const answerAssessmentMutation = useMutation({
+    mutationFn: (data: any) => answerAssessmentById(data),
+    onSuccess: (data) => {
+      console.log('Assessment answered successfully:', data);
+      setShowSuccessModal(true);
+    },
+    onError: (error) => {
+      console.error('Failed to answer assessment:', error);
+    },
+  });
+
+
+  const handleFormSubmit = () => {
+    const data = {
+      question: questionId,
+      response: [response],
+      allowComments: false, 
+      comment: "", 
+      responseCriteria: "MULTI_SELECT", 
+    };
+
+    console.log('Data:', data);
+    answerAssessmentMutation.mutate(data);
+  };
+
   return (
     <Page
       title="Self Assessment"
@@ -22,54 +71,14 @@ const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
       <Form
         isCard
         gridSpacing={4}
-        inputFields={[
-          {
-            label:
-              "How is your understanding of your job responsiblities and requirements?",
-            type: "message",
-          },
-          {
-            label: "Rating",
-            type: "select",
-            placeholder: "Select",
-            options: [
-              { label: "Excellent", value: 2 },
-              { label: "Good", value: 1 },
-              { label: "Bad", value: 0 },
-            ],
-            selectValControlledFromOutside: false,
-          },
-          {
-            label: "How do you assess the quality of your work output?",
-            type: "message",
-          },
-          {
-            label: "Rating",
-            type: "select",
-            placeholder: "Select",
-            options: [
-              { label: "Excellent", value: 2 },
-              { label: "Good", value: 1 },
-              { label: "Bad", value: 0 },
-            ],
-            selectValControlledFromOutside: false,
-          },
-          {
-            label: "How do you effectively communicate with your team?",
-            type: "message",
-          },
-          {
-            label: "Rating",
-            type: "select",
-            placeholder: "Select",
-            options: [
-              { label: "Excellent", value: 2 },
-              { label: "Good", value: 1 },
-              { label: "Bad", value: 0 },
-            ],
-            selectValControlledFromOutside: false,
-          },
-        ]}
+        inputFields={
+          assessment?.template.questions.map((question) => ({
+            label: question.question,
+            type: "text", 
+            value: response,
+            setValue: setResponse,
+          })) || []
+        }
         buttonGroup={{
           leftButton: {
             type: ButtonType.outlined,
@@ -78,7 +87,8 @@ const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
           rightButton: {
             type: ButtonType.contained,
             text: "Submit",
-            onClick: () => setShowSuccessModal(true),
+                        onClick: handleFormSubmit,
+
           },
           position: "end",
         }}

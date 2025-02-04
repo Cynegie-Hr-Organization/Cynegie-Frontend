@@ -7,6 +7,7 @@ import CourseDetails from "./item";
 import { ButtonGroupProps } from "@/app/_components/shared/button-group/types";
 import ButtonGroup from "@/app/_components/shared/button-group";
 import { fetchCourseById } from "@/app/api/services/employee/learning";
+import { formatDate } from "@/lib/utils";
 
 type EmployeeLearningAndDevelopmentCourseDetailsProps = {
   heading?: string;
@@ -29,7 +30,8 @@ const EmployeeLearningAndDevelopmentCourseDetails: React.FC<
       const fetchDetails = async () => {
         try {
           const response = await fetchCourseById(id);
-          setCourseDetails(response.data); // Update with your API's response structure
+          console.log("Course details fetched successfully:", response);
+          setCourseDetails(response); // Update with your API's response structure
         } catch (error) {
           console.error("Failed to fetch course details:", error);
         } finally {
@@ -58,8 +60,8 @@ const EmployeeLearningAndDevelopmentCourseDetails: React.FC<
             list={courseDetails.courseSource}
             sections={courseDetails.sections || []} // Assuming `sections` can be null
             duration={{
-              start: courseDetails.startDate,
-              end: courseDetails.endDate,
+              start: formatDate(courseDetails.startDate),
+              end: formatDate(courseDetails.endDate),
             }}
             sectionType="Module"
           />

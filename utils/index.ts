@@ -102,9 +102,13 @@ export function getHumanReadableDateRange(
 }
 
 export const getRedirectPath = (roles: string[]): string | null => {
-  const primaryRole = roles.includes(UserRole.EMPLOYEE)
+  // Convert roles to lowercase
+  const normalizedRoles = roles.map(role => role.toLowerCase());
+
+  // Find the primary role
+  const primaryRole = normalizedRoles.includes(UserRole.EMPLOYEE)
     ? UserRole.EMPLOYEE
-    : roles.find((role) => rolesMap[role]) || null;
+    : normalizedRoles.find((role) => rolesMap[role]) || null;
 
   return primaryRole ? rolesMap[primaryRole] : null;
 };

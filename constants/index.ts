@@ -200,6 +200,7 @@ export const CourseStatusMap: StatusMap = {
   CANCELLED: "warning",
   DRAFT: "info",
   COMPLETED: "success",
+  ACTIVE : "success",
   Read: "warning",
   Admin: "info",
 };
@@ -311,6 +312,8 @@ export const route = {
       continuousFeedback: `${basePath.employee}${basePath.performanceManagement}continuous-feedback`,
       developmentPlan: `${basePath.employee}${basePath.performanceManagement}development-plan`,
       viewDevelopmentPlan: `${basePath.employee}${basePath.performanceManagement}view-development-plan`,
+      createGoals: `${basePath.employee}${basePath.performanceManagement}create-goal`,
+
     },
     learningDevelopment: {
       home: `${basePath.employee}${basePath.learningDevelopment}`,

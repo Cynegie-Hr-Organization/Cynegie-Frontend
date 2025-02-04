@@ -4,6 +4,7 @@ import { FieldType, TableProps } from "@/app/_components/shared/table/types";
 import {
   deleteLeaveRequestById,
   fetchLeaveRequestById,
+  getAllLeaveMetrics,
   getAllLeaveRequest,
   getLeaveType,
   requestLeave,
@@ -144,6 +145,15 @@ const useLeaveManagementPage = () => {
     }
   };
 
+   const {
+    data: leaveMetrics,
+    // isLoading: isMetricsLoading,
+  } = useQuery({
+    queryKey: ["leave-metrics"],
+    queryFn: getAllLeaveMetrics,
+    staleTime: 60000, // Cache for 1 minute
+  });
+
   const pageData: PageProps = {
     title: "Leave Management",
     subtitle: "Access your Leave Management",
@@ -156,32 +166,47 @@ const useLeaveManagementPage = () => {
     rightButtonSm: true,
   };
 
-  const chartsData: LeaveManagementChartProps[] = [
-    {
-      title: "Maternity/Paternity Leave",
-      usedDays: 60,
-      totalDays: 60,
-      usedDaysColor: color.warning.dark,
-    },
-    {
-      title: "Annual Leave",
-      usedDays: 0,
-      totalDays: 20,
-      usedDaysColor: color.success.dark,
-    },
-    {
-      title: "Sick Leave",
-      usedDays: 2,
-      totalDays: 10,
-      usedDaysColor: color.info.dark,
-    },
-    {
-      title: "Exam Leave",
-      usedDays: 1,
-      totalDays: 10,
-      usedDaysColor: color.error.dark,
-    },
+  // const chartsData: LeaveManagementChartProps[] = [
+  //   {
+  //     title: "Maternity/Paternity Leave",
+  //     usedDays: 60,
+  //     totalDays: 60,
+  //     usedDaysColor: color.warning.dark,
+  //   },
+  //   {
+  //     title: "Annual Leave",
+  //     usedDays: 0,
+  //     totalDays: 20,
+  //     usedDaysColor: color.success.dark,
+  //   },
+  //   {
+  //     title: "Sick Leave",
+  //     usedDays: 2,
+  //     totalDays: 10,
+  //     usedDaysColor: color.info.dark,
+  //   },
+  //   {
+  //     title: "Exam Leave",
+  //     usedDays: 1,
+  //     totalDays: 10,
+  //     usedDaysColor: color.error.dark,
+  //   },
+  // ];
+
+
+const colors = [
+    color.success.dark,
+    color.warning.dark,
+    color.info.dark,
+    color.error.dark,
   ];
+
+  const chartsData: LeaveManagementChartProps[] = leaveMetrics?.data.map((metric: any, index: number) => ({
+    title: metric.leaveType,
+    usedDays: metric.daysUsed,
+    totalDays: metric.daysUsed + metric.daysLeft,
+    usedDaysColor: colors[index % colors.length], // Use color based on position
+  })) || [];
 
   const tableData: TableProps = {
     title: "Leave History",

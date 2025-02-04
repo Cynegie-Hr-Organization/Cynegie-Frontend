@@ -4,71 +4,95 @@ import {
   ButtonType,
 } from "@/app/_components/shared/page/heading/types";
 import { PageProps } from "@/app/_components/shared/page/types";
-import { getUserDetails } from "@/utils/getUserDetails";
+import { getProfile, updateProfile } from "@/app/api/services/employee/profile";
 import { useEffect, useState } from "react";
 import { useMutation } from '@tanstack/react-query';
-import { updateProfile } from '@/app/api/services/employee/profile';
+import { toast } from "react-toastify";
 
 const useEmployeeProfilePage = () => {
   const [userDetails, setUserDetails] = useState<{
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
+    phoneNumber: string;
+    dateOfBirth: string;
+    country: string;
+    gender: string;
+    state: string;
+    city: string;
+    streetAddress: string;
+    postalCode: string;
+    nationality: string;
+    maritalStatus: string;
+    idUpload: string;
+    passport: string;
   } | null>(null);
 
   const [firstName, setFirstName] = useState<string | number | undefined>("");
-  const [middleName, setMiddleName] = useState<string | number | undefined>("");
   const [lastName, setLastName] = useState<string | number | undefined>("");
   const [email, setEmail] = useState<string | number | undefined>("");
   const [phoneNumber, setPhoneNumber] = useState<string | number | undefined>("");
   const [dateOfBirth, setDateOfBirth] = useState<string | number | undefined>("");
   const [state, setState] = useState<string | number | undefined>("");
-  const [jobTitle, setJobTitle] = useState<string | number | undefined>("");
-  const [nationality, setNationality] = useState<string | number | undefined>("Nigerian");
-  const [department, setDepartment] = useState<string | number | undefined>("");
-
-  useEffect(() => {
-    const fetchDetails = async () => {
-      const details = await getUserDetails();
+  const [nationality, setNationality] = useState<string | number | undefined>("");
+  const [hireDate , setHireDate] = useState<string | number | undefined>("");
+  
+  const fetchProfileMutation = useMutation({
+    mutationFn: getProfile,
+    onSuccess: (response) => {
+      const details = response?.employee;
+      console.log(details);
       if (details) {
-        setUserDetails(details);
-        setFirstName(details.name.split(" ")[0]);
-        setLastName(details.name.split(" ")[1]);
-        setEmail(details.email);
+        setUserDetails(details.personalInfo);
+        setFirstName(details.personalInfo.firstName);
+        setLastName(details.personalInfo.lastName);
+        setEmail(details.personalInfo.email);
+        setPhoneNumber(details.personalInfo.phoneNumber);
+        setDateOfBirth(details.personalInfo.dateOfBirth);
+        setState(details.personalInfo.state);
+        setNationality(details.personalInfo.nationality);
+        setState(details.personalInfo.state);
+        setHireDate(details.employmentInformation.hireDate);
       }
-    };
-    fetchDetails();
-  }, []);
-
-  const mutation = useMutation({
-    mutationFn: (data: any) => updateProfile(data),
-    onSuccess: (data) => {
-      console.log('Profile updated successfully:', data);
+      console.log('Profile fetched successfully:', response);
     },
     onError: (error) => {
-      console.error('Profile update failed:', error);
+      console.error('Failed to fetch profile:', error);
     },
   });
 
-  const handleFormSubmit = (formData: any) => {
-    const data = {
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      dateOfBirth: formData.dateOfBirth,
-      gender: formData.gender,
-      maritalStatus: formData.maritalStatus,
-      phoneNumber: formData.phoneNumber,
-      email: formData.email,
-      country: formData.country,
-      state: formData.state,
-      city: formData.city,
-      streetAddress: formData.streetAddress,
-      postalCode: formData.postalCode,
-      nationality: formData.nationality,
-      idUpload: formData.idUpload,
-      passport: formData.passport,
-    };
+  useEffect(() => {
+    fetchProfileMutation.mutate();
+  }, []);
 
-    mutation.mutate(data);
+  const updateProfileMutation = useMutation({
+    mutationFn: (data: any) => updateProfile(data),
+    onSuccess: (data) => {
+      console.log(data);
+      toast.success("Profile updated successfully!");
+    },
+    onError: (error) => {
+      console.error('Profile update failed:', error);
+            toast.error("Profile update failed. Please try again.");
+
+    },
+  });
+
+  const handleFormSubmit = () => {
+    const data = {
+      firstName,
+      lastName,
+      dateOfBirth,
+      phoneNumber,
+      state,
+      city: "", // Add city state if needed
+      streetAddress: "", // Add streetAddress state if needed
+      postalCode: "", // Add postalCode state if needed
+      nationality,
+        };
+
+    console.log('Data:', data);
+    updateProfileMutation.mutate(data);
   };
 
   const pageProps: PageProps = {
@@ -86,12 +110,6 @@ const useEmployeeProfilePage = () => {
         setValue: setFirstName,
       },
       {
-        label: "Middle Name",
-        type: "text",
-        value: middleName,
-        setValue: setMiddleName,
-      },
-      {
         label: "Last Name",
         type: "text",
         value: lastName,
@@ -102,6 +120,7 @@ const useEmployeeProfilePage = () => {
         type: "text",
         value: email,
         setValue: setEmail,
+        disabled : true,
       },
       {
         label: "Phone Number",
@@ -117,17 +136,9 @@ const useEmployeeProfilePage = () => {
       },
       {
         label: "State",
-        type: "select",
-        placeholder: "Select",
+        type: "text",
         value: state,
         setValue: setState,
-      },
-      {
-        label: "Job Title",
-        type: "select",
-        placeholder: "Select",
-        value: jobTitle,
-        setValue: setJobTitle,
       },
       {
         label: "Nationality",
@@ -136,20 +147,21 @@ const useEmployeeProfilePage = () => {
         setValue: setNationality,
       },
       {
-        label: "Department",
-        type: "select",
-        placeholder: "Select",
-        value: department,
-        setValue: setDepartment,
-      },
+        label: "Employee Start date",
+        type: "date",
+        value: hireDate,
+        disabled : true,
+        
+      }
+      
     ],
   };
 
   const editButtonProps: ButtonProps = {
     type: ButtonType.contained,
-    text: "Edit",
+    text: updateProfileMutation.isPending ? "Updating..." : "Edit",
     onClick: handleFormSubmit,
-
+    
   };
 
   return { pageProps, formProps, editButtonProps, userDetails };
