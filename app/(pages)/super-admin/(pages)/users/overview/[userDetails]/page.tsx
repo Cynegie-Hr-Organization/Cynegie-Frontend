@@ -1,14 +1,15 @@
 'use client'
 
+import AppTabs from "@/app/_components/shared/tabs";
+import { useUser } from "@/app/_core/use-cases/superadmin/useUser";
+import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
+import { IoIosArrowBack } from "react-icons/io";
 import { Compensation } from "./components/compensation";
 import { Documents } from "./components/documents";
 import { EmploymentInformation } from "./components/employment-information";
 import { EquipmentAccess } from "./components/equipment-access";
-import PersonalInformation  from "./components/personal-informations";
-import AppTabs from "@/app/_components/shared/tabs";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { IoIosArrowBack } from "react-icons/io";
+import PersonalInformation from "./components/personal-informations";
 
 
 
@@ -17,8 +18,12 @@ import { IoIosArrowBack } from "react-icons/io";
 type DetailsTabLabel = 'personal-information' | 'employment-information' | 'compensation' | 'documents' | 'equipments-access';
 
 const UserDetailsPage = () => {
-  const router = useRouter();
   const [activeTab, setActiveTab] = useState<DetailsTabLabel>('personal-information');
+  const router = useRouter();
+  const id = useParams().userDetails as string
+  const { data, isLoading } = useUser({ id })
+  const { data: userData } = data ?? {};
+
 
   const tabs = [
     {
@@ -44,15 +49,14 @@ const UserDetailsPage = () => {
   ];
 
   return (
-    <div className="space-y-6 py-6">
-      <div className="space-y-6">
+    <div className="space-y-6 pb-6">
+      <div className="space-y-4">
         <button className="text-xs flex items-center gap-1 text-gray-500" onClick={() => router.back()}>
           <IoIosArrowBack size={20} />
           Back to User Management
         </button>
         <h3 className="text-base font-bold text-gray-900">View User Details</h3>
       </div>
-
 
 
       <div className="space-y-4 -mx-4 lg:mx-auto">
@@ -63,11 +67,11 @@ const UserDetailsPage = () => {
 
         <div className="common-card mx-4 md:mx-0">
           <div className="p-4 border border-gray-200 rounded-xl">
-            {activeTab === 'personal-information' && <PersonalInformation />}
-            {activeTab === 'employment-information' && <EmploymentInformation />}
-            {activeTab === 'compensation' && <Compensation />}
-            {activeTab === 'documents' && <Documents />}
-            {activeTab === 'equipments-access' && <EquipmentAccess />}
+            {activeTab === 'personal-information' && <PersonalInformation userData={userData} isLoading={isLoading} />}
+            {activeTab === 'employment-information' && <EmploymentInformation userData={userData} />}
+            {activeTab === 'compensation' && <Compensation userData={userData} />}
+            {activeTab === 'documents' && <Documents userData={userData} />}
+            {activeTab === 'equipments-access' && <EquipmentAccess userData={userData} />}
           </div>
         </div>
       </div>

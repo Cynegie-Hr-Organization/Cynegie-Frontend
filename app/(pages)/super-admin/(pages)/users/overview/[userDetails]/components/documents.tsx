@@ -1,7 +1,8 @@
+import { ICompanyUser } from "@/app/_core/interfaces/user";
 import DetailBlock from "./details-block";
 
 
-export const Documents = () => {
+export const Documents = ({ userData }: { userData?: ICompanyUser }) => {
   return (
     <div className="space-y-5">
       <h3 className="text-base font-semibold text-primary">Documents</h3>

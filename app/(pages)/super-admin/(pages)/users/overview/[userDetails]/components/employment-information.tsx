@@ -1,6 +1,7 @@
-import DetailBlock from "@/app/(pages)/super-admin/(pages)/users/overview/[user-details]/components/details-block"
+import DetailBlock from "@/app/(pages)/super-admin/(pages)/users/overview/[userDetails]/components/details-block"
+import { ICompanyUser } from "@/app/_core/interfaces/user"
 
-export const EmploymentInformation = () => {
+export const EmploymentInformation = ({ userData }: { userData?: ICompanyUser }) => {
   return (
     <div>
       <div className="space-y-5">

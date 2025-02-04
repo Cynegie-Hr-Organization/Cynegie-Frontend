@@ -3,8 +3,12 @@
 import { DeleteSvg } from "@/app/_components/icons/custom-icons";
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
+import EmptyTable from "@/app/_components/shared/empty-table";
 import { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
+import TableSkeleton from "@/app/_components/shared/skelentons/table";
+import { ICompanyUser } from "@/app/_core/interfaces/user";
+import { useAllUsers } from "@/app/_core/use-cases/superadmin/useUser";
 import { AppModal } from "@/components/drawer/modal";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import Image from "next/image";
@@ -19,6 +23,8 @@ import { RiSearchLine } from "react-icons/ri";
 
 
 const UsersOverviewTable = () => {
+  const { data, isLoading } = useAllUsers()
+  const { data: users } = data ?? {};
 
   const tableHeader = [
     "User ID",
@@ -30,11 +36,11 @@ const UsersOverviewTable = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Active":
+      case "active":
         return "text-green-700 bg-green-50";
-      case "Pending":
+      case "pending":
         return "text-amber-700 bg-amber-50";
-      case "Inactive":
+      case "inactive":
         return "text-red-700 bg-red-50";
       default:
         return "text-gray-700";
@@ -42,130 +48,121 @@ const UsersOverviewTable = () => {
   };
 
 
-  const tableData = [
-    {
-      userId: "1234567890",
-      name: "Ashima Olu",
-      role: "Product Manager",
-      permissions: "Full Access",
-      image: "/image/persons/person-1.png",
-      status: "Active"
-    },
-    {
-      userId: "1234567890",
-      name: "Perfect Sam",
-      role: "IT Admin",
-      permissions: "Limited Access",
-      image: "/image/persons/person-2.png",
-      status: "Pending",
-    }
-  ];
+  const tableData = users;
 
   return (
     <div className="common-card overflow-x-scroll space-y-4">
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
-        <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
-          <RiSearchLine className="text-gray-400" />
-          <input type="text" placeholder="Search here..." className="w-full h-9 px-2 outline-none" />
-        </div>
-
-        <AppDropdownMenu
-          trigger={
-            <button type="button" className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
-              <LuListFilter /> Filter
-            </button>
-          }
-          menuItems={
-            <div className="p-4 space-y-10">
-              <div className="space-y-4">
-                <AppSelect listItems={[
-                  { label: "High", value: "high" },
-                  { label: "Medium", value: "medium" },
-                  { label: "Low", value: "low" },
-                ]}
-                  label="Date"
-                  placeholder="High"
-                  onChange={function (value: string): void {
-                    console.log(value)
-                  }} />
-
-                <AppSelect
-                  listItems={[
-                    { label: "Completed", value: "completed" },
-                    { label: "In Progress", value: "in-progress" },
-                    { label: "Not Started", value: "not-started" },
-                  ]}
-                  label="Category"
-                  placeholder="Revenue"
-                  onChange={function (value: string): void {
-                    console.log(value)
-                  }} />
-                <AppSelect
-                  listItems={[
-                    { label: "Completed", value: "completed" },
-                    { label: "In Progress", value: "in-progress" },
-                    { label: "Not Started", value: "not-started" },
-                  ]}
-                  label="Status"
-                  placeholder="Completed"
-                  onChange={function (value: string): void {
-                    console.log(value)
-                  }} />
-              </div>
-
-              <div className="flex items-center justify-between gap-4">
-                <AppButton label="Reset" className="btn-secondary w-[90px]" />
-                <AppButton label="Filter" className="btn-primary w-[90px]" />
-              </div>
+      {isLoading ? (
+        <TableSkeleton />
+      ) : (
+        <>
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
+            <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
+              <RiSearchLine className="text-gray-400" />
+              <input type="text" placeholder="Search here..." className="w-full h-9 px-2 outline-none" />
             </div>
-          } />
-      </div>
 
-      <div className='-mx-5 mt-4'>
-        <table className='w-full border-collapse'>
-          <thead className='bg-[#F7F9FC]'>
-            <tr>
-              {tableHeader.map((header, idx) => (
-                <th key={idx} className='px-4 py-3 text-left'>{header}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {tableData?.map((data, idx) => {
-              return (
-                <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
-                  <td className='px-4 py-4'>
-                    <p className='text-sm'>{data?.userId}</p>
-                  </td>
-                  <td className='px-4 py-4'>
-                    <p className='text-sm'>{data?.name}</p>
-                  </td>
-                  <td className='px-4 py-4'>
-                    <div className="flex items-center gap-x-2">
-                      <div className="w-8 h-8 overflow-hidden rounded-full">
-                        <Image
-                          src={data?.image}
-                          alt={data?.name}
-                          width={30}
-                          height={30}
-                          className="rounded-full w-auto h-auto object-cover"
-                        />
-                      </div>
-                      <p className='text-sm'>{data?.role}</p>
-                    </div>
-                  </td>
-                  <td className='px-4 py-4'>
-                    <p className={`text-xs font-semibold ${getStatusColor(data?.status)} rounded-full px-2 py-1 w-fit text-nowrap`}>{data?.status}</p>
-                  </td>
-                  <td className='px-4 py-4'>
-                    <PopoverMenu />
-                  </td>
+            <AppDropdownMenu
+              trigger={
+                <button type="button" className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
+                  <LuListFilter /> Filter
+                </button>
+              }
+              menuItems={
+                <div className="p-4 space-y-10">
+                  <div className="space-y-4">
+                    <AppSelect listItems={[
+                      { label: "High", value: "high" },
+                      { label: "Medium", value: "medium" },
+                      { label: "Low", value: "low" },
+                    ]}
+                      label="Date"
+                      placeholder="High"
+                      onChange={function (value: string): void {
+                        console.log(value)
+                      }} />
+
+                    <AppSelect
+                      listItems={[
+                        { label: "Completed", value: "completed" },
+                        { label: "In Progress", value: "in-progress" },
+                        { label: "Not Started", value: "not-started" },
+                      ]}
+                      label="Category"
+                      placeholder="Revenue"
+                      onChange={function (value: string): void {
+                        console.log(value)
+                      }} />
+                    <AppSelect
+                      listItems={[
+                        { label: "Completed", value: "completed" },
+                        { label: "In Progress", value: "in-progress" },
+                        { label: "Not Started", value: "not-started" },
+                      ]}
+                      label="Status"
+                      placeholder="Completed"
+                      onChange={function (value: string): void {
+                        console.log(value)
+                      }} />
+                  </div>
+
+                  <div className="flex items-center justify-between gap-4">
+                    <AppButton label="Reset" className="btn-secondary w-[90px]" />
+                    <AppButton label="Filter" className="btn-primary w-[90px]" />
+                  </div>
+                </div>
+              } />
+          </div>
+
+          <div className='-mx-5 mt-4'>
+            <table className='w-full border-collapse'>
+              <thead className='bg-[#F7F9FC]'>
+                <tr>
+                  {tableHeader.map((header, idx) => (
+                    <th key={idx} className='px-4 py-3 text-left'>{header}</th>
+                  ))}
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+              </thead>
+              <tbody>
+                {(tableData && tableData.length > 0) ? (tableData?.map((user, idx) => {
+                  return (
+                    <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
+                      <td className='px-4 py-4'>
+                        <p className='text-sm'>{user?.id}</p>
+                      </td>
+                      <td className='px-4 py-4 capitalize'>
+                        <p className='text-sm'>{user?.firstName ?? 'NIL'} {user?.lastName ?? 'NIL'}</p>
+                      </td>
+                      <td className='px-4 py-4'>
+                        <div className="flex items-center gap-x-2">
+                          <div className="w-8 h-8 overflow-hidden rounded-full">
+                            <Image
+                              src={'/images/avatars/avatar-1.png'}
+                              alt={`${user?.firstName ?? 'unknown'}, ${user?.lastName ?? ''}`}
+                              width={30}
+                              height={30}
+                              className="rounded-full w-auto h-auto object-cover"
+                            />
+                          </div>
+                          <p className='text-sm'>{user?.role ?? 'NIL'}</p>
+                        </div>
+                      </td>
+                      <td className='px-4 py-4'>
+                        <p className={`text-xs font-semibold ${getStatusColor(user?.status)} rounded-full px-2 py-1 w-fit text-nowrap`}>{user?.status}</p>
+                      </td>
+                      <td className='px-4 py-4'>
+                        <PopoverMenu user={user} />
+                      </td>
+                    </tr>
+                  );
+                })) : (
+                  <EmptyTable message="No users found" />
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
     </div>
   )
 }
@@ -175,13 +172,9 @@ const UsersOverviewTable = () => {
 
 
 
-function PopoverMenu() {
+function PopoverMenu({ user }: { user?: ICompanyUser }) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-
-  const data = {
-    id: "1234567890"
-  }
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -192,7 +185,7 @@ function PopoverMenu() {
       </PopoverTrigger>
 
       <PopoverContent className='w-40 p-2 bg-white cursor-pointer rounded-lg flex flex-col items-start text-[#475367]'>
-        <button className="hover:bg-gray-100 w-full text-left p-2 rounded-md" onClick={() => router.push(`/super-admin/users/overview/${data?.id}`)}>View User Details</button>
+        <button className="hover:bg-gray-100 w-full text-left p-2 rounded-md" onClick={() => router.push(`/super-admin/users/overview/${user?.id}`)}>View User Details</button>
         <DeleteModal trigger={<button className="hover:bg-gray-100 w-full text-left p-2 rounded-md text-red-500">Delete User</button>} />
       </PopoverContent>
     </Popover>
