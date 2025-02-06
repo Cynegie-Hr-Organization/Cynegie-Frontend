@@ -153,6 +153,16 @@ export interface PaginatedResponse4<T> {
   };
 }
 
+export interface PaginatedResponse5<T> {
+  data: T[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
+
 export interface FetchJob {
   status: number;
   message: string;
@@ -542,3 +552,85 @@ export interface PayrollSummary {
     processed: number;
   };
 }
+
+export type Role = {
+  _id: string;
+  name: string;
+  description: string;
+  isActive: boolean;
+  permissions: string[];
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+};
+
+export type AddEmployeePayload = {
+  employmentInformation: {
+    jobTitle: string;
+    department: string;
+    manager: string;
+    employmentType: "full_time" | "part_time" | "contract" | "internship";
+    employmentStatus: "active" | "inactive" | "terminated";
+    workLocation: string;
+    workSchedule: "9_to_5" | "shift" | "flexible";
+    probationPeriod: string;
+    contractEndDate: string;
+    staffId: string;
+    workEmail: string;
+    hireDate: string;
+    jobDescription: string;
+  };
+  personalInfo: {
+    firstName: string;
+    middleName?: string;
+    lastName: string;
+    dateOfBirth: string;
+    gender: "male" | "female" | "other";
+    maritalStatus: "single" | "married" | "divorced" | "widowed";
+    phoneNumber: string;
+    email: string;
+    country: string;
+    state: string;
+    city: string;
+    streetAddress: string;
+    postalCode: string;
+    nationality: string;
+  };
+  compensation: {
+    baseSalary: number;
+    salaryFrequency: "monthly" | "weekly" | "biweekly" | "yearly";
+    overtime: "time_and_half" | "double_time" | "none";
+    taxFilingStatus: "active" | "inactive";
+    paymentMethod: "bank_transfer" | "check" | "cash";
+    bankName: string;
+    bankAccountNo: string;
+    effectiveDateOfCompensation: string;
+    bonusStructure?: string;
+    commission: number;
+    stockOptions: number;
+    payGrade: string;
+    taxIdentificationNumber: string;
+    allowance: { [x: string]: string | number }[];
+    deduction: { [x: string]: string | number }[];
+  };
+  nextOfKin: {
+    firstName: string;
+    lastName: string;
+    gender: "male" | "female" | "other";
+    relationship: string;
+    phoneNumber: string;
+    email: string;
+  };
+  documents: {
+    documentName: string;
+    documentUrl: string;
+  }[];
+  accessRights: {
+    devices: string[];
+    permissions: {
+      tool: string;
+      id: string;
+    }[];
+  }[];
+};

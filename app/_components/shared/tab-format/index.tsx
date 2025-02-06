@@ -1,12 +1,19 @@
-import { Tab } from '@mui/material';
-import React, { useState } from 'react';
-import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { TabFormatProps } from './types';
-import { ButtonType } from '../page/heading/types';
-import Button from '../button-group/button';
-import ButtonGroup from '../button-group';
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { Tab } from "@mui/material";
+import React, { useState } from "react";
+import ButtonGroup from "../button-group";
+import Button from "../button-group/button";
+import { ButtonType } from "../page/heading/types";
+import { TabFormatProps } from "./types";
 
-const TabFormat: React.FC<TabFormatProps> = ({ tabs, type, actionButton }) => {
+const TabFormat: React.FC<TabFormatProps> = ({
+  tabs,
+  type,
+  actionButton,
+  customTabValue,
+  customHandleChange,
+  hasButtons,
+}) => {
   const [value, setValue] = useState(0);
   const handleChange = (event?: React.SyntheticEvent, newValue?: number) => {
     event?.preventDefault();
@@ -19,19 +26,19 @@ const TabFormat: React.FC<TabFormatProps> = ({ tabs, type, actionButton }) => {
   }));
 
   const popoverAction = {
-    name: actionButton?.text ?? '',
+    name: actionButton?.text ?? "",
     onClick: actionButton?.onClick ?? (() => {}),
   };
 
   return (
-    <div className='w-full'>
-      <TabContext value={value}>
-        {type !== 'button' && (
-          <TabList onChange={handleChange}>
+    <div className="w-full">
+      <TabContext value={customTabValue ?? value}>
+        {type !== "button" && (
+          <TabList onChange={customHandleChange ?? handleChange}>
             {tabs?.map((tab, index) => (
               <Tab
-                className='!normal-case'
-                sx={{ borderBottom: 1, borderColor: 'divider' }}
+                className="!normal-case"
+                sx={{ borderBottom: 1, borderColor: "divider" }}
                 key={index}
                 label={tab.name}
                 value={index}
@@ -39,10 +46,10 @@ const TabFormat: React.FC<TabFormatProps> = ({ tabs, type, actionButton }) => {
             ))}
           </TabList>
         )}
-        {type === 'button' && (
+        {type === "button" && (
           <>
-            <div className='hidden md:flex md:items-center'>
-              <div className='flex flex-grow gap-6'>
+            <div className="hidden md:flex md:items-center">
+              <div className="flex flex-grow gap-6">
                 {tabs?.map((tab, index) => (
                   <Button
                     key={index}
@@ -58,7 +65,7 @@ const TabFormat: React.FC<TabFormatProps> = ({ tabs, type, actionButton }) => {
               </div>
               {actionButton && <Button {...actionButton} />}
             </div>
-            <div className='block md:hidden'>
+            <div className="block md:hidden">
               <Button
                 type={ButtonType.actions}
                 text={tabs?.[value].name}
@@ -71,7 +78,7 @@ const TabFormat: React.FC<TabFormatProps> = ({ tabs, type, actionButton }) => {
             </div>
           </>
         )}
-        <div className='mx-[-25]'>
+        <div className="mx-[-25]">
           {tabs?.map((tab, index) => (
             <TabPanel key={index} value={index}>
               {tab.component}
@@ -79,15 +86,15 @@ const TabFormat: React.FC<TabFormatProps> = ({ tabs, type, actionButton }) => {
           ))}
         </div>
       </TabContext>
-      {type === 'multi-step-form' && (
-        <div className='mt-4'>
+      {type === "multi-step-form" && hasButtons && (
+        <div className="mt-4">
           <ButtonGroup
             leftButton={{
               type: ButtonType.outlined,
-              text: 'Save & Continue Later',
+              text: "Save & Continue Later",
             }}
-            rightButton={{ type: ButtonType.disabled, text: 'Add Employee' }}
-            position='end'
+            rightButton={{ type: ButtonType.disabled, text: "Add Employee" }}
+            position="end"
           />
         </div>
       )}

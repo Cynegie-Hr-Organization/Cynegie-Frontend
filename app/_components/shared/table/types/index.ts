@@ -29,7 +29,10 @@ export type TableProps<T = Record<string, any>> = {
   hasSearchFilter?: boolean;
   hasPagination?: boolean;
   clearChecks?: boolean;
-  onPermissionsClick?: (permissions: Permission[]) => void;
+  onPermissionsClick?: (
+    permissions: Permission[],
+    fieldToReturn: string
+  ) => void;
   onSearch?: (arg: string) => void;
   page?: number; //TODO: Remove and use pagination meta instead
   pageCount?: number; //TODO: Remove and use pagination meta instead

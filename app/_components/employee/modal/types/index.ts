@@ -14,7 +14,14 @@ import {
   FieldName,
   FieldValues,
   RegisterOptions,
+  UseFormClearErrors,
+  UseFormGetValues,
   UseFormRegister,
+  UseFormResetField,
+  UseFormSetError,
+  UseFormSetValue,
+  UseFormUnregister,
+  UseFormWatch,
 } from "react-hook-form";
 import { DateRange } from "rsuite/esm/DateRangePicker";
 import { ViewTaskProps } from "../../pages/task/view-task/types";
@@ -58,7 +65,7 @@ export type InputFieldProps = {
   setValue?: (arg: InputFieldValue) => void;
   selectValControlledFromOutside?: boolean;
   disabled?: boolean;
-  defaultValue?: string | number;
+  defaultValue?: string | number | { label: string; value: string }[];
   addItemsProps?: AddItemsProps;
   getCurrentValue?: (arg: string | number) => void;
   startadornment?: React.ReactElement;
@@ -72,6 +79,14 @@ export type InputFieldProps = {
   errors?: FieldErrors<FieldValues>;
   control?: Control<FieldValues, any>;
   hookFormField?: boolean;
+  hookFormName?: string;
+  hookFormSetValue?: UseFormSetValue<FieldValues>;
+  hookFormGetValues?: UseFormGetValues<FieldValues>;
+  hookFormClearErrors?: UseFormClearErrors<FieldValues>;
+  hookFormResetField?: UseFormResetField<FieldValues>;
+  hookFormWatch?: UseFormWatch<FieldValues>;
+  hookFormSetError?: UseFormSetError<FieldValues>;
+  hookFormUnregister?: UseFormUnregister<FieldValues>;
   required?: boolean;
   controllerRules?: Omit<
     RegisterOptions<FieldValues, FieldName<FieldValues>>,
@@ -96,6 +111,7 @@ export type InputFieldType =
   | "time"
   | "editor"
   | "drag-upload"
+  | "drag-upload-hook-form"
   | "multi-select"
   | "add-items"
   | "checkbox";

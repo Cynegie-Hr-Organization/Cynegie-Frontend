@@ -8,6 +8,18 @@ import { icon } from "@/constants";
 import useCheckboxes from "@/hooks/useCheckboxes";
 import { Checkbox } from "@mui/material";
 import React, { useState } from "react";
+import {
+  Control,
+  FieldErrors,
+  FieldName,
+  FieldValues,
+  RegisterOptions,
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormResetField,
+  UseFormUnregister,
+  UseFormWatch,
+} from "react-hook-form";
 import Popover from "../..";
 import Button from "../../../button-group/button";
 import InputField from "../../../form/input-field";
@@ -35,6 +47,30 @@ export type AddItemsProps = {
   disabled?: boolean;
   disabledValue?: string;
   gridCols?: { xs?: number; sm?: number; md?: number; lg?: number };
+  hookFormRegister?: UseFormRegister<FieldValues>;
+  hookFormControl?: Control<FieldValues, any>;
+  hookFormErrors?: FieldErrors<FieldValues>;
+  hookFormName?: string;
+  inputFieldIsHookForm?: boolean;
+  hookFormGetValues?: UseFormGetValues<FieldValues>;
+  hookFormResetField?: UseFormResetField<FieldValues>;
+  hookFormWatch?: UseFormWatch<FieldValues>;
+  hookFormUnregister?: UseFormUnregister<FieldValues>;
+  secondaryHookFormName?: string;
+  inputFieldRequired?: boolean;
+  secondaryFieldRequired?: boolean;
+  secondaryFieldIsHookForm?: boolean;
+  inputFieldControllerRules?: Omit<
+    RegisterOptions<FieldValues, FieldName<FieldValues>>,
+    "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
+  >;
+  secondaryFieldControllerRules?: Omit<
+    RegisterOptions<FieldValues, FieldName<FieldValues>>,
+    "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
+  >;
+  getLocalAddedItems?: (items: AddedItem[]) => void;
+  useNameAsDefaultValue?: boolean;
+  forceInputFieldNameAsLabel?: boolean;
 };
 
 export type AddedItem = {
@@ -62,6 +98,24 @@ const AddItems: React.FC<AddItemsProps> = ({
   middleField,
   disabledValue,
   gridCols,
+  hookFormRegister,
+  hookFormErrors,
+  hookFormControl,
+  hookFormName,
+  hookFormGetValues,
+  hookFormResetField,
+  hookFormWatch,
+  hookFormUnregister,
+  inputFieldRequired,
+  secondaryFieldRequired,
+  inputFieldControllerRules,
+  secondaryFieldControllerRules,
+  inputFieldIsHookForm,
+  secondaryFieldIsHookForm,
+  secondaryHookFormName,
+  getLocalAddedItems,
+  useNameAsDefaultValue,
+  forceInputFieldNameAsLabel,
 }) => {
   const getAvailableItems = (items: string[]) => {
     return allItems?.filter((item) => !items.includes(item));
@@ -72,7 +126,7 @@ const AddItems: React.FC<AddItemsProps> = ({
   );
 
   const handleSearchQuery = (query: string) => {
-    console.log("Search Query:", query); // Replace with actual search logic
+    setSearchQuery(query);
   };
 
   const [availableItems, setAvailableItems] = useState<string[]>(() => {
@@ -96,16 +150,23 @@ const AddItems: React.FC<AddItemsProps> = ({
     )
     .map((item) => ({ name: item }));
 
-  const { checkedItems, checkBoxProps, removeChecks } = useCheckboxes<
-    Record<string, any>
-  >(
-    availableItems.map((item) => ({ name: item })), // p0
+  const { checkedItems, checkBoxProps, removeChecks } = useCheckboxes<string>( // Record<string, any> |
+    // availableItems.map((item) => ({ name: item })), // p0
+    availableItems.map((item) => item),
     undefined // getCheckedRows
     // undefined, // defaultCheckedRows
     // availableItems.map((item) => ({ name: item })) // rows
   );
   const handleDeleteClick = (item: AddedItem) => {
+    const index = localAddedItems.indexOf(item);
+    hookFormResetField?.(`${hookFormName}${index}`);
+    hookFormResetField?.(`${secondaryHookFormName}${index}`);
+    hookFormUnregister?.(`${hookFormName}${index}`);
+    hookFormUnregister?.(`${secondaryHookFormName}${index}`);
     //Remove deleted item from local added items
+    getLocalAddedItems?.(
+      localAddedItems.filter((localItem) => localItem !== item)
+    );
     setLocalAddedItems(
       localAddedItems.filter((localItem) => localItem !== item)
     );
@@ -114,12 +175,14 @@ const AddItems: React.FC<AddItemsProps> = ({
       setAvailableItems([...availableItems, item.name]);
   };
 
-  const handleAddItems = () => {
+  const handleAddItemsWithCheckboxes = () => {
     if (checkedItems.length > 0) {
       const checkedItemsToAdd: AddedItem[] = checkedItems.map((item) => ({
-        name: item as unknown as string,
+        // name: typeof item === "string" ? item : item.name,
+        name: item,
         value: "",
       }));
+      getLocalAddedItems?.([...localAddedItems, ...checkedItemsToAdd]);
       setLocalAddedItems([...localAddedItems, ...checkedItemsToAdd]);
       setAvailableItems(
         getAvailableItems([
@@ -131,20 +194,31 @@ const AddItems: React.FC<AddItemsProps> = ({
     }
   };
 
-  const handleNoSelectAddItem = () => {
+  const handleNoSelectAddItem = (e: React.SyntheticEvent) => {
+    e.preventDefault();
     setLocalAddedItems([
+      ...localAddedItems,
+      { name: inputFieldName ?? "", value: "" },
+    ]);
+    getLocalAddedItems?.([
       ...localAddedItems,
       { name: inputFieldName ?? "", value: "" },
     ]);
   };
 
-  const handleAddDoc = () => {
+  const handleAddDoc = (e: React.SyntheticEvent) => {
+    e.preventDefault();
     setShowAddField(false);
-    if (typeof addFieldValue == "string")
+    if (typeof addFieldValue == "string") {
+      getLocalAddedItems?.([
+        ...localAddedItems,
+        { name: addFieldValue, value: "" },
+      ]);
       setLocalAddedItems([
         ...localAddedItems,
         { name: addFieldValue, value: "" },
       ]);
+    }
     setAddFieldValue("");
   };
 
@@ -182,13 +256,31 @@ const AddItems: React.FC<AddItemsProps> = ({
           <div>
             <InputField
               type={inputFieldType}
-              label={inputFieldName ?? showFieldLabels ? item.name : undefined}
+              label={
+                hookFormName ?? inputFieldName ?? showFieldLabels
+                  ? forceInputFieldNameAsLabel
+                    ? inputFieldName
+                    : item.name
+                  : undefined
+              }
+              hookFormName={`${hookFormName}${index}`}
+              register={hookFormRegister}
+              control={hookFormControl}
+              errors={hookFormErrors}
+              hookFormField={inputFieldIsHookForm}
+              hookFormGetValues={hookFormGetValues}
+              hookFormResetField={hookFormResetField}
+              hookFormWatch={hookFormWatch}
               disabled={disabled}
+              required={inputFieldRequired}
+              controllerRules={inputFieldControllerRules}
               defaultValue={
                 hasSecondaryField && inputFieldType !== "select"
                   ? item.name
                   : disabled
                   ? `${disabledValue} ${index + 1}`
+                  : useNameAsDefaultValue
+                  ? item.name
                   : item.value
               }
               {...(inputFieldPlacehdoler && {
@@ -197,7 +289,7 @@ const AddItems: React.FC<AddItemsProps> = ({
               {...(hasSelectOptions && {
                 options: allItems?.map((item, index) => ({
                   label: item,
-                  value: index,
+                  value: useNameAsDefaultValue ? item : index,
                 })),
               })}
             />
@@ -208,8 +300,18 @@ const AddItems: React.FC<AddItemsProps> = ({
               <InputField
                 {...(secondaryFieldName && { label: secondaryFieldName })}
                 type={secondaryFieldType ?? inputFieldType}
+                hookFormName={`${secondaryHookFormName}${index}`}
+                hookFormField={secondaryFieldIsHookForm}
                 defaultValue={item.value}
                 placeholder={secondaryFieldPlaceholder}
+                required={secondaryFieldRequired}
+                controllerRules={secondaryFieldControllerRules}
+                register={hookFormRegister}
+                control={hookFormControl}
+                errors={hookFormErrors}
+                hookFormGetValues={hookFormGetValues}
+                hookFormResetField={hookFormResetField}
+                hookFormWatch={hookFormWatch}
                 startadornment={
                   <div style={{ marginRight: 5 }}>
                     {secondaryFieldStartAdornment}
@@ -239,8 +341,12 @@ const AddItems: React.FC<AddItemsProps> = ({
         <AddItemsLabel
           text={addText}
           onClick={
-            inputFieldType == "drag-upload"
-              ? () => setShowAddField(true)
+            inputFieldType == "drag-upload" ||
+            inputFieldType == "drag-upload-hook-form"
+              ? (e) => {
+                  e.preventDefault();
+                  setShowAddField(true);
+                }
               : handleNoSelectAddItem
           }
         />
@@ -282,7 +388,8 @@ const AddItems: React.FC<AddItemsProps> = ({
                 )}
                 {displayedAvailableItems.map((item) => (
                   <div key={item.name} className={`flex gap-1 items-center`}>
-                    <Checkbox {...checkBoxProps(item)} />
+                    {/* <Checkbox {...checkBoxProps(item)} /> */}
+                    <Checkbox {...checkBoxProps(item.name)} />
                     {item.name}
                   </div>
                 ))}
@@ -293,7 +400,7 @@ const AddItems: React.FC<AddItemsProps> = ({
               </div>
             </>
           }
-          onCloseAction={handleAddItems}
+          onCloseAction={handleAddItemsWithCheckboxes}
         />
       )}
     </div>

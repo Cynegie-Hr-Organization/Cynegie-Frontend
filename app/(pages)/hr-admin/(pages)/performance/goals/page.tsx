@@ -1,14 +1,14 @@
 "use client";
 
-import { LuPlusCircle, LuTrash } from "react-icons/lu";
-import { IoIosArrowDown } from "react-icons/io";
-import AppButton from "../../../../../_components/shared/button";
-import ReviewTable from "./table";
+import { DeleteSvg } from "@/app/_components/icons/custom-icons";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
-import { AppDropdownMenu } from "../../../../../_components/shared/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { DeleteSvg } from "@/app/_components/icons/custom-icons";
+import { IoIosArrowDown } from "react-icons/io";
+import { LuCirclePlus, LuTrash } from "react-icons/lu";
+import AppButton from "../../../../../_components/shared/button";
+import { AppDropdownMenu } from "../../../../../_components/shared/dropdown-menu";
+import ReviewTable from "./table";
 
 const PerformanceGoalsPage = () => {
   return (
@@ -80,7 +80,7 @@ const PageHeader = () => {
 
         <AppButton
           label="Add New Goal"
-          rightIcon={<LuPlusCircle />}
+          rightIcon={<LuCirclePlus />}
           className="bg-primary text-white border border-primary lg:flex hidden"
           onClick={() => router.push("/hr-admin/performance/goals/create")}
         />

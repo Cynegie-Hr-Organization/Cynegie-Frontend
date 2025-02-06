@@ -13,18 +13,19 @@ const textFieldStyle = {
 const TextField: React.FC<
   Omit<InputFieldProps, "type"> & {
     inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
-  }
+  } & { hookFormName?: string }
 > = ({
   label: name,
   placeholder,
   value,
-  setValue,
+  setValue: hookFormSetValue,
   disabled,
   defaultValue,
   startadornment: startAdornment,
   register,
   errors,
   required,
+  hookFormName,
   // inputProps,
 }) => {
   return (
@@ -38,10 +39,12 @@ const TextField: React.FC<
         fullWidth
         defaultValue={defaultValue}
         placeholder={placeholder}
-        value={value || ""} // Ensure no uncontrolled component issues
-        onChange={(e) => setValue?.(e.target.value)}
-        {...register?.(name ?? "", {
+        // value={value || ""} // Ensure no uncontrolled component issues
+        value={value}
+        onChange={(e) => hookFormSetValue?.(e.target.value)}
+        {...register?.(hookFormName ?? name ?? "", {
           required: required ? `${name} is required` : false,
+          value: defaultValue,
         })}
         slotProps={{
           input: {
@@ -54,9 +57,15 @@ const TextField: React.FC<
         //   ...inputProps, // Spread inputProps to the MuiTextField's InputProps
         // }}
       />
-      {errors && name && errors[name] && (
+      {errors && !hookFormName && name && errors[name] && (
         <FormHelperText sx={{ color: "red" }}>
           {typeof errors[name].message === "string" && errors[name].message}
+        </FormHelperText>
+      )}
+      {errors && hookFormName && errors[hookFormName] && (
+        <FormHelperText sx={{ color: "red" }}>
+          {typeof errors[hookFormName].message === "string" &&
+            errors[hookFormName].message}
         </FormHelperText>
       )}
     </>

@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { LuListFilter, LuMoreVertical } from "react-icons/lu";
+import Pagination from "@/app/_components/hr-admin/pages/hiring/shared/pagination";
+import DeleteReviewModal from "@/app/_components/hr-admin/performance/review-cycle/delete-modal";
+import AppMenubar from "@/app/_components/shared/menubar";
+import { getReviewCycles } from "@/app/api/services/performance/review cycle";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ReviewCycle } from "@/types";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { LuListFilter, LuMoveVertical } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { Checkbox } from "@/components/ui/checkbox";
-import { getReviewCycles } from "@/app/api/services/performance/review cycle";
-import Pagination from "@/app/_components/hr-admin/pages/hiring/shared/pagination";
-import AppMenubar from "@/app/_components/shared/menubar";
-import DeleteReviewModal from "@/app/_components/hr-admin/performance/review-cycle/delete-modal";
-import { useRouter } from "next/navigation";
-import { ReviewCycle } from "@/types";
 
 const PerformanceReviewTable = () => {
   const router = useRouter();
@@ -32,7 +32,7 @@ const PerformanceReviewTable = () => {
         itemsPerPage,
         "desc",
         filter,
-        search,
+        search
       );
       console.log(data);
       setReviews(data || []);
@@ -200,7 +200,7 @@ const PerformanceReviewTable = () => {
                           label: "Edit",
                           onClick: () =>
                             router.push(
-                              `/hr-admin/performance/review-cycle/edit/${review.id}`,
+                              `/hr-admin/performance/review-cycle/edit/${review.id}`
                             ),
                         },
                         {
@@ -208,7 +208,7 @@ const PerformanceReviewTable = () => {
                           label: "View Details",
                           onClick: () =>
                             router.push(
-                              `/hr-admin/performance/review/${review.id}`,
+                              `/hr-admin/performance/review/${review.id}`
                             ),
                         },
                         {
@@ -219,7 +219,7 @@ const PerformanceReviewTable = () => {
                         },
                       ]}
                     >
-                      <LuMoreVertical />
+                      <LuMoveVertical />
                     </AppMenubar>
                   </td>
                 </tr>

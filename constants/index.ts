@@ -176,8 +176,8 @@ export const CISStatusMap: StatusMap = {
 
 export const SAStatusMap: StatusMap = {
   completed: "success",
-  "in_progress": "warning",
-  "not_started": "error",
+  in_progress: "warning",
+  not_started: "error",
 };
 
 export const CPStatusMap: StatusMap = {
@@ -280,8 +280,7 @@ export const route = {
       directory: {
         home: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.directory}`,
         addEmployee: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.directory}add-employee`,
-        editEmployee: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.directory}edit-employee`,
-        viewEmployee: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.directory}view-employee`,
+        editEmployee: `${basePath.hrAdmin}${basePath.employeeManagement}${basePath.directory}edit`,
       },
     },
     deviceManagement: {

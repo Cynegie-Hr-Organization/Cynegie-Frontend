@@ -2,13 +2,17 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { baseUrl } from "@/constants/config";
 import {
+  AddEmployeePayload,
   Benefit,
   BenefitResponse,
   Department,
   FetchParams,
   PaginatedResponse3,
   PaginatedResponse4,
+  PaginatedResponse5,
+  Role,
 } from "@/types";
+import { Employee } from "@/types/api-index";
 import { request } from "@/utils/request";
 import { getServerSession } from "next-auth";
 
@@ -85,4 +89,49 @@ export const getDepartments = async (
     },
     params: params,
   }) as Promise<PaginatedResponse4<Department>>;
+};
+
+export const getRoles = async (): Promise<PaginatedResponse5<Role>> => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/role/all`, {
+    headers: {
+      "Content-type": "Application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  }) as Promise<PaginatedResponse5<Role>>;
+};
+
+export const deleteDepartment = async (id: string) => {
+  const session = await getServerSession(authOptions);
+
+  return request("DELETE", `${baseUrl}/v1/departments/${id}`, {
+    headers: {
+      "Content-type": "Application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  });
+};
+
+export const addEmployee = async (payload: AddEmployeePayload) => {
+  const session = await getServerSession(authOptions);
+
+  return request("POST", `${baseUrl}/v1/employees`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: payload,
+  });
+};
+
+export const getEmployee = async (id: string): Promise<Employee> => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/employees/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  }) as Promise<Employee>;
 };

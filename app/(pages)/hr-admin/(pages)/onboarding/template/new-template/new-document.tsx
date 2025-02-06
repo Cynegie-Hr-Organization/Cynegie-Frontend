@@ -1,20 +1,21 @@
 "use client";
 
-import { LuListFilter, LuPlusCircle } from "react-icons/lu";
-import { GoPlus } from "react-icons/go";
-import { Avatar } from "@mui/material";
-import { PopoverTrigger } from "@/components/ui/popover";
-import { PopoverContent } from "@/components/ui/popover";
-import { Popover } from "@/components/ui/popover";
-import { HiDotsHorizontal } from "react-icons/hi";
-import { BsPerson } from "react-icons/bs";
-import { ReusableSelect } from "./components/ReusableSelect";
-import { CiCalendarDate } from "react-icons/ci";
-import { ReactNode } from "react";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
-import { useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Avatar } from "@mui/material";
+import { ReactNode, useState } from "react";
+import { BsPerson } from "react-icons/bs";
+import { CiCalendarDate } from "react-icons/ci";
+import { GoPlus } from "react-icons/go";
+import { HiDotsHorizontal } from "react-icons/hi";
 import { IoCloseCircle } from "react-icons/io5";
+import { LuCirclePlus, LuListFilter } from "react-icons/lu";
+import { ReusableSelect } from "./components/ReusableSelect";
 
 const NewDocument = () => {
   return (
@@ -27,7 +28,7 @@ const NewDocument = () => {
         <AddDocumentModal>
           <button className="capitalize flex items-center justify-center gap-x-2 outline-none border-none bg-primary text-white rounded-lg px-[12.33px] py-[9px] font-bold">
             <span> Add Document</span>
-            <LuPlusCircle />
+            <LuCirclePlus />
           </button>
         </AddDocumentModal>
       </div>
@@ -94,7 +95,7 @@ function AddDocumentModal({ children }: { children: ReactNode }) {
 
   const handleFileRemove = (fileToRemove: File) => {
     setSelectedFiles((prevFiles) =>
-      prevFiles.filter((file) => file !== fileToRemove),
+      prevFiles.filter((file) => file !== fileToRemove)
     );
   };
 
@@ -173,9 +174,7 @@ function AddDocumentModal({ children }: { children: ReactNode }) {
               }
             >
               {selectedFiles.length === 0 ? (
-                <p className='text-sm text-gray-500'>
-                  click to upload
-                </p>
+                <p className="text-sm text-gray-500">click to upload</p>
               ) : (
                 <p className="text-sm text-primary mt-2">+ Add more files</p>
               )}
@@ -225,7 +224,7 @@ export function EditDocumentModal({ triggers }: { triggers: ReactNode }) {
 
   const handleFileRemove = (fileToRemove: File) => {
     setSelectedFiles((prevFiles) =>
-      prevFiles.filter((file) => file !== fileToRemove),
+      prevFiles.filter((file) => file !== fileToRemove)
     );
   };
   return (
@@ -303,9 +302,7 @@ export function EditDocumentModal({ triggers }: { triggers: ReactNode }) {
               }
             >
               {selectedFiles.length === 0 ? (
-                <p className='text-sm text-gray-500'>
-                 click to upload
-                </p>
+                <p className="text-sm text-gray-500">click to upload</p>
               ) : (
                 <p className="text-sm text-primary mt-2">+ Add more files</p>
               )}

@@ -22,6 +22,20 @@ const HrAdminEmployeeManagementApproval = () => {
   } = useApprovalConfirmationModal();
   const [openToast, setOpenToast] = useState(false);
 
+  const [requests] = useState(
+    Array(5)
+      .fill({
+        requestType: "Leave Request",
+        employeeName: "Ayomide Alibaba",
+        staffID: "CYN0235",
+        department: "Product",
+        requestDetails: "Annual Leave (5 days)",
+        requestDate: "Oct 12, 2024",
+        status: "Pending",
+      })
+      .map((item, index) => ({ id: index + 1, ...item }))
+  );
+
   return (
     <Page
       title="Approval Management"
@@ -62,15 +76,7 @@ const HrAdminEmployeeManagementApproval = () => {
           "requestDate",
           "status",
         ]}
-        bodyRowData={Array(5).fill({
-          requestType: "Leave Request",
-          employeeName: "Ayomide Alibaba",
-          staffID: "CYN0235",
-          department: "Product",
-          requestDetails: "Annual Leave (5 days)",
-          requestDate: "Oct 12, 2024",
-          status: "Pending",
-        })}
+        bodyRowData={requests}
         formFilter={{
           inputFields: [
             {

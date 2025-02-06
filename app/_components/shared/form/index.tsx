@@ -44,7 +44,11 @@ const Form: React.FC<FormProps> = (props) => {
             ))}
           </Grid2>
         </div>
-        {buttonGroup && <ButtonGroup {...buttonGroup} />}
+        {buttonGroup && (
+          <div className="mt-8">
+            <ButtonGroup {...buttonGroup} />
+          </div>
+        )}
       </div>
     </div>
   );
