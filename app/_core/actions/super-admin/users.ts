@@ -12,7 +12,7 @@ export const getAllUsers = async () => {
   try {
     const session = await getSession();
     const { data } = await Http.get<IRes<ICompanyUser[]>>('user/company-employees', {
-      headers: await headers(session?.token ?? '')
+      headers: await headers(session?.token ?? ''),
     });
 
     return data;

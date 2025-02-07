@@ -15,13 +15,15 @@ import { IoIosArrowDown } from "react-icons/io"
 
 
 
-export function AppDropdownMenu({ trigger, menuItems, width = "w-56" }: {
+export function AppDropdownMenu({ trigger, menuItems, width = "w-56", isOpen, setIsOpen }: {
   trigger: ReactNode,
   menuItems: ReactNode,
   width?: string,
+  isOpen?: boolean,
+  setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>
 }) {
   return (
-    <DropdownMenu>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         {trigger}
       </DropdownMenuTrigger>

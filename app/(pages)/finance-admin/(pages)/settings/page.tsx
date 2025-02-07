@@ -27,6 +27,7 @@ const FinanceAdminSettings = () => {
         defaultCurrency: financeSettings.defaultCurrency ?? '',
         taxSettings: financeSettings.taxSettings ?? '',
         expenseCategories: financeSettings.expenseCategories ?? '',
+        paymentMethod: financeSettings.paymentMethod ?? '',
         fiscalYearStart: financeSettings.fiscalYearStart ?? '',
         notificationSettings: financeSettings.notificationSettings ?? [],
         budgetAlerts: financeSettings.budgetAlerts ?? ''
@@ -60,6 +61,7 @@ const FinanceAdminSettings = () => {
             />
 
             <AppSelect
+              value={formData.defaultCurrency}
               label="Default Currency"
               listItems={
                 [
@@ -91,6 +93,7 @@ const FinanceAdminSettings = () => {
             />
             <AppSelect
               label="Expense Categories"
+              value={formData.expenseCategories}
               listItems={
                 [
                   { label: 'Expense Category1', value: 'Expense Category1' },
@@ -101,13 +104,18 @@ const FinanceAdminSettings = () => {
               placeholder="Input details"
               onChange={(value) => setFormData({ ...formData, expenseCategories: value })}
             />
-            <AppDatePicker
+            <AppSelect
               label="Payment Method"
-              placeholder="Date"
-              selectedDate={formData.fiscalYearStart ? new Date(formData.fiscalYearStart) : undefined}
-              setSelectedDate={(value) => setFormData({ ...formData, fiscalYearStart: value?.toISOString() })}
+              value={formData.paymentMethod}
+              listItems={
+                [
+                  { label: 'Bank Transfer', value: 'bank-transfer' },
+                  { label: 'card', value: 'card' }
+                ]
+              }
+              placeholder="Select Payment Method"
+              onChange={(value) => setFormData({ ...formData, paymentMethod: value })}
             />
-
           </div>
 
           <div className="space-y-4">

@@ -13,4 +13,5 @@ export const queryKeys = {
   APPROVALS: 'approvals',
   USERS: 'users',
   USER: 'user',
+  EMPLOYEES: 'employees',
 }

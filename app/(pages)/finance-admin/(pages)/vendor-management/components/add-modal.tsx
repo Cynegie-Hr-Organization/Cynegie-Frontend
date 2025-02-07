@@ -4,18 +4,19 @@ import AppInputText from "@/app/_components/shared/input-text"
 import { useVendorMutations } from "@/app/_core/use-cases/finance/useVendors"
 import { AppModal } from "@/components/drawer/modal"
 import { useState } from "react"
+import { toast } from "react-toastify"
 
 const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => {
   const [isOpenAddVendorModal, setIsOpenAddVendorModal] = useState(false)
   const { addVendor } = useVendorMutations({})
   const isLoading = addVendor.isPending
   const [formData, setFormData] = useState({
-    vendorName: "Luthor",
-    phoneNumber: "2384567898765",
-    contactEmail: "Luthor@ma.com",
-    vendorAddress: "somewhere on planet earth",
+    vendorName: "",
+    phoneNumber: "",
+    contactEmail: "",
+    vendorAddress: "",
     paymentTerms: "",
-    contactPerson: "Luthor Rosefields",
+    contactPerson: "",
   })
 
 
@@ -23,8 +24,9 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
     return addVendor.mutate(formData, {
       onSuccess: () => {
         setIsOpenAddVendorModal(false)
+        toast.success('Vendor created successfully');
       },
-      onError: (error) => {
+      onError: () => {
         setIsOpenAddVendorModal(false)
       }
     })
@@ -92,13 +94,13 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
             label="Payment Terms"
             placeholder="Select payment terms"
             items={[
-              { label: "Net 30", value: "net_30" },
-              { label: "Net 45", value: "net_45" },
-              { label: "Net 60", value: "net_60" },
-              { label: "Net 70", value: "net_70" },
-              { label: "Net 80", value: "net_80" },
-              { label: "Net 90", value: "net_90" },
-              { label: "Net 100", value: "net_100" },
+              { label: "Net 30 days", value: "Net 30 days" },
+              { label: "Net 45 days", value: "Net 45 days" },
+              { label: "Net 60 days", value: "Net 60 days" },
+              { label: "Net 70 days", value: "Net 70 days" },
+              { label: "Net 80 days", value: "Net 80 days" },
+              { label: "Net 90 days", value: "Net 90 days" },
+              { label: "Net 100 days", value: "Net 100 days" },
             ]}
             selectedValues={formData.paymentTerms ? formData.paymentTerms.split(", ") : []}
             onSelectionChange={(values) => {
@@ -106,13 +108,13 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
             }}
           />
           <AppInputText
+            id={"vendor-name"}
+            type={"text"}
+            requiredField
             label="Vendor Address"
             placeholder="Enter vendor name"
-            onChange={(e) => { setFormData({ ...formData, vendorAddress: e.target.value }) }}
             value={formData.vendorAddress}
-            id={"vendor-name"}
-            requiredField
-            type={"text"}
+            onChange={(e) => { setFormData({ ...formData, vendorAddress: e.target.value }) }}
           />
         </div>
       </form>

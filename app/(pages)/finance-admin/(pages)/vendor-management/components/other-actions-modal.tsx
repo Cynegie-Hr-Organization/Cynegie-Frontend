@@ -2,8 +2,8 @@ import { DeleteSvg } from "@/app/_components/icons/custom-icons"
 import AppButton from "@/app/_components/shared/button"
 import { IVendor } from "@/app/_core/actions/finance/vendor"
 import { useVendorMutations } from "@/app/_core/use-cases/finance/useVendors"
-import { AppModal } from "@/components/drawer/modal"
-import { useState } from "react"
+import { AppModal2 } from "@/components/drawer/modal"
+import { toast } from "react-toastify"
 
 
 
@@ -11,8 +11,8 @@ export enum vendorStatus {
   ACTIVE_VENDOR = 'active',
   INACTIVE_VENDOR = 'inactive'
 }
-const OtherActionsModal = ({ trigger, vendor }: { trigger: React.ReactNode, vendor: IVendor }) => {
-  const [isOpen, setIsOpen] = useState(false)
+const OtherActionsModal = ({ isOpen, onClose, vendor, }: { isOpen: boolean, onClose: () => void, vendor: IVendor }) => {
+
   const { activateVendor, deactivateVendor } = useVendorMutations({ id: vendor?.id });
   const isDeactivatingVendor = deactivateVendor.isPending;
   const isActivatingVendor = activateVendor.isPending;
@@ -20,31 +20,28 @@ const OtherActionsModal = ({ trigger, vendor }: { trigger: React.ReactNode, vend
   const handleDeactivation = () => {
     deactivateVendor.mutate({ id: vendor?.id }, {
       onSuccess: () => {
-        setIsOpen(false)
+        onClose()
+        toast.success('Vendor deactivated successfully');
       },
-      onError: () => {
-        setIsOpen(false)
-      }
+      onError: () => onClose()
     });
   }
 
   const handleActivation = () => {
     activateVendor.mutate({ id: vendor?.id }, {
       onSuccess: () => {
-        setIsOpen(false)
+        onClose();
+        toast.success('Vendor activated successfully');
       },
-      onError: () => {
-        setIsOpen(false)
-      }
+      onError: () => onClose()
     });
   }
 
 
   return (
-    <AppModal
+    <AppModal2
       open={isOpen}
-      setOpen={setIsOpen}
-      trigger={trigger}
+      setOpen={onClose}
       header={
         <span className="text-lg font-bold text-center">
           <span className="flex flex-col items-center justify-center gap-y-6">
@@ -60,7 +57,7 @@ const OtherActionsModal = ({ trigger, vendor }: { trigger: React.ReactNode, vend
           <AppButton
             label="Cancel"
             className="bg-white border-2 border-gray-400 text-gray-500 md:w-[150px] w-full"
-            onClick={() => setIsOpen(false)}
+            onClick={onClose}
           />
 
           {vendor.status === vendorStatus.ACTIVE_VENDOR ?
@@ -82,7 +79,7 @@ const OtherActionsModal = ({ trigger, vendor }: { trigger: React.ReactNode, vend
             )}
         </div>
       }>
-    </AppModal>
+    </AppModal2>
   )
 }
 

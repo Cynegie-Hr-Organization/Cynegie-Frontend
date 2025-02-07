@@ -5,26 +5,32 @@ import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import EmptyTable from "@/app/_components/shared/empty-table";
 import { AppInputTextArea } from "@/app/_components/shared/input-text";
+import { AppPagination } from "@/app/_components/shared/pagination";
 import { AppSelect } from "@/app/_components/shared/select";
 import TableSkeleton from "@/app/_components/shared/skelentons/table";
 import { ICompanyUser } from "@/app/_core/interfaces/user";
 import { useAllUsers } from "@/app/_core/use-cases/superadmin/useUser";
 import { AppModal } from "@/components/drawer/modal";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 
-
-
-
-
 const UsersOverviewTable = () => {
   const { data, isLoading } = useAllUsers()
   const { data: users } = data ?? {};
+
+  // State for managing rows per page and current page
+  const [rowsPerPage, setRowsPerPage] = useState(5)
+  const [currentPage, setCurrentPage] = useState(1)
+
+  // Dummy data slicing based on rows per page
+  const paginatedUsers = users?.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
+  )
 
   const tableHeader = [
     "User ID",
@@ -46,9 +52,6 @@ const UsersOverviewTable = () => {
         return "text-gray-700";
     }
   };
-
-
-  const tableData = users;
 
   return (
     <div className="common-card overflow-x-scroll space-y-4">
@@ -123,39 +126,41 @@ const UsersOverviewTable = () => {
                   ))}
                 </tr>
               </thead>
-              <tbody>
-                {(tableData && tableData.length > 0) ? (tableData?.map((user, idx) => {
-                  return (
-                    <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
-                      <td className='px-4 py-4'>
-                        <p className='text-sm'>{user?.id}</p>
-                      </td>
-                      <td className='px-4 py-4 capitalize'>
-                        <p className='text-sm'>{user?.firstName ?? 'NIL'} {user?.lastName ?? 'NIL'}</p>
-                      </td>
-                      <td className='px-4 py-4'>
-                        <div className="flex items-center gap-x-2">
-                          <div className="w-8 h-8 overflow-hidden rounded-full">
-                            <Image
-                              src={'/images/avatars/avatar-1.png'}
-                              alt={`${user?.firstName ?? 'unknown'}, ${user?.lastName ?? ''}`}
-                              width={30}
-                              height={30}
-                              className="rounded-full w-auto h-auto object-cover"
-                            />
+              <tbody className="h-[300px]">
+                {(paginatedUsers && paginatedUsers.length > 0) ? (
+                  paginatedUsers?.map((user, idx) => {
+                    return (
+                      <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054] h-[60px]'>
+                        <td className='px-4 py-4'>
+                          <p className='text-sm'>{user?.id}</p>
+                        </td>
+                        <td className='px-4 py-4 capitalize'>
+                          <p className='text-sm'>{user?.firstName ?? 'NIL'} {user?.lastName ?? 'NIL'}</p>
+                        </td>
+                        <td className='px-4 py-4'>
+                          <div className="flex items-center gap-x-2">
+                            {/* <div className="w-8 h-8 overflow-hidden rounded-full">
+                              <Image
+                                src={'/images/avatars/avatar-1.png'}
+                                alt={`${user?.firstName ?? 'unknown'}, ${user?.lastName ?? ''}`}
+                                width={30}
+                                height={30}
+                                className="rounded-full w-auto h-auto object-cover"
+                              />
+                            </div> */}
+                            <p className='text-sm'>{user?.role ?? 'NIL'}</p>
                           </div>
-                          <p className='text-sm'>{user?.role ?? 'NIL'}</p>
-                        </div>
-                      </td>
-                      <td className='px-4 py-4'>
-                        <p className={`text-xs font-semibold ${getStatusColor(user?.status)} rounded-full px-2 py-1 w-fit text-nowrap`}>{user?.status}</p>
-                      </td>
-                      <td className='px-4 py-4'>
-                        <PopoverMenu user={user} />
-                      </td>
-                    </tr>
-                  );
-                })) : (
+                        </td>
+                        <td className='px-4 py-4'>
+                          <p className={`text-xs font-semibold ${getStatusColor(user?.status)} rounded-full px-2 py-1 w-fit text-nowrap`}>{user?.status}</p>
+                        </td>
+                        <td className='px-4 py-4'>
+                          <PopoverMenu user={user} />
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
                   <EmptyTable message="No users found" />
                 )}
               </tbody>
@@ -163,6 +168,14 @@ const UsersOverviewTable = () => {
           </div>
         </>
       )}
+
+      <AppPagination
+        totalItems={users?.length || 0}
+        itemsPerPage={rowsPerPage}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+        onItemsPerPageChange={setRowsPerPage}
+      />
     </div>
   )
 }

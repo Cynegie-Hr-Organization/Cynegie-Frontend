@@ -1,6 +1,6 @@
-// import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from "@/components/ui/skeleton"
 
-import Skeleton from "react-loading-skeleton"
+
 
 const TableSkeleton = () => {
   return (

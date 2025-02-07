@@ -25,7 +25,7 @@ export const useFinanceSettingsMutations = () => {
     mutationFn: async (body: Partial<IFinanceSettings>) => {
       const session = await getSession();
       return Http.post<IFinanceSettings>('finance-admin/settings', body, {
-        headers: await headers(session?.token ?? '')
+        headers: await headers(session?.token ?? ''),
       })
     },
     onSuccess: async () => {
@@ -56,6 +56,7 @@ export interface IFinanceSettings {
   defaultCurrency: string;
   taxSettings: string;
   expenseCategories: string;
+  paymentMethod: string;
   fiscalYearStart: string;
   notificationSettings: string[];
   budgetAlerts: string[];

@@ -335,9 +335,9 @@ const PreviewModal = ({ trigger }: { trigger: React.ReactNode }) => {
     <AppModal
       trigger={trigger}
       header={
-        <DialogTitle className="text-lg font-bold pl-4">
-          <p>Transaction Details</p>
-        </DialogTitle>
+        <span className="text-lg font-bold pl-4">
+          <span>Transaction Details</span>
+        </span>
       }
     >
       <div className="md:p-4 lg:p-6 p-2 space-y-4 py-5">
