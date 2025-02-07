@@ -164,6 +164,7 @@ export const VendorTable = () => {
 
       <AppPagination
         totalItems={total ?? 0}
+        totalPages={totalPages ?? 0}
         currentPage={page}
         itemsPerPage={limit}
         onItemsPerPageChange={(value) => setFilterOverride(prev => ({

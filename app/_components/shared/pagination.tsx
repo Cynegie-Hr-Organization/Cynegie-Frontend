@@ -5,6 +5,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 interface PaginationProps {
   totalItems: number;
+  totalPages: number;
   itemsPerPage?: number;
   currentPage?: number;
   onPageChange?: (page: number) => void;
@@ -13,12 +14,12 @@ interface PaginationProps {
 
 export const AppPagination: React.FC<PaginationProps> = ({
   totalItems,
+  totalPages,
   itemsPerPage = 5,
   currentPage = 1,
   onPageChange,
   onItemsPerPageChange
 }) => {
-  const totalPages = Math.ceil(totalItems / itemsPerPage)
   const startItem = (currentPage - 1) * itemsPerPage + 1
   const endItem = Math.min(startItem + itemsPerPage - 1, totalItems)
 
