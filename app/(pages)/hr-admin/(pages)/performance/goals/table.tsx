@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import { LuListFilter, LuMoreVertical } from "react-icons/lu";
-import { RiSearchLine } from "react-icons/ri";
-import { useQuery } from "@tanstack/react-query";
-import { Checkbox } from "@/components/ui/checkbox";
-import { AppSelect } from "@/app/_components/shared/select";
-import AppButton from "@/app/_components/shared/button";
 import Pagination from "@/app/_components/hr-admin/pages/hiring/shared/pagination";
-import AppMenubar from "@/app/_components/shared/menubar";
-import Skeleton from "react-loading-skeleton";
-import { getGoals } from "@/app/api/services/performance/goals";
-import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import DeleteGoalModal from "@/app/_components/hr-admin/performance/goal/delete-modal";
+import AppButton from "@/app/_components/shared/button";
+import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
+import AppMenubar from "@/app/_components/shared/menubar";
+import { AppSelect } from "@/app/_components/shared/select";
+import { getGoals } from "@/app/api/services/performance/goals";
+import { Checkbox } from "@/components/ui/checkbox";
 import { GoalResponse } from "@/types";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { LuListFilter } from "react-icons/lu";
+import { PiDotsThreeVerticalBold } from "react-icons/pi";
+import { RiSearchLine } from "react-icons/ri";
+import Skeleton from "react-loading-skeleton";
 
 const GoalTable = () => {
   const router = useRouter();
@@ -181,7 +182,7 @@ const GoalTable = () => {
                               type="button"
                               onClick={() =>
                                 router.push(
-                                  `/hr-admin/performance/goals/goal-detail/${goal.id}`,
+                                  `/hr-admin/performance/goals/goal-detail/${goal.id}`
                                 )
                               }
                               className="hover:text-blue-600 cursor-pointer text-blue-500"
@@ -204,7 +205,7 @@ const GoalTable = () => {
                         },
                       ]}
                     >
-                      <LuMoreVertical />
+                      <PiDotsThreeVerticalBold />
                     </AppMenubar>
                   </td>
                 </tr>

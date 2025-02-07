@@ -6,13 +6,45 @@ import Table from "@/app/_components/shared/table";
 import { FieldType } from "@/app/_components/shared/table/types";
 import Toast from "@/app/_components/shared/toast";
 import { icon, route } from "@/constants";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getRoles } from "../../payroll-management/pages/benefits-management/api";
+
+type MappedRole = {
+  id: string;
+  name: string;
+  description: string;
+  permissions: number;
+};
 
 const HrAdminEmployeeRole = () => {
   const router = useRouter();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openDeleteToast, setOpenDeleteToast] = useState(false);
+
+  const [roles, setRoles] = useState<MappedRole[]>();
+
+  const { data: rolesData } = useQuery({
+    queryKey: ["roles"],
+    queryFn: () => getRoles(),
+  });
+
+  useEffect(() => {
+    if (rolesData) {
+      setRoles(
+        rolesData.data.map((role) => ({
+          id: role.id,
+          name: role.name,
+          description: role.description,
+          permissions: role.permissions.length,
+        }))
+      );
+    } else {
+      setRoles(undefined);
+    }
+  }, [rolesData]);
+
   return (
     <Page
       title="Roles"
@@ -28,24 +60,25 @@ const HrAdminEmployeeRole = () => {
         hasCheckboxes
         hasActionsColumn
         headerRowData={[
+          // "Role Name",
+          // "Department",
+          // "Employee Assigned",
+          // "Permission",
           "Role Name",
-          "Department",
-          "Employee Assigned",
-          "Permission",
+          "Description",
+          "Permissions",
         ]}
-        fieldTypes={Array(4).fill(FieldType.text)}
+        fieldTypes={Array(3).fill(FieldType.text)}
         displayedFields={[
+          // "name",
+          // "department",
+          // "employeeAssigned",
+          // "permission",
           "name",
-          "department",
-          "employeeAssigned",
-          "permission",
+          "description",
+          "permissions",
         ]}
-        bodyRowData={Array(8).fill({
-          name: "Analytical Officer",
-          department: "Technology",
-          employeeAssigned: "N/A",
-          permission: "Job Posting +1",
-        })}
+        bodyRowData={roles}
         formFilter={{
           inputFields: [
             {

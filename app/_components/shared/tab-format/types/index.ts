@@ -1,9 +1,15 @@
-import { ButtonProps } from '../../page/heading/types';
+import { ButtonProps } from "../../page/heading/types";
 
 export type TabFormatProps = {
-  type?: 'button' | 'multi-step-form';
+  type?: "button" | "multi-step-form";
   tabs?: Tab[];
   actionButton?: ButtonProps;
+  customTabValue?: number;
+  customHandleChange?: (
+    event?: React.SyntheticEvent,
+    newValue?: number
+  ) => void;
+  hasButtons?: boolean;
 };
 
 export type Tab = {

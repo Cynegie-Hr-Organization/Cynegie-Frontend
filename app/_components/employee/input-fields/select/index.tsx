@@ -59,7 +59,7 @@ const SelectField: React.FC<SelectFieldProps> = (props) => {
       <Controller
         name={name ?? ""}
         control={control}
-        defaultValue=""
+        defaultValue={defaultValue ?? ""}
         rules={controllerRules}
         render={({ field }) => (
           <Select {...field} displayEmpty className={classStyle}>

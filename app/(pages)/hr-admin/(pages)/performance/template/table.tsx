@@ -1,23 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { AppSelect } from "@/app/_components/shared/select";
-import { RiSearchLine } from "react-icons/ri";
-import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
-import { LuListFilter, LuMoreVertical } from "react-icons/lu";
+import DeleteTemplateModal from "@/app/_components/hr-admin/performance/template/delete-modal";
 import AppButton from "@/app/_components/shared/button";
+import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
+import { AppSelect } from "@/app/_components/shared/select";
 import { getTemplates } from "@/app/api/services/performance/template";
-import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { LuListFilter, LuMoveVertical } from "react-icons/lu";
+import { RiSearchLine } from "react-icons/ri";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import DeleteTemplateModal from "@/app/_components/hr-admin/performance/template/delete-modal";
+import { toast } from "react-toastify";
 
 const PerformanceTemplateTable = () => {
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false); // Modal state
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(
-    null,
+    null
   ); // Selected template ID
   const router = useRouter();
 
@@ -193,7 +193,7 @@ const PerformanceTemplateTable = () => {
                             type="button"
                             className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg p-2 outline-none"
                           >
-                            <LuMoreVertical />
+                            <LuMoveVertical />
                           </button>
                         }
                         width="w-48"

@@ -195,3 +195,48 @@ export const getPayrollSummary = async (): Promise<PayrollSummary> => {
     },
   }) as Promise<PayrollSummary>;
 };
+
+export const createDepartment = async (payload: {
+  departmentName: string;
+  departmentManager: string;
+  employees: string[];
+  userLimit: number;
+}) => {
+  const session = await getServerSession(authOptions);
+  return request("POST", `${baseUrl}/v1/departments`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: payload,
+  });
+};
+
+export const editDepartment = async (
+  id: string,
+  payload: {
+    departmentName: string;
+    departmentManager: string;
+    employees: string[];
+    userLimit: number;
+  }
+) => {
+  const session = await getServerSession(authOptions);
+  return request("PUT", `${baseUrl}/v1/departments/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: payload,
+  });
+};
+
+export const getDepartments = async () => {
+  const session = await getServerSession(authOptions);
+  return request("GET", `${baseUrl}/v1/departments`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  });
+};

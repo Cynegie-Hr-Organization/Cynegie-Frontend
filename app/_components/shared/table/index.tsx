@@ -122,7 +122,12 @@ const Table: React.FC<TableProps> = ({
             return (
               <TablePermissionsCell
                 permissions={rowVal}
-                onClick={onPermissionsClick}
+                onClick={(permissions) =>
+                  onPermissionsClick?.(
+                    permissions,
+                    row[fieldToReturnOnActionItemClick ?? ""]
+                  )
+                }
               />
             );
 
@@ -147,10 +152,13 @@ const Table: React.FC<TableProps> = ({
       debounce((query: string) => {
         onSearch?.(query);
       }, 500),
-    []
+    [onSearch]
   );
 
-  useEffect(() => removeChecks(), [clearChecks]);
+  const _clearChecks = clearChecks;
+  useEffect(() => {
+    if (_clearChecks) removeChecks();
+  }, [_clearChecks, removeChecks]);
 
   return (
     <div className={`flex flex-col ${title && "gap-4"}`}>

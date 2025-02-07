@@ -104,7 +104,7 @@ const HrAdminCreatePayrollPage = ({
         );
       }
     }
-  }, [selectedPayrollData]);
+  }, [selectedPayrollData, employees]);
 
   useEffect(() => {
     if (myEmployeesData) {

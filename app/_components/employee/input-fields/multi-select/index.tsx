@@ -8,12 +8,13 @@ const MultiSelectField: React.FC<Omit<InputFieldProps, "type">> = ({
   control,
   options,
   placeholder,
+  defaultValue,
 }) => {
   return control ? (
     <Controller
       name={name ?? ""}
       control={control}
-      defaultValue={[]}
+      defaultValue={defaultValue}
       render={({ field }) => (
         <Select
           {...field}

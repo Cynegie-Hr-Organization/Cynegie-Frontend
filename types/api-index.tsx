@@ -179,18 +179,34 @@ export type Employee = {
   employmentInformation: EmploymentInformation;
   personalInfo: PersonalInfo;
   compensation: Compensation;
-  documents: string[];
-  NextOfKin: NextOfKin[];
-  accessRights: string[];
+  documents: Document[];
+  nextOfKin: NextOfKin[];
+  accessRights: AccessRight[];
   deletedAt: string | null;
   company: string; // Company ID
   createdAt: string;
   updatedAt: string;
-  id: string | null;
+  id: string;
   grossPay: number;
   netPay: number;
   totalAllowance: number;
   totalDeductions: number;
+};
+
+export type Document = {
+  documentName: string;
+  documentUrl: string;
+  id: string;
+};
+
+export type AccessRight = {
+  _id: string;
+  devices: string[];
+  permissions: {
+    tool: string;
+    id: string;
+    _id: string;
+  }[];
 };
 
 type EmploymentInformation = {
@@ -201,6 +217,7 @@ type EmploymentInformation = {
   employmentStatus: "active" | "on_leave" | "terminated";
   workLocation: string;
   workSchedule: string;
+  workPhoneNumber: string;
   probationPeriod: string;
   contractEndDate: string | null; // ISO date string
   staffId: string;
@@ -214,8 +231,11 @@ type EmploymentInformation = {
 
 type PersonalInfo = {
   firstName: string;
+  middleName?: string;
   lastName: string;
   email: string;
+  idUpload: string;
+  passport: string;
   phoneNumber: string;
   dateOfBirth: string; // ISO date string
   country: string;
@@ -239,7 +259,11 @@ export type Compensation = {
   paymentMethod: string;
   bonusStructure: string;
   commission: number;
-  stockOptions: number;
+  stockOptions: string | number;
+  effectiveDateOfCompensation: string;
+  bankName: string;
+  bankAccountNo: string;
+  routingNumber: string;
   payGrade: string;
   taxIdentificationNumber: string;
   allowance: Allowance[];

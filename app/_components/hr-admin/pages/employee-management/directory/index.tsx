@@ -8,12 +8,15 @@ import SectionWithCards from "@/app/_components/shared/section-with-cards";
 import CardGroup from "@/app/_components/shared/section-with-cards/card-group";
 import SectionCardContainer from "@/app/_components/shared/section-with-cards/container";
 import Table from "@/app/_components/shared/table";
-import { FieldType } from "@/app/_components/shared/table/types";
+import { FieldType, StatusMap } from "@/app/_components/shared/table/types";
 import Toast from "@/app/_components/shared/toast";
 import { color, icon, route } from "@/constants";
-import { ColorVariant } from "@/types";
+import { ColorVariant, FetchParams } from "@/types";
+import { AccessRight, Employee } from "@/types/api-index";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getMyEmployees } from "../../payroll-management/pages/overview/api";
 import PendingApprovalRequests from "./pending-approval-requests";
 
 const chartLabels = [
@@ -37,6 +40,18 @@ const cardIconSize = {
   height: 13.56,
 };
 
+type MappedEmployee = {
+  id: string;
+  name: string;
+  staffID: string;
+  email: string;
+  workEmail: string;
+  jobTitle: string;
+  department: string;
+  permissions: { name: string; value: string }[];
+  //TODO: Add permissions field with type {name: string; id: string}[]
+};
+
 const HrAdminEmployeeDirectory = () => {
   const router = useRouter();
   const cardIcon = (
@@ -52,6 +67,51 @@ const HrAdminEmployeeDirectory = () => {
   const [openEditRequestToast, setOpenEditRequestToast] = useState(false);
 
   const [openPermissionsModal, setOpenPermissionsModal] = useState(false);
+
+  const [selectedEmployee, setSelectedEmployee] = useState<MappedEmployee>();
+
+  const [employees, setEmployees] = useState<MappedEmployee[]>();
+  const [fetchParams, setFetchParams] = useState<FetchParams>({
+    page: 1,
+    limit: 10,
+    sortOrder: "asc",
+  });
+
+  const { data: myEmployees } = useQuery({
+    queryKey: ["employees", fetchParams],
+    queryFn: () => getMyEmployees(fetchParams),
+  });
+
+  useEffect(() => {
+    if (myEmployees) {
+      setEmployees(
+        myEmployees.data.map((employee: Employee) => ({
+          id: employee.id,
+          name: `${employee.personalInfo.firstName} ${employee.personalInfo.lastName}`,
+          staffID: employee.employmentInformation.staffId,
+          email: employee.personalInfo.email,
+          workEmail: employee.employmentInformation.workEmail,
+          jobTitle: employee.employmentInformation.jobTitle,
+          department: employee.employmentInformation.department.departmentName,
+          permissions: (
+            employee.accessRights[0] as AccessRight
+          )?.permissions.map((permission) => ({
+            name: permission.tool,
+            value: permission.id,
+          })),
+        }))
+      );
+    } else {
+      setEmployees(undefined);
+    }
+  }, [myEmployees]);
+
+  const statusMap = employees
+    ?.map((employee) => employee.department)
+    .reduce<StatusMap>((obj, item) => {
+      obj[item] = "warning";
+      return obj;
+    }, {});
 
   return (
     <Page
@@ -208,7 +268,7 @@ const HrAdminEmployeeDirectory = () => {
       <Table
         title="Employee Directory"
         hasActionsColumn
-        hasCheckboxes
+        // hasCheckboxes
         headerRowData={[
           "Employee Full Name",
           "Staff ID",
@@ -217,62 +277,56 @@ const HrAdminEmployeeDirectory = () => {
           "Department",
           "Permissions",
         ]}
-        bodyRowData={Array(5)
-          .fill({
-            name: "Ayomide Alibaba",
-            id: "CYN02345",
-            email: "ayoalibaba@cynegie.com",
-            jobTitle: "Sales Director",
-            department: "Sales",
-            permissions: [
-              { name: "Mailchimp", value: "simbi.mailchimp.com" },
-              { name: "Behance ID", value: "simbi.behance.com" },
-            ],
-          })
-          .map((row, index) => ({ ...row, index: index }))}
+        bodyRowData={employees}
         fieldTypes={[
           ...Array(4).fill(FieldType.text),
+          // FieldType.text,
           FieldType.status,
+          // TODO: Find a way to show the departments as status
           FieldType.permissions,
         ]}
         displayedFields={[
           "name",
-          "id",
+          "staffID",
           "email",
           "jobTitle",
           "department",
           "permissions",
         ]}
-        statusMap={{ Sales: "warning" }}
-        filters={[
-          {
-            name: "Deparment",
-            items: ["All", "Sales"],
-          },
-          {
-            name: "Position",
-            items: ["All", "Regional Manager"],
-          },
-        ]}
+        statusMap={statusMap}
+        //TODO: Notify backend to allow department and position filtering
+        // filters={
+        //   [
+        //     // {
+        //     //   name: "Deparment",
+        //     //   items: ["All", "Sales"],
+        //     // },
+        //     // {
+        //     //   name: "Position",
+        //     //   items: ["All", "Regional Manager"],
+        //     // },
+        //   ]
+        // }
         actions={[
           {
             name: "Edit Employee Details",
             onClick: () => {},
-            onDataReturned: (index) => {
-              if (index === 0) {
-                setOpenEditRequestModal(true);
-              } else {
-                router.push(
-                  route.hrAdmin.employeeManagement.directory.editEmployee
-                );
-              }
+            onDataReturned: (id) => {
+              // if (index === 0) {
+              //   setOpenEditRequestModal(true);
+              // } else {
+              router.push(
+                `${route.hrAdmin.employeeManagement.directory.editEmployee}/${id}`
+              );
             },
+            // },
           },
           {
             name: "View Employee Details",
-            onClick: () =>
+            onClick: () => {},
+            onDataReturned: (id) =>
               router.push(
-                route.hrAdmin.employeeManagement.directory.viewEmployee
+                `${route.hrAdmin.employeeManagement.directory.home}/${id}`
               ),
           },
           {
@@ -280,12 +334,27 @@ const HrAdminEmployeeDirectory = () => {
             onClick: () => setOpenTerminateEmployeeModal(true),
           },
         ]}
-        fieldToReturnOnActionItemClick="index"
-        onPermissionsClick={
-          (/*permissions*/) => {
-            setOpenPermissionsModal(true);
-          }
-        }
+        fieldToReturnOnActionItemClick="id"
+        onPermissionsClick={(permissions, id) => {
+          const foundEmployee = employees?.filter(
+            (employee) => employee.id === id
+          )?.[0];
+          console.log(foundEmployee);
+          setSelectedEmployee(foundEmployee);
+          setOpenPermissionsModal(true);
+        }}
+        onSearch={(query) => setFetchParams({ ...fetchParams, search: query })}
+        paginationMeta={{
+          ...myEmployees?.meta,
+          itemsOnPage: employees?.length,
+          loading: employees ? false : true,
+          onChangeLimit: (limit) =>
+            setFetchParams({ ...fetchParams, limit: limit }),
+          onPrevClick: () =>
+            setFetchParams({ ...fetchParams, page: fetchParams.page - 1 }),
+          onNextClick: () =>
+            setFetchParams({ ...fetchParams, page: fetchParams.page + 1 }),
+        }}
       />
       {openTerminateEmployeeModal && (
         <Modal
@@ -364,7 +433,11 @@ const HrAdminEmployeeDirectory = () => {
       {openPermissionsModal && (
         <Modal
           open={openPermissionsModal}
-          onClose={() => setOpenPermissionsModal(false)}
+          // open={true}
+          onClose={() => {
+            setOpenPermissionsModal(false);
+            // setSelectedEmployee(undefined);
+          }}
           title="Permissions"
           subtitle="See assigned permissions below"
           form={{
@@ -373,7 +446,7 @@ const HrAdminEmployeeDirectory = () => {
               {
                 label: "Work Email",
                 type: "text",
-                value: "simbi@cynergie.com",
+                value: selectedEmployee?.workEmail,
                 disabled: true,
               },
               {
@@ -381,13 +454,9 @@ const HrAdminEmployeeDirectory = () => {
                 addItemsProps: {
                   gridCols: { xs: 1, sm: 2, md: 2, lg: 2 },
                   addText: "Add More Permissions",
-                  addedItems: [
-                    {
-                      name: "Mailchimp",
-                      value: "simbi@mailchimp.com",
-                    },
-                  ],
+                  addedItems: selectedEmployee?.permissions,
                   allItems: ["Behance", "Mailchimp", "Figma", "Slack"],
+                  showFieldLabels: true,
                 },
               },
             ],

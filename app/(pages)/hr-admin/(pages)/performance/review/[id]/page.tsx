@@ -1,15 +1,15 @@
 "use client";
 
-import { LuDownload, LuPlusCircle, LuTrash } from "react-icons/lu";
-import { IoIosArrowDown } from "react-icons/io";
-import ReviewTable from "../table";
+import AppButton from "@/app/_components/shared/button";
+import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
+import { fetchReviewCycleById } from "@/app/api/services/performance/review cycle";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
-import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
-import AppButton from "@/app/_components/shared/button";
-import { fetchReviewCycleById } from "@/app/api/services/performance/review cycle";
 import { useParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { IoIosArrowDown } from "react-icons/io";
+import { LuCirclePlus, LuDownload, LuTrash } from "react-icons/lu";
+import ReviewTable from "../table";
 
 const PerformanceReview = () => {
   const [reviewCycleData, setReviewCycleData] = useState(null);
@@ -85,7 +85,7 @@ const PageHeader = () => {
 
         <AppButton
           label="New Review Cycle"
-          rightIcon={<LuPlusCircle />}
+          rightIcon={<LuCirclePlus />}
           className="bg-primary text-white border border-primary"
         />
       </div>

@@ -1,16 +1,16 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import CardLayout from "@/app/_components/shared/cards";
+import AppMenubar from "@/app/_components/shared/menubar";
 import { AppPieChart } from "@/app/_components/shared/piechart";
 import { ChartConfig } from "@/components/ui/chart";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Avatar } from "@mui/material";
+import { useEffect, useState } from "react";
 import { GoDotFill } from "react-icons/go";
 import { LuListFilter } from "react-icons/lu";
+import { PiDotsThreeVerticalBold } from "react-icons/pi";
 import { RiSearchLine } from "react-icons/ri";
-import AppMenubar from "@/app/_components/shared/menubar";
-import { LuMoreVertical } from "react-icons/lu";
-import { Checkbox } from "@/components/ui/checkbox";
 
 interface IPieChartData {
   task: string;
@@ -268,7 +268,7 @@ const EmployeesTable = () => {
                           },
                         ]}
                       >
-                        <LuMoreVertical />
+                        <PiDotsThreeVerticalBold />
                       </AppMenubar>
                     </td>
                   </tr>

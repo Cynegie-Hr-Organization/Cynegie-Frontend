@@ -59,7 +59,7 @@ const HrAdminPayrollBenefitsManagementPage = () => {
     clearErrors,
   } = useForm();
 
-  const startDate = watch("startDate");
+  const startDate = watch("Start Date");
   const endDate = watch("End Date");
 
   const { data: benefitsSummaryData } = useQuery({
@@ -134,7 +134,7 @@ const HrAdminPayrollBenefitsManagementPage = () => {
         clearErrors("Start Date");
       }
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, clearErrors, setError]);
 
   return (
     <Page

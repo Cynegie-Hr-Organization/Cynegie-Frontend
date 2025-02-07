@@ -47,6 +47,7 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
         name={name ?? ""}
         control={control}
         rules={controllerRules}
+        defaultValue={defaultValue}
         render={({ field /*fieldState*/ }) => (
           <DatePicker
             {...field}

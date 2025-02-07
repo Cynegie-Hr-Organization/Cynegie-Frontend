@@ -13,6 +13,7 @@ import dayjs, { Dayjs } from "dayjs";
 import AddItems from "../../custom-popover/content/add-items";
 import FieldLabel from "../../detail-group/detail/value";
 import DragUpload from "../../drag-upload";
+import DragUploadHookForm from "../../drag-upload/hook-form";
 
 const InputField: React.FC<InputFieldProps> = ({
   label: name,
@@ -39,6 +40,13 @@ const InputField: React.FC<InputFieldProps> = ({
   hookFormField,
   required,
   controllerRules,
+  hookFormName,
+  hookFormSetValue,
+  hookFormGetValues,
+  hookFormResetField,
+  hookFormClearErrors,
+  hookFormWatch,
+  // hookFormUnregister,
 }) => {
   return (
     <div className="flex flex-col gap-2">
@@ -59,6 +67,7 @@ const InputField: React.FC<InputFieldProps> = ({
               register={register}
               errors={errors}
               required={required}
+              hookFormName={hookFormName}
             />
           )}
           {type == "message" && (
@@ -73,13 +82,18 @@ const InputField: React.FC<InputFieldProps> = ({
               options={options}
               placeholder={placeholder ?? "Select"}
               value={value}
-              defaultValue={defaultValue}
+              defaultValue={
+                typeof defaultValue === "string" ||
+                typeof defaultValue === "number"
+                  ? defaultValue
+                  : undefined
+              }
               setValue={setValue}
               valueControlledFromOutside={selectValControlledFromOutside}
               getCurrentValue={getCurrentValue}
               control={control}
               hookFormField={hookFormField}
-              name={name}
+              name={hookFormName ?? name}
               errors={errors}
               controllerRules={controllerRules}
             />
@@ -90,7 +104,11 @@ const InputField: React.FC<InputFieldProps> = ({
             <CustomDatePicker
               // value={dayjs(value)}
               {...(value && { value: dayjs(value) })}
-              {...(defaultValue && { defaultValue: dayjs(defaultValue) })}
+              {...(defaultValue && {
+                defaultValue: dayjs(
+                  typeof defaultValue === "string" ? defaultValue : undefined
+                ),
+              })}
               disabled={disabled}
               // onChange={(newValue) => getDate?.(newValue)}
               {...(getDate && { onChange: (newValue) => getDate?.(newValue) })}
@@ -120,7 +138,33 @@ const InputField: React.FC<InputFieldProps> = ({
           )}
           {type == "drag-upload" && (
             <div>
-              <DragUpload />
+              <DragUpload
+                name={name}
+                hookFormSetValue={hookFormSetValue}
+                hookFormGetValues={hookFormGetValues}
+                required={required}
+                register={register}
+                hookFormResetField={hookFormResetField}
+                hookFormErrors={errors}
+                hookFormClearErrors={hookFormClearErrors}
+                hookFormWatch={hookFormWatch}
+              />
+            </div>
+          )}
+          {type == "drag-upload-hook-form" && (
+            <div>
+              <DragUploadHookForm
+                name={hookFormName ?? name}
+                hookFormGetValues={hookFormGetValues}
+                required={required}
+                register={register}
+                hookFormResetField={hookFormResetField}
+                hookFormErrors={errors}
+                hookFormWatch={hookFormWatch}
+                defaultValue={
+                  typeof defaultValue === "string" ? defaultValue : undefined
+                }
+              />
             </div>
           )}
           {type == "multi-select" && (
@@ -129,6 +173,7 @@ const InputField: React.FC<InputFieldProps> = ({
               label={name}
               control={control}
               placeholder={placeholder}
+              defaultValue={defaultValue}
             />
           )}
           {type === "add-items" && addItemsProps && (

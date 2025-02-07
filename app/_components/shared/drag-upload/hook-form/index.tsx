@@ -5,11 +5,9 @@ import React, { useEffect, useState } from "react";
 import {
   FieldErrors,
   FieldValues,
-  UseFormClearErrors,
   UseFormGetValues,
   UseFormRegister,
   UseFormResetField,
-  UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
 
@@ -49,74 +47,43 @@ export const AddedFile: React.FC<AddedFileProps> = (props) => {
   );
 };
 
-const DragUpload = ({
-  onFileChange,
-  name,
-  hookFormSetValue: setValue,
+const DragUploadHookForm = ({
+  name: name,
   hookFormGetValues,
   hookFormResetField,
   register,
   required,
-  // hookFormWatch,
+  hookFormWatch,
   hookFormErrors,
-  hookFormClearErrors,
+  defaultValue,
 }: {
   onFileChange?: (file: File | null) => void;
   name?: string;
-  hookFormSetValue?: UseFormSetValue<FieldValues>;
   register?: UseFormRegister<FieldValues>;
   required?: boolean;
   hookFormGetValues?: UseFormGetValues<FieldValues>;
   hookFormResetField?: UseFormResetField<FieldValues>;
   hookFormWatch?: UseFormWatch<FieldValues>;
   hookFormErrors?: FieldErrors<FieldValues>;
-
-  hookFormClearErrors?: UseFormClearErrors<FieldValues>;
+  defaultValue?: string | number;
 }) => {
-  const [file, setFile] = useState<File | null>(null);
-  const [fileUrl, setFileUrl] = useState<string | null>(null);
-
-  const handleFileDrop = (event: React.DragEvent) => {
-    event.preventDefault();
-    const droppedFile = event.dataTransfer.files[0];
-    if (droppedFile) {
-      setFile(droppedFile);
-    }
-  };
-
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setFileUrl(selectedFile.name);
-      onFileChange?.(selectedFile);
-      if (name) {
-        setValue?.(name, selectedFile);
-      }
-    }
-  };
+  const file = hookFormWatch?.(name ?? "");
+  const fileSet = file?.length > 0;
+  const [_defaultValue, setDefaultValue] = useState(defaultValue);
 
   const handleRemoveFile = () => {
-    setFile(null);
-    setFileUrl(null);
-    onFileChange?.(null);
-    if (name) {
-      hookFormResetField?.(name);
-      hookFormClearErrors?.(name);
-      // setValue?.(name, undefined);
-    }
+    hookFormResetField?.(name ?? "");
   };
 
   useEffect(() => {
-    if (hookFormGetValues) {
-      const file = hookFormGetValues(name ?? "");
-      console.log(file);
-      if (file) {
-        setFile(file);
-        setFileUrl(file.name);
+    if (defaultValue) {
+      if (file !== defaultValue) {
+        setDefaultValue(undefined);
+      } else {
+        setDefaultValue(defaultValue);
       }
     }
-  }, [hookFormGetValues, name]);
+  }, [file, defaultValue]);
 
   return (
     <>
@@ -125,13 +92,11 @@ const DragUpload = ({
           marginBottom: "3px",
           padding: "10px",
           border: "2px dashed #DFDFDF",
-          cursor: fileUrl ? "default" : "pointer",
+          cursor: fileSet ? "default" : "pointer",
           maxWidth: "none",
         }}
-        onDragOver={fileUrl ? () => {} : (e) => e.preventDefault()}
-        onDrop={fileUrl ? () => {} : handleFileDrop}
         onClick={
-          fileUrl
+          fileSet
             ? () => {}
             : () => document.getElementById(name ?? "fileInput")?.click()
         }
@@ -142,23 +107,27 @@ const DragUpload = ({
             id={name ?? "fileInput"}
             accept=".pdf, .doc, .docx"
             hidden
-            {...(!register
-              ? { onChange: handleFileSelect }
-              : register(name ?? "", {
-                  required:
-                    // required
-                    // ?
-                    // &&
-                    hookFormGetValues?.(name ?? "") === undefined &&
-                    required &&
-                    `${name} is required`,
-                  // : false,
-                  onChange: handleFileSelect,
-                }))}
+            {...register?.(name ?? "", {
+              required:
+                (!fileSet || !hookFormGetValues?.(name ?? "")) &&
+                required &&
+                `${name} is required`,
+              value: defaultValue,
+            })}
           />
-          {fileUrl ? (
+          {hookFormGetValues?.(name ?? "")?.length > 0 ? (
             <div>
-              <AddedFile name={file?.name} onRemoveClick={handleRemoveFile} />
+              <AddedFile
+                name={
+                  typeof _defaultValue === "string"
+                    ? _defaultValue.length === 0
+                      ? hookFormGetValues?.(name ?? "")?.[0]?.name
+                      : _defaultValue
+                    : _defaultValue ??
+                      hookFormGetValues?.(name ?? "")?.[0]?.name
+                }
+                onRemoveClick={handleRemoveFile}
+              />
             </div>
           ) : (
             <div className="flex items-center justify-center">
@@ -180,4 +149,4 @@ const DragUpload = ({
   );
 };
 
-export default DragUpload;
+export default DragUploadHookForm;
