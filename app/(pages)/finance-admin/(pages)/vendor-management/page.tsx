@@ -11,7 +11,7 @@ import { VendorTable } from "./components/tables";
 
 const FinanceAdminVendors = () => {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 mb-6">
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-bold text-black font-roboto">Vendor Management </h3>
         <AddVendorModal trigger={
