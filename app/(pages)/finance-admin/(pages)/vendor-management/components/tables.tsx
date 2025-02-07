@@ -1,7 +1,7 @@
 "use client"
 
 import EditVendorModal from "@/app/(pages)/finance-admin/(pages)/vendor-management/components/edit-modal";
-import OtherActionsModal from "@/app/(pages)/finance-admin/(pages)/vendor-management/components/other-actions-modal";
+import OtherActionsModal, { vendorStatus } from "@/app/(pages)/finance-admin/(pages)/vendor-management/components/other-actions-modal";
 import PreviewModal from "@/app/(pages)/finance-admin/(pages)/vendor-management/components/preview-modal";
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
@@ -149,13 +149,7 @@ export const VendorTable = () => {
                       </p>
                     </td>
                     <td className='px-4 py-4'>
-                      <div className="border border-gray-300 rounded-lg p-1 w-max">
-                        <PopoverMenu vendor={vendor}
-                        />
-                      </div>
-
-
-
+                      <PopoverMenu vendor={vendor} />
                     </td>
                   </tr>
                 );
@@ -200,30 +194,43 @@ const PopoverMenu: React.FC<{ vendor: IVendor }> = ({ vendor }) => {
     otherActionsModal: false
   });
 
+  const menuActions = [
+    {
+      slug: "view-details",
+      label: "View Details",
+      onSelect: () => setModalState({ ...modalState, previewModal: true }),
+    },
+    {
+      slug: "edit-details",
+      label: "Edit Details",
+      onSelect: () => setModalState({ ...modalState, editModal: true }),
+    },
+    {
+      slug: "other-actions",
+      label: `${vendor?.status === vendorStatus.ACTIVE_VENDOR ? "Deactivate" : "Activate"}`,
+      onSelect: () => setModalState({ ...modalState, otherActionsModal: true }),
+      className: "cursor-pointer hover:!bg-red-50 text-red-700 hover:!text-red-700 rounded-lg"
+    }
+  ]
+
   return (
     <>
       <DropdownMenu open={modalState.popOver} onOpenChange={() => setModalState({ ...modalState, popOver: !modalState.popOver })}>
         <DropdownMenuTrigger asChild>
-          <button className='cursor-pointer outline-none p-1'>
+          <button className='cursor-pointer outline-none p-2 border border-gray-300 rounded-lg w-max'>
             <HiDotsVertical />
           </button>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent className="w-40 bg-white">
-          <DropdownMenuItem className="cursor-pointer"
-            onSelect={() => setModalState({ ...modalState, previewModal: true })}>
-            <span>View Details</span>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onSelect={() => setModalState({ ...modalState, editModal: true })}>
-            <span>Edit Details</span>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem className="cursor-pointer">
-            <span>Other Actions</span>
-          </DropdownMenuItem>
+          {menuActions.map((action) => (
+            <DropdownMenuItem
+              key={action.slug}
+              className={`cursor-pointer ${action.className ?? ''}`}
+              onSelect={action.onSelect}>
+              <span>{action.label}</span>
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuContent>
       </DropdownMenu>
 
