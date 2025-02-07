@@ -128,19 +128,19 @@ export const VendorTable = () => {
               {(vendors && (vendors?.length ?? 0) > 0) ? vendors?.reverse().map((vendor) => {
                 return (
                   <tr key={vendor?.id} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
-                    <td className='px-4 py-4'>
+                    <td className='px-4 py-3'>
                       <p className='text-sm'>{vendor?.vendorName}</p>
                     </td>
-                    <td className='px-4 py-4'>
+                    <td className='px-4 py-3'>
                       <p className='text-sm'>{vendor?.contactPerson}</p>
                     </td>
-                    <td className='px-4 py-4'>
+                    <td className='px-4 py-3'>
                       <p className='text-sm'>{vendor?.contactEmail}</p>
                     </td>
-                    <td className='px-4 py-4'>
+                    <td className='px-4 py-3'>
                       <p className='text-sm'>{vendor?.paymentTerms}</p>
                     </td>
-                    <td className='px-4 py-4'>
+                    <td className='px-4 py-3'>
                       <p className={`text-xs font-semibold rounded-full px-2 py-1 w-fit text-nowrap capitalize ${{
                         "pending": "bg-amber-50 text-amber-700",
                         "active": "bg-green-50 text-green-700",
@@ -148,7 +148,7 @@ export const VendorTable = () => {
                       }[vendor?.status]}`}>{vendor?.status}
                       </p>
                     </td>
-                    <td className='px-4 py-4'>
+                    <td className='px-4 py-3'>
                       <PopoverMenu vendor={vendor} />
                     </td>
                   </tr>

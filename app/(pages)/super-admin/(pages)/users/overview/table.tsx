@@ -31,6 +31,7 @@ const UsersOverviewTable = () => {
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   )
+  const totalPages = Math.ceil((users?.length ?? 0) / (paginatedUsers?.length ?? 0))
 
   const tableHeader = [
     "User ID",
@@ -170,6 +171,7 @@ const UsersOverviewTable = () => {
       )}
 
       <AppPagination
+        totalPages={totalPages}
         totalItems={users?.length || 0}
         itemsPerPage={rowsPerPage}
         currentPage={currentPage}
