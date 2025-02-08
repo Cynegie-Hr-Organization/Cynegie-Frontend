@@ -8,9 +8,9 @@ import { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { AppPagination } from "@/app/_components/shared/pagination";
 import { AppSelect } from "@/app/_components/shared/select";
 import TableSkeleton from "@/app/_components/shared/skelentons/table";
-import { ICompanyUser } from "@/app/_core/interfaces/user";
-import { useAllUsers } from "@/app/_core/use-cases/superadmin/useUser";
-import { AppModal } from "@/components/drawer/modal";
+import { IEmployee } from "@/app/_core/actions/user/employee";
+import { useEmployeeMutations, useEmployees } from "@/app/_core/use-cases/user/employee";
+import { AppModal2 } from "@/components/drawer/modal";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -19,19 +19,20 @@ import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 
 const UsersOverviewTable = () => {
-  const { data, isLoading } = useAllUsers()
+  const { data, isLoading } = useEmployees({})
+  const [filter, setFilter] = useState({
+    page: 1,
+    limit: 5,
+    search: '',
+    status: undefined
+  })
+
+
   const { data: users } = data ?? {};
+  const { meta: pagination } = data ?? {};
+  const { itemCount, limit, page, totalPages } = pagination ?? {}
 
-  // State for managing rows per page and current page
-  const [rowsPerPage, setRowsPerPage] = useState(5)
-  const [currentPage, setCurrentPage] = useState(1)
 
-  // Dummy data slicing based on rows per page
-  const paginatedUsers = users?.slice(
-    (currentPage - 1) * rowsPerPage,
-    currentPage * rowsPerPage
-  )
-  const totalPages = Math.ceil((users?.length ?? 0) / (paginatedUsers?.length ?? 0))
 
   const tableHeader = [
     "User ID",
@@ -127,16 +128,19 @@ const UsersOverviewTable = () => {
                   ))}
                 </tr>
               </thead>
-              <tbody className="h-[300px]">
-                {(paginatedUsers && paginatedUsers.length > 0) ? (
-                  paginatedUsers?.map((user, idx) => {
+              <tbody className="">
+                {(users && users.length > 0) ? (
+                  users?.map((user, idx) => {
+                    const { personalInfo } = user ?? {};
+                    const { employmentInformation } = user ?? {};
+
                     return (
-                      <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054] h-[60px]'>
+                      <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
                         <td className='px-4 py-4'>
                           <p className='text-sm'>{user?.id}</p>
                         </td>
                         <td className='px-4 py-4 capitalize'>
-                          <p className='text-sm'>{user?.firstName ?? 'NIL'} {user?.lastName ?? 'NIL'}</p>
+                          <p className='text-sm'>{personalInfo?.firstName ?? 'NIL'} {personalInfo?.lastName ?? 'NIL'}</p>
                         </td>
                         <td className='px-4 py-4'>
                           <div className="flex items-center gap-x-2">
@@ -149,11 +153,13 @@ const UsersOverviewTable = () => {
                                 className="rounded-full w-auto h-auto object-cover"
                               />
                             </div> */}
-                            <p className='text-sm'>{user?.role ?? 'NIL'}</p>
+                            <p className='text-sm'>{employmentInformation?.jobTitle ?? 'NIL'}</p>
                           </div>
                         </td>
                         <td className='px-4 py-4'>
-                          <p className={`text-xs font-semibold ${getStatusColor(user?.status)} rounded-full px-2 py-1 w-fit text-nowrap`}>{user?.status}</p>
+                          <p className={`text-xs font-semibold ${getStatusColor(employmentInformation?.employmentStatus)} rounded-full px-2 py-1 w-fit text-nowrap`}>
+                            {employmentInformation?.employmentStatus ?? 'NIL'}
+                          </p>
                         </td>
                         <td className='px-4 py-4'>
                           <PopoverMenu user={user} />
@@ -171,12 +177,12 @@ const UsersOverviewTable = () => {
       )}
 
       <AppPagination
-        totalPages={totalPages}
-        totalItems={users?.length || 0}
-        itemsPerPage={rowsPerPage}
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-        onItemsPerPageChange={setRowsPerPage}
+        totalPages={totalPages ?? 0}
+        totalItems={itemCount ?? 0}
+        itemsPerPage={limit ?? 0}
+        currentPage={page}
+        onPageChange={(value) => setFilter({ ...filter, page: value })}
+        onItemsPerPageChange={(value) => setFilter({ ...filter, limit: value })}
       />
     </div>
   )
@@ -187,44 +193,68 @@ const UsersOverviewTable = () => {
 
 
 
-function PopoverMenu({ user }: { user?: ICompanyUser }) {
-  const [isOpen, setIsOpen] = useState(false);
+function PopoverMenu({ user }: { user?: IEmployee }) {
+  const [toggleModal, setToggleModal] = useState({
+    popOver: false,
+    deleteModal: false,
+  });
   const router = useRouter();
 
   return (
-    <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger asChild>
-        <button className='cursor-pointer outline-none p-1 border border-gray-300 rounded-lg'>
-          <HiDotsVertical />
-        </button>
-      </PopoverTrigger>
+    <>
+      <Popover open={toggleModal.popOver} onOpenChange={() => setToggleModal({ ...toggleModal, popOver: !toggleModal.popOver })}>
+        <PopoverTrigger asChild>
+          <button className='cursor-pointer outline-none p-2 border border-gray-300 rounded-lg'>
+            <HiDotsVertical />
+          </button>
+        </PopoverTrigger>
 
-      <PopoverContent className='w-40 p-2 bg-white cursor-pointer rounded-lg flex flex-col items-start text-[#475367]'>
-        <button className="hover:bg-gray-100 w-full text-left p-2 rounded-md" onClick={() => router.push(`/super-admin/users/overview/${user?.id}`)}>View User Details</button>
-        <DeleteModal trigger={<button className="hover:bg-gray-100 w-full text-left p-2 rounded-md text-red-500">Delete User</button>} />
-      </PopoverContent>
-    </Popover>
+        <PopoverContent className='w-40 p-2 bg-white cursor-pointer rounded-lg flex flex-col items-start text-[#475367]'>
+          <button
+            onClick={() => router.push(`/super-admin/users/overview/${user?.id}`)}
+            className="hover:bg-gray-100 w-full text-left p-2 rounded-md"
+          >View user details</button>
+          <button
+            onClick={() => setToggleModal({ ...toggleModal, deleteModal: true })}
+            className="hover:bg-gray-100 w-full text-left p-2 rounded-md text-red-500"
+          >Delete user</button>
+        </PopoverContent>
+      </Popover>
+
+      <DeleteModal isOpen={toggleModal.deleteModal} onClose={() => setToggleModal({ ...toggleModal, deleteModal: false })} employee={user} />
+    </>
   );
 }
 
 
 
-const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const DeleteModal = ({ isOpen, onClose, employee }: { isOpen: boolean, onClose: () => void, employee?: IEmployee }) => {
+  const { firstName, lastName, id } = employee?.personalInfo ?? {}
+  const [deletionReason, setDeletionReason] = useState('');
+  const { deleteUser } = useEmployeeMutations();
+  const isLoading = deleteUser.isPending;
+  // const currentGender = (() => gender === "male" ? 'he' : gender === "female" ? 'she' : 'they')();
+
+  const handleDeletion = () => {
+    deleteUser.mutate({ id: employee?.id ?? '', deletionReason }, {
+      onSuccess: () => {
+        onClose()
+      },
+    })
+  };
 
   return (
-    <AppModal
-      trigger={trigger}
+    <AppModal2
       open={isOpen}
-      setOpen={setIsOpen}
+      onClose={onClose}
       header={
         <span className="text-lg font-bold text-center">
           <span className="flex flex-col items-center justify-center gap-y-6">
             <DeleteSvg />
             <span className="flex flex-col items-center justify-center gap-y-2">
-              <span>Delete User</span>
+              <span>Delete user <span className="capitalize">{firstName} {lastName}</span></span>
               <span className="text-sm font-normal text-black max-w-[367px] text-center">
-                If you delete this user, it will be removed from the database list and it will be inaccessible
+                If you delete this user record, it will be removed from the database list and it will be inaccessible
               </span>
             </span>
           </span>
@@ -235,11 +265,12 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
           <AppButton
             label="Cancel"
             className="bg-white border-2 border-gray-400 text-gray-500 md:w-[150px] w-full"
-            onClick={() => setIsOpen(false)} />
+            onClick={onClose} />
           <AppButton
             label="Delete User"
             className="bg-red-700 text-white md:w-[150px] w-full border border-red-700"
-            onClick={() => setIsOpen(false)}
+            isLoading={isLoading}
+            onClick={handleDeletion}
           />
         </div>
       }
@@ -250,11 +281,11 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
           label="Why are you deleting the user?"
           id="reason"
           placeholder="Enter reason"
-          value=""
-          onChange={(e) => console.log(e.target.value)}
+          value={deletionReason}
+          onChange={(e) => setDeletionReason(e.target.value)}
         />
       </div>
-    </AppModal>
+    </AppModal2>
   )
 }
 

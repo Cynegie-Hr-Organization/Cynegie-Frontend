@@ -40,12 +40,31 @@ export const getAllEmployees = async (query?: {
 }
 
 
+export const getEmployee = async (id: string) => {
+  if (!id) throw new Error('id is required')
+
+  try {
+    const session = await getSession();
+    const { data } = await Http.get<IEmployee>(`employees/${id}`, {
+      headers: await headers(session?.token ?? ''),
+    });
+
+    // console.log(data);
+    return data
+
+  } catch (error) { throw handleError(error) }
+}
 
 
 
 
 
 
+
+
+
+export type IEmployeeStatus = 'active' | 'on_leave' | 'terminated';
+export type EmploymentType = 'full_time' | 'part_time' | 'contract';
 
 export interface Allowance {
   allowanceName: string;
@@ -61,19 +80,19 @@ export interface Deduction {
   id: string;
 }
 
-export interface Document {
+export interface EmployeeDocuments {
   documentName: string;
   documentUrl: string;
   id: string;
 }
 
 export interface NextOfKin {
-  firstName: string;
-  lastName: string;
+  fName: string;
+  lName: string;
   gender: string;
   relationship: string;
-  phoneNumber: string;
-  email: string;
+  nextPhoneNumber: string;
+  nextemail: string;
   createdAt: string;
   updatedAt: string;
   id: string;
@@ -88,8 +107,8 @@ export interface EmploymentInformation {
   jobTitle: string;
   department: Department;
   manager: string;
-  employmentType: 'full_time' | 'part_time' | 'contract';
-  employmentStatus: 'active' | 'on_leave' | 'terminated';
+  employmentType: EmploymentType;
+  employmentStatus: IEmployeeStatus;
   workLocation: string;
   workSchedule: string;
   probationPeriod: string;
@@ -140,10 +159,17 @@ export interface Compensation {
   id: string;
 }
 
+
+export interface AccessRightsPermissions {
+  tool: string;
+  id: string;
+  _id: string;
+}
+
 export interface AccessRights {
   _id: string;
   devices: string[];
-  permissions: string[];
+  permissions: AccessRightsPermissions[];
 }
 
 export interface IEmployee {
@@ -152,7 +178,7 @@ export interface IEmployee {
   employmentInformation: EmploymentInformation;
   personalInfo: PersonalInfo;
   compensation: Compensation;
-  documents: Document[];
+  documents: EmployeeDocuments[];
   NextOfKin: string[];
   accessRights: AccessRights[];
   deletedAt: string | null;

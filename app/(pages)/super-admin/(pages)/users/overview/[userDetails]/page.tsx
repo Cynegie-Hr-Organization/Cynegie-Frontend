@@ -1,14 +1,14 @@
 'use client'
 
 import AppTabs from "@/app/_components/shared/tabs";
-import { useUser } from "@/app/_core/use-cases/superadmin/useUser";
+import { useGetEmployee } from "@/app/_core/use-cases/user/employee";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
-import { Compensation } from "./components/compensation";
-import { Documents } from "./components/documents";
-import { EmploymentInformation } from "./components/employment-information";
-import { EquipmentAccess } from "./components/equipment-access";
+import { CompensationTab } from "./components/compensation";
+import { DocumentsInformation } from "./components/documents";
+import { EmploymentInformationComponent } from "./components/employment-information";
+import { EquipmentAccessInformation } from "./components/equipment-access";
 import PersonalInformation from "./components/personal-informations";
 
 
@@ -21,8 +21,7 @@ const UserDetailsPage = () => {
   const [activeTab, setActiveTab] = useState<DetailsTabLabel>('personal-information');
   const router = useRouter();
   const id = useParams().userDetails as string
-  const { data, isLoading } = useUser({ id })
-  const { data: userData } = data ?? {};
+  const { data: userData, isLoading } = useGetEmployee({ id })
 
 
   const tabs = [
@@ -68,10 +67,10 @@ const UserDetailsPage = () => {
         <div className="common-card mx-4 md:mx-0">
           <div className="p-4 border border-gray-200 rounded-xl">
             {activeTab === 'personal-information' && <PersonalInformation userData={userData} isLoading={isLoading} />}
-            {activeTab === 'employment-information' && <EmploymentInformation userData={userData} />}
-            {activeTab === 'compensation' && <Compensation userData={userData} />}
-            {activeTab === 'documents' && <Documents userData={userData} />}
-            {activeTab === 'equipments-access' && <EquipmentAccess userData={userData} />}
+            {activeTab === 'employment-information' && <EmploymentInformationComponent userData={userData?.employmentInformation} />}
+            {activeTab === 'compensation' && <CompensationTab userData={userData?.compensation} />}
+            {activeTab === 'documents' && <DocumentsInformation userData={userData?.documents} />}
+            {activeTab === 'equipments-access' && <EquipmentAccessInformation userData={userData?.accessRights} />}
           </div>
         </div>
       </div>

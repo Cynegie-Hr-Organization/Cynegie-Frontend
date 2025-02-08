@@ -1,52 +1,83 @@
-import { ICompanyUser } from "@/app/_core/interfaces/user";
-import DetailBlock from "./details-block";
+import DetailBlock from "@/app/(pages)/super-admin/(pages)/users/overview/[userDetails]/components/details-block"
+import { Compensation } from "@/app/_core/actions/user/employee"
 
-export const Compensation = ({ userData }: { userData?: ICompanyUser }) => {
+
+
+
+const formatCurrency = (currency: string | number) => `N${currency}`
+
+export const CompensationTab = ({ userData }: { userData?: Compensation }) => {
+  const {
+    baseSalary,
+    salaryFrequency,
+    overtime,
+    taxFilingStatus,
+    paymentMethod,
+    bonusStructure,
+    commission,
+    stockOptions,
+    payGrade,
+    taxIdentificationNumber,
+    allowance,
+    deduction
+  } = userData ?? {}
+
+
+
   return (
     <div className="space-y-11">
       <div className="space-y-5">
-        <h3 className="text-base font-semibold text-primary">Compensation</h3>
+        <h3 className="text-base font-semibold text-primary">Compensation Details</h3>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <DetailBlock label="Base Salary" value="N 110,,000.00" />
-          <DetailBlock label="Salary Frequency" value="Monthly" />
-          <DetailBlock label="Bonus Structure" value="11%" />
-          <DetailBlock label="Comission" value="-" />
+          <DetailBlock label="Base Salary" value={baseSalary ? formatCurrency(baseSalary) : 'NIL'} />
+          <DetailBlock label="Salary Frequency" value={salaryFrequency ?? 'NIL'} />
+          <DetailBlock label="Overtime" value={overtime ?? 'NIL'} />
+          <DetailBlock label="Tax Filing Status" value={taxFilingStatus ?? 'NIL'} />
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <DetailBlock label="Employment Status" value="Active" />
-          <DetailBlock label="Stock Options" value="11%" />
-          <DetailBlock label="Effective Date of Compensation" value="27th of the month" />
-          <DetailBlock label="Pay Grade/Level" value="Level 11" />
+          <DetailBlock label="Payment Method" value={paymentMethod ?? 'NIL'} />
+          <DetailBlock label="Bonus Structure" value={(bonusStructure && bonusStructure.trim()) || 'NIL'} />
+          <DetailBlock label="Commission" value={commission ? formatCurrency(commission) : 'NIL'} />
+          <DetailBlock label="Stock Options" value={stockOptions ? formatCurrency(stockOptions) : 'NIL'} />
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <DetailBlock label="Employee ID" value="CYN0345678" />
-          <DetailBlock label="Payment Method" value="Bank Transfer" />
-          <DetailBlock label="Bank Account Name" value="Guaranty Trust Bank" />
-          <DetailBlock label="Bank Account Number" value="0217703343" />
+          <DetailBlock label="Pay Grade" value={payGrade ?? 'NIL'} />
+          <DetailBlock label="Tax ID Number" value={taxIdentificationNumber ?? 'NIL'} />
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <DetailBlock label="Routing Number" value="234100" />
-          <DetailBlock label="Tax Filing Status" value="Active" />
-          <DetailBlock label="Tax Identification Number" value="000111222333" />
-          <DetailBlock label="Overnight" value="Night" />
-        </div>
-      </div>
 
-      <div className="space-y-5">
-        <h3 className="text-base font-semibold text-primary">Allowances</h3>
-
+        <h3 className="text-base font-semibold text-primary mt-6">Allowances</h3>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <DetailBlock label="Data Allowance" value="N 23,000.00" />
-          <DetailBlock label="Wardrobe Allowance" value="N 43,500.00" />
+          {allowance && allowance.length > 0 ? (
+            allowance.map((allow, index) => (
+              <DetailBlock
+                key={allow.id || index}
+                label={allow.allowanceName}
+                value={formatCurrency(allow.allowanceAmount)}
+              />
+            ))
+          ) : (
+            <DetailBlock label="Allowances" value="No allowances" />
+          )}
         </div>
+
+        <h3 className="text-base font-semibold text-primary mt-6">Deductions</h3>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <DetailBlock label="Pension" value="N 56,000.00" />
-          <DetailBlock label="Tax Payment" value="N 37,500.00" />
+          {deduction && deduction.length > 0 ? (
+            deduction.map((ded, index) => (
+              <DetailBlock
+                key={ded.id ?? index}
+                label={ded.deductionName}
+                value={formatCurrency(ded.deductionAmount)}
+              />
+            ))
+          ) : (
+            <DetailBlock label="Deductions" value="No deductions" />
+          )}
         </div>
       </div>
     </div>
-  );
+  )
 }

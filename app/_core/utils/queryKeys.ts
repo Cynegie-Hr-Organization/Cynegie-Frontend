@@ -14,4 +14,7 @@ export const queryKeys = {
   USERS: 'users',
   USER: 'user',
   EMPLOYEES: 'employees',
+  EMPLOYEE: 'employee',
+  ALL_PERMISSIONS: 'all-permissions',
+  PERMISSION: 'permission',
 }
