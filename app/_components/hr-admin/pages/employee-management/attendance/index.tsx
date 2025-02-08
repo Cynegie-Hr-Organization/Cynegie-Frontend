@@ -7,8 +7,13 @@ import TabFormat from "@/app/_components/shared/tab-format";
 import Table from "@/app/_components/shared/table";
 import { FieldType } from "@/app/_components/shared/table/types";
 import { AttendanceStatusMap, color, route } from "@/constants";
+import { FetchParams } from "@/types";
+import { formatHours } from "@/utils";
+import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getAttendanceRecords } from "../../payroll-management/pages/overview/api";
 
 const attendanceRateChartData = [
   { item: "Monday", present: 580, absent: 750, "on leave": 500 },
@@ -20,6 +25,19 @@ const attendanceRateChartData = [
   { item: "Sunday", present: 400, absent: 500, "on leave": 800 },
 ];
 
+type MappedAttendanceRecord = {
+  id: string;
+  employeeName: string;
+  staffID: string;
+  department: string;
+  jobTitle: string;
+  checkInTime: string;
+  clockOutTime: string;
+  hoursWorked: string;
+  status: string;
+  overtimeHours: string;
+};
+
 const HrAdminEmployeeAttendanceManagement = () => {
   const router = useRouter();
   const [openAdjustAttendanceModal, setOpenAdjustAttendanceModal] =
@@ -30,6 +48,49 @@ const HrAdminEmployeeAttendanceManagement = () => {
     openIndividualGenerateReportModal,
     setOpenIndividualGenerateReportModal,
   ] = useState(false);
+
+  const [attendanceRecords, setAttendanceRecords] =
+    useState<MappedAttendanceRecord[]>();
+  const [fetchParams, setFetchParams] = useState<FetchParams>({
+    page: 1,
+    limit: 10,
+    sortOrder: "asc",
+  });
+
+  const { data: attendanceRecordsData } = useQuery({
+    queryKey: ["attendance-records", fetchParams],
+    queryFn: () => getAttendanceRecords(fetchParams),
+  });
+
+  useEffect(() => {
+    if (attendanceRecordsData) {
+      setAttendanceRecords(
+        attendanceRecordsData.data.map((record) => ({
+          id: record.attendanceId,
+          employeeName: record.employeeName,
+          staffID: record.staffId,
+          department: record.department,
+          jobTitle: record.jobTitle,
+          date: record.date,
+          checkInTime: dayjs(record.clockIn).format("hh:mm A"),
+          clockOutTime:
+            record.clockOut === "N/A"
+              ? record.clockOut
+              : dayjs(record.clockOut).format("hh:mm A"),
+          hoursWorked:
+            record.totalHoursWorked !== null
+              ? formatHours(record.totalHoursWorked)
+              : "N/A",
+          status: record.attendanceStatus,
+          overtimeHours:
+            record.overtime !== null ? formatHours(record.overtime) : "N/A",
+        }))
+      );
+    } else {
+      setAttendanceRecords(undefined);
+    }
+  }, [attendanceRecordsData]);
+
   return (
     <Page
       title="Attendance Managment"
@@ -89,27 +150,17 @@ const HrAdminEmployeeAttendanceManagement = () => {
                   FieldType.text,
                 ]}
                 displayedFields={[
-                  "name",
-                  "id",
+                  "employeeName",
+                  "staffID",
                   "department",
                   "jobTitle",
                   "checkInTime",
-                  "checkOutTime",
+                  "clockOutTime",
                   "hoursWorked",
                   "status",
                   "overtimeHours",
                 ]}
-                bodyRowData={Array(5).fill({
-                  name: "Ayomide Alibaba",
-                  id: "CYN0235",
-                  department: "Product",
-                  jobTitle: "Product Manager",
-                  checkInTime: "9:02 AM",
-                  checkOutTime: "4:56 PM",
-                  hoursWorked: "8",
-                  status: "Absent",
-                  overtimeHours: "8",
-                })}
+                bodyRowData={attendanceRecords}
                 statusMap={AttendanceStatusMap}
                 formFilter={{
                   inputFields: [
@@ -200,6 +251,11 @@ const HrAdminEmployeeAttendanceManagement = () => {
                   { name: "Leave Type", items: ["Annual"] },
                   { name: "Date", items: ["Select Date"] },
                 ]}
+                paginationMeta={{
+                  limit: fetchParams.limit,
+                  onChangeLimit: (limit) =>
+                    setFetchParams({ ...fetchParams, limit: limit }),
+                }}
               />
             ),
           },

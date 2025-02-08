@@ -66,9 +66,11 @@ export type InputFieldProps = {
   selectValControlledFromOutside?: boolean;
   disabled?: boolean;
   defaultValue?: string | number | { label: string; value: string }[];
+  defaultChecked?: boolean;
   addItemsProps?: AddItemsProps;
   getCurrentValue?: (arg: string | number) => void;
   startadornment?: React.ReactElement;
+  endAdornment?: React.ReactElement;
   checkboxItems?: string[];
   getDateRange?: (range: { startDate: Date; endDate: Date }) => void;
   getDate?: (date: Dayjs | null) => void;
@@ -114,4 +116,5 @@ export type InputFieldType =
   | "drag-upload-hook-form"
   | "multi-select"
   | "add-items"
-  | "checkbox";
+  | "checkbox"
+  | "switch";

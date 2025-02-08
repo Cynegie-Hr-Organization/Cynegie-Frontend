@@ -7,12 +7,15 @@ import { getServerSession } from "next-auth";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import {
+  AttendanceRecord,
   BenefitsSummary,
   FetchParams,
   FetchResponse,
   PaginatedResponse2,
   PaginatedResponse5,
+  PaginatedResponse6,
   Payroll,
+  PayrollSettings,
   PayrollSummary,
   SalaryAdvanceRequest,
   SalaryAdvanceSummary,
@@ -238,5 +241,41 @@ export const getDepartments = async () => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${session?.token}`,
     },
+  });
+};
+
+export const getPayrollSettings = async () => {
+  const session = await getServerSession(authOptions);
+  return request("GET", `${baseUrl}/v1/payroll-settings`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  }) as Promise<PayrollSettings>;
+};
+
+export const getAttendanceRecords = async (
+  params: FetchParams
+): Promise<PaginatedResponse6<AttendanceRecord>> => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/attendance/all`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`, // Add session token to Authorization header
+    },
+    params: params,
+  }) as Promise<PaginatedResponse6<AttendanceRecord>>;
+};
+
+export const setPayrollSettings = async (payload: PayrollSettings) => {
+  const session = await getServerSession(authOptions);
+
+  return request("POST", `${baseUrl}/v1/payroll-settings`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: payload,
   });
 };

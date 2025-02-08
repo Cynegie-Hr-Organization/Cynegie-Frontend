@@ -22,6 +22,7 @@ const TextField: React.FC<
   disabled,
   defaultValue,
   startadornment: startAdornment,
+  endAdornment,
   register,
   errors,
   required,
@@ -49,6 +50,7 @@ const TextField: React.FC<
         slotProps={{
           input: {
             startAdornment: startAdornment,
+            endAdornment: endAdornment,
           },
         }}
         //Results in a console error when used

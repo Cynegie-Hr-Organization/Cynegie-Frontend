@@ -634,3 +634,60 @@ export type AddEmployeePayload = {
     }[];
   }[];
 };
+
+type AllowanceOrDeduction = {
+  name: string;
+  amount: number;
+  _id: string;
+  id: string;
+};
+
+export type PayrollSettings = {
+  general: {
+    payPeriod: "monthly" | "biweekly" | "weekly" | "daily";
+    payDate: string;
+  };
+  overtime: {
+    rate: number;
+    maximumAllowed: number;
+  };
+  deductionAndContributions: {
+    tax: number;
+    pension: number;
+    healthInsurance: number;
+    transportation: number;
+  };
+  leave: {
+    unpaidDeduction: number;
+    sickLeavePolicies: string;
+  };
+  approval: {
+    levels: ("finance_admin" | "super_admin")[];
+    notifyApprovers: boolean;
+  };
+  proratedPayment: {
+    rules: string;
+    enable: boolean;
+  };
+};
+
+export type AttendanceRecord = {
+  attendanceId: string;
+  employeeName: string;
+  staffId: string;
+  department: string;
+  jobTitle: string;
+  date: string; // ISO date string
+  clockIn: string; // ISO date string
+  clockOut: string | "N/A";
+  totalHoursWorked: number | null;
+  attendanceStatus: "Present" | "Absent" | "Late" | "On Leave"; // Adjust based on possible statuses
+  overtime: number;
+};
+
+export type PaginatedResponse6<T> = {
+  data: T[];
+  total: number;
+  page: number;
+  limit: number;
+};

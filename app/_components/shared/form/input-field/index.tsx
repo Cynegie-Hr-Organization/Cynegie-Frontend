@@ -4,6 +4,7 @@ import MessageField from "@/app/_components/employee/input-fields/message";
 import MultiSelectField from "@/app/_components/employee/input-fields/multi-select";
 import RadioField from "@/app/_components/employee/input-fields/radio-group";
 import SelectField from "@/app/_components/employee/input-fields/select";
+import SwitchField from "@/app/_components/employee/input-fields/switch";
 import TextField from "@/app/_components/employee/input-fields/text";
 import { InputFieldProps } from "@/app/_components/employee/modal/types";
 import CustomDatePicker from "@/app/_components/ui/date-picker";
@@ -28,6 +29,7 @@ const InputField: React.FC<InputFieldProps> = ({
   addItemsProps,
   getCurrentValue,
   startadornment: startAdornment,
+  endAdornment,
   checkboxItems,
   getDateRange,
   getDate,
@@ -46,6 +48,7 @@ const InputField: React.FC<InputFieldProps> = ({
   hookFormResetField,
   hookFormClearErrors,
   hookFormWatch,
+  defaultChecked,
   // hookFormUnregister,
 }) => {
   return (
@@ -64,6 +67,7 @@ const InputField: React.FC<InputFieldProps> = ({
               disabled={disabled}
               defaultValue={defaultValue}
               startadornment={startAdornment}
+              endAdornment={endAdornment}
               register={register}
               errors={errors}
               required={required}
@@ -100,6 +104,13 @@ const InputField: React.FC<InputFieldProps> = ({
           )}
           {type == "radio" && <RadioField options={options ?? []} />}
           {type == "checkbox" && <CheckboxField items={checkboxItems ?? []} />}
+          {type == "switch" && (
+            <SwitchField
+              label={name}
+              control={control}
+              defaultChecked={defaultChecked}
+            />
+          )}
           {type == "date" && (
             <CustomDatePicker
               // value={dayjs(value)}
@@ -174,6 +185,7 @@ const InputField: React.FC<InputFieldProps> = ({
               control={control}
               placeholder={placeholder}
               defaultValue={defaultValue}
+              controllerRules={controllerRules}
             />
           )}
           {type === "add-items" && addItemsProps && (

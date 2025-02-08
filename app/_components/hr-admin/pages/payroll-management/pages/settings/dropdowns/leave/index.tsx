@@ -1,11 +1,25 @@
 import { Grid2, TextField } from "@mui/material";
 
-const LeaveDropdownSettings = () => {
+const LeaveDropdownSettings = ({
+  unpaidLeaveDeduction,
+  sickLeavePolicies,
+}: {
+  unpaidLeaveDeduction?: string;
+  sickLeavePolicies?: string;
+}) => {
   return (
     <Grid2 spacing={2} container>
       {[
-        { label: "Unpaid Leave Deduction", placeholder: "Enter" },
-        { label: "Sick Leave Policies", placeholder: "Enter" },
+        {
+          label: "Unpaid Leave Deduction",
+          placeholder: "Enter",
+          defaultValue: unpaidLeaveDeduction,
+        },
+        {
+          label: "Sick Leave Policies",
+          placeholder: "Enter",
+          defaultValue: sickLeavePolicies,
+        },
       ].map((item, index) => (
         <Grid2 key={index} size={{ xs: 12, md: 6 }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -19,6 +33,7 @@ const LeaveDropdownSettings = () => {
               {item.label}
             </div>
             <TextField
+              defaultValue={item.defaultValue}
               sx={{
                 fontSize: "14px",
                 "& .MuiInputBase-root": {
@@ -27,6 +42,13 @@ const LeaveDropdownSettings = () => {
                 },
               }}
               placeholder={item.placeholder}
+              {...(index == 0 && {
+                slotProps: {
+                  input: {
+                    endAdornment: <p>%</p>,
+                  },
+                },
+              })}
             />
           </div>
         </Grid2>

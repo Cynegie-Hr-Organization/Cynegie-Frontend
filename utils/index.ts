@@ -103,7 +103,7 @@ export function getHumanReadableDateRange(
 
 export const getRedirectPath = (roles: string[]): string | null => {
   // Convert roles to lowercase
-  const normalizedRoles = roles.map(role => role.toLowerCase());
+  const normalizedRoles = roles.map((role) => role.toLowerCase());
 
   // Find the primary role
   const primaryRole = normalizedRoles.includes(UserRole.EMPLOYEE)
@@ -121,3 +121,26 @@ export const currencyFormatter = new Intl.NumberFormat("en-NG", {
 export const sum = (array: number[]) => {
   return array.reduce((total, currentVal) => total + currentVal);
 };
+
+export const formatTime = (time: number) => {
+  const totalHours = time * 24; // Convert to hours
+  const hours = Math.floor(totalHours);
+  const minutes = Math.floor((totalHours - hours) * 60);
+  const seconds = Math.round(((totalHours - hours) * 60 - minutes) * 60);
+
+  const formattedTime = dayjs()
+    .hour(hours)
+    .minute(minutes)
+    .second(seconds)
+    .format("HH:mm:ss");
+
+  return formattedTime;
+};
+
+export function formatHours(hoursWorked: number): string {
+  const hours = Math.floor(hoursWorked);
+  const minutes = Math.floor((hoursWorked - hours) * 60);
+  const seconds = Math.round(((hoursWorked - hours) * 60 - minutes) * 60);
+
+  return dayjs().hour(hours).minute(minutes).second(seconds).format("HH:mm:ss");
+}

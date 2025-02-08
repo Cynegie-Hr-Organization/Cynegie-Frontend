@@ -2,8 +2,15 @@ import { newIndex } from "@/lib/utils";
 import { Grid2, MenuItem, Select } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
-const GeneralDropdownSettings = () => {
+const GeneralDropdownSettings = ({
+  payPeriod,
+  payDate,
+}: {
+  payPeriod?: string;
+  payDate?: string;
+}) => {
   return (
     <Grid2 spacing={2} container>
       {[
@@ -17,8 +24,13 @@ const GeneralDropdownSettings = () => {
             "Weekly",
             "Semi Monthly",
           ],
+          defaultValue: payPeriod,
         },
-        { label: "Pay Date", placeholder: "Select Date" },
+        {
+          label: "Pay Date",
+          placeholder: "Select Date",
+          defaultValue: payDate,
+        },
       ].map((item, index) => (
         <Grid2 key={newIndex(index)} size={{ xs: 12, md: 6 }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -33,7 +45,7 @@ const GeneralDropdownSettings = () => {
             </div>
             {index == 0 && item.options ? (
               <Select
-                defaultValue={item.options[0]}
+                defaultValue={item.defaultValue}
                 sx={{
                   height: "35px",
                   borderRadius: "4.62px",
@@ -44,7 +56,7 @@ const GeneralDropdownSettings = () => {
                   {item.options[0]}
                 </MenuItem>
                 {item.options?.slice(1)?.map((option, index) => (
-                  <MenuItem key={newIndex(index)} value={option}>
+                  <MenuItem key={newIndex(index)} value={option.toLowerCase()}>
                     {option}
                   </MenuItem>
                 ))}
@@ -59,6 +71,7 @@ const GeneralDropdownSettings = () => {
                       // border: '1px solid #D0D5DD',
                     },
                   }}
+                  defaultValue={dayjs(item.defaultValue)}
                   slotProps={{
                     textField: { placeholder: item.placeholder },
                   }}
