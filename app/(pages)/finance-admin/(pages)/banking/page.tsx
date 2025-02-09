@@ -337,19 +337,58 @@ const FinancialStats = () => {
 }
 
 const BankCards = () => {
+	const [currentCardIndex, setCurrentCardIndex] = useState(0);
+	const cards = [
+		<BankingCard key="card1" />,
+		<BankingCard key="card2" />,
+		<BankingCard key="card3" />
+	];
+
+	const handlePrevCard = () => {
+		setCurrentCardIndex((prevIndex) =>
+			prevIndex > 0 ? prevIndex - 1 : cards.length - 1
+		);
+	};
+
+	const handleNextCard = () => {
+		setCurrentCardIndex((prevIndex) =>
+			prevIndex < cards.length - 1 ? prevIndex + 1 : 0
+		);
+	};
+
 	return (
-		<div className="relative h-[336px] w-full">
+		<div className="relative h-[336px] w-full overflow-hidden bg-red-500">
 			<div className="absolute z-10 h-full w-full justify-between flex items-center px-2">
-				<button className="rounded-full bg-white/30 text-white p-2">
+				<button
+					onClick={handlePrevCard}
+					className="rounded-full bg-white/30 text-white p-2 hover:bg-white/50 transition-all"
+				>
 					<IoIosArrowBack size={20} />
 				</button>
-				<button className="rounded-full bg-white/30 text-white p-2">
+				<button
+					onClick={handleNextCard}
+					className="rounded-full bg-white/30 text-white p-2 hover:bg-white/50 transition-all"
+				>
 					<IoIosArrowForward size={20} />
 				</button>
 			</div>
 
-			<BankingCard className="absolute" />
-			<BankingCard className="absolute" />
+			<div
+				className="absolute flex transition-transform duration-500 ease-in-out"
+				style={{
+					transform: `translateX(-${currentCardIndex * 100}%)`,
+					width: `${cards.length * 100}%`
+				}}
+			>
+				{cards.map((card, index) => (
+					<div
+						key={index}
+						className="w-full flex-shrink-0"
+					>
+						{card}
+					</div>
+				))}
+			</div>
 		</div>
 	)
 }
@@ -432,14 +471,14 @@ const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger })
 
 
 	const [formData, setFormData] = useState({
-		accountName: "Houstin ChurchHill",
-		businessType: "SOLE OWENER",
-		currency: "NGN",
-		companyEmail: "foodnetwork@man.com",
-		companyRegistrationNumber: "2224345453",
-		companyAddress: "feild zone",
-		secondaryContact: '324565323456',
-		transactionPin: '1234',
+		accountName: "",
+		businessType: "",
+		currency: "",
+		companyEmail: "",
+		companyRegistrationNumber: "",
+		companyAddress: "",
+		secondaryContact: '',
+		transactionPin: '',
 		// companyName: "Food Network",
 		// companyPhoneNumber: "0022142345",
 	});
@@ -493,18 +532,14 @@ const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger })
 					/>
 					<AppSelect
 						label="Currency"
-						placeholder={formData.currency || "Enter currency"}
+						placeholder={"Enter currency"}
+						value={formData.currency}
 						onChange={(value) => { setFormData({ ...formData, currency: value }) }}
 						requiredField
 						listItems={
-							[{
-								label: "NGN",
-								value: "ngn"
-							},
-							{
-								label: "AUS",
-								value: "aus"
-							}
+							[
+								{ label: "NGN", value: "ngn" },
+								{ label: "AUS", value: "aus" }
 							]
 						}
 					/>
