@@ -1,10 +1,10 @@
+import { AppToast } from "@/app/_hooks/toast";
 import axios, {
   AxiosInstance,
   AxiosRequestConfig,
   isAxiosError,
 } from "axios";
 import Cookies from "js-cookie";
-import { toast } from "react-toastify";
 
 
 
@@ -31,22 +31,24 @@ export interface ErrorRes {
 
 
 export const handleError = <T>(error: unknown, message?: string, makeToast = true) => {
+  const { error: errorToast } = AppToast;
+
   if (isAxiosError<T>(error)) {
     const msg = (error?.response?.data as { message: string })?.message ?? error?.message;
-    if (makeToast) toast.error(msg);
+    if (makeToast) errorToast({ title: 'Error', message: msg });
     return msg;
   }
   if (typeof error === "string") {
-    if (makeToast) toast.error(error);
+    if (makeToast) errorToast({ title: 'Error', message: error });
     return error;
   }
   if (typeof (error as Error)?.message === "string") {
     const msg = (error as Error)?.message;
-    if (makeToast) toast.error(msg);
+    if (makeToast) errorToast({ title: 'Error', message: msg });
     return msg;
   }
   const msg = message ?? "Error when proccessing...";
-  if (makeToast) toast.error(msg);
+  if (makeToast) errorToast({ title: 'Error', message: msg });
   return msg;
 };
 

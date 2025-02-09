@@ -10,21 +10,20 @@ export interface AppToastProps {
   message?: string;
 }
 
-export const useAppToast = (hookOption?: { toastid: string }) => {
-  const defaultOptions: ToastOptions = {
-    position: "top-right",
-    autoClose: 3000,
-    hideProgressBar: true,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-    closeButton: false,
-    className: "!p-0 !shadow-none !bg-transparent",
-    toastId: hookOption?.toastid,
-  }
+const defaultOptions: ToastOptions = {
+  position: "top-right",
+  autoClose: 3000,
+  hideProgressBar: true,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: "light",
+  closeButton: false,
+  className: "!p-0 !shadow-none !bg-transparent",
+}
 
+export const useAppToast = (hookOption?: { toastid: string }) => {
   const apptoast = ({
     success: ({ title, message }: AppToastProps) =>
       toast(
@@ -34,7 +33,7 @@ export const useAppToast = (hookOption?: { toastid: string }) => {
           message={message}
           onClose={() => { toast.dismiss() }}
         />,
-        defaultOptions
+        { ...defaultOptions, toastId: hookOption?.toastid, }
       ),
     error: ({ title, message }: AppToastProps) => toast(
       <CustomToast
@@ -43,7 +42,7 @@ export const useAppToast = (hookOption?: { toastid: string }) => {
         message={message}
         onClose={() => { toast.dismiss() }}
       />,
-      defaultOptions
+      { ...defaultOptions, toastId: hookOption?.toastid, }
     ),
     warning: ({ title, message }: AppToastProps) => toast(
       <CustomToast
@@ -52,7 +51,7 @@ export const useAppToast = (hookOption?: { toastid: string }) => {
         message={message}
         onClose={() => { toast.dismiss() }}
       />,
-      defaultOptions
+      { ...defaultOptions, toastId: hookOption?.toastid, }
     )
   })
 
@@ -61,6 +60,42 @@ export const useAppToast = (hookOption?: { toastid: string }) => {
   }
 }
 
+
+export const AppToast = {
+  success: (props: AppToastProps, hookOption?: { toastid: string }) => {
+    toast(
+      <CustomToast
+        type={'success'}
+        title={props.title}
+        message={props.message}
+        onClose={() => { toast.dismiss() }}
+      />,
+      { ...defaultOptions, toastId: hookOption?.toastid, }
+    )
+  },
+  error: (props: AppToastProps, hookOption?: { toastid: string }) => {
+    toast(
+      <CustomToast
+        type={'error'}
+        title={props.title}
+        message={props.message}
+        onClose={() => { toast.dismiss() }}
+      />,
+      { ...defaultOptions, toastId: hookOption?.toastid, }
+    )
+  },
+  warning: (props: AppToastProps, hookOption?: { toastid: string }) => {
+    toast(
+      <CustomToast
+        type={'warning'}
+        title={props.title}
+        message={props.message}
+        onClose={() => { toast.dismiss() }}
+      />,
+      { ...defaultOptions, toastId: hookOption?.toastid, }
+    )
+  }
+}
 
 
 
