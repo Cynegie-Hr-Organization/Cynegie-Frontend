@@ -1,32 +1,13 @@
-import { handleError, Http } from "@/app/_core/utils/axios"
-import { queryKeys } from "@/app/_core/utils/queryKeys"
-import { headers } from "@/app/_core/utils/session"
-import { useMutation, useQuery } from "@tanstack/react-query"
-import { getSession } from "next-auth/react"
-
-export const usePermissionMutations = () => {
-  return useMutation({
-
-  })
-}
-
-export const useAllPermissions = () => {
-  return useQuery({
-    queryKey: [queryKeys.ALL_PERMISSIONS],
-    queryFn: () => getAllPermissions(),
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    initialData: undefined,
-    retry: false
-  })
-}
+import { handleError, Http } from "@/app/_core/utils/axios";
+import { headers } from "@/app/_core/utils/session";
+import { getSession } from "next-auth/react";
 
 
-const getAllPermissions = async () => {
+
+export const getAllPermissions = async () => {
   try {
     const session = await getSession();
-    const { data } = await Http.get<IPermissionRes>(`permissions`, {
+    const { data } = await Http.get<IPermissionRes>('role/all', {
       headers: await headers(session?.token ?? '')
     })
 

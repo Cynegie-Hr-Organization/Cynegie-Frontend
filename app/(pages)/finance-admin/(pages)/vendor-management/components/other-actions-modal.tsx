@@ -2,41 +2,46 @@ import { DeleteSvg } from "@/app/_components/icons/custom-icons"
 import AppButton from "@/app/_components/shared/button"
 import { IVendor } from "@/app/_core/actions/finance/vendor"
 import { useVendorMutations } from "@/app/_core/use-cases/finance/useVendors"
+import { handleError } from "@/app/_core/utils/axios"
+import { useAppToast } from "@/app/_hooks/toast"
 import { AppModal2 } from "@/components/drawer/modal"
-import { toast } from "react-toastify"
-
-
 
 export enum vendorStatus {
   ACTIVE_VENDOR = 'active',
   INACTIVE_VENDOR = 'inactive'
 }
-const OtherActionsModal = ({ isOpen, onClose, vendor, }: { isOpen: boolean, onClose: () => void, vendor: IVendor }) => {
 
+const OtherActionsModal = ({ isOpen, onClose, vendor, }: { isOpen: boolean, onClose: () => void, vendor: IVendor }) => {
+  const { apptoast } = useAppToast()
   const { activateVendor, deactivateVendor } = useVendorMutations({ id: vendor?.id });
   const isDeactivatingVendor = deactivateVendor.isPending;
   const isActivatingVendor = activateVendor.isPending;
 
+
   const handleDeactivation = () => {
     deactivateVendor.mutate({ id: vendor?.id }, {
       onSuccess: () => {
-        onClose()
-        toast.success('Vendor deactivated successfully');
+        onClose();
+        apptoast.success({ title: 'Successful', message: 'Vendor deactivated successfully' })
       },
-      onError: () => onClose()
+      onError: () => {
+        onClose();
+      }
     });
-  }
+  };
 
   const handleActivation = () => {
     activateVendor.mutate({ id: vendor?.id }, {
       onSuccess: () => {
         onClose();
-        toast.success('Vendor activated successfully');
+        apptoast.success({ title: 'Successful', message: 'Vendor activated successfully' })
       },
-      onError: () => onClose()
+      onError: (error) => {
+        onClose();
+        apptoast.error({ title: 'Error', message: handleError(error, '', false) })
+      }
     });
-  }
-
+  };
 
   return (
     <AppModal2
@@ -82,6 +87,5 @@ const OtherActionsModal = ({ isOpen, onClose, vendor, }: { isOpen: boolean, onCl
     </AppModal2>
   )
 }
-
 
 export default OtherActionsModal;
