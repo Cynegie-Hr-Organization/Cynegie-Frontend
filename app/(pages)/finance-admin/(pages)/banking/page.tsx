@@ -339,52 +339,50 @@ const FinancialStats = () => {
 const BankCards = () => {
 	const [currentCardIndex, setCurrentCardIndex] = useState(0);
 	const cards = [
-		<BankingCard key="card1" />,
-		<BankingCard key="card2" />,
-		<BankingCard key="card3" />
+		<BankingCard key="card1" className="absolute top-0 left-0 w-full" />,
+		<BankingCard key="card2" className="absolute top-0 left-0 w-full" />,
+		<BankingCard key="card3" className="absolute top-0 left-0 w-full" />
 	];
 
 	const handlePrevCard = () => {
 		setCurrentCardIndex((prevIndex) =>
-			prevIndex > 0 ? prevIndex - 1 : cards.length - 1
+			prevIndex > 0 ? prevIndex - 1 : prevIndex
 		);
 	};
 
 	const handleNextCard = () => {
 		setCurrentCardIndex((prevIndex) =>
-			prevIndex < cards.length - 1 ? prevIndex + 1 : 0
+			prevIndex < cards.length - 1 ? prevIndex + 1 : prevIndex
 		);
 	};
 
 	return (
-		<div className="relative h-[336px] w-full overflow-hidden bg-red-500">
+		<div className="relative h-[336px] w-full overflow-hidden rounded-lg">
 			<div className="absolute z-10 h-full w-full justify-between flex items-center px-2">
 				<button
 					onClick={handlePrevCard}
-					className="rounded-full bg-white/30 text-white p-2 hover:bg-white/50 transition-all"
+					disabled={currentCardIndex === 0}
+					className={`rounded-full bg-white/30 text-white p-2 hover:bg-white/50 transition-all 
+						${currentCardIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
 				>
 					<IoIosArrowBack size={20} />
 				</button>
 				<button
 					onClick={handleNextCard}
-					className="rounded-full bg-white/30 text-white p-2 hover:bg-white/50 transition-all"
+					disabled={currentCardIndex === cards.length - 1}
+					className={`rounded-full bg-white/30 text-white p-2 hover:bg-white/50 transition-all 
+						${currentCardIndex === cards.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
 				>
 					<IoIosArrowForward size={20} />
 				</button>
 			</div>
 
-			<div
-				className="absolute flex transition-transform duration-500 ease-in-out"
-				style={{
-					transform: `translateX(-${currentCardIndex * 100}%)`,
-					width: `${cards.length * 100}%`
-				}}
-			>
+			<div className="relative h-full w-full">
 				{cards.map((card, index) => (
 					<div
 						key={index}
-						className="w-full flex-shrink-0"
-					>
+						className="absolute top-0 left-0 w-full h-full transition-transform duration-500 ease-in-out"
+						style={{ transform: `translateX(${(index - currentCardIndex) * 105}%)` }}>
 						{card}
 					</div>
 				))}
@@ -399,7 +397,7 @@ const BankingCard = ({ className, ...props }: { className?: string }) => {
 	return (
 		<div className={` w-full ${className}`} {...props}>
 			<div
-				className=" overflow-clip
+				className="overflow-clip
             relative after:content-['']
              after:absolute after:-top-36
               after:-right-28 after:bg-[#7FA8FF1A]/10
