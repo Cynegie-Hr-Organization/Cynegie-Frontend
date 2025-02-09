@@ -9,10 +9,6 @@ import { RiSearchLine } from "react-icons/ri";
 import { useRouter } from "next/dist/client/components/navigation";
 import AppMenubar from "@/app/_components/shared/menubar";
 
-
-
-
-
 const TemplateTable = () => {
   const [templates, setTemplates] = useState([
     {
@@ -138,23 +134,27 @@ const ActionMenu = ({ onDelete }: { onDelete: () => void }) => {
     <AppMenubar
       menuItems={[
         {
-          key: 'edit',
-          label: 'Edit Template',
-          className: 'text-left'
+          key: "edit",
+          label: "Edit Template",
+          className: "text-left",
         },
         {
-          key: 'preview',
-          label: 'Preview Template',
-          onClick: () => router.push(`/hr-admin/onboarding/template/new-template/templateId`),
-          className: 'text-left'
+          key: "preview",
+          label: "Preview Template",
+          onClick: () =>
+            router.push(
+              `/hr-admin/onboarding/template/new-template/templateId`,
+            ),
+          className: "text-left",
         },
         {
-          key: 'delete',
-          label: 'Delete Task',
+          key: "delete",
+          label: "Delete Task",
           onClick: onDelete,
-          className: 'text-left text-red-500'
-        }
-      ]}>
+          className: "text-left text-red-500",
+        },
+      ]}
+    >
       <PiDotsThreeVerticalBold />
     </AppMenubar>
   );

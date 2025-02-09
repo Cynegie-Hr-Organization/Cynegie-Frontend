@@ -1,8 +1,7 @@
-import Skeleton from "react-loading-skeleton"
+import Skeleton from "react-loading-skeleton";
 
 const AppSkeleton = () => {
-  return <Skeleton className="w-[100px] h-[20px] rounded-full" />
+  return <Skeleton className="w-[100px] h-[20px] rounded-full" />;
+};
 
-}
-
-export default AppSkeleton
+export default AppSkeleton;

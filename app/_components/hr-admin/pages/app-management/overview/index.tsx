@@ -120,7 +120,7 @@ const HrAdminAppManagementOverview = () => {
                 ],
                 getCurrentValue: (value) =>
                   setBarColors(
-                    value === 0 ? mostUsedBarColors : leastUsedBarColors
+                    value === 0 ? mostUsedBarColors : leastUsedBarColors,
                   ),
               },
             ]}

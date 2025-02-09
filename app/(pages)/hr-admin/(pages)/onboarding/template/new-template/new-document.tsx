@@ -173,9 +173,7 @@ function AddDocumentModal({ children }: { children: ReactNode }) {
               }
             >
               {selectedFiles.length === 0 ? (
-                <p className='text-sm text-gray-500'>
-                  click to upload
-                </p>
+                <p className="text-sm text-gray-500">click to upload</p>
               ) : (
                 <p className="text-sm text-primary mt-2">+ Add more files</p>
               )}
@@ -303,9 +301,7 @@ export function EditDocumentModal({ triggers }: { triggers: ReactNode }) {
               }
             >
               {selectedFiles.length === 0 ? (
-                <p className='text-sm text-gray-500'>
-                 click to upload
-                </p>
+                <p className="text-sm text-gray-500">click to upload</p>
               ) : (
                 <p className="text-sm text-primary mt-2">+ Add more files</p>
               )}

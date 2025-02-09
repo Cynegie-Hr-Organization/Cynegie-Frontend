@@ -1,12 +1,12 @@
-'use client';
-import HrAdminEmployeeManagementCreateEditRole from '..';
+"use client";
+import HrAdminEmployeeManagementCreateEditRole from "..";
 
 const HrAdminEmployeeManagementEditRole = () => {
   return (
     <HrAdminEmployeeManagementCreateEditRole
-      title='Edit Role'
-      buttonText='Edit Role'
-      type='edit'
+      title="Edit Role"
+      buttonText="Edit Role"
+      type="edit"
     />
   );
 };

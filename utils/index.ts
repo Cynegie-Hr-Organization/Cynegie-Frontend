@@ -94,16 +94,16 @@ export function addNavItemEllipsis(text: string) {
 
 export function getHumanReadableDateRange(
   startDate?: string,
-  endDate?: string
+  endDate?: string,
 ) {
   return `${dayjs(startDate).format("DD MMM")} - ${dayjs(endDate).format(
-    "DD MMM"
+    "DD MMM",
   )}`;
 }
 
 export const getRedirectPath = (roles: string[]): string | null => {
   // Convert roles to lowercase
-  const normalizedRoles = roles.map(role => role.toLowerCase());
+  const normalizedRoles = roles.map((role) => role.toLowerCase());
 
   // Find the primary role
   const primaryRole = normalizedRoles.includes(UserRole.EMPLOYEE)

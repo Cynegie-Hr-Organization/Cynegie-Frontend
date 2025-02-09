@@ -15,7 +15,6 @@ const IntegrationSettingsForm = () => {
           disabled
         />
 
-
         <AppSelect
           label="Third Party Integrations"
           placeholder="Payroll System"
@@ -24,7 +23,7 @@ const IntegrationSettingsForm = () => {
             { label: "Accounting tool", value: "accounting-tool" },
             { label: "CRM", value: "crm" },
           ]}
-          onChange={() => { }}
+          onChange={() => {}}
         />
       </div>
     </form>

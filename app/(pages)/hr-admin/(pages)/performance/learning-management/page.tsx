@@ -13,7 +13,9 @@ import { ReactNode, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LearningManagementTable from "./table";
-import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-text";
+import AppInputText, {
+  AppInputTextArea,
+} from "@/app/_components/shared/input-text";
 
 const SelfAssessmentPage = () => {
   return (
@@ -72,7 +74,6 @@ const AssignCourseModal = ({ trigger }: { trigger: ReactNode }) => {
   });
 
   const handleSubmit = async () => {
-
     if (!formData.courseTitle || !formData.employees) {
       toast.error("Please fill in all required fields.");
       return;

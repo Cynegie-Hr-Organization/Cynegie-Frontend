@@ -113,7 +113,7 @@ const HrAdminEmployeeManagementApproval = () => {
               onClick: () =>
                 router.push(
                   route.hrAdmin.employeeManagement.approvalManagement
-                    .requestDetails
+                    .requestDetails,
                 ),
             },
             {

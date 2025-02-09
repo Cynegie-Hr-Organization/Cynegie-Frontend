@@ -1,8 +1,8 @@
-import { InputFieldProps } from '@/app/_components/employee/modal/types';
-import DotLegend from '@/app/_components/shared/charts/legends/dot-legend';
-import InputField from '@/app/_components/shared/form/input-field';
-import { color } from '@/constants';
-import React from 'react';
+import { InputFieldProps } from "@/app/_components/employee/modal/types";
+import DotLegend from "@/app/_components/shared/charts/legends/dot-legend";
+import InputField from "@/app/_components/shared/form/input-field";
+import { color } from "@/constants";
+import React from "react";
 import {
   BarChart as RechartsBarChart,
   Bar,
@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
   Cell,
-} from 'recharts';
+} from "recharts";
 
 export type BarChartProps = {
   data: Record<string, string | number>[];
@@ -24,10 +24,10 @@ export type BarChartProps = {
   title?: string;
   hasLegend?: boolean;
   isCard?: boolean;
-  chartLayout?: 'horizontal' | 'vertical';
-  xAxisType?: 'number' | 'category';
+  chartLayout?: "horizontal" | "vertical";
+  xAxisType?: "number" | "category";
   xAxisDataKey?: string;
-  yAxisType?: 'number' | 'category';
+  yAxisType?: "number" | "category";
   yAxisDataKey?: string;
   hideXAxis?: boolean;
   removeCartesianGrid?: boolean;
@@ -58,10 +58,10 @@ const BarChart: React.FC<BarChartProps> = ({
   title,
   hasLegend,
   isCard,
-  chartLayout = 'horizontal',
-  xAxisType = 'category',
-  xAxisDataKey = 'item',
-  yAxisType = 'number',
+  chartLayout = "horizontal",
+  xAxisType = "category",
+  xAxisDataKey = "item",
+  yAxisType = "number",
   yAxisDataKey,
   hideXAxis = false,
   removeCartesianGrid = false,
@@ -75,45 +75,45 @@ const BarChart: React.FC<BarChartProps> = ({
   return (
     <div
       style={{
-        position: 'relative',
-        ...(fitContent && { height: 'fit-content' }),
+        position: "relative",
+        ...(fitContent && { height: "fit-content" }),
       }}
-      className={`${isCard && 'common-card'} ${
+      className={`${isCard && "common-card"} ${
         title
           ? hasLegend
-            ? 'h-[470px] sm:h-[450px]'
-            : 'h-[380px]'
+            ? "h-[470px] sm:h-[450px]"
+            : "h-[380px]"
           : hasLegend
-          ? 'h-[420px]'
-          : `h-[${defaultHeight}px]`
+            ? "h-[420px]"
+            : `h-[${defaultHeight}px]`
       }`}
     >
-      <div className='absolute right-[50%] left-[50%] bottom-[15] sm:bottom-[6] font-bold text-[12px]'>
+      <div className="absolute right-[50%] left-[50%] bottom-[15] sm:bottom-[6] font-bold text-[12px]">
         {xAxisLabel}
       </div>
       {title && (
-        <div className='flex flex-col gap-6'>
-          <div className='flex flex-col sm:flex-row  sm:items-center'>
-            <div className='card-title-large flex-grow mb-3 sm:mb-0'>
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col sm:flex-row  sm:items-center">
+            <div className="card-title-large flex-grow mb-3 sm:mb-0">
               {title}
             </div>
-            <div className='flex gap-4'>
+            <div className="flex gap-4">
               {selectFields?.map((field, index) => (
-                <div className='w-[180px]' key={index}>
+                <div className="w-[180px]" key={index}>
                   <InputField {...field} />
                 </div>
               ))}
             </div>
           </div>
           {hasLegend && (
-            <div className='flex justify-end'>
-              <div className='flex gap-5'>
+            <div className="flex justify-end">
+              <div className="flex gap-5">
                 {bars?.map((bar) => (
                   <DotLegend
                     key={bar.dataKey}
                     dotColor={bar.fill ?? color.info.dark}
                     label={bar.dataKey}
-                    type='meeting-indicator'
+                    type="meeting-indicator"
                   />
                 ))}
               </div>
@@ -126,15 +126,15 @@ const BarChart: React.FC<BarChartProps> = ({
         className={` ${
           title
             ? hasLegend
-              ? 'top-[150px] sm:top-[120px]'
-              : 'top-[80px]'
+              ? "top-[150px] sm:top-[120px]"
+              : "top-[80px]"
             : hasLegend
-            ? 'top-[120px]'
-            : 'top-[80px]'
+              ? "top-[120px]"
+              : "top-[80px]"
         }`}
       >
         <RechartsBarChart
-          className={`${hasLegend ? 'mt-6' : ''}`}
+          className={`${hasLegend ? "mt-6" : ""}`}
           barSize={barSize ?? 12}
           barGap={0}
           data={data}
@@ -150,7 +150,7 @@ const BarChart: React.FC<BarChartProps> = ({
             tickMargin={10}
             interval={0}
             fontSize={10}
-            className={`hidden sm:block ${hideXAxis && 'sm:hidden'}`}
+            className={`hidden sm:block ${hideXAxis && "sm:hidden"}`}
           />
           <YAxis
             dataKey={yAxisDataKey}
@@ -158,15 +158,15 @@ const BarChart: React.FC<BarChartProps> = ({
             label={{
               value: yAxisLabel,
               angle: 90,
-              position: 'insideLeft',
+              position: "insideLeft",
               style: {
-                textAnchor: 'middle',
-                fontWeight: 'bold',
-                fill: '#000',
-                fontSize: '12px',
+                textAnchor: "middle",
+                fontWeight: "bold",
+                fill: "#000",
+                fontSize: "12px",
               },
             }}
-            tickFormatter={(value) => `${value}${isPercentage ? '%' : ''}`}
+            tickFormatter={(value) => `${value}${isPercentage ? "%" : ""}`}
             axisLine={false}
             tickSize={0}
             tickMargin={yAxisTickMargin}
@@ -179,14 +179,14 @@ const BarChart: React.FC<BarChartProps> = ({
                   dy={3.5}
                   textAnchor={textAnchor}
                   width={90} // Prevents wrapping
-                  overflow='hidden'
+                  overflow="hidden"
                   style={{
-                    whiteSpace: 'nowrap',
-                    textOverflow: 'ellipsis',
-                    textAnchor: 'start',
-                    paddingTop: '10px',
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                    textAnchor: "start",
+                    paddingTop: "10px",
                   }}
-                  className='tiny-text'
+                  className="tiny-text"
                 >
                   {payload.value}
                 </text>

@@ -1,7 +1,7 @@
-import { ButtonProps } from '../../page/heading/types';
+import { ButtonProps } from "../../page/heading/types";
 
 export type TabFormatProps = {
-  type?: 'button' | 'multi-step-form';
+  type?: "button" | "multi-step-form";
   tabs?: Tab[];
   actionButton?: ButtonProps;
 };

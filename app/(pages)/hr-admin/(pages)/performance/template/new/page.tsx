@@ -3,7 +3,9 @@
 
 import AppButton from "@/app/_components/shared/button";
 import CardLayout from "@/app/_components/shared/cards";
-import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-text";
+import AppInputText, {
+  AppInputTextArea,
+} from "@/app/_components/shared/input-text";
 import { AppSwitch } from "@/app/_components/shared/switch";
 import { createTemplate } from "@/app/api/services/performance/template";
 import { DrawerDialog } from "@/components/drawer/modal";
@@ -188,7 +190,7 @@ const AddQuestionModal = ({
         <FooterButtons
           btn1Label="Cancel"
           btn2Label="Add Question"
-          onBtn1Click={() => { }}
+          onBtn1Click={() => {}}
           onBtn2Click={handleAdd}
         />
       }

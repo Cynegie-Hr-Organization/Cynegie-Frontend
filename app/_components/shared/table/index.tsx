@@ -66,23 +66,22 @@ const Table: React.FC<TableProps> = ({
   const loading = bodyRowData ? false : true;
 
   //Get typeof first row
-  type typeOfFirstRow = typeof bodyRowData extends Array<infer U>
-    ? U
-    : undefined;
+  type typeOfFirstRow =
+    typeof bodyRowData extends Array<infer U> ? U : undefined;
 
   const [actions, setActions] = useState<TableAction[] | undefined>(undefined);
 
   const { checkAllBoxProps, removeChecks, checkBoxProps } = useCheckboxes(
     bodyRowData ?? [],
     getCheckedRows,
-    defaultCheckedRows
+    defaultCheckedRows,
   );
 
   const getTableCell = (
     fieldType: FieldType,
     row: typeOfFirstRow,
     field: string,
-    fieldToGetSlug?: string
+    fieldToGetSlug?: string,
   ) => {
     if (row) {
       const rowVal = row[field ?? ""];
@@ -147,7 +146,7 @@ const Table: React.FC<TableProps> = ({
       debounce((query: string) => {
         onSearch?.(query);
       }, 500),
-    []
+    [],
   );
 
   useEffect(() => removeChecks(), [clearChecks]);
@@ -242,7 +241,7 @@ const Table: React.FC<TableProps> = ({
                             fieldTypes[columnIndex],
                             row,
                             field,
-                            fieldToGetSlug
+                            fieldToGetSlug,
                           )}
                     </TableCell>
                   ))}
@@ -256,11 +255,11 @@ const Table: React.FC<TableProps> = ({
                           triggerButton={<MoreOptionsButton />}
                           getTriggerButtonClick={() =>
                             setActions(
-                              statusActionMap?.[row[fieldToGetAction ?? ""]]
+                              statusActionMap?.[row[fieldToGetAction ?? ""]],
                             )
                           }
                           moreOptions={
-                            statusActionMap ? actions : actionsFromProps ?? []
+                            statusActionMap ? actions : (actionsFromProps ?? [])
                           }
                           dataToReturnOnItemClick={
                             row[fieldToReturnOnActionItemClick ?? ""]

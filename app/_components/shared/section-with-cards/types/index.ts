@@ -13,7 +13,7 @@ export type SectionWithCardsProps = {
 };
 
 export type CardProps = {
-  value: number | string;
+  value: number | string | undefined;
   valueBelow?: boolean;
   valueLineColor?: string;
   lineBelowValue?: boolean;

@@ -1,10 +1,12 @@
-import DetailBlock from "@/app/(pages)/super-admin/(pages)/users/overview/[user-details]/components/details-block"
+import DetailBlock from "@/app/(pages)/super-admin/(pages)/users/overview/[user-details]/components/details-block";
 
 export const EmploymentInformation = () => {
   return (
     <div>
       <div className="space-y-5">
-        <h3 className="text-base font-semibold text-primary">Employment Information</h3>
+        <h3 className="text-base font-semibold text-primary">
+          Employment Information
+        </h3>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <DetailBlock label="Job Title" value="Software Engineer" />
@@ -26,11 +28,13 @@ export const EmploymentInformation = () => {
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <DetailBlock label="Work Phone Number" value="08010101010" />
-          <DetailBlock label="Job Description" value="jd.pdf" valueClassName="text-primary" />
+          <DetailBlock
+            label="Job Description"
+            value="jd.pdf"
+            valueClassName="text-primary"
+          />
         </div>
       </div>
     </div>
-  )
-}
-
-
+  );
+};

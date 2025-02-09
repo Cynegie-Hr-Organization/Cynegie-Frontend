@@ -7,6 +7,4 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => (
   </Stack>
 );
 
-
-
 export default DashboardLayout;

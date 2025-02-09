@@ -1,6 +1,6 @@
-import { queryKeys } from "@/app/_core/utils/queryKeys"
-import { useQuery } from "@tanstack/react-query"
-import { getCashflowTrends } from "../actions/super-admin/superAdmin"
+import { queryKeys } from "@/app/_core/utils/queryKeys";
+import { useQuery } from "@tanstack/react-query";
+import { getCashflowTrends } from "../actions/super-admin/superAdmin";
 
 export const useCashflowTrends = () => {
   return useQuery({
@@ -11,5 +11,5 @@ export const useCashflowTrends = () => {
     refetchOnReconnect: false,
     initialData: undefined,
     retry: false,
-  })
-}
+  });
+};

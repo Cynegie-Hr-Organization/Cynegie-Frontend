@@ -1,12 +1,12 @@
-'use client';
-import { InputFieldProps } from '@/app/_components/employee/modal/types';
-import Form from '@/app/_components/shared/form';
-import Page from '@/app/_components/shared/page';
-import TabFormat from '@/app/_components/shared/tab-format';
-import React from 'react';
+"use client";
+import { InputFieldProps } from "@/app/_components/employee/modal/types";
+import Form from "@/app/_components/shared/form";
+import Page from "@/app/_components/shared/page";
+import TabFormat from "@/app/_components/shared/tab-format";
+import React from "react";
 
 const formSectionContainer =
-  'common-card !px-[80px] !pt-[60px] !pb-[80px] flex flex-col  gap-[60px]';
+  "common-card !px-[80px] !pt-[60px] !pb-[80px] flex flex-col  gap-[60px]";
 
 const formGridSpacing = 5;
 
@@ -39,21 +39,21 @@ const HrAdminEmployeeDirectoryAddEditEmployee: React.FC<
 }) => (
   <Page title={title}>
     <TabFormat
-      type='multi-step-form'
+      type="multi-step-form"
       tabs={[
         {
-          name: 'Personal Information',
+          name: "Personal Information",
           component: (
             <div className={formSectionContainer}>
               <Form
-                layout='3-columns'
-                title='Bio Data'
+                layout="3-columns"
+                title="Bio Data"
                 gridSpacing={formGridSpacing}
                 inputFields={bioData}
               />
               <Form
-                layout='3-columns'
-                title='Next of Kin Details'
+                layout="3-columns"
+                title="Next of Kin Details"
                 gridSpacing={formGridSpacing}
                 inputFields={nextOfKin}
               />
@@ -61,12 +61,12 @@ const HrAdminEmployeeDirectoryAddEditEmployee: React.FC<
           ),
         },
         {
-          name: 'Employee Information',
+          name: "Employee Information",
           component: (
             <div className={formSectionContainer}>
               <Form
-                layout='3-columns'
-                title='Employment Information'
+                layout="3-columns"
+                title="Employment Information"
                 gridSpacing={formGridSpacing}
                 inputFields={employment}
               />
@@ -74,16 +74,16 @@ const HrAdminEmployeeDirectoryAddEditEmployee: React.FC<
           ),
         },
         {
-          name: 'Compensation',
+          name: "Compensation",
           component: (
             <div className={formSectionContainer}>
               <Form
                 gridItemSize={{ xs: 12, sm: 12, md: 6, lg: 4 }}
-                title='Compensation Breakdown'
+                title="Compensation Breakdown"
                 gridSpacing={formGridSpacing}
                 inputFields={compensation}
               />
-              <div className='grid md:grid-cols-2'>
+              <div className="grid md:grid-cols-2">
                 <Form gridSpacing={formGridSpacing} inputFields={allowances} />
                 <Form gridSpacing={formGridSpacing} inputFields={deductions} />
               </div>
@@ -91,13 +91,13 @@ const HrAdminEmployeeDirectoryAddEditEmployee: React.FC<
           ),
         },
         {
-          name: 'Documents',
+          name: "Documents",
           component: (
             <div className={formSectionContainer}>
               <Form
                 // layout='3-columns'
                 gridItemSize={{ xs: 12, sm: 6 }}
-                title='Add Documents'
+                title="Add Documents"
                 gridSpacing={formGridSpacing}
                 inputFields={documents}
               />
@@ -105,17 +105,17 @@ const HrAdminEmployeeDirectoryAddEditEmployee: React.FC<
           ),
         },
         {
-          name: 'Equipments & Access',
+          name: "Equipments & Access",
           component: (
             <div className={formSectionContainer}>
               <Form
-                layout='3-columns'
-                title='Employee Equipment'
+                layout="3-columns"
+                title="Employee Equipment"
                 gridSpacing={formGridSpacing}
                 inputFields={equipment}
               />
               <Form
-                title='Employee Access'
+                title="Employee Access"
                 gridSpacing={formGridSpacing}
                 inputFields={access}
               />

@@ -139,7 +139,7 @@ const HrAdminEmployeeDirectory = () => {
           period="See all"
           periodClick={() =>
             router.push(
-              route.hrAdmin.employeeManagement.attendanceManagement.home
+              route.hrAdmin.employeeManagement.attendanceManagement.home,
             )
           }
           selectFilterProps={{
@@ -184,7 +184,7 @@ const HrAdminEmployeeDirectory = () => {
             period="View all"
             periodClick={() =>
               router.push(
-                route.hrAdmin.employeeManagement.approvalManagement.home
+                route.hrAdmin.employeeManagement.approvalManagement.home,
               )
             }
           >
@@ -263,7 +263,7 @@ const HrAdminEmployeeDirectory = () => {
                 setOpenEditRequestModal(true);
               } else {
                 router.push(
-                  route.hrAdmin.employeeManagement.directory.editEmployee
+                  route.hrAdmin.employeeManagement.directory.editEmployee,
                 );
               }
             },
@@ -272,7 +272,7 @@ const HrAdminEmployeeDirectory = () => {
             name: "View Employee Details",
             onClick: () =>
               router.push(
-                route.hrAdmin.employeeManagement.directory.viewEmployee
+                route.hrAdmin.employeeManagement.directory.viewEmployee,
               ),
           },
           {

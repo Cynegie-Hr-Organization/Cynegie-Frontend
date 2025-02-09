@@ -1,6 +1,6 @@
-import { Stack } from '@mui/material';
-import Header from '../header';
-import { SectionCardContainerProps } from '../types';
+import { Stack } from "@mui/material";
+import Header from "../header";
+import { SectionCardContainerProps } from "../types";
 
 const SectionCardContainer: React.FC<SectionCardContainerProps> = (props) => {
   const {
@@ -16,8 +16,8 @@ const SectionCardContainer: React.FC<SectionCardContainerProps> = (props) => {
   } = props;
   return (
     <Stack
-      className={`${isCard && 'common-card'} h-full`}
-      sx={{ minHeight: '100%' }}
+      className={`${isCard && "common-card"} h-full`}
+      sx={{ minHeight: "100%" }}
       gap={2}
     >
       <Header

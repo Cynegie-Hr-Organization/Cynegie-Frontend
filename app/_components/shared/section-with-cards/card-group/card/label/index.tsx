@@ -1,8 +1,8 @@
-import { Stack } from '@mui/material';
-import CardLabelIcon from './icon';
-import CardLabelText from './text';
-import React from 'react';
-import { CardLabelProps } from '../../../types';
+import { Stack } from "@mui/material";
+import CardLabelIcon from "./icon";
+import CardLabelText from "./text";
+import React from "react";
+import { CardLabelProps } from "../../../types";
 
 const CardLabel: React.FC<CardLabelProps> = (props) => {
   const {
@@ -15,7 +15,7 @@ const CardLabel: React.FC<CardLabelProps> = (props) => {
     hasIcon = false,
   } = props;
   return (
-    <Stack direction='row' alignItems='center' gap={1}>
+    <Stack direction="row" alignItems="center" gap={1}>
       {hasIcon && (
         <CardLabelIcon
           containerHeight={iconContainerHeight}

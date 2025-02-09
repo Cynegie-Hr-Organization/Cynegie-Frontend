@@ -6,29 +6,31 @@ import { getSession } from "next-auth/react";
 export const getMyBeneficiaries = async () => {
   try {
     const session = await getSession();
-    const { data } = await Http.get<IPaginatedBeneficiaries>('bank/my-beneficiary', {
-      headers: await headers(session?.token ?? ''),
-    });
+    const { data } = await Http.get<IPaginatedBeneficiaries>(
+      "bank/my-beneficiary",
+      {
+        headers: await headers(session?.token ?? ""),
+      },
+    );
 
-    return data
-
+    return data;
   } catch (error) {
-    console.log(error)
-    throw handleError(error)
+    console.log(error);
+    throw handleError(error);
   }
-}
+};
 
-
-
-export const getMyTransfers = async (querykey: {
-  search?: string,
-  page?: number,
-  limit?: number,
-  sortOrder?: string,
-  status?: string
-}, { endpoint = 'bank/my-transfers' }: { endpoint?: string }) => {
-
-  let queryKey = '?';
+export const getMyTransfers = async (
+  querykey: {
+    search?: string;
+    page?: number;
+    limit?: number;
+    sortOrder?: string;
+    status?: string;
+  },
+  { endpoint = "bank/my-transfers" }: { endpoint?: string },
+) => {
+  let queryKey = "?";
 
   if (querykey.sortOrder) queryKey += `sortOrder=${querykey.sortOrder}`;
   if (querykey.page) queryKey += `&page=${querykey.page}`;
@@ -39,19 +41,20 @@ export const getMyTransfers = async (querykey: {
   try {
     const session = await getSession();
 
-    const { data } = await Http.get<IPaginatedRes<ITransfer>>(endpoint + queryKey, {
-      headers: await headers(session?.token ?? ''),
-    });
+    const { data } = await Http.get<IPaginatedRes<ITransfer>>(
+      endpoint + queryKey,
+      {
+        headers: await headers(session?.token ?? ""),
+      },
+    );
 
-    console.log('wierd-data', data)
+    console.log("wierd-data", data);
 
-    return data
-
-  } catch (error) { throw handleError(error) }
-
-}
-
-
+    return data;
+  } catch (error) {
+    throw handleError(error);
+  }
+};
 
 export interface IBeneficiary {
   accountName: string;
@@ -74,7 +77,7 @@ export interface IPaginatedBeneficiaries {
 export interface ITransfer {
   id: string;
   amount: number;
-  status: 'PENDING' | 'APPROVED' | 'FAILED';
+  status: "PENDING" | "APPROVED" | "FAILED";
   beneficiary: string;
   accountName: string;
   accountNumber: string;

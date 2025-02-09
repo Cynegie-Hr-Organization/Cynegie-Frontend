@@ -163,9 +163,9 @@ export const defaultDonutChartOptions: ChartOptions<"doughnut"> = {
 };
 
 export const APRStatusMap: StatusMap = {
-  Approved: "success",
-  Pending: "warning",
-  Rejected: "error",
+  APPROVED: "success",
+  PENDING: "warning",
+  REJECTED: "error",
 };
 
 export const CISStatusMap: StatusMap = {
@@ -176,19 +176,24 @@ export const CISStatusMap: StatusMap = {
 
 export const SAStatusMap: StatusMap = {
   completed: "success",
-  "in_progress": "warning",
-  "not_started": "error",
+  in_progress: "warning",
+  not_started: "error",
 };
 
 export const CPStatusMap: StatusMap = {
-  Completed: "success",
-  Pending: "warning",
+  completed: "success",
+  pending: "warning",
 };
 
 export const AttendanceStatusMap: StatusMap = {
   Present: "grey",
   Late: "info",
   Absent: "error",
+};
+
+export const DeviceRequestStatusMap: StatusMap = {
+  pending: "warning",
+  completed: "success",
 };
 
 export const ReadAdminStatusMap: StatusMap = {
@@ -200,14 +205,14 @@ export const CourseStatusMap: StatusMap = {
   CANCELLED: "warning",
   DRAFT: "info",
   COMPLETED: "success",
-  ACTIVE : "success",
+  ACTIVE: "success",
   Read: "warning",
   Admin: "info",
 };
 
 export const AppRequestStatusMap: StatusMap = {
-  INACTIVE: "error",
-  ACTIVE: "success",
+  inactive: "error",
+  active: "success",
 };
 
 export const GoalStatusMap: StatusMap = {
@@ -216,8 +221,8 @@ export const GoalStatusMap: StatusMap = {
 };
 
 export const PDStatusMap: StatusMap = {
-  COMPLETED: "success",
-  PENDING: "warning",
+  completed: "success",
+  pending: "warning",
 };
 
 export const tableFilter = {
@@ -313,7 +318,6 @@ export const route = {
       developmentPlan: `${basePath.employee}${basePath.performanceManagement}development-plan`,
       viewDevelopmentPlan: `${basePath.employee}${basePath.performanceManagement}view-development-plan`,
       createGoals: `${basePath.employee}${basePath.performanceManagement}create-goal`,
-
     },
     learningDevelopment: {
       home: `${basePath.employee}${basePath.learningDevelopment}`,

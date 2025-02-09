@@ -4,10 +4,14 @@ import {
   ButtonType,
 } from "@/app/_components/shared/page/heading/types";
 import { PageProps } from "@/app/_components/shared/page/types";
-import { getProfile, updateProfile } from "@/app/api/services/employee/profile";
+import {
+  getProfile,
+  requestUpdateProfile,
+} from "@/app/api/services/employee/profile";
 import { useEffect, useState } from "react";
-import { useMutation } from '@tanstack/react-query';
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { ModalProps } from "../../../modal/types";
 
 const useEmployeeProfilePage = () => {
   const [userDetails, setUserDetails] = useState<{
@@ -28,21 +32,34 @@ const useEmployeeProfilePage = () => {
     passport: string;
   } | null>(null);
 
+  const [reasonForUpdate, setReasonForUpdate] = useState<
+    string | number | undefined
+  >("");
+
   const [firstName, setFirstName] = useState<string | number | undefined>("");
   const [lastName, setLastName] = useState<string | number | undefined>("");
   const [email, setEmail] = useState<string | number | undefined>("");
-  const [phoneNumber, setPhoneNumber] = useState<string | number | undefined>("");
-  const [dateOfBirth, setDateOfBirth] = useState<string | number | undefined>("");
+  const [phoneNumber, setPhoneNumber] = useState<string | number | undefined>(
+    "",
+  );
+  const [dateOfBirth, setDateOfBirth] = useState<string | number | undefined>(
+    "",
+  );
   const [state, setState] = useState<string | number | undefined>("");
-  const [nationality, setNationality] = useState<string | number | undefined>("");
-  const [hireDate , setHireDate] = useState<string | number | undefined>("");
-  
+  const [nationality, setNationality] = useState<string | number | undefined>(
+    "",
+  );
+  const [hireDate, setHireDate] = useState<string | number | undefined>("");
+  const [openEditRequestModal, setOpenEditRequestModal] = useState(false);
+  const [employeeId, setEmployeeId] = useState<string | number | undefined>("");
+
   const fetchProfileMutation = useMutation({
     mutationFn: getProfile,
     onSuccess: (response) => {
+      console.log(response);
       const details = response?.employee;
-      console.log(details);
       if (details) {
+        setEmployeeId(details.id);
         setUserDetails(details.personalInfo);
         setFirstName(details.personalInfo.firstName);
         setLastName(details.personalInfo.lastName);
@@ -54,10 +71,10 @@ const useEmployeeProfilePage = () => {
         setState(details.personalInfo.state);
         setHireDate(details.employmentInformation.hireDate);
       }
-      console.log('Profile fetched successfully:', response);
+      console.log("Profile fetched successfully:", response);
     },
     onError: (error) => {
-      console.error('Failed to fetch profile:', error);
+      console.error("Failed to fetch profile:", error);
     },
   });
 
@@ -65,34 +82,61 @@ const useEmployeeProfilePage = () => {
     fetchProfileMutation.mutate();
   }, []);
 
-  const updateProfileMutation = useMutation({
-    mutationFn: (data: any) => updateProfile(data),
+  const requestUpdateMutation = useMutation({
+    mutationFn: (data: any) => requestUpdateProfile(data),
     onSuccess: (data) => {
       console.log(data);
-      toast.success("Profile updated successfully!");
+      toast.success("Profile Update Request successfully!");
+      setOpenEditRequestModal(false);
     },
     onError: (error) => {
-      console.error('Profile update failed:', error);
-            toast.error("Profile update failed. Please try again.");
-
+      console.error("Profile Update Request Failed:", error);
+      toast.error("Profile Update Request Failed. Please try again.");
     },
   });
 
-  const handleFormSubmit = () => {
-    const data = {
-      firstName,
-      lastName,
-      dateOfBirth,
-      phoneNumber,
-      state,
-      city: "", // Add city state if needed
-      streetAddress: "", // Add streetAddress state if needed
-      postalCode: "", // Add postalCode state if needed
-      nationality,
-        };
+  const constructUpdatePayload = () => {
+    const updates = [];
+    if (firstName !== userDetails?.firstName) {
+      updates.push({ field: "firstName", value: firstName });
+    }
+    if (lastName !== userDetails?.lastName) {
+      updates.push({ field: "lastName", value: lastName });
+    }
+    if (dateOfBirth !== userDetails?.dateOfBirth) {
+      updates.push({ field: "dateOfBirth", value: dateOfBirth });
+    }
+    if (phoneNumber !== userDetails?.phoneNumber) {
+      updates.push({ field: "phoneNumber", value: phoneNumber });
+    }
+    if (state !== userDetails?.state) {
+      updates.push({ field: "state", value: state });
+    }
+    if (nationality !== userDetails?.nationality) {
+      updates.push({ field: "nationality", value: nationality });
+    }
 
-    console.log('Data:', data);
-    updateProfileMutation.mutate(data);
+    return {
+      employeeId,
+      updates,
+      reasonForUpdate: reasonForUpdate,
+      supportingDocuments: [" "],
+      isEmployeeRequest: true,
+      isHrRequest: false,
+    };
+  };
+
+  const handleRequestEditSubmit = () => {
+    if (!reasonForUpdate) {
+      toast.error("Please provide a reason for the update request.");
+      return;
+    }
+
+    console.log(constructUpdatePayload);
+    const data = constructUpdatePayload();
+
+    console.log("Data:", data);
+    requestUpdateMutation.mutate(data);
   };
 
   const pageProps: PageProps = {
@@ -120,7 +164,7 @@ const useEmployeeProfilePage = () => {
         type: "text",
         value: email,
         setValue: setEmail,
-        disabled : true,
+        disabled: true,
       },
       {
         label: "Phone Number",
@@ -150,21 +194,64 @@ const useEmployeeProfilePage = () => {
         label: "Employee Start date",
         type: "date",
         value: hireDate,
-        disabled : true,
-        
-      }
-      
+        disabled: true,
+      },
     ],
   };
 
   const editButtonProps: ButtonProps = {
     type: ButtonType.contained,
-    text: updateProfileMutation.isPending ? "Updating..." : "Edit",
-    onClick: handleFormSubmit,
-    
+    text: "Edit",
+    onClick: () => {
+      setOpenEditRequestModal(true);
+    },
   };
 
-  return { pageProps, formProps, editButtonProps, userDetails };
+  const editRequestModalProps: ModalProps = {
+    open: openEditRequestModal,
+    onClose: () => setOpenEditRequestModal(false),
+    centerImage: "/icons/lockIcon.png",
+    centerTitle: "Editing Disabled",
+    centerMessage:
+      "The fields are currently locked for editing. Request access from HR to enable edit",
+    form: {
+      gridSpacing: 4,
+      inputFields: [
+        {
+          label: "Why are you requesting this edit?",
+          required: true,
+          type: "text",
+          value: reasonForUpdate,
+          setValue: setReasonForUpdate,
+        },
+        {
+          label: "Supporting Document",
+          type: "drag-upload",
+        },
+      ],
+    },
+    buttonOne: {
+      type: ButtonType.outlined,
+      text: "Cancel",
+      onClick: () => {
+        setOpenEditRequestModal(false);
+      },
+    },
+    buttonTwo: {
+      type: ButtonType.contained,
+      text: "Request Edit Access",
+      onClick: handleRequestEditSubmit,
+    },
+    centerButton: true,
+  };
+
+  return {
+    pageProps,
+    formProps,
+    editButtonProps,
+    userDetails,
+    editRequestModalProps,
+  };
 };
 
 export default useEmployeeProfilePage;

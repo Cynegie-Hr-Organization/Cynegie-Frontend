@@ -1,12 +1,19 @@
 import { Switch } from "@/components/ui/switch";
 
-export const OptionSwitch = ({ label, description, id, checked, onChange, disabled }: {
-  label: string,
-  description: string,
-  id: string,
-  checked: boolean,
-  disabled?: boolean
-  onChange: (e: boolean) => void
+export const OptionSwitch = ({
+  label,
+  description,
+  id,
+  checked,
+  onChange,
+  disabled,
+}: {
+  label: string;
+  description: string;
+  id: string;
+  checked: boolean;
+  disabled?: boolean;
+  onChange: (e: boolean) => void;
 }) => {
   return (
     <div className="flex items-center justify-between gap-x-4">

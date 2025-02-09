@@ -20,7 +20,7 @@ import {
 import { Employee } from "@/types/api-index";
 
 export const getPayrolls = async (
-  params: FetchParams
+  params: FetchParams,
 ): Promise<PaginatedResponse2<Payroll>> => {
   const session = await getServerSession(authOptions);
 
@@ -34,7 +34,7 @@ export const getPayrolls = async (
 };
 
 export const getPayroll = async (
-  id: string
+  id: string,
 ): Promise<FetchResponse<Payroll>> => {
   const session = await getServerSession(authOptions);
 
@@ -47,7 +47,7 @@ export const getPayroll = async (
 };
 
 export const getMyEmployees = async (
-  params: FetchParams
+  params: FetchParams,
 ): Promise<PaginatedResponse2<Employee>> => {
   const session = await getServerSession(authOptions);
 
@@ -82,7 +82,7 @@ export const createPayroll = async (payload: CreatePayrollPayload) => {
 
 export const editPayroll = async (
   id: string,
-  payload: CreatePayrollPayload
+  payload: CreatePayrollPayload,
 ) => {
   const session = await getServerSession(authOptions);
   return request("PUT", `${baseUrl}/v1/payroll/${id}`, {
@@ -105,7 +105,7 @@ export const deletePayroll = async (id: string) => {
 };
 
 export const viewPayroll = async (
-  id: string
+  id: string,
 ): Promise<FetchResponse<Payroll & { totalEmployees: number }>> => {
   const session = await getServerSession(authOptions);
   return request("GET", `${baseUrl}/v1/payroll/${id}`, {
@@ -142,7 +142,7 @@ export const getSalaryAdvanceSummary =
   };
 
 export const getAllSalaryAdvanceRequests = async (
-  params: FetchParams & { status: string }
+  params: FetchParams & { status: string },
 ): Promise<PaginatedResponse5<SalaryAdvanceRequest>> => {
   const session = await getServerSession(authOptions);
 
@@ -166,7 +166,7 @@ export const approveAdvanceRequest = async (id: string) => {
         "Content-type": "Application/json",
         Authorization: `Bearer ${session?.token}`,
       },
-    }
+    },
   );
 };
 
@@ -181,7 +181,7 @@ export const rejectAdvanceRequest = async (id: string) => {
         "Content-type": "Application/json",
         Authorization: `Bearer ${session?.token}`,
       },
-    }
+    },
   );
 };
 

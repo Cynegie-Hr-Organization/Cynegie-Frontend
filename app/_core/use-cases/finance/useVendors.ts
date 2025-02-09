@@ -1,11 +1,15 @@
-import { getVendor, getVendors, IVendor } from "@/app/_core/actions/finance/vendor"
-import { handleError, Http } from "@/app/_core/utils/axios"
-import { queryKeys } from "@/app/_core/utils/queryKeys"
-import { headers } from "@/app/_core/utils/session"
+import {
+  getVendor,
+  getVendors,
+  IVendor,
+} from "@/app/_core/actions/finance/vendor";
+import { handleError, Http } from "@/app/_core/utils/axios";
+import { queryKeys } from "@/app/_core/utils/queryKeys";
+import { headers } from "@/app/_core/utils/session";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { getSession } from "next-auth/react"
-import { toast } from "react-toastify"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
 export const useVendors = () => {
   return useQuery({
@@ -16,18 +20,15 @@ export const useVendors = () => {
     refetchOnReconnect: false,
     initialData: undefined,
     retry: false,
-  })
-}
+  });
+};
 
-
-
-
-export const useGetVendor = ({ id, key }: { id?: string, key?: string }) => {
+export const useGetVendor = ({ id, key }: { id?: string; key?: string }) => {
   return useQuery({
-    queryKey: [(key ?? queryKeys.VENDOR), id],
+    queryKey: [key ?? queryKeys.VENDOR, id],
     queryFn: () => {
       if (!id) {
-        throw new Error('Vendor ID is required');
+        throw new Error("Vendor ID is required");
       }
       return getVendor({ id });
     },
@@ -37,68 +38,71 @@ export const useGetVendor = ({ id, key }: { id?: string, key?: string }) => {
     refetchOnReconnect: false,
     initialData: undefined,
     retry: 1,
-  })
-}
-
+  });
+};
 
 export const useVendorMutations = ({ id }: { id?: string }) => {
-
   const queryClient = useQueryClient();
 
   const addVendor = useMutation({
-    mutationKey: ['add-vendor'],
+    mutationKey: ["add-vendor"],
     mutationFn: async (vendor: Partial<IVendor>) => {
       const session = await getSession();
-      return Http.post<IVendor>('vendors/add-vendor', vendor, {
-        headers: await headers(session?.token ?? '')
-      })
+      return Http.post<IVendor>("vendors/add-vendor", vendor, {
+        headers: await headers(session?.token ?? ""),
+      });
     },
     onSuccess: async () => {
-      toast.success('Vendor created successfully', { className: 'bg-red-500' });
+      toast.success("Vendor created successfully", { className: "bg-red-500" });
       await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDORS] });
     },
-    onError: (error) => handleError(error)
-  })
-
+    onError: (error) => handleError(error),
+  });
 
   const updateVendor = useMutation({
-    mutationKey: ['update-vendor'],
-    mutationFn: async ({ id, body }: { id: string, body: Partial<IVendor> }) => {
+    mutationKey: ["update-vendor"],
+    mutationFn: async ({
+      id,
+      body,
+    }: {
+      id: string;
+      body: Partial<IVendor>;
+    }) => {
       const session = await getSession();
 
       return Http.put<IVendor>(`vendors/${id}`, body, {
-        headers: await headers(session?.token ?? '')
-      })
+        headers: await headers(session?.token ?? ""),
+      });
     },
     onSuccess: async () => {
-      toast.success('Vendor details updated successfully', { className: 'bg-red-500' });
+      toast.success("Vendor details updated successfully", {
+        className: "bg-red-500",
+      });
       await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDORS] });
       await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDOR, id] });
     },
-    onError: (error) => handleError(error)
-  })
-
+    onError: (error) => handleError(error),
+  });
 
   const deactivateVendor = useMutation({
-    mutationKey: ['deactivate-vendor'],
+    mutationKey: ["deactivate-vendor"],
     mutationFn: async ({ id }: { id: string }) => {
       const session = await getSession();
 
       return Http.delete<IVendor>(`vendors/${id}`, {
-        headers: await headers(session?.token ?? '')
-      })
+        headers: await headers(session?.token ?? ""),
+      });
     },
     onSuccess: async () => {
-      toast.success('Vendor deleted successfully');
+      toast.success("Vendor deleted successfully");
       await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDORS] });
     },
-    onError: (error) => handleError(error)
-  })
-
+    onError: (error) => handleError(error),
+  });
 
   return {
     addVendor,
     updateVendor,
     deactivateVendor,
-  }
-}
+  };
+};

@@ -1,8 +1,8 @@
-import React from 'react';
-import CardGroup from './card-group';
-import SectionCardContainer from './container';
-import { SectionWithCardsProps } from './types';
-import SelectField from '../../employee/input-fields/select';
+import React from "react";
+import CardGroup from "./card-group";
+import SectionCardContainer from "./container";
+import { SectionWithCardsProps } from "./types";
+import SelectField from "../../employee/input-fields/select";
 
 const SectionWithCards: React.FC<SectionWithCardsProps> = (props) => {
   const {
@@ -24,7 +24,7 @@ const SectionWithCards: React.FC<SectionWithCardsProps> = (props) => {
       headerDivider={headerDivider}
     >
       {selectFilterProps && (
-        <div className='w-[100px]'>
+        <div className="w-[100px]">
           <SelectField {...selectFilterProps} />
         </div>
       )}
