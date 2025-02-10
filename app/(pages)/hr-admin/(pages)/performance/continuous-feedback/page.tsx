@@ -7,8 +7,9 @@ import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-t
 import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
+import { FaCirclePlus } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
-import { LuPlusCircle, LuTrash } from "react-icons/lu";
+import { LuTrash } from "react-icons/lu";
 import ContinuousFeedbackTable from "./table";
 
 const ContinuousFeedbackPage = () => {
@@ -73,7 +74,7 @@ const PageHeader = () => {
 
         <AppButton
           label="Give Feedback"
-          rightIcon={<LuPlusCircle />}
+          rightIcon={<FaCirclePlus />}
           className="bg-primary text-white border border-primary lg:flex hidden"
           onClick={() =>
             router.push("/hr-admin/performance/continuous-feedback/new")
