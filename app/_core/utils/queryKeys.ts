@@ -17,4 +17,5 @@ export const queryKeys = {
   EMPLOYEE: 'employee',
   ALL_PERMISSIONS: 'all-permissions',
   PERMISSION: 'permission',
+  SUPER_ADMIN_SETTINGS: 'super-admin-settings',
 }

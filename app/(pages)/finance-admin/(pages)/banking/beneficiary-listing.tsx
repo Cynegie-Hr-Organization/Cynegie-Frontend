@@ -26,8 +26,7 @@ const BeneficiaryListing = () => {
       <p className="text-base font-semibold">Beneficiary Listing</p>
 
 
-      <div className="common-card space-y-4 h-full">
-
+      <div className="common-card space-y-4 h-full overflow-x-auto">
         {isLoading ? (
           <div className="flex justify-center items-center h-full">
             <TableSkeleton />

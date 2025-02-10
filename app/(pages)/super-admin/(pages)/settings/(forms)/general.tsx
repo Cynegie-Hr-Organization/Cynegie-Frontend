@@ -5,26 +5,16 @@ import { AppDatePicker } from "@/app/_components/shared/date-picker";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import { AppFileUpload } from "@/app/_components/shared/file-upload";
 import AppInputText from "@/app/_components/shared/input-text";
-import { useState } from "react";
+import { ISuperAdminSettings } from "@/app/_core/actions/super-admin/super-admin-settings";
 
-
-
-
-
-
-
-const GeneralSettingsForm = () => {
-  const [formData, setFormData] = useState({
-    company_name: "",
-    company_address: "",
-    company_email_address: "",
-    company_phone_number: "",
-    time_zone: "",
-    date_format: "",
-    language_preference: "",
-    enableSystemNotifications: false
-  });
-
+const GeneralSettingsForm = ({ settingsData }: {
+  settingsData: {
+    generalSettings: Partial<ISuperAdminSettings>,
+    setGeneralSettings: (settings: Partial<ISuperAdminSettings>) => void,
+    isLoading: boolean
+  }
+}) => {
+  const { generalSettings, setGeneralSettings, isLoading } = settingsData
 
   return (
     <form className="p-4 md:p-6 space-y-4">
@@ -35,22 +25,25 @@ const GeneralSettingsForm = () => {
           label="Company Name"
           id="company-name"
           placeholder="Enter company name"
-          value=""
-          onChange={() => { }}
+          value={generalSettings.name ?? ''}
+          onChange={(e) => setGeneralSettings({ ...generalSettings, name: e.target.value })}
+          isLoadingContent={isLoading}
         />
         <AppInputText
           label="Company Address"
           id="company-address"
           placeholder="Enter company address"
-          value=""
-          onChange={() => { }}
+          value={generalSettings.address ?? ''}
+          onChange={(e) => setGeneralSettings({ ...generalSettings, address: e.target.value })}
+          isLoadingContent={isLoading}
         />
         <AppInputText
           label="Company Email Address"
           id="company-email-address"
           placeholder="Enter company email address"
-          value=""
-          onChange={() => { }}
+          value={generalSettings.email ?? ''}
+          onChange={(e) => setGeneralSettings({ ...generalSettings, email: e.target.value })}
+          isLoadingContent={isLoading}
         />
       </div>
 
@@ -60,13 +53,14 @@ const GeneralSettingsForm = () => {
           label="Company Phone Number"
           id="company-phone-number"
           placeholder="Enter company phone number"
-          value=""
-          onChange={() => { }}
+          value={generalSettings.phone ?? 0}
+          onChange={(e) => setGeneralSettings({ ...generalSettings, phone: e.target.value })}
+          isLoadingContent={isLoading}
         />
         <AppMultipleSelect
           label="Time Zone"
           placeholder="Enter time zone"
-          selectedValues={[]}
+          selectedValues={[...new Set(generalSettings?.timeZone?.split(", "))]}
           items={[
             { label: "UTC+0", value: "utc+0" },
             { label: "UTC+1", value: "utc+1" },
@@ -78,7 +72,7 @@ const GeneralSettingsForm = () => {
             { label: "UTC+7", value: "utc+7" },
             { label: "UTC+8", value: "utc+8" },
           ]}
-          onSelectionChange={(value) => console.log(value)}
+          onSelectionChange={(values) => setGeneralSettings({ ...generalSettings, timeZone: values.map((value) => value).join(", ") })}
         />
         <AppDatePicker
           label="Date Format"
@@ -93,7 +87,7 @@ const GeneralSettingsForm = () => {
         <AppMultipleSelect
           label="Language Preference"
           placeholder="Select language preference"
-          selectedValues={[]}
+          selectedValues={[...new Set(generalSettings?.supportedLanguages)]}
           items={[
             { label: "English", value: "english" },
             { label: "Spanish", value: "spanish" },
@@ -102,12 +96,12 @@ const GeneralSettingsForm = () => {
             { label: "Arabic", value: "arabic" },
             { label: "Russian", value: "russian" },
           ]}
-          onSelectionChange={(value) => console.log(value)}
+          onSelectionChange={(values) => setGeneralSettings({ ...generalSettings, supportedLanguages: values })}
         />
         <AppMultipleSelect
           label="Notification Type"
           placeholder="Select notification type"
-          selectedValues={[]}
+          selectedValues={[...new Set(generalSettings?.notificationType?.split(", "))]}
           items={[
             { label: "None", value: "email" },
             { label: "HR Approvals", value: "hr-approvals" },
@@ -115,12 +109,12 @@ const GeneralSettingsForm = () => {
             { label: "Finance Update", value: "finance-update" },
             { label: "Compliance Alert", value: "compliance-alert" }
           ]}
-          onSelectionChange={(value) => console.log(value)}
+          onSelectionChange={(values) => setGeneralSettings({ ...generalSettings, timeZone: values.map((value) => value).join(", ") })}
         />
         <AppFileUpload
           label="Company Logo"
           bottomInfo="Supported file types: PDF. Max file size allowed is 3MB."
-          onChange={(files) => { console.log(files) }}
+          onChange={(files) => { setGeneralSettings({ ...generalSettings, logo: files.map((file) => file.name).join(", ") }) }}
         />
       </div>
 
@@ -128,11 +122,11 @@ const GeneralSettingsForm = () => {
       <AppCheckbox
         label="Enable System Notification"
         id="enable-dark-mode"
-        checked={formData.enableSystemNotifications}
+        checked={generalSettings?.enableSystemNotification ?? false}
         onChange={(value) => {
-          setFormData({
-            ...formData,
-            enableSystemNotifications: value.target.checked,
+          setGeneralSettings({
+            ...generalSettings,
+            enableSystemNotification: value.target.checked,
           });
         }}
       />
