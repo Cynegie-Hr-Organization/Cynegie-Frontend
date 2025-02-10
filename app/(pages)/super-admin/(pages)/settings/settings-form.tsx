@@ -85,10 +85,15 @@ const SettingsForm = () => {
 
   const handleSave = () => {
     updateSettings.mutate(formData, {
-      onSuccess: () => {
-        apptoast.success({ title: 'Successful', message: 'Settings updated successfully' });
-      }
+      onSuccess: () => apptoast.success({ title: 'Successful', message: 'Settings updated successfully' }),
+      onError: (error) => apptoast.error({ title: `${error.name ?? 'Error'}`, message: `${error.message ?? 'Something went wrong'}` })
     })
+  }
+
+  const handleCancel = () => {
+    if (isUpdating) {
+      updateSettings.cancel();
+    }
   }
 
   return (
@@ -132,11 +137,10 @@ const SettingsForm = () => {
       <FooterButtons
         btn1Label="Cancel"
         btn2Label="Save"
-        // onBtn1Click={() => {router.back(); updateSettings.reset()}}
-        onBtn1Click={() => { router.back() }}
+        onBtn1Click={handleCancel}
         onBtn2Click={handleSave}
         isBtn2Loading={isUpdating}
-      // btn2Disabled={isUpdating}
+        btn2Disabled={isUpdating}
       />
     </div>
   )
@@ -169,7 +173,7 @@ const FooterButtons = ({ btn1Label,
         onClick={onBtn1Click}
       />
       <AppButton label={btn2Label}
-        className="disabled:btn-inactive btn-primary"
+        className="btn-primary"
         disabled={btn2Disabled}
         isLoading={isBtn2Loading}
         onClick={onBtn2Click}

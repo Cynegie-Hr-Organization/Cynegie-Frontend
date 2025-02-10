@@ -32,6 +32,7 @@ export function AppSelect({ listLabel, label, requiredField = false, listItems, 
           <SelectValue
             className="placeholder:text-gray-400 text-xs placeholder:text-xs"
             placeholder={<p className="text-gray-400 text-xs">{placeholder}</p>}
+            defaultValue={value}
           />
         </SelectTrigger>
 

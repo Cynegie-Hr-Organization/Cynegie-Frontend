@@ -15,7 +15,6 @@ import Cookies from "js-cookie";
 export const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 export const testMode = process.env.NEXT_PUBLIC_TEST == 'true';
 
-// 
 export const getCurrentUrl = () => {
   if (typeof window !== 'undefined') {
     return window.location.href;
@@ -47,6 +46,12 @@ export const handleError = <T>(error: unknown, message?: string, makeToast = tru
     if (makeToast) errorToast({ title: 'Error', message: msg });
     return msg;
   }
+  if (axios.isCancel(error)) {
+    const msg = 'Request cancelled';
+    if (makeToast) errorToast({ title: 'Cancelled', message: msg });
+    return msg;
+  }
+
   const msg = message ?? "Error when proccessing...";
   if (makeToast) errorToast({ title: 'Error', message: msg });
   return msg;
@@ -60,7 +65,9 @@ const instance = axios.create({
   baseURL: baseUrl,
 });
 
-type HTTPRequestConfig = AxiosRequestConfig;
+type HTTPRequestConfig = AxiosRequestConfig & {
+  signal?: AbortSignal
+};
 
 const api = (axios: AxiosInstance) => {
   return {
@@ -97,6 +104,13 @@ const api = (axios: AxiosInstance) => {
     ) => {
       return axios.post<T>(url, body, config);
     },
+    createCancelToken: () => {
+      const controller = new AbortController();
+      return {
+        signal: controller.signal,
+        cancel: () => controller.abort()
+      };
+    }
   };
 };
 

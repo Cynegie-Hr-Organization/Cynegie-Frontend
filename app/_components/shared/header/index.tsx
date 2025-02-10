@@ -1,3 +1,4 @@
+import { AppToast } from '@/app/_hooks/toast';
 import { rolesMap } from '@/types/form';
 import { getUserDetails } from '@/utils/getUserDetails';
 import { Avatar } from '@mui/material';
@@ -61,16 +62,17 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
   }, []);
 
   useEffect(() => {
-    // Extract the first segment of the pathname
-    const path = pathname.split('/').filter(Boolean)[0]; // Split and remove empty segments
+    const path = pathname.split('/').filter(Boolean)[0];
     const roleFromPath = reverseRolesMap[path];
 
     if (roleFromPath) {
       setCurrentRole(roleFromPath);
+    } else if (roles.length > 0) {
+      setCurrentRole(roles[0]);
     } else {
-      console.warn(`No role found for pathname segment: ${path}`);
+      AppToast.error({ title: 'Error', message: 'No valid role found' });
     }
-  }, [pathname]);
+  }, [pathname, roles]);
 
   const handleRoleChange = (role: string) => {
     setCurrentRole(role);
@@ -80,7 +82,8 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
     if (redirectPath) {
       router.push(redirectPath);
     } else {
-      console.error('No valid redirect path found for this role');
+      console.error({ title: 'Role path not found', message: 'No valid redirect path found for this role' });
+      AppToast.error({ title: 'Role path not found', message: 'No valid redirect path found for this role' });
     }
   };
 
@@ -114,9 +117,10 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
 
       <div className="items-center justify-between hidden gap-5 xl:flex">
         <AppSelect
+          value={currentRole}
           listItems={roles.map((role) => ({ label: role, value: role }))}
           onChange={(value) => handleRoleChange(value)}
-          placeholder={currentRole || 'Select a role'}
+          placeholder={'Select a role'}
         />
 
         <PiBell strokeWidth={3} size={25} onClick={handleNotificationClick} />
