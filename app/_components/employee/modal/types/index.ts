@@ -94,6 +94,8 @@ export type InputFieldProps = {
     RegisterOptions<FieldValues, FieldName<FieldValues>>,
     "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
   >;
+  isMessageField?: boolean;
+  isDragUploadEmployeeEdit?: boolean;
 };
 
 export type InputFieldOption = {

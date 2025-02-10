@@ -13,7 +13,7 @@ const textFieldStyle = {
 const TextField: React.FC<
   Omit<InputFieldProps, "type"> & {
     inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
-  } & { hookFormName?: string }
+  } & { hookFormName?: string } & { isMessageField?: boolean }
 > = ({
   label: name,
   placeholder,
@@ -27,20 +27,20 @@ const TextField: React.FC<
   errors,
   required,
   hookFormName,
-  // inputProps,
+  isMessageField,
 }) => {
   return (
     <>
       <MuiTextField
         sx={{
-          ...textFieldStyle,
+          ...(!isMessageField && textFieldStyle),
           ...(disabled && color.inputfield.disabled),
         }}
         disabled={disabled}
         fullWidth
         defaultValue={defaultValue}
         placeholder={placeholder}
-        // value={value || ""} // Ensure no uncontrolled component issues
+        {...(isMessageField && { multiline: true, minRows: 5 })}
         value={value}
         onChange={(e) => hookFormSetValue?.(e.target.value)}
         {...register?.(hookFormName ?? name ?? "", {

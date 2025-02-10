@@ -2,22 +2,27 @@
 import Modal from "@/app/_components/employee/modal";
 import {
   addEmployee,
+  getDepartments,
   getEmployee,
 } from "@/app/_components/hr-admin/pages/payroll-management/pages/benefits-management/api";
+import {
+  getDevices,
+  requestEmployeeUpdate,
+} from "@/app/_components/hr-admin/pages/payroll-management/pages/overview/api";
 import SvgIcon from "@/app/_components/icons/container";
 import { ButtonGroupProps } from "@/app/_components/shared/button-group/types";
 import { AddedItem } from "@/app/_components/shared/custom-popover/content/add-items";
 import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import { icon } from "@/constants";
 import { countriesWithStates } from "@/constants/countries-states";
-import { AddEmployeePayload } from "@/types";
+import { AddEmployeePayload, EmployeeUpdateRequest } from "@/types";
 import { transformToArray } from "@/utils/form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import HrAdminEmployeeDirectoryAddEditEmployee from "..";
-// import { employeeData } from "../edit";
 
 const formGridSpacing = 5;
 
@@ -39,8 +44,25 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
     isEdit ? true : false
   );
 
+  const [tabOneVisits, setTabOneVisits] = useState(0);
+  const [tabTwoVisits, setTabTwoVisits] = useState(0);
+  const [tabThreeVisits, setTabThreeVisits] = useState(0);
+  const [tabFourVisits, setTabFourVisits] = useState(0);
+  const [tabFiveVisits, setTabFiveVisits] = useState(0);
+
   const [mutationLoading, setMutationLoading] = useState(false);
+  const [openEditRequestModal, setOpenEditRequestModal] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
+
+  const [departmentOptions, setDepartmentOptions] = useState<
+    {
+      label: string;
+      value: string;
+    }[]
+  >();
+
+  const [deviceOptions, setDeviceOptions] =
+    useState<{ label: string; value: string }[]>();
 
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -54,79 +76,108 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
     }),
   });
 
-  const loading = employeeData ? false : isEdit ? true : false;
+  const { data: departmentsData } = useQuery({
+    queryKey: ["departments"],
+    queryFn: () => getDepartments({ page: 1, limit: 50, sortOrder: "asc" }),
+  });
 
-  console.log(employeeData);
+  const { data: devicesData } = useQuery({
+    queryKey: ["devices"],
+    queryFn: () => getDevices({ page: 1, limit: 50, sortOrder: "asc" }),
+  });
+
+  const loading = employeeData ? false : isEdit ? true : false;
 
   const handleTabChange = (event?: React.SyntheticEvent, _newTab?: number) => {
     const newTab = _newTab ?? 0;
     event?.preventDefault();
-    if (!mutationLoading) {
-      switch (currentTab) {
-        case 0:
-          if (newTab > 0 && personalInfoIsValid && tabOneInitCompletion) {
-            setCurrentTab(newTab);
-          }
-          break;
-        case 1:
-          if (newTab > 1) {
-            if (newTab == 2 && employmentIsValid && tabTwoInitCompletion) {
+    if (!isEdit)
+      if (!mutationLoading) {
+        switch (currentTab) {
+          case 0:
+            if (newTab > 0 && personalInfoIsValid && tabOneInitCompletion) {
+              if (isEdit) {
+                if (isEditPersonalInfoValid) {
+                  setCurrentTab(newTab);
+                }
+              } else {
+                setCurrentTab(newTab);
+              }
+            }
+            break;
+          case 1:
+            if (newTab > 1) {
+              if (newTab == 2 && employmentIsValid && tabTwoInitCompletion) {
+                setCurrentTab(newTab);
+              }
+              if (
+                newTab == 3 &&
+                compensationIsValid &&
+                tabThreeInitCompletion
+              ) {
+                setCurrentTab(newTab);
+              }
+              if (newTab == 4 && documentsIsValid && tabFourInitCompletion) {
+                setCurrentTab(newTab);
+              }
+            } else {
+              if (newTab < 1) {
+                setCurrentTab(newTab);
+              }
+            }
+            break;
+          case 2:
+            if (newTab > 2) {
+              if (
+                newTab == 3 &&
+                compensationIsValid &&
+                tabThreeInitCompletion
+              ) {
+                setCurrentTab(newTab);
+              }
+              if (newTab == 4 && documentsIsValid && tabFourInitCompletion) {
+                setCurrentTab(newTab);
+              }
+            } else {
+              if (newTab < 2) {
+                setCurrentTab(newTab);
+              }
+            }
+            break;
+          case 3:
+            if (newTab > 3) {
+              if (newTab == 4 && documentsIsValid && tabFourInitCompletion) {
+                setCurrentTab(newTab);
+              }
+            } else {
+              if (newTab < 3) {
+                setCurrentTab(newTab);
+              }
+            }
+            break;
+          case 4:
+            if (newTab < 4) {
               setCurrentTab(newTab);
             }
-            if (newTab == 3 && compensationIsValid && tabThreeInitCompletion) {
-              setCurrentTab(newTab);
-            }
-            if (newTab == 4 && documentsIsValid && tabFourInitCompletion) {
-              setCurrentTab(newTab);
-            }
-          } else {
-            if (newTab < 1) {
-              setCurrentTab(newTab);
-            }
-          }
-          break;
-        case 2:
-          if (newTab > 2) {
-            if (newTab == 3 && compensationIsValid && tabThreeInitCompletion) {
-              setCurrentTab(newTab);
-            }
-            if (newTab == 4 && documentsIsValid && tabFourInitCompletion) {
-              setCurrentTab(newTab);
-            }
-          } else {
-            if (newTab < 2) {
-              setCurrentTab(newTab);
-            }
-          }
-          break;
-        case 3:
-          if (newTab > 3) {
-            if (newTab == 4 && documentsIsValid && tabFourInitCompletion) {
-              setCurrentTab(newTab);
-            }
-          } else {
-            if (newTab < 3) {
-              setCurrentTab(newTab);
-            }
-          }
-          break;
-        case 4:
-          if (newTab < 4) {
-            setCurrentTab(newTab);
-          }
-          break;
+            break;
+        }
       }
-    }
+    if (isEdit) setCurrentTab(newTab);
   };
 
   const {
     control: personalInfoControl,
     register: personalInfoRegister,
-    formState: { errors: personalInfoErrors, isValid: personalInfoIsValid },
+    formState: {
+      errors: personalInfoErrors,
+      isValid: personalInfoIsValid,
+      dirtyFields: personalInfoDirtyFields,
+    },
     watch: personalInfoWatch,
     getValues: personalInfoGetValues,
     resetField: personalInfoResetField,
     setValue: personalInfoSetValue,
+    reset: personalInfoReset,
   } = useForm();
 
   const country = personalInfoWatch("Country");
@@ -135,28 +186,41 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
   const {
     control: employmentControl,
     register: employmentRegister,
-    formState: { errors: employmentErrors, isValid: employmentIsValid },
+    formState: {
+      errors: employmentErrors,
+      isValid: employmentIsValid,
+      dirtyFields: employmentDirtyFields,
+    },
+    watch: employmentWatch,
     getValues: employmentGetValues,
     resetField: employmentResetField,
-    watch: employmentWatch,
+    setValue: employmentSetValue,
+    reset: employmentReset,
   } = useForm();
 
   const {
     register: compenstationRegister,
     control: compensationControl,
-    formState: { errors: compensationErrors, isValid: compensationIsValid },
+    formState: {
+      errors: compensationErrors,
+      isValid: compensationIsValid,
+      dirtyFields: compensationDirtyFields,
+    },
     getValues: compensationGetValues,
     unregister: compensationUnregister,
+    reset: compensationReset,
   } = useForm();
 
   const {
     register: documentsRegister,
     control: documentsControl,
-    formState: { isValid: documentsIsValid },
+    formState: { isValid: documentsIsValid, dirtyFields: documentsDirtyFields },
     watch: documentsWatch,
     getValues: documentsGetValues,
     resetField: documentsResetField,
     unregister: documentsUnregister,
+    reset: documentsReset,
+    setValue: documentsSetValue,
   } = useForm();
 
   const documents = documentsWatch();
@@ -176,11 +240,13 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
     formState: {
       errors: equipmentsAndAccessErrors,
       isValid: equipmentsAndAccessIsValid,
+      dirtyFields: equipmentsAndAccessDirtyFields,
     },
     // resetField: equipmentsAndAccessResetField,
     // watch: equipmentsAndAccessWatch,
     getValues: equipmentsAndAccessGetValues,
     unregister: equipmentsAndAccessUnregister,
+    reset: equipmentsAndAccessReset,
   } = useForm();
 
   // const [deviceTypes, setDeviceTypes] = useState<
@@ -195,63 +261,481 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
     isEdit ? [{ name: "Tool", value: "" }] : [{ name: "Tool", value: "" }]
   );
 
+  const {
+    register: editRegister,
+    formState: { errors: editErrors, isValid: editIsValid },
+    watch: editWatch,
+    getValues: editGetValues,
+    resetField: editResetField,
+    setValue: editSetValue,
+    reset: editReset,
+  } = useForm();
+
   const saveAndContinueLaterButton = {
     type: ButtonType.outlined,
     text: "Save and Continue Later",
     onClick: () => {},
   };
 
+  const labelToFieldMap: Record<
+    string,
+    {
+      field: string;
+      type: "text" | "number" | "doc" | "date";
+    }
+  > = {
+    "First Name": {
+      field: "firstName",
+      type: "text",
+    },
+    "Middle Name": {
+      field: "middleName",
+      type: "text",
+    },
+    "Last Name": {
+      field: "lastName",
+      type: "text",
+    },
+    "Email Address": {
+      field: "email",
+      type: "text",
+    },
+    "Phone Number": {
+      field: "phoneNumber",
+      type: "text",
+    },
+    "Date of Birth": {
+      field: "dateOfBirth",
+      type: "date",
+    },
+    Country: {
+      field: "country",
+      type: "text",
+    },
+    "Street Address": {
+      field: "streetAddress",
+      type: "text",
+    },
+    City: {
+      field: "city",
+      type: "text",
+    },
+    State: {
+      field: "state",
+      type: "text",
+    },
+    "Postal Code": {
+      field: "postalCode",
+      type: "text",
+    },
+
+    Nationality: {
+      field: "nationality",
+      type: "text",
+    },
+    "Marital Status": {
+      field: "maritalStatus",
+      type: "text",
+    },
+    "ID Upload": {
+      field: "idUpload",
+      type: "text",
+    },
+    Passport: {
+      field: "passport",
+      type: "text",
+    },
+    "First Name (Next of Kin)": {
+      field: "fName",
+      type: "text",
+    },
+    "Last Name (Next of Kin)": {
+      field: "lName",
+      type: "text",
+    },
+    Gender: {
+      field: "gender",
+      type: "text",
+    },
+    "Email Address (Next of Kin)": {
+      field: "nextemail",
+      type: "text",
+    },
+    "Phone Number (Next of Kin)": {
+      field: "nextPhoneNumber",
+      type: "text",
+    },
+    Relationship: {
+      field: "relationship",
+      type: "text",
+    },
+    "Job Title": {
+      field: "jobTitle",
+      type: "text",
+    },
+    Department: {
+      field: "department",
+      type: "text",
+    },
+    "Manager/Supervisor": {
+      field: "manager",
+      type: "text",
+    },
+    "Employment Type": {
+      field: "employmentType",
+      type: "text",
+    },
+    "Employment Status": {
+      field: "employmentStatus",
+      type: "text",
+    },
+    "Hire Date": {
+      field: "hireDate",
+      type: "text",
+    },
+    "Work Location/Branch": {
+      field: "workLocation",
+      type: "text",
+    },
+    "Work Schedule": {
+      field: "workSchedule",
+      type: "text",
+    },
+    "Staff ID": {
+      field: "staffId",
+      type: "text",
+    },
+    "Probation Period": {
+      field: "probationPeriod",
+      type: "text",
+    },
+    "Contract End Date": {
+      field: "contractEndDate",
+      type: "text",
+    },
+    "Work Email": {
+      field: "workEmail",
+      type: "text",
+    },
+    "Work Phone Number": {
+      field: "workPhoneNumber",
+      type: "text",
+    },
+    "Job Description": {
+      field: "jobDescription",
+      type: "text",
+    },
+    "Base Salary": {
+      field: "baseSalary",
+      type: "number",
+    },
+    "Salary Frequency": {
+      field: "salaryFrequency",
+      type: "text",
+    },
+    "Bonus Structure": {
+      field: "bonusStructure",
+      type: "text",
+    },
+    Commission: {
+      field: "commission",
+      type: "number",
+    },
+    "Stock Options": {
+      field: "stockOptions",
+      type: "number",
+    },
+    "Effective Date of Compensation": {
+      field: "effectiveDateOfCompensation",
+      type: "date",
+    },
+    "Pay Grade/Level": {
+      field: "payGrade",
+      type: "text",
+    },
+    "Payment Method": {
+      field: "paymentMethod",
+      type: "text",
+    },
+    "Bank Name": {
+      field: "bankName",
+      type: "text",
+    },
+    "Bank Account Number": {
+      field: "bankAccountNo",
+      type: "text",
+    },
+    "Routing Number": {
+      field: "routingNo",
+      type: "text",
+    },
+    "Tax Filing Status": {
+      field: "taxFilingStatus",
+      type: "text",
+    },
+    "Tax Identification Number (TIN)": {
+      field: "taxIdentificationNumber",
+      type: "text",
+    },
+    Overtime: {
+      field: "overtime",
+      type: "text",
+    },
+  };
+
+  const getFieldValue = (
+    field: string,
+    value: string | FileList | number | Date
+  ) => {
+    switch (labelToFieldMap[field].type) {
+      case "text":
+        return value;
+      case "number":
+        return Number(value);
+      case "doc":
+        if (value instanceof FileList) {
+          return value[0].name;
+        }
+      case "date":
+        if (!(value instanceof FileList)) {
+          if (typeof value !== "string" && typeof value !== "number") {
+            return dayjs(value).add(1, "day").toISOString();
+          }
+        }
+    }
+  };
+
+  const getCompensationUpdates = () => {
+    const allowanceUpdated =
+      Object.keys(compensationDirtyFields).filter(
+        (key) => key.match("allowancename") || (key.match("amount") && key)
+      ).length > 0;
+    const deductionUpdated =
+      Object.keys(compensationDirtyFields).filter(
+        (key) =>
+          key.match("deductionname") || (key.match("deductionamount") && key)
+      ).length > 0;
+    const simpleKeys = Object.keys(compensationDirtyFields).filter(
+      (key) =>
+        !(
+          key.match("allowancename") ||
+          key.match("amount") ||
+          key.match("deductionname") ||
+          key.match("deductionamount")
+        ) && key
+    );
+    const updatedSimpleKeyFields = simpleKeys.map((field) => ({
+      field: labelToFieldMap[field].field,
+      value: getFieldValue(field, compensationGetValues(field)),
+    }));
+    const transformedAllowance = transformToArray(
+      compensationGetValues(),
+      "allowancename",
+      "amount",
+      "allowanceName",
+      "allowanceAmount",
+      true
+    );
+    const transformedDeduction = transformToArray(
+      compensationGetValues(),
+      "deductionname",
+      "deductionamount",
+      "deductionName",
+      "deductionAmount",
+      true
+    );
+    return [
+      ...updatedSimpleKeyFields,
+      ...(allowanceUpdated
+        ? [
+            {
+              field: "allowance",
+              value: transformedAllowance,
+            },
+          ]
+        : []),
+      ...(deductionUpdated
+        ? [
+            {
+              field: "deduction",
+              value: transformedDeduction,
+            },
+          ]
+        : []),
+    ];
+  };
+
+  const docsArray = Object.values(documentsGetValues()).map(
+    /*async*/ (/*doc*/ _, index) => ({
+      documentName: addedDocs[index]?.name,
+      documentUrl: `link_for_${addedDocs[index]?.name}`, //TODO: Get link from the backend using an upload function. For example: await upload(doc),
+    })
+  );
+
+  const getDocumentsUpdates = () => {
+    const docsUpdated = Object.keys(documentsDirtyFields).length > 0;
+    if (docsUpdated) {
+      return [{ field: "documents", value: docsArray }];
+    } else {
+      return [];
+    }
+  };
+
+  const getEquipmentsAndAccessUpdates = () => {
+    const equipmentsAndAccessUpdated =
+      Object.keys(equipmentsAndAccessDirtyFields).length > 0;
+    if (equipmentsAndAccessUpdated) {
+      return [
+        {
+          field: "accessRights",
+          value: [
+            {
+              devices: [equipmentsAndAccessGetValues()["Device Type"]],
+              permissions: transformToArray(
+                equipmentsAndAccessGetValues(),
+                "tool",
+                "id",
+                "tool",
+                "id",
+                false
+              ).map((permission) => ({
+                tool: availableTools.filter(
+                  (availableTool) => availableTool === permission.tool
+                )[0],
+                id: permission.id,
+              })),
+            },
+          ],
+        },
+      ];
+    } else {
+      return [];
+    }
+  };
+
+  const getUpdatedFields = () => {
+    const personalInfo = Object.keys(personalInfoDirtyFields).map((field) => ({
+      field: labelToFieldMap[field].field,
+      value: getFieldValue(field, personalInfoGetValues(field)),
+    }));
+    const employment = Object.keys(employmentDirtyFields)
+      .map((field) => ({
+        field: labelToFieldMap[field].field,
+        value: getFieldValue(field, employmentGetValues(field)),
+      }))
+      .filter((dirtyField) => dirtyField.value !== undefined);
+    const compensation = getCompensationUpdates();
+    const documents = getDocumentsUpdates();
+    const equipmentsAndAccess = getEquipmentsAndAccessUpdates();
+    return [
+      ...personalInfo,
+      ...employment,
+      ...compensation,
+      ...documents,
+      ...equipmentsAndAccess,
+    ];
+  };
+
+  const saveChangesOnClick = () => {
+    setOpenEditRequestModal(true);
+  };
+
+  const addPersonalInfoButtonType = personalInfoIsValid
+    ? ButtonType.contained
+    : ButtonType.disabled;
+
+  const isEditPersonalInfoValid =
+    personalInfoIsValid &&
+    personalInfoGetValues("ID Upload") !== undefined &&
+    personalInfoGetValues("Passport") !== undefined;
+
+  const isEditPersonalInfoButtonType =
+    isEditPersonalInfoValid && getUpdatedFields().length > 0
+      ? ButtonType.contained
+      : ButtonType.disabled;
+
   const personalInfoButtonGroup: ButtonGroupProps = {
     leftButton: saveAndContinueLaterButton,
     rightButton: {
-      type: !loading
-        ? personalInfoIsValid
-          ? ButtonType.contained
-          : ButtonType.disabled
-        : ButtonType.disabled,
+      type: isEdit ? isEditPersonalInfoButtonType : addPersonalInfoButtonType,
       text: isEdit ? "Save Changes" : "Continue",
       isSubmit: true,
-      onClick: () => {
+      onClick: (e) => {
+        e.preventDefault();
         if (!tabOneInitCompletion) {
           setCurrentTab(currentTab + 1);
           setTabOneInitCompletion(true);
         } else {
-          setCurrentTab(currentTab + 1);
+          if (isEdit) {
+            saveChangesOnClick();
+          } else {
+            setCurrentTab(currentTab + 1);
+          }
         }
       },
     },
     position: "end",
   };
 
+  const addEmploymentButtonType = employmentIsValid
+    ? ButtonType.contained
+    : ButtonType.disabled;
+
+  const isEditEmploymentValid =
+    employmentIsValid && employmentGetValues("Job Description") !== undefined;
+
+  const isEditEmploymentButtonType =
+    isEditEmploymentValid && getUpdatedFields().length > 0
+      ? ButtonType.contained
+      : ButtonType.disabled;
+
   const employmentButtonGroup: ButtonGroupProps = {
     leftButton: saveAndContinueLaterButton,
     rightButton: {
-      type: employmentIsValid ? ButtonType.contained : ButtonType.disabled,
+      type: isEdit ? isEditEmploymentButtonType : addEmploymentButtonType,
       text: isEdit ? "Save Changes" : "Continue",
       onClick: () => {
         if (!tabTwoInitCompletion) {
           setTabTwoInitCompletion(true);
           setCurrentTab(currentTab + 1);
         } else {
-          setCurrentTab(currentTab + 1);
+          if (isEdit) {
+            saveChangesOnClick();
+          } else {
+            setCurrentTab(currentTab + 1);
+          }
         }
       },
     },
     position: "end",
   };
 
+  const addCompensationButtonType = compensationIsValid
+    ? ButtonType.contained
+    : ButtonType.disabled;
+
+  const isEditCompensationButtonType =
+    compensationIsValid && getUpdatedFields().length > 0
+      ? ButtonType.contained
+      : ButtonType.disabled;
+
   const compensationButtonGroup: ButtonGroupProps = {
     leftButton: saveAndContinueLaterButton,
     rightButton: {
-      type: compensationIsValid ? ButtonType.contained : ButtonType.disabled,
+      type: isEdit ? isEditCompensationButtonType : addCompensationButtonType,
       text: isEdit ? "Save Changes" : "Continue",
       isSubmit: true,
-      onClick: () => {
+      onClick: (e) => {
+        e.preventDefault();
         if (!tabThreeInitCompletion) {
           setTabThreeInitCompletion(true);
           setCurrentTab(currentTab + 1);
         } else {
-          setCurrentTab(currentTab + 1);
+          if (isEdit) {
+            saveChangesOnClick();
+          } else {
+            setCurrentTab(currentTab + 1);
+          }
         }
       },
     },
@@ -269,7 +753,8 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
   const documentsRightButtonEditType = !Object.values(documents).includes(
     undefined
   )
-    ? Object.values(documents).filter((val) => val.length < 1).length === 0
+    ? Object.values(documents).filter((val) => val.length < 1).length === 0 &&
+      getUpdatedFields().length > 0
       ? ButtonType.contained
       : ButtonType.disabled
     : ButtonType.disabled;
@@ -286,137 +771,154 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
         : documentsRightButtonDefaultType,
       text: isEdit ? "Save Changes" : "Continue",
       isSubmit: true,
-      onClick: () => {
+      onClick: (e) => {
+        e.preventDefault();
         if (!tabFourInitCompletion) {
           setTabFourInitCompletion(true);
           setCurrentTab(currentTab + 1);
         } else {
-          setCurrentTab(currentTab + 1);
+          if (isEdit) {
+            saveChangesOnClick();
+          } else {
+            setCurrentTab(currentTab + 1);
+          }
         }
       },
     },
     position: "end",
   };
 
-  const docsArray = Object.values(documentsGetValues()).map(
-    /*async*/ (/*doc*/ _, index) => ({
-      documentName: addedDocs[index]?.name,
-      documentUrl: `link_for_${addedDocs[index]?.name}`, //TODO: Get link from the backend using an upload function. For example: await upload(doc),
-    })
-  );
+  const addEquipmentsAndAccessButtonType = equipmentsAndAccessIsValid
+    ? mutationLoading
+      ? ButtonType.disabledLoading
+      : ButtonType.contained
+    : ButtonType.disabled;
+
+  const isEditEquipmentsAndAccessButtonType =
+    equipmentsAndAccessIsValid && getUpdatedFields().length > 0
+      ? ButtonType.contained
+      : ButtonType.disabled;
 
   const equipmentsAndAccessButtonGroup: ButtonGroupProps = {
     leftButton: saveAndContinueLaterButton,
     rightButton: {
-      type: equipmentsAndAccessIsValid
-        ? mutationLoading
-          ? ButtonType.disabledLoading
-          : ButtonType.contained
-        : ButtonType.disabled,
-      text: mutationLoading ? "" : "Add Employee",
+      type: isEdit
+        ? isEditEquipmentsAndAccessButtonType
+        : addEquipmentsAndAccessButtonType,
+      text: isEdit ? "Save Changes" : mutationLoading ? "" : "Add Employee",
       isSubmit: true,
-      onClick: () =>
-        addEmployeeMutation.mutateAsync({
-          employmentInformation: {
-            // roleId: "67406495725dac101825eeea", //TODO: Get role ID from the backend or make it default to the employee role when not provided. The default behaviour has now been handled in the backend
-            jobTitle: employmentGetValues()["Job Title"],
-            department: employmentGetValues()["Department"], //TODO: Get department ID from the backend
-            manager: employmentGetValues()["Manager/Supervisor"], //TODO: Get manager ID from the backend
-            employmentType: employmentGetValues()["Employment Type"],
-            employmentStatus: employmentGetValues()["Employment Status"],
-            workLocation: employmentGetValues()["Work Location/Branch"],
-            workSchedule: employmentGetValues()["Work Schedule"],
-            probationPeriod: employmentGetValues()["Probation Period"],
-            contractEndDate:
-              employmentGetValues()["Contract End Date"]?.toISOString(),
-            staffId: "DS1001",
-            workEmail: employmentGetValues()["Work Email"],
-            hireDate: employmentGetValues()["Hire Date"]?.toISOString(),
-            // jobDescription: "job_description_doc_url", //TODO: Get doc URL await upload(tab2["Job Description"][0]),
-            jobDescription:
-              employmentGetValues()?.["Job Description"]?.[0]?.name,
-          },
-          personalInfo: {
-            firstName: personalInfoGetValues()["First Name"],
-            lastName: personalInfoGetValues()["Last Name"],
-            middleName: personalInfoGetValues()["Middle Name"],
-            dateOfBirth:
-              personalInfoGetValues()["Date of Birth"]?.toISOString(),
-            gender: personalInfoGetValues()["Gender"],
-            maritalStatus: personalInfoGetValues()["Marital Status"],
-            phoneNumber: personalInfoGetValues()["Phone Number"],
-            email: personalInfoGetValues()["Email Address"],
-            country: personalInfoGetValues()["Country"],
-            state: personalInfoGetValues()["State"],
-            city: personalInfoGetValues()["City"],
-            streetAddress: personalInfoGetValues()["Street Address"],
-            postalCode: personalInfoGetValues()["Postal Code"],
-            nationality: personalInfoGetValues()["Nationality"],
-          },
-          compensation: {
-            baseSalary: Number(compensationGetValues()["Base Salary"]),
-            salaryFrequency: compensationGetValues()["Salary Frequency"],
-            overtime: compensationGetValues()["Overtime"],
-            taxFilingStatus: compensationGetValues()["Tax Filing Status"],
-            paymentMethod: compensationGetValues()["Payment Method"],
-            bonusStructure: compensationGetValues()["Bonus Structure"],
-            commission: Number(compensationGetValues()["Commission"]),
-            stockOptions: Number(compensationGetValues()["Stock Options"]),
-            payGrade: compensationGetValues()["Pay Grade/Level"],
-            bankName: compensationGetValues()["Bank Name"],
-            bankAccountNo: compensationGetValues()["Bank Account Number"],
-            effectiveDateOfCompensation:
-              compensationGetValues()[
-                "Effective Date of Compensation"
-              ]?.toISOString(),
-            taxIdentificationNumber:
-              compensationGetValues()["Tax Identification Number (TIN)"],
-            allowance: transformToArray(
-              compensationGetValues(),
-              "allowancename",
-              "amount",
-              "allowanceName",
-              "allowanceAmount",
-              true
-            ),
-            deduction: transformToArray(
-              compensationGetValues(),
-              "deductionname",
-              "deductionamount",
-              "deductionName",
-              "deductionAmount",
-              true
-            ),
-          },
-          nextOfKin: {
-            firstName: personalInfoGetValues()["First Name (Next of Kin)"],
-            lastName: personalInfoGetValues()["Last Name (Next of Kin)"],
-            gender: personalInfoGetValues()["Gender"],
-            relationship: personalInfoGetValues()["Relationship"],
-            phoneNumber: personalInfoGetValues()["Phone Number (Next of Kin)"],
-            email: personalInfoGetValues()["Email Address (Next of Kin)"],
-          },
-          documents: docsArray,
-          accessRights: [
-            {
-              devices: [equipmentsAndAccessGetValues()["Device Type"]],
-              permissions: transformToArray(
-                equipmentsAndAccessGetValues(),
-                "tool",
-                "id",
-                "tool",
-                "id",
-                false
-              ).map((permission) => ({
-                tool: availableTools[permission.tool],
-                id: permission.id,
-              })),
-            },
-          ],
-        }),
+      onClick: (e) => {
+        e.preventDefault();
+        if (isEdit) saveChangesOnClick();
+        else addEmployeeSubmit();
+      },
     },
     position: "end",
   };
+
+  const addEmployeeSubmit = () =>
+    addEmployeeMutation.mutateAsync({
+      employmentInformation: {
+        // roleId: "67406495725dac101825eeea", //TODO: Get role ID from the backend or make it default to the employee role when not provided. The default behaviour has now been handled in the backend
+        jobTitle: employmentGetValues()["Job Title"],
+        department: employmentGetValues()["Department"], //TODO: Get department ID from the backend
+        manager: employmentGetValues()["Manager/Supervisor"], //TODO: Get manager ID from the backend
+        employmentType: employmentGetValues()["Employment Type"],
+        employmentStatus: employmentGetValues()["Employment Status"],
+        workLocation: employmentGetValues()["Work Location/Branch"],
+        workSchedule: employmentGetValues()["Work Schedule"],
+        probationPeriod: employmentGetValues()["Probation Period"],
+        contractEndDate:
+          employmentGetValues()["Contract End Date"]?.toISOString(),
+        staffId: "DS1001",
+        workEmail: employmentGetValues()["Work Email"],
+        hireDate: employmentGetValues()["Hire Date"]?.toISOString(),
+        workPhoneNumber: employmentGetValues()["Work Phone Number"],
+        // jobDescription: "job_description_doc_url", //TODO: Get doc URL await upload(tab2["Job Description"][0]),
+        jobDescription: employmentGetValues()?.["Job Description"]?.[0]?.name,
+      },
+      personalInfo: {
+        firstName: personalInfoGetValues()["First Name"],
+        lastName: personalInfoGetValues()["Last Name"],
+        middleName: personalInfoGetValues()["Middle Name"],
+        dateOfBirth: personalInfoGetValues()["Date of Birth"]?.toISOString(),
+        gender: personalInfoGetValues()["Gender"],
+        maritalStatus: personalInfoGetValues()["Marital Status"],
+        phoneNumber: personalInfoGetValues()["Phone Number"],
+        email: personalInfoGetValues()["Email Address"],
+        country: personalInfoGetValues()["Country"],
+        state: personalInfoGetValues()["State"],
+        city: personalInfoGetValues()["City"],
+        idUpload: personalInfoGetValues()["ID Upload"]?.[0]?.name,
+        passport: personalInfoGetValues()["Passport"]?.[0]?.name,
+        streetAddress: personalInfoGetValues()["Street Address"],
+        postalCode: personalInfoGetValues()["Postal Code"],
+        nationality: personalInfoGetValues()["Nationality"],
+      },
+      compensation: {
+        baseSalary: Number(compensationGetValues()["Base Salary"]),
+        salaryFrequency: compensationGetValues()["Salary Frequency"],
+        overtime: compensationGetValues()["Overtime"],
+        taxFilingStatus: compensationGetValues()["Tax Filing Status"],
+        paymentMethod: compensationGetValues()["Payment Method"],
+        bonusStructure: compensationGetValues()["Bonus Structure"],
+        commission: Number(compensationGetValues()["Commission"]),
+        stockOptions: Number(compensationGetValues()["Stock Options"]),
+        payGrade: compensationGetValues()["Pay Grade/Level"],
+        bankName: compensationGetValues()["Bank Name"],
+        bankAccountNo: compensationGetValues()["Bank Account Number"],
+        routingNo: compensationGetValues()["Routing Number"],
+        effectiveDateOfCompensation:
+          compensationGetValues()[
+            "Effective Date of Compensation"
+          ]?.toISOString(),
+        taxIdentificationNumber:
+          compensationGetValues()["Tax Identification Number (TIN)"],
+        allowance: transformToArray(
+          compensationGetValues(),
+          "allowancename",
+          "amount",
+          "allowanceName",
+          "allowanceAmount",
+          true
+        ),
+        deduction: transformToArray(
+          compensationGetValues(),
+          "deductionname",
+          "deductionamount",
+          "deductionName",
+          "deductionAmount",
+          true
+        ),
+      },
+      nextOfKin: {
+        fName: personalInfoGetValues()["First Name (Next of Kin)"],
+        lName: personalInfoGetValues()["Last Name (Next of Kin)"],
+        gender: personalInfoGetValues()["Gender"],
+        relationship: personalInfoGetValues()["Relationship"],
+        nextPhoneNumber: personalInfoGetValues()["Phone Number (Next of Kin)"],
+        nextemail: personalInfoGetValues()["Email Address (Next of Kin)"],
+      },
+      documents: docsArray,
+      accessRights: [
+        {
+          devices: [equipmentsAndAccessGetValues()["Device Type"]],
+          permissions: transformToArray(
+            equipmentsAndAccessGetValues(),
+            "tool",
+            "id",
+            "tool",
+            "id",
+            false
+          ).map((permission) => ({
+            tool: availableTools.filter(
+              (availableTool) => availableTool === permission.tool
+            )[0],
+            id: permission.id,
+          })),
+        },
+      ],
+    });
 
   const addEmployeeMutation = useMutation({
     mutationFn: (payload: AddEmployeePayload) => addEmployee(payload),
@@ -437,6 +939,25 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
     },
   });
 
+  const editEmployeeMutation = useMutation({
+    mutationFn: (payload: EmployeeUpdateRequest) =>
+      requestEmployeeUpdate(payload),
+    onMutate: () => setMutationLoading(true),
+    onSuccess: (res) => {
+      if (
+        Object.keys(res).includes("error") ||
+        res.statusCode === 500 ||
+        res.statusCode === 401
+      ) {
+        alert("An error occured");
+      } else {
+        setOpenEditRequestModal(false);
+        setOpenSuccessModal(true);
+      }
+    },
+    onError: () => alert("An error occureed"),
+  });
+
   useEffect(() => {
     if (country) {
       setStates(
@@ -449,17 +970,39 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
   }, [country]);
 
   useEffect(() => {
+    if (departmentsData) {
+      setDepartmentOptions(
+        departmentsData.data.map((department) => ({
+          label: department.departmentName,
+          value: department.id,
+        }))
+      );
+    }
+  }, [departmentsData]);
+
+  useEffect(() => {
+    if (devicesData) {
+      setDeviceOptions(
+        devicesData.devices.map((device) => ({
+          label: device.deviceName,
+          value: device.id,
+        }))
+      );
+    }
+  }, [devicesData]);
+
+  useEffect(() => {
     if (employeeData && isEdit) {
       setAllowances(
         employeeData?.compensation.allowance.map((allowance) => ({
           name: allowance.allowanceName,
-          value: allowance.allowanceAmount,
+          value: allowance.allowanceAmount.toString(),
         }))
       );
       setDeductions(
         employeeData?.compensation.deduction.map((deduction) => ({
           name: deduction.deductionName,
-          value: deduction.deductionAmount,
+          value: deduction.deductionAmount.toString(),
         }))
       );
       setAddedDocs(
@@ -476,6 +1019,60 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
       );
     }
   }, [employeeData, isEdit]);
+
+  //Ensures that the dirtyFields feature behaves as expected in the edit variant of the component
+  useEffect(() => {
+    if (employeeData) {
+      if (currentTab === 0) {
+        if (tabOneVisits < 1) {
+          personalInfoReset(personalInfoGetValues());
+          setTabOneVisits(tabOneVisits + 1);
+        }
+      }
+      if (currentTab === 1) {
+        if (tabTwoVisits < 1) {
+          employmentReset(employmentGetValues());
+          setTabTwoVisits(tabTwoVisits + 1);
+        }
+      }
+      if (currentTab === 2) {
+        if (tabThreeVisits < 1) {
+          compensationReset(compensationGetValues());
+          setTabThreeVisits(tabThreeVisits + 1);
+        }
+      }
+      if (currentTab === 3) {
+        if (tabFourVisits < 1) {
+          documentsReset(documentsGetValues());
+          setTabFourVisits(tabFourVisits + 1);
+        }
+      }
+      if (currentTab === 4) {
+        if (tabFiveVisits < 1) {
+          equipmentsAndAccessReset(equipmentsAndAccessGetValues());
+          setTabFiveVisits(tabFiveVisits + 1);
+        }
+      }
+    }
+  }, [
+    employeeData,
+    currentTab,
+    personalInfoGetValues,
+    personalInfoReset,
+    tabOneVisits,
+    employmentGetValues,
+    employmentReset,
+    tabTwoVisits,
+    compensationGetValues,
+    compensationReset,
+    tabThreeVisits,
+    documentsGetValues,
+    documentsReset,
+    tabFourVisits,
+    equipmentsAndAccessGetValues,
+    equipmentsAndAccessReset,
+    tabFiveVisits,
+  ]); //TODO: Use more optimal implementation due to the length of the dependency array
 
   useEffect(() => {
     window.scrollTo({
@@ -665,6 +1262,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
                     defaultValue:
                       employeeData?.personalInfo.idUpload ??
                       "link_for_id_upload",
+                    isDragUploadEmployeeEdit: true,
                   }),
                 },
                 {
@@ -679,6 +1277,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
                     defaultValue:
                       employeeData?.personalInfo.passport ??
                       "link_for_passport",
+                    isDragUploadEmployeeEdit: true,
                   }),
                 },
               ],
@@ -699,7 +1298,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
                   type: "text",
                   placeholder: "Enter first name",
                   ...(isEdit && {
-                    defaultValue: employeeData?.nextOfKin[0].firstName,
+                    defaultValue: employeeData?.nextOfKin[0].fName,
                   }),
                 },
                 {
@@ -709,7 +1308,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
                   required: true,
                   placeholder: "Enter last name",
                   ...(isEdit && {
-                    defaultValue: employeeData?.nextOfKin[0].lastName,
+                    defaultValue: employeeData?.nextOfKin[0].lName,
                   }),
                 },
                 {
@@ -736,7 +1335,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
                   required: true,
                   placeholder: "Enter email",
                   ...(isEdit && {
-                    defaultValue: employeeData?.nextOfKin[0].email,
+                    defaultValue: employeeData?.nextOfKin[0].nextemail,
                   }),
                 },
                 {
@@ -746,7 +1345,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
                   required: true,
                   placeholder: "Enter phone number",
                   ...(isEdit && {
-                    defaultValue: employeeData?.nextOfKin[0].phoneNumber,
+                    defaultValue: employeeData?.nextOfKin[0].nextPhoneNumber,
                   }),
                 },
                 {
@@ -803,17 +1402,10 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
                   type: "select",
                   required: true,
                   hookFormField: true,
-                  options: [
-                    {
-                      label: "Artificial Intelligence",
-                      value: "679cf7e77779e02cd91b82af",
-                    },
-                    // { label: "IT", value: "uuid-two" },
-                  ],
+                  options: departmentOptions,
                   ...(isEdit && {
                     defaultValue:
-                      employeeData?.employmentInformation.department
-                        .departmentName,
+                      employeeData?.employmentInformation.department.id,
                   }),
                 },
                 // {
@@ -995,9 +1587,11 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
                   hookFormGetValues: employmentGetValues,
                   hookFormResetField: employmentResetField,
                   hookFormWatch: employmentWatch,
+                  hookFormSetValue: employmentSetValue,
                   ...(isEdit && {
                     defaultValue:
                       employeeData?.employmentInformation.jobDescription,
+                    isDragUploadEmployeeEdit: true,
                   }),
                 },
               ],
@@ -1027,7 +1621,8 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
                   ),
                   placeholder: "Enter base salary",
                   ...(isEdit && {
-                    defaultValue: employeeData?.compensation.baseSalary,
+                    defaultValue:
+                      employeeData?.compensation.baseSalary.toString(),
                   }),
                 },
                 {
@@ -1056,7 +1651,8 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
                   type: "text",
                   placeholder: "Enter commission",
                   ...(isEdit && {
-                    defaultValue: employeeData?.compensation.commission,
+                    defaultValue:
+                      employeeData?.compensation.commission.toString(),
                   }),
                 },
                 {
@@ -1064,7 +1660,8 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
                   type: "text",
                   placeholder: "Enter stock options",
                   ...(isEdit && {
-                    defaultValue: employeeData?.compensation.stockOptions,
+                    defaultValue:
+                      employeeData?.compensation.stockOptions.toString(),
                   }),
                 },
                 {
@@ -1137,7 +1734,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
                   required: true,
                   placeholder: "Enter routing number",
                   ...(isEdit && {
-                    defaultValue: employeeData?.compensation.routingNumber,
+                    defaultValue: employeeData?.compensation.routingNo,
                   }),
                 },
                 {
@@ -1248,7 +1845,6 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
               layout: "3-columns",
               control: documentsControl,
               register: documentsRegister,
-              // errors: documentsErrors,
               loading: loading,
               inputFields: [
                 {
@@ -1266,6 +1862,11 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
                     hookFormResetField: documentsResetField,
                     hookFormWatch: documentsWatch,
                     hookFormUnregister: documentsUnregister,
+                    ...(isEdit && {
+                      hookFormSetValue: documentsSetValue,
+                      isDragUploadEmployeeEdit: true,
+                    }),
+
                     showFieldLabels: true,
                     startIndexToShowDelete: 2,
                     gridCols: { xs: 1 },
@@ -1308,12 +1909,9 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
                   controllerRules: {
                     required: "Device Type is required",
                   },
-                  options: [
-                    // { label: "Laptop", value: "677bd034a44473351eade101" },
-                    { label: "Laptop", value: "Laptop" },
-                  ],
+                  options: deviceOptions,
                   ...(isEdit && {
-                    defaultValue: employeeData?.accessRights[0].devices[0],
+                    defaultValue: employeeData?.accessRights[0].devices[0]._id,
                   }),
                 },
               ],
@@ -1372,13 +1970,85 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
           onClose={() => {}}
           hasHeading={false}
           centerImage={icon.successTick}
-          centerTitle="Employee Created Successfully"
+          centerTitle={
+            isEdit
+              ? "Edit Requested Successfully"
+              : "Employee Created Successfully"
+          }
           centerButton
           buttonOne={{
             type: ButtonType.contained,
             text: "Return to Employee Directory",
             onClick: () =>
               router.push("/hr-admin/employee-management/directory"),
+          }}
+        />
+      )}
+      {openEditRequestModal && (
+        <Modal
+          open={openEditRequestModal}
+          onClose={() => {
+            setOpenEditRequestModal(false);
+            editReset();
+          }}
+          hasHeading={false}
+          reduceVerticalGap
+          centerImage="/image/padlock.svg"
+          centerTitle="Editing Disabled"
+          centerMessage="The fields are currently locked for editing. Request access from Admin to enable edit"
+          form={{
+            gridSpacing: 3,
+            register: editRegister,
+            errors: editErrors,
+            inputFields: [
+              {
+                label: "Why are you requesting this edit?",
+                type: "text",
+                required: true,
+                isMessageField: true,
+              },
+              {
+                label: "Supporting Document",
+                type: "drag-upload-hook-form",
+                required: true,
+                hookFormGetValues: editGetValues,
+                hookFormResetField: editResetField,
+                hookFormWatch: editWatch,
+                hookFormSetValue: editSetValue,
+              },
+            ],
+          }}
+          buttonOne={{
+            type: ButtonType.outlined,
+            text: "Cancel",
+            onClick: () => {
+              setOpenEditRequestModal(false);
+              editReset();
+            },
+          }}
+          buttonTwo={{
+            type: editIsValid
+              ? mutationLoading
+                ? ButtonType.disabledLoading
+                : ButtonType.contained
+              : ButtonType.disabled,
+            text: mutationLoading ? "" : "Request Edit Access",
+            onClick: () => {
+              if (slug !== undefined && typeof slug === "string") {
+                editEmployeeMutation.mutateAsync({
+                  employeeId: slug,
+                  updates: getUpdatedFields(),
+                  isEmployeeRequest: false,
+                  isHrRequest: true,
+                  reasonForUpdate: editGetValues(
+                    "Why are you requesting this edit?"
+                  ),
+                  supportingDocuments: [
+                    editGetValues("Supporting Document")[0].name,
+                  ],
+                });
+              }
+            },
           }}
         />
       )}

@@ -8,8 +8,10 @@ import {
   UseFormGetValues,
   UseFormRegister,
   UseFormResetField,
+  UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
+import { MdOutlineRestore } from "react-icons/md";
 
 export const UploadFieldInfo: React.FC<{ text: string }> = ({ text }) => {
   return (
@@ -56,6 +58,8 @@ const DragUploadHookForm = ({
   hookFormWatch,
   hookFormErrors,
   defaultValue,
+  isDragUploadEmployeeEdit,
+  hookFormSetValue,
 }: {
   onFileChange?: (file: File | null) => void;
   name?: string;
@@ -66,13 +70,21 @@ const DragUploadHookForm = ({
   hookFormWatch?: UseFormWatch<FieldValues>;
   hookFormErrors?: FieldErrors<FieldValues>;
   defaultValue?: string | number;
+  isDragUploadEmployeeEdit?: boolean;
+  hookFormSetValue?: UseFormSetValue<FieldValues>;
 }) => {
   const file = hookFormWatch?.(name ?? "");
   const fileSet = file?.length > 0;
   const [_defaultValue, setDefaultValue] = useState(defaultValue);
 
   const handleRemoveFile = () => {
-    hookFormResetField?.(name ?? "");
+    if (isDragUploadEmployeeEdit) {
+      hookFormSetValue?.(name ?? "", undefined, {
+        shouldDirty: false,
+      });
+    } else {
+      hookFormResetField?.(name ?? "");
+    }
   };
 
   useEffect(() => {
@@ -139,6 +151,21 @@ const DragUploadHookForm = ({
       <div className="mt-2">
         <UploadFieldInfo text="Attach any relevant file. Max file size allowed is 3MB" />
       </div>
+      {isDragUploadEmployeeEdit &&
+        hookFormGetValues?.(name ?? "") === undefined && (
+          <div
+            className="cursor-pointer flex items-center gap-2 mt-2"
+            style={{ color: color.info.dark }}
+            onClick={() =>
+              hookFormResetField?.(name ?? "", {
+                keepDirty: false,
+                defaultValue: defaultValue,
+              })
+            }
+          >
+            <MdOutlineRestore /> Reset
+          </div>
+        )}
       {hookFormErrors && name && hookFormErrors[name] && (
         <FormHelperText sx={{ color: "red" }}>
           {typeof hookFormErrors[name].message === "string" &&
