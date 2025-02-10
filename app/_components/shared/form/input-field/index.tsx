@@ -49,7 +49,8 @@ const InputField: React.FC<InputFieldProps> = ({
   hookFormClearErrors,
   hookFormWatch,
   defaultChecked,
-  // hookFormUnregister,
+  isMessageField,
+  isDragUploadEmployeeEdit,
 }) => {
   return (
     <div className="flex flex-col gap-2">
@@ -72,6 +73,7 @@ const InputField: React.FC<InputFieldProps> = ({
               errors={errors}
               required={required}
               hookFormName={hookFormName}
+              isMessageField={isMessageField}
             />
           )}
           {type == "message" && (
@@ -172,6 +174,8 @@ const InputField: React.FC<InputFieldProps> = ({
                 hookFormResetField={hookFormResetField}
                 hookFormErrors={errors}
                 hookFormWatch={hookFormWatch}
+                hookFormSetValue={hookFormSetValue}
+                isDragUploadEmployeeEdit={isDragUploadEmployeeEdit}
                 defaultValue={
                   typeof defaultValue === "string" ? defaultValue : undefined
                 }

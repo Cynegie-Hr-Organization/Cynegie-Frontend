@@ -201,7 +201,7 @@ export type Document = {
 
 export type AccessRight = {
   _id: string;
-  devices: string[];
+  devices: { _id: string; deviceName: string }[];
   permissions: {
     tool: string;
     id: string;
@@ -263,7 +263,7 @@ export type Compensation = {
   effectiveDateOfCompensation: string;
   bankName: string;
   bankAccountNo: string;
-  routingNumber: string;
+  routingNo: string;
   payGrade: string;
   taxIdentificationNumber: string;
   allowance: Allowance[];
@@ -286,12 +286,12 @@ type Deduction = {
 };
 
 type NextOfKin = {
-  firstName: string;
-  lastName: string;
+  fName: string;
+  lName: string;
   gender: "male" | "female" | "non-binary" | "other";
   relationship: string;
-  phoneNumber: string;
-  email: string;
+  nextPhoneNumber: string;
+  nextemail: string;
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
   id: string;

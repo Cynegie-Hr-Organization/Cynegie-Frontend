@@ -65,26 +65,28 @@ const HrAdminEmployeeAttendanceManagement = () => {
   useEffect(() => {
     if (attendanceRecordsData) {
       setAttendanceRecords(
-        attendanceRecordsData.data.map((record) => ({
-          id: record.attendanceId,
-          employeeName: record.employeeName,
-          staffID: record.staffId,
-          department: record.department,
-          jobTitle: record.jobTitle,
-          date: record.date,
-          checkInTime: dayjs(record.clockIn).format("hh:mm A"),
-          clockOutTime:
-            record.clockOut === "N/A"
-              ? record.clockOut
-              : dayjs(record.clockOut).format("hh:mm A"),
-          hoursWorked:
-            record.totalHoursWorked !== null
-              ? formatHours(record.totalHoursWorked)
-              : "N/A",
-          status: record.attendanceStatus,
-          overtimeHours:
-            record.overtime !== null ? formatHours(record.overtime) : "N/A",
-        }))
+        attendanceRecordsData.data
+          ? attendanceRecordsData.data?.map((record) => ({
+              id: record.attendanceId,
+              employeeName: record.employeeName,
+              staffID: record.staffId,
+              department: record.department,
+              jobTitle: record.jobTitle,
+              date: record.date,
+              checkInTime: dayjs(record.clockIn).format("hh:mm A"),
+              clockOutTime:
+                record.clockOut === "N/A"
+                  ? record.clockOut
+                  : dayjs(record.clockOut).format("hh:mm A"),
+              hoursWorked:
+                record.totalHoursWorked !== null
+                  ? formatHours(record.totalHoursWorked)
+                  : "N/A",
+              status: record.attendanceStatus,
+              overtimeHours:
+                record.overtime !== null ? formatHours(record.overtime) : "N/A",
+            }))
+          : []
       );
     } else {
       setAttendanceRecords(undefined);

@@ -49,7 +49,6 @@ type MappedEmployee = {
   jobTitle: string;
   department: string;
   permissions: { name: string; value: string }[];
-  //TODO: Add permissions field with type {name: string; id: string}[]
 };
 
 const HrAdminEmployeeDirectory = () => {
@@ -62,9 +61,6 @@ const HrAdminEmployeeDirectory = () => {
   const [openTerminateEmployeeModal, setOpenTerminateEmployeeModal] =
     useState(false);
   const [openTerminationToast, setOpenTerminationToast] = useState(false);
-
-  const [openEditRequestModal, setOpenEditRequestModal] = useState(false);
-  const [openEditRequestToast, setOpenEditRequestToast] = useState(false);
 
   const [openPermissionsModal, setOpenPermissionsModal] = useState(false);
 
@@ -268,7 +264,6 @@ const HrAdminEmployeeDirectory = () => {
       <Table
         title="Employee Directory"
         hasActionsColumn
-        // hasCheckboxes
         headerRowData={[
           "Employee Full Name",
           "Staff ID",
@@ -280,9 +275,7 @@ const HrAdminEmployeeDirectory = () => {
         bodyRowData={employees}
         fieldTypes={[
           ...Array(4).fill(FieldType.text),
-          // FieldType.text,
           FieldType.status,
-          // TODO: Find a way to show the departments as status
           FieldType.permissions,
         ]}
         displayedFields={[
@@ -311,15 +304,10 @@ const HrAdminEmployeeDirectory = () => {
           {
             name: "Edit Employee Details",
             onClick: () => {},
-            onDataReturned: (id) => {
-              // if (index === 0) {
-              //   setOpenEditRequestModal(true);
-              // } else {
+            onDataReturned: (id) =>
               router.push(
                 `${route.hrAdmin.employeeManagement.directory.editEmployee}/${id}`
-              );
-            },
-            // },
+              ),
           },
           {
             name: "View Employee Details",
@@ -339,7 +327,6 @@ const HrAdminEmployeeDirectory = () => {
           const foundEmployee = employees?.filter(
             (employee) => employee.id === id
           )?.[0];
-          console.log(foundEmployee);
           setSelectedEmployee(foundEmployee);
           setOpenPermissionsModal(true);
         }}
@@ -399,37 +386,6 @@ const HrAdminEmployeeDirectory = () => {
           }}
         />
       )}
-      {openEditRequestModal && (
-        <Modal
-          open={openEditRequestModal}
-          onClose={() => setOpenEditRequestModal(false)}
-          hasHeading={false}
-          reduceVerticalGap
-          centerImage="/image/padlock.svg"
-          centerTitle="Editing Disabled"
-          centerMessage="The fields are currently locked for editing. Request access from Admin to enable edit"
-          form={{
-            gridSpacing: 3,
-            inputFields: [
-              { label: "Why are you requesting this edit?", type: "message" },
-              { label: "Supporting Document", type: "drag-upload" },
-            ],
-          }}
-          buttonOne={{
-            type: ButtonType.outlined,
-            text: "Cancel",
-            onClick: () => setOpenEditRequestModal(false),
-          }}
-          buttonTwo={{
-            type: ButtonType.contained,
-            text: "Request Edit Access",
-            onClick: () => {
-              setOpenEditRequestModal(false);
-              setOpenEditRequestToast(true);
-            },
-          }}
-        />
-      )}
       {openPermissionsModal && (
         <Modal
           open={openPermissionsModal}
@@ -476,16 +432,6 @@ const HrAdminEmployeeDirectory = () => {
           message="Employee has been terminated successfully"
           icon={icon.checkCircle}
           type="success"
-        />
-      )}
-      {openEditRequestToast && (
-        <Toast
-          open={openEditRequestToast}
-          onClose={() => setOpenEditRequestToast(false)}
-          type="success"
-          icon={icon.checkCircle}
-          status="Successful"
-          message="Your edit request has been sent successfully"
         />
       )}
     </Page>

@@ -17,6 +17,7 @@ import {
   UseFormGetValues,
   UseFormRegister,
   UseFormResetField,
+  UseFormSetValue,
   UseFormUnregister,
   UseFormWatch,
 } from "react-hook-form";
@@ -56,6 +57,7 @@ export type AddItemsProps = {
   hookFormResetField?: UseFormResetField<FieldValues>;
   hookFormWatch?: UseFormWatch<FieldValues>;
   hookFormUnregister?: UseFormUnregister<FieldValues>;
+  hookFormSetValue?: UseFormSetValue<FieldValues>;
   secondaryHookFormName?: string;
   inputFieldRequired?: boolean;
   secondaryFieldRequired?: boolean;
@@ -71,6 +73,7 @@ export type AddItemsProps = {
   getLocalAddedItems?: (items: AddedItem[]) => void;
   useNameAsDefaultValue?: boolean;
   forceInputFieldNameAsLabel?: boolean;
+  isDragUploadEmployeeEdit?: boolean;
 };
 
 export type AddedItem = {
@@ -106,6 +109,7 @@ const AddItems: React.FC<AddItemsProps> = ({
   hookFormResetField,
   hookFormWatch,
   hookFormUnregister,
+  hookFormSetValue,
   inputFieldRequired,
   secondaryFieldRequired,
   inputFieldControllerRules,
@@ -116,6 +120,7 @@ const AddItems: React.FC<AddItemsProps> = ({
   getLocalAddedItems,
   useNameAsDefaultValue,
   forceInputFieldNameAsLabel,
+  isDragUploadEmployeeEdit,
 }) => {
   const getAvailableItems = (items: string[]) => {
     return allItems?.filter((item) => !items.includes(item));
@@ -274,6 +279,8 @@ const AddItems: React.FC<AddItemsProps> = ({
               hookFormGetValues={hookFormGetValues}
               hookFormResetField={hookFormResetField}
               hookFormWatch={hookFormWatch}
+              hookFormSetValue={hookFormSetValue}
+              isDragUploadEmployeeEdit={isDragUploadEmployeeEdit}
               disabled={disabled}
               required={inputFieldRequired}
               controllerRules={inputFieldControllerRules}
