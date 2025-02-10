@@ -1,13 +1,15 @@
 export type ViewTaskProps = {
+  id: string;
   name: string;
+  status: string;
   appName: string;
   assignedTo: AssignedUser[];
   dateCreated: string;
   label: string;
   dueDate: string;
   description: string;
-  userPicture: string;
-  comments: Comment[];
+  userPicture?: string;
+  comments?: Comment[];
 };
 
 export type AssignedUser = {

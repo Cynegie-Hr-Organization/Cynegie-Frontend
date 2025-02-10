@@ -1,11 +1,16 @@
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { FieldType, TableProps } from '@/app/_components/shared/table/types';
-import { ButtonType } from '../../../../shared/page/heading/types';
-import { ModalProps } from '../../../modal/types';
-import { AttendanceResponse, fetchAttendanceById, fetchAttendanceMine, getCurrentAttendanceRecords } from '@/app/api/services/employee/attendance';
-import { formatDate } from '@/lib/utils';
-import { SectionWithCardsProps } from '@/app/_components/shared/section-with-cards/types';
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { FieldType, TableProps } from "@/app/_components/shared/table/types";
+import { ButtonType } from "../../../../shared/page/heading/types";
+import { ModalProps } from "../../../modal/types";
+import {
+  AttendanceResponse,
+  fetchAttendanceById,
+  fetchAttendanceMine,
+  getCurrentAttendanceRecords,
+} from "@/app/api/services/employee/attendance";
+import { formatDate } from "@/lib/utils";
+import { SectionWithCardsProps } from "@/app/_components/shared/section-with-cards/types";
 
 const useAttendanceRecordTable = () => {
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
@@ -14,45 +19,45 @@ const useAttendanceRecordTable = () => {
   const [detailsData, setDetailsData] = useState<any | null>(null);
 
   const { data: attendanceDataResponse } = useQuery<AttendanceResponse>({
-    queryKey: ['attendanceRecords'],
+    queryKey: ["attendanceRecords"],
     queryFn: () => fetchAttendanceMine("desc", 1, 10),
   });
 
   const attendanceData = attendanceDataResponse?.data || [];
 
   const { data: currentAttendanceRecordsResponse } = useQuery({
-    queryKey: ['currentAttendanceRecords'],
+    queryKey: ["currentAttendanceRecords"],
     queryFn: getCurrentAttendanceRecords,
   });
 
   const currentAttendanceRecordsSectionData: SectionWithCardsProps = {
-    title: 'Current Attendance Records',
-    period: 'This week',
+    title: "Current Attendance Records",
+    period: "This week",
     headerDivider: true,
     cardsData: [
       {
         value: 0,
-        iconColorVariant: 'info',
-        labelText: 'Total Days',
+        iconColorVariant: "info",
+        labelText: "Total Days",
         hasIcon: true,
       },
       {
         value: 0,
-        iconColorVariant: 'warning',
-        labelText: 'Days Late',
+        iconColorVariant: "warning",
+        labelText: "Days Late",
         hasIcon: true,
       },
       {
         value: 0,
-        iconColorVariant: 'error',
-        labelText: 'Days Absent',
+        iconColorVariant: "error",
+        labelText: "Days Absent",
         hasIcon: true,
       },
     ],
   };
 
   if (currentAttendanceRecordsResponse) {
-    const attendanceSummary = currentAttendanceRecordsResponse  ;
+    const attendanceSummary = currentAttendanceRecordsResponse;
 
     let totalDays = 0;
     let daysLate = 0;
@@ -60,19 +65,15 @@ const useAttendanceRecordTable = () => {
 
     console.log(attendanceSummary);
 
-    if (attendanceSummary)
-    {
+    if (attendanceSummary) {
       Object.values(attendanceSummary).forEach((day: any) => {
-        if (day.present > 0)
-        {
+        if (day.present > 0) {
           totalDays += 1;
         }
-        if (day.late > 0)
-        {
+        if (day.late > 0) {
           daysLate += 1;
         }
-        if (day.present === 0)
-        {
+        if (day.present === 0) {
           daysAbsent += 1;
         }
       });
@@ -85,27 +86,42 @@ const useAttendanceRecordTable = () => {
     }
   }
 
-  const transformedAttendanceData = attendanceData.length > 0 
-    ? attendanceData.map((record) => {
-        const clockInDate = record.clockIn ? new Date(record.clockIn) : null;
-        const clockOutDate = record.clockOut ? new Date(record.clockOut) : null;
+  const transformedAttendanceData =
+    attendanceData.length > 0
+      ? attendanceData.map((record) => {
+          const clockInDate = record.clockIn ? new Date(record.clockIn) : null;
+          const clockOutDate = record.clockOut
+            ? new Date(record.clockOut)
+            : null;
 
-        return {
-          id: record.attendanceId,
-          date: new Date(record.date).toLocaleDateString(),
-          clockInTime: clockInDate && !isNaN(clockInDate.getTime())
-            ? clockInDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            : 'N/A',
-          clockOutTime: clockOutDate && !isNaN(clockOutDate.getTime())
-            ? clockOutDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            : 'N/A',
-          hoursWorked: clockInDate && clockOutDate && !isNaN(clockInDate.getTime()) && !isNaN(clockOutDate.getTime())
-            ? `${Math.round((clockOutDate.getTime() - clockInDate.getTime()) / 3600000)} hours`
-            : 'N/A',
-          status: record.attendanceStatus,
-        };
-      })
-    : [];
+          return {
+            id: record.attendanceId,
+            date: new Date(record.date).toLocaleDateString(),
+            clockInTime:
+              clockInDate && !isNaN(clockInDate.getTime())
+                ? clockInDate.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : "N/A",
+            clockOutTime:
+              clockOutDate && !isNaN(clockOutDate.getTime())
+                ? clockOutDate.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : "N/A",
+            hoursWorked:
+              clockInDate &&
+              clockOutDate &&
+              !isNaN(clockInDate.getTime()) &&
+              !isNaN(clockOutDate.getTime())
+                ? `${Math.round((clockOutDate.getTime() - clockInDate.getTime()) / 3600000)} hours`
+                : "N/A",
+            status: record.attendanceStatus,
+          };
+        })
+      : [];
 
   const attendanceRecordTableData: TableProps = {
     title: "Attendance Record",
@@ -150,13 +166,13 @@ const useAttendanceRecordTable = () => {
           } catch (error) {
             console.error("Failed to fetch attendance details:", error);
           }
-        }
+        },
       },
     ],
-    filters: [{ name: 'Status', items: ['Present', 'Late', 'Absent'] }],
-    fieldToReturnOnActionItemClick: 'id',
+    filters: [{ name: "Status", items: ["Present", "Late", "Absent"] }],
+    fieldToReturnOnActionItemClick: "id",
     page: 1,
-    pageCount: Math.ceil(transformedAttendanceData.length / 10), 
+    pageCount: Math.ceil(transformedAttendanceData.length / 10),
   };
 
   const detailsModalData: ModalProps = {
@@ -166,23 +182,32 @@ const useAttendanceRecordTable = () => {
     subtitle: "View attendance details below",
     detailGroup: {
       details: [
-        { name: 'Date', value: detailsData?.date ? formatDate(detailsData.date) : '' },
-        { name: 'Clock In Time', value: detailsData?.clockIn ? formatDate(detailsData.clockIn) : '' },
-        { name: 'Clock Out Time', value: detailsData?.clockOut ? formatDate(detailsData.clockOut) : '' },
         {
-          name: 'Hours Worked',
+          name: "Date",
+          value: detailsData?.date ? formatDate(detailsData.date) : "",
+        },
+        {
+          name: "Clock In Time",
+          value: detailsData?.clockIn ? formatDate(detailsData.clockIn) : "",
+        },
+        {
+          name: "Clock Out Time",
+          value: detailsData?.clockOut ? formatDate(detailsData.clockOut) : "",
+        },
+        {
+          name: "Hours Worked",
           value:
             detailsData?.clockIn && detailsData?.clockOut
               ? `${Math.round(
                   (new Date(detailsData.clockOut).getTime() -
                     new Date(detailsData.clockIn).getTime()) /
-                    3600000
+                    3600000,
                 )} hours`
-              : 'N/A',
+              : "N/A",
         },
         {
-          name: 'Status',
-          value: `${detailsData?.attendanceStatus ?? '---'}`,
+          name: "Status",
+          value: `${detailsData?.attendanceStatus ?? "---"}`,
         },
       ],
       gridLayout: "view-details",
@@ -213,7 +238,7 @@ const useAttendanceRecordTable = () => {
     },
     buttonTwo: {
       type: ButtonType.contained,
-      text: 'Submit Request',
+      text: "Submit Request",
       onClick: () => {
         setOpenCorrectionModal(false);
         setOpenSuccessModal(true);

@@ -6,8 +6,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const localTime = (time: string, timeFormat: string = 'dd MMM') => format(new Date(time), timeFormat);
-
+export const localTime = (time: string, timeFormat: string = "dd MMM") =>
+  format(new Date(time), timeFormat);
 
 // utils/dateFormatter.ts
 export const formatDate = (dateString: string): string => {

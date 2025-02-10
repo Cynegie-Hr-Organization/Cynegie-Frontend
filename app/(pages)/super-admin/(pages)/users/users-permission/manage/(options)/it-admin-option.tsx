@@ -1,20 +1,15 @@
 import { OptionSwitch } from "./components/option-switch";
 import { SwitchState } from "../page";
 
-
-
-
 export const ITAdminOptions = ({
   switches,
   onSwitchChange,
-  isDisabledSwitches
+  isDisabledSwitches,
 }: {
-  switches: SwitchState,
-  onSwitchChange: (id: string, checked: boolean) => void
-  isDisabledSwitches: boolean
+  switches: SwitchState;
+  onSwitchChange: (id: string, checked: boolean) => void;
+  isDisabledSwitches: boolean;
 }) => {
-
-
   return (
     <div className="space-y-4">
       <h3 className="text-base font-bold text-gray-900">IT Admin Options</h3>
@@ -25,7 +20,7 @@ export const ITAdminOptions = ({
           description="Grant user permission to manage all IT services."
           id="itAdministration"
           checked={switches.itAdministration}
-          onChange={(checked) => onSwitchChange('itAdministration', checked)}
+          onChange={(checked) => onSwitchChange("itAdministration", checked)}
           disabled={isDisabledSwitches}
         />
 

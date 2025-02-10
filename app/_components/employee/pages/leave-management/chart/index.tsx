@@ -1,11 +1,11 @@
-import DoughnutChart from '@/app/_components/shared/charts/donut-chart';
-import DotLegend from '@/app/_components/shared/charts/legends/dot-legend';
+import DoughnutChart from "@/app/_components/shared/charts/donut-chart";
+import DotLegend from "@/app/_components/shared/charts/legends/dot-legend";
 import {
   color,
   defaultDonutChartData,
   defaultDonutChartOptions,
-} from '@/constants';
-import { Stack } from '@mui/material';
+} from "@/constants";
+import { Stack } from "@mui/material";
 
 export type LeaveManagementChartProps = {
   title: string;
@@ -18,14 +18,14 @@ const getAvailableDays = (totalDays: number, usedDays: number) => {
   return totalDays - usedDays;
 };
 
-const chartLabels = ['Used Days', 'Unused/Available Days'];
+const chartLabels = ["Used Days", "Unused/Available Days"];
 
 const LeaveManagementChart: React.FC<LeaveManagementChartProps> = (props) => {
   const { title, usedDays, totalDays, usedDaysColor } = props;
 
   return (
     <Stack gap={5}>
-      <div className='card-title-small'>{title}</div>
+      <div className="card-title-small">{title}</div>
       <DoughnutChart
         data={{
           ...defaultDonutChartData,
@@ -58,7 +58,7 @@ const LeaveManagementChart: React.FC<LeaveManagementChartProps> = (props) => {
             value={
               index == 0 ? usedDays : getAvailableDays(totalDays, usedDays)
             }
-            countedItemName='day'
+            countedItemName="day"
           />
         ))}
       </Stack>

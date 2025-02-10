@@ -79,7 +79,7 @@ const HrAdminEnrollToBenefitPage: React.FC = () => {
             grossPay: `₦${0}`,
             deduction: `₦${0}`,
             netPay: `₦${0}`,
-          }))
+          })),
         );
       }
     }
@@ -94,8 +94,8 @@ const HrAdminEnrollToBenefitPage: React.FC = () => {
           checkedRows.length < 1
             ? ButtonType.disabled
             : loading
-            ? ButtonType.disabledLoading
-            : ButtonType.contained,
+              ? ButtonType.disabledLoading
+              : ButtonType.contained,
         text: loading ? "" : "Enroll Employee",
         onClick:
           checkedRows.length < 1
@@ -103,8 +103,8 @@ const HrAdminEnrollToBenefitPage: React.FC = () => {
             : () =>
                 enrollEmployeesMutation.mutateAsync(
                   checkedRows.map((row) =>
-                    typeof row.id === "string" ? row.id : ""
-                  )
+                    typeof row.id === "string" ? row.id : "",
+                  ),
                 ),
       }}
     >

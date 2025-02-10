@@ -27,12 +27,15 @@ export const AddedFile: React.FC<AddedFileProps> = (props) => {
   return (
     <div
       className="w-fit p-1 px-4 flex items-center items-self-start gap-2"
+      className="w-fit p-1 px-4 flex items-center items-self-start gap-2"
       style={{
         backgroundColor: color.info.light,
         color: color.info.dark,
         borderRadius: "50px",
+        borderRadius: "50px",
       }}
     >
+      <div style={{ fontSize: "12px", fontWeight: "bold" }}>{props.name}</div>
       <div style={{ fontSize: "12px", fontWeight: "bold" }}>{props.name}</div>
       <Close
         onClick={props.onRemoveClick}
@@ -40,7 +43,10 @@ export const AddedFile: React.FC<AddedFileProps> = (props) => {
         sx={{
           width: "20px",
           height: "20px",
+          width: "20px",
+          height: "20px",
           color: color.info.light,
+          borderRadius: "50%",
           borderRadius: "50%",
           backgroundColor: color.info.dark,
         }}

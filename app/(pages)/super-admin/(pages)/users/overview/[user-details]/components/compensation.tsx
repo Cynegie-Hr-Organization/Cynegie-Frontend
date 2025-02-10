@@ -16,7 +16,10 @@ export const Compensation = () => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <DetailBlock label="Employment Status" value="Active" />
           <DetailBlock label="Stock Options" value="11%" />
-          <DetailBlock label="Effective Date of Compensation" value="27th of the month" />
+          <DetailBlock
+            label="Effective Date of Compensation"
+            value="27th of the month"
+          />
           <DetailBlock label="Pay Grade/Level" value="Level 11" />
         </div>
 
@@ -48,4 +51,4 @@ export const Compensation = () => {
       </div>
     </div>
   );
-}
+};

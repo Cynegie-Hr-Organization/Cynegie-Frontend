@@ -1,7 +1,7 @@
-import { Stack, SxProps } from '@mui/material';
-import Name from './name';
-import ItemCompletionDate from './completion-date';
-import React from 'react';
+import { Stack, SxProps } from "@mui/material";
+import Name from "./name";
+import ItemCompletionDate from "./completion-date";
+import React from "react";
 
 const SummaryItem: React.FC<{
   name: string;
@@ -10,7 +10,7 @@ const SummaryItem: React.FC<{
   sx?: SxProps;
 }> = ({ name, datePhrase, date, sx }) => {
   return (
-    <Stack sx={sx}>
+    <Stack sx={{ ...sx, flexDirection: "column" }}>
       <Name text={name} />
       <ItemCompletionDate phrase={datePhrase} date={date} />
     </Stack>

@@ -12,6 +12,9 @@ import { useRouter } from "next/navigation";
 import { IoIosArrowDown } from "react-icons/io";
 import { LuCirclePlus, LuTrash } from "react-icons/lu";
 import ContinuousFeedbackTable from "./table";
+import AppInputText, {
+  AppInputTextArea,
+} from "@/app/_components/shared/input-text";
 
 const ContinuousFeedbackPage = () => {
   return (

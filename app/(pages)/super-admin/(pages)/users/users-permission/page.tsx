@@ -1,13 +1,10 @@
-'use client'
+"use client";
 
 import UsersPermissionTable from "@/app/(pages)/super-admin/(pages)/users/users-permission/table";
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { IoIosArrowDown } from "react-icons/io";
-
-
-
 
 const UserPermission = () => {
   return (
@@ -24,15 +21,16 @@ const UserPermission = () => {
   );
 };
 
-
-
-
-
-const PageHeader = ({ title, description, buttonLabel, buttonLink }: {
-  title: string,
-  description: string,
-  buttonLabel: string,
-  buttonLink: string
+const PageHeader = ({
+  title,
+  description,
+  buttonLabel,
+  buttonLink,
+}: {
+  title: string;
+  description: string;
+  buttonLabel: string;
+  buttonLink: string;
 }) => {
   const router = useRouter();
 
@@ -47,29 +45,39 @@ const PageHeader = ({ title, description, buttonLabel, buttonLink }: {
         <p className="md:text-xs text-gray-500">{description}</p>
       </div>
 
-
       <div className="hidden md:flex items-center gap-4">
-        <AppButton onClick={handleGrantPermission} label={buttonLabel} className=" btn-primary w-full text-sm text-white" />
+        <AppButton
+          onClick={handleGrantPermission}
+          label={buttonLabel}
+          className=" btn-primary w-full text-sm text-white"
+        />
       </div>
       <AppDropdownMenu
         width="w-[190px]"
-        trigger={<button
-          type="button"
-          className="text-gray-500 font-semibold flex gap-2 items-center border rounded-lg px-4 py-2 md:hidden">
-          Action <IoIosArrowDown size={24} />
-        </button>}
+        trigger={
+          <button
+            type="button"
+            className="text-gray-500 font-semibold flex gap-2 items-center border rounded-lg px-4 py-2 md:hidden"
+          >
+            Action <IoIosArrowDown size={24} />
+          </button>
+        }
         menuItems={
           <div>
-            <button className="hover:bg-gray-100 px-4 py-2 w-full text-left text-sm">Approve All</button>
-            <button className="hover:bg-gray-100 px-4 py-2 w-full text-left text-sm">Reject All</button>
-            <button className="hover:bg-gray-100 px-4 py-2 w-full text-left text-sm">View Details</button>
+            <button className="hover:bg-gray-100 px-4 py-2 w-full text-left text-sm">
+              Approve All
+            </button>
+            <button className="hover:bg-gray-100 px-4 py-2 w-full text-left text-sm">
+              Reject All
+            </button>
+            <button className="hover:bg-gray-100 px-4 py-2 w-full text-left text-sm">
+              View Details
+            </button>
           </div>
-        } />
+        }
+      />
     </div>
-  )
-}
-
-
-
+  );
+};
 
 export default UserPermission;

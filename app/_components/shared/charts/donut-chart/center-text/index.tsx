@@ -1,8 +1,8 @@
-import { Stack } from '@mui/material';
-import React from 'react';
-import CenterTextLabel from './label';
-import { ChartCenterTextProps } from '../types';
-import Value from '../../../section-with-cards/card-group/card/value';
+import { Stack } from "@mui/material";
+import React from "react";
+import CenterTextLabel from "./label";
+import { ChartCenterTextProps } from "../types";
+import Value from "../../../section-with-cards/card-group/card/value";
 
 const ChartCenterText: React.FC<ChartCenterTextProps> = ({
   value,
@@ -11,7 +11,7 @@ const ChartCenterText: React.FC<ChartCenterTextProps> = ({
   denominator,
 }) => {
   return (
-    <Stack alignItems='center'>
+    <Stack alignItems="center">
       <div style={{ ...(!label && { marginTop: 4 }) }}>
         <Value
           value={value}

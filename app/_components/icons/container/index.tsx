@@ -1,4 +1,4 @@
-import { ReactSVG } from 'react-svg';
+import { ReactSVG } from "react-svg";
 
 const SvgIcon: React.FC<{
   path: string;
@@ -9,7 +9,7 @@ const SvgIcon: React.FC<{
     <ReactSVG
       src={path}
       beforeInjection={(svg) => {
-        svg.setAttribute('style', `width:${width}px; height:${height}px`);
+        svg.setAttribute("style", `width:${width}px; height:${height}px`);
       }}
     />
   );

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+
 import { icon, route } from "@/constants";
 import { usePathname, useRouter } from "next/navigation";
 import { FaChevronDown } from "react-icons/fa6";
@@ -181,7 +182,7 @@ const NavLinks = ({
 
   const isPathActive = (
     path: string,
-    subMenu?: { name: string; path: string }[]
+    subMenu?: { name: string; path: string }[],
   ) => {
     if (path === "/hr-admin") {
       return /^\/hr-admin$/.test(pathname);
@@ -195,7 +196,7 @@ const NavLinks = ({
       pathParts.every((part, index) => currentPathParts[index] === part);
 
     const isSubPathActive = subMenu?.some((subItem) =>
-      pathname.startsWith(subItem.path)
+      pathname.startsWith(subItem.path),
     );
 
     return isMainPathActive || isSubPathActive;

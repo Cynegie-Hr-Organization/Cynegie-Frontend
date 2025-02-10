@@ -1,5 +1,5 @@
-import Phrase from './phrase';
-import Date from './date';
+import Phrase from "./phrase";
+import Date from "./date";
 
 const ItemCompletionDate: React.FC<{ phrase: string; date: string }> = ({
   phrase,

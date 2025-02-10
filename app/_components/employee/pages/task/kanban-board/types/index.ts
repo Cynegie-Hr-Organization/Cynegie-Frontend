@@ -11,7 +11,7 @@ export type Task = {
 export type Column = {
   id: string;
   title: string;
-  status: 'pending' | 'completed';
+  status: "pending" | "completed";
   taskIds: string[];
 };
 

@@ -29,7 +29,6 @@ const CreateDeviceModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       return;
     }
 
-
     setIsLoading(true);
 
     try {
@@ -97,7 +96,6 @@ const CreateDeviceModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             }
             value={formData.location}
           />
-
         </div>
 
         <div className="mt-2">
