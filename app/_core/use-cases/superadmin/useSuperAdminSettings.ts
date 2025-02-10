@@ -25,7 +25,7 @@ export const useSuperAdminSettingsMutations = () => {
     mutationKey: ['update-super-admin-settings'],
     mutationFn: async (body: Partial<ISuperAdminSettings>) => {
       const session = await getSession();
-      return Http.post<ISuperAdminSettings>('super-admin/settings', body, {
+      return Http.put<ISuperAdminSettings>('company', body, {
         headers: await headers(session?.token ?? ''),
       })
     },

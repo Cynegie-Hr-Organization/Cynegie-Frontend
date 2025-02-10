@@ -1,7 +1,9 @@
 import { AppAccordion } from "@/app/(pages)/super-admin/(pages)/settings/accordion";
 import AppButton from "@/app/_components/shared/button";
 import { ISuperAdminSettings } from "@/app/_core/actions/super-admin/super-admin-settings";
-import { useSuperAdminSettings } from "@/app/_core/use-cases/superadmin/useSuperAdminSettings";
+import { useSuperAdminSettings, useSuperAdminSettingsMutations } from "@/app/_core/use-cases/superadmin/useSuperAdminSettings";
+import { useAppToast } from "@/app/_hooks/toast";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ApprovalAndWorkflowSettingsForm from "./(forms)/approval-and-workflow";
 import ComplianceSettingsForm from "./(forms)/compliance";
@@ -11,8 +13,16 @@ import IntegrationSettingsForm from "./(forms)/integration";
 import SystemMaintenanceSettingsForm from "./(forms)/system-maintenance";
 import UserAcessAndSecuritySettingsForm from "./(forms)/user-access";
 
+
+
+
+
 const SettingsForm = () => {
   const { data: generalSettings, isLoading } = useSuperAdminSettings();
+  const { updateSettings } = useSuperAdminSettingsMutations();
+  const { apptoast } = useAppToast();
+  const isUpdating = updateSettings.isPending;
+  const router = useRouter();
 
   const [formData, setFormData] = useState<Partial<Omit<ISuperAdminSettings, 'id' | 'createdAt' | 'updatedAt'>>>({
     name: "",
@@ -57,7 +67,7 @@ const SettingsForm = () => {
 
   useEffect(() => {
     if (generalSettings) {
-      setFormData(generalSettings ? {
+      setFormData({
         name: generalSettings.name,
         address: generalSettings.address,
         dateFormat: generalSettings.dateFormat,
@@ -69,50 +79,17 @@ const SettingsForm = () => {
         timeZone: generalSettings.timeZone,
         supportedLanguages: generalSettings.supportedLanguages,
         settings: generalSettings.settings
-      } : {})
-      // setFormData({
-      //   name: "",
-      //   address: "",
-      //   dateFormat: "",
-      //   email: "",
-      //   enableSystemNotification: false,
-      //   logo: "",
-      //   notificationType: "email",
-      //   phone: "",
-      //   timeZone: "",
-      //   supportedLanguages: [],
-      //   settings: {
-      //     approvalWorkflowSettings: {
-      //       stages: [{
-      //         stageName: "",
-      //         approvers: [''],
-      //       }]
-      //     },
-      //     userAccessSecuritySettings: {
-      //       minPasswordLength: 0,
-      //       passwordComplexity: "high",
-      //       sessionTimeout: 0,
-      //     },
-      //     integrationSettings: {
-      //       api: "",
-      //       thirdPartyIntegrations: [''],
-      //       scheduleDataBackups: "weekly",
-      //       errorLogLevel: "error",
-      //     },
-      //     complianceSettings: {
-      //       complianceReminderFrequency: "weekly",
-      //       dataRetentionDuration: 0,
-      //     },
-      //     customizationSettings: {
-      //       themeAndBranding: "light",
-      //       dashboardConfiguration: "compact",
-      //     },
-      //   },
-      // })
+      })
     }
   }, [generalSettings])
 
-  // console.log(data)
+  const handleSave = () => {
+    updateSettings.mutate(formData, {
+      onSuccess: () => {
+        apptoast.success({ title: 'Successful', message: 'Settings updated successfully' });
+      }
+    })
+  }
 
   return (
     <div className="space-y-8">
@@ -155,24 +132,48 @@ const SettingsForm = () => {
       <FooterButtons
         btn1Label="Cancel"
         btn2Label="Save"
-        onBtn1Click={() => { }}
-        onBtn2Click={() => { }}
+        // onBtn1Click={() => {router.back(); updateSettings.reset()}}
+        onBtn1Click={() => { router.back() }}
+        onBtn2Click={handleSave}
+        isBtn2Loading={isUpdating}
+      // btn2Disabled={isUpdating}
       />
     </div>
   )
 }
 
-const FooterButtons = ({ btn1Label, btn2Label, onBtn1Click, onBtn2Click, className }: {
-  btn1Label: string, btn2Label: string, onBtn1Click: () => void, onBtn2Click: () => void, className?: string
-}) => {
+const FooterButtons = ({ btn1Label,
+  btn2Label, onBtn1Click, onBtn2Click,
+  className,
+  btn1Disabled,
+  btn2Disabled,
+  isBtn1Loading,
+  isBtn2Loading }: {
+    btn1Label: string,
+    btn2Label: string,
+    onBtn1Click: () => void,
+    onBtn2Click: () => void,
+    className?: string,
+    btn1Disabled?: boolean,
+    btn2Disabled?: boolean,
+    isBtn1Loading?: boolean,
+    isBtn2Loading?: boolean
+  }) => {
   return (
     <div className={`flex flex-col md:flex-row justify-end gap-4 ${className ?? ''}`}>
       <AppButton
         label={btn1Label}
         className="btn-secondary"
+        disabled={btn1Disabled}
+        isLoading={isBtn1Loading}
         onClick={onBtn1Click}
       />
-      <AppButton label={btn2Label} className="disabled:btn-inactive btn-primary" onClick={onBtn2Click} />
+      <AppButton label={btn2Label}
+        className="disabled:btn-inactive btn-primary"
+        disabled={btn2Disabled}
+        isLoading={isBtn2Loading}
+        onClick={onBtn2Click}
+      />
     </div>
   )
 }
