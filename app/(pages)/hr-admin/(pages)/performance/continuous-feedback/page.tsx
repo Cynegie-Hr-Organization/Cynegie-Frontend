@@ -3,18 +3,13 @@
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppFileUpload } from "@/app/_components/shared/file-upload";
-import AppInputText, {
-  AppInputTextArea,
-} from "@/app/_components/shared/input-text";
+import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { DrawerDialog } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import { IoIosArrowDown } from "react-icons/io";
 import { LuCirclePlus, LuTrash } from "react-icons/lu";
 import ContinuousFeedbackTable from "./table";
-import AppInputText, {
-  AppInputTextArea,
-} from "@/app/_components/shared/input-text";
 
 const ContinuousFeedbackPage = () => {
   return (
@@ -122,7 +117,7 @@ const RecognizeAchievementModal = ({
             placeholder="Select Employee"
             requiredField
             value={""}
-            onChange={() => {}}
+            onChange={() => { }}
           />
 
           <AppInputText
@@ -131,7 +126,7 @@ const RecognizeAchievementModal = ({
             placeholder="Select Recognition type"
             requiredField
             value={""}
-            onChange={() => {}}
+            onChange={() => { }}
           />
 
           <AppInputText
@@ -140,7 +135,7 @@ const RecognizeAchievementModal = ({
             placeholder="Select Date of Recognition"
             requiredField
             value={""}
-            onChange={() => {}}
+            onChange={() => { }}
           />
 
           <AppInputTextArea
@@ -149,10 +144,10 @@ const RecognizeAchievementModal = ({
             placeholder="Enter your comment here"
             requiredField
             value={""}
-            onChange={() => {}}
+            onChange={() => { }}
           />
 
-          <AppFileUpload label="Attachment" onChange={() => {}} />
+          <AppFileUpload label="Attachment" onChange={() => { }} />
         </div>
       </form>
     </DrawerDialog>
