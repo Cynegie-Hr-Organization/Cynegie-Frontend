@@ -175,6 +175,9 @@ const AddItems: React.FC<AddItemsProps> = ({
     setLocalAddedItems(
       localAddedItems.filter((localItem) => localItem !== item),
     );
+    setLocalAddedItems(
+      localAddedItems.filter((localItem) => localItem !== item),
+    );
     //Add deleted item to available items
     if (!availableItems.includes(item.name))
       setAvailableItems([...availableItems, item.name]);

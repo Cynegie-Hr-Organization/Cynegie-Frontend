@@ -46,7 +46,7 @@ export type Filter = {
 
 export type TableAction = {
   name: string;
-  onClick: (taskId: string) => void;
+  onClick: (arg?: React.SyntheticEvent | string | number) => void;
   onDataReturned?: (arg: string | number) => void;
 };
 

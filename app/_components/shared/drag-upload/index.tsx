@@ -34,6 +34,7 @@ export const AddedFile: React.FC<AddedFileProps> = (props) => {
       }}
     >
       <div style={{ fontSize: "12px", fontWeight: "bold" }}>{props.name}</div>
+      <div style={{ fontSize: "12px", fontWeight: "bold" }}>{props.name}</div>
       <Close
         onClick={props.onRemoveClick}
         className="p-0.5 cursor-pointer"

@@ -1,10 +1,10 @@
-import React from "react";
 import {
   DragDropContext,
   Draggable,
   Droppable,
   DropResult,
-} from "react-beautiful-dnd";
+} from "@hello-pangea/dnd";
+
 import TaskCard from "./cards/task";
 import { BoardData } from "./types";
 
@@ -27,7 +27,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({
             {boardData.columnOrder.map((columnId) => {
               const column = boardData.columns[columnId];
               const tasks = column.taskIds.map(
-                (taskId) => boardData.tasks[taskId],
+                (taskId) => boardData.tasks[taskId]
               );
 
               return (

@@ -1,9 +1,9 @@
 import { List, ListItem, ListItemText } from "@mui/material";
-import React, { SyntheticEvent } from "react";
+import React from "react";
 import { MoreOptionsPopoverContentProps } from "../../types";
 
 const MoreOptionsPopoverContent: React.FC<MoreOptionsPopoverContentProps> = (
-  props,
+  props
 ) => {
   const { options, itemClick } = props;
 
