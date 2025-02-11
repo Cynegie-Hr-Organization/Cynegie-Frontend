@@ -17,7 +17,7 @@ const MoreOptionsPopoverContent: React.FC<MoreOptionsPopoverContentProps> = (
             "&:hover": { color: "#0035C3" },
           }}
           onClick={(e: React.SyntheticEvent) => {
-            item.onClick(e as string);
+            item.onClick(e);
             item.onDataReturned?.(props.dataToReturnOnItemClick ?? "");
             itemClick();
           }}
