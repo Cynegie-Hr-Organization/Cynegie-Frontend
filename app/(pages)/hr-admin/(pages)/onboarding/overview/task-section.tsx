@@ -6,13 +6,7 @@ import { useState } from "react";
 import NewHireList from "./new-hire-list";
 import TaskList from "./task-list";
 
-
-
 type ListType = "task" | "new-hire";
-
-
-
-
 
 const TaskSection = () => {
   const TaskListClient = dynamic(() => Promise.resolve(TaskList), {
@@ -25,7 +19,7 @@ const TaskSection = () => {
   const [list, setList] = useState<ListType>("task");
   const listTabs = [
     { label: "Task List", onClick: () => setList("task") },
-    { label: "New Hire List", onClick: () => setList("new-hire") }
+    { label: "New Hire List", onClick: () => setList("new-hire") },
   ];
 
   return (
@@ -36,7 +30,5 @@ const TaskSection = () => {
     </div>
   );
 };
-
-
 
 export default TaskSection;

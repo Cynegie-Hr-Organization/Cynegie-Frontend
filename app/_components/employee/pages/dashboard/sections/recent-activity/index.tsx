@@ -1,7 +1,7 @@
-import { Stack } from '@mui/material';
-import { Task } from '../../../task/kanban-board/types';
-import TaskCard from '../../../task/kanban-board/cards/task';
-import useKanbanBoard from '../../../task/kanban-board/hooks/useKanbanBoard';
+import { Stack } from "@mui/material";
+import { Task } from "../../../task/kanban-board/types";
+import TaskCard from "../../../task/kanban-board/cards/task";
+import useKanbanBoard from "../../../task/kanban-board/hooks/useKanbanBoard";
 
 const RecentActivityCardDetails = () => {
   const { boardData, isLoading } = useKanbanBoard();

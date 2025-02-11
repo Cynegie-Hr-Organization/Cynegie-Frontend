@@ -1,7 +1,6 @@
 import React from "react";
 
 const HiringCandidateOfferHeader = () => {
-
   // const handleCreateJobOfferClick = () => {
   //   router.push("/hr-admin/hiring/offer-management/create-job-offer");
   // };

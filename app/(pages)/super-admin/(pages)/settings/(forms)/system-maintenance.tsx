@@ -14,9 +14,8 @@ const SystemMaintenanceSettingsForm = () => {
             { label: "Weekly", value: "weekly" },
             { label: "Monthly", value: "monthly" },
           ]}
-          onChange={() => { }}
+          onChange={() => {}}
         />
-
 
         <AppSelect
           label="Error Log Level"
@@ -26,7 +25,7 @@ const SystemMaintenanceSettingsForm = () => {
             { label: "Warnings", value: "warnings" },
             { label: "All Logs", value: "all-logs" },
           ]}
-          onChange={() => { }}
+          onChange={() => {}}
         />
       </div>
     </form>

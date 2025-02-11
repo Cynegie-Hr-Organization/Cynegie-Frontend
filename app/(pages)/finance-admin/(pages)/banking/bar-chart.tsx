@@ -17,12 +17,15 @@ export interface BarChartComponentProps {
   chartConfig: ChartConfig;
 }
 
-export function BarChartComponent({ chartData, chartConfig }: BarChartComponentProps) {
+export function BarChartComponent({
+  chartData,
+  chartConfig,
+}: BarChartComponentProps) {
   const processedData = chartData.map((data) => {
     const xAxisValue = data.xAxis;
 
-    const inflow = (data.pay1 || 0);
-    const outflow = (data.pay2 || 0);
+    const inflow = data.pay1 || 0;
+    const outflow = data.pay2 || 0;
 
     return { ...data, inflow, outflow, xAxisValue };
   });
@@ -58,16 +61,8 @@ export function BarChartComponent({ chartData, chartConfig }: BarChartComponentP
           cursor={false}
           content={<ChartTooltipContent className="bg-white border-none" />}
         />
-        <Bar
-          fill="#0035C3"
-          radius={4}
-          dataKey="inflow"
-        />
-        <Bar
-          fill="#E8E8E8"
-          radius={4}
-          dataKey="outflow"
-        />
+        <Bar fill="#0035C3" radius={4} dataKey="inflow" />
+        <Bar fill="#E8E8E8" radius={4} dataKey="outflow" />
       </BarChart>
     </ChartContainer>
   );

@@ -40,8 +40,7 @@ const credentialsProviderOptions = {
         data: { email, password },
       });
 
-          console.log("API response:", json);
-
+      console.log("API response:", json);
 
       if (!json || json.error || !json.data || !json.data.user) {
         console.error(
@@ -82,8 +81,7 @@ export const authOptions: AuthOptions = {
   providers: [CredentialsProvider(credentialsProviderOptions)],
   callbacks: {
     async jwt({ token, user }) {
-      if (user)
-      {
+      if (user) {
         token.id = user.id || "";
         token.name = user.email || "";
         token.access = user.token.accessToken || "";
@@ -108,23 +106,22 @@ export const authOptions: AuthOptions = {
       return session;
     },
 
-  async signIn({ user }) {
-    if (!user.role || user.role.length === 0) {
-      console.error("User roles are missing during sign-in");
-      return false;
-    }
+    async signIn({ user }) {
+      if (!user.role || user.role.length === 0) {
+        console.error("User roles are missing during sign-in");
+        return false;
+      }
 
-    const redirectPath = getRedirectPath(user.role);
-    if (!redirectPath) {
-      console.error("No valid role found for user");
-      return false;
-    }
+      const redirectPath = getRedirectPath(user.role);
+      if (!redirectPath) {
+        console.error("No valid role found for user");
+        return false;
+      }
 
-    // Instead of returning redirectPath, handle redirection in the client
-  console.log("Redirecting to:", redirectPath);
-  return true;  
-  },
-
+      // Instead of returning redirectPath, handle redirection in the client
+      console.log("Redirecting to:", redirectPath);
+      return true;
+    },
   },
   pages: {
     signIn: "/signin",

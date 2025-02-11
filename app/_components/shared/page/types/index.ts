@@ -1,4 +1,4 @@
-import { PageHeadingProps } from '@/app/_components/shared/page/heading/types';
+import { PageHeadingProps } from "@/app/_components/shared/page/heading/types";
 
 export type PageProps = PageContainerProps & PageHeadingProps;
 

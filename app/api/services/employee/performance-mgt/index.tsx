@@ -1,4 +1,3 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
@@ -18,14 +17,12 @@ export interface GoalResponse {
   limit: number;
 }
 
-
 export const getAllMyGoals = async (
-    sortOrder: string = "desc",
-    page: number,
-    limit: number,
+  sortOrder: string = "desc",
+  page: number,
+  limit: number,
   search?: string,
-        status?: string,
-
+  status?: string,
 ): Promise<GoalResponse> => {
   const session = await getServerSession(authOptions);
 
@@ -39,14 +36,12 @@ export const getAllMyGoals = async (
       page,
       limit,
       search,
-            status,
-
+      status,
     },
   });
 
-  return response as GoalResponse ;
+  return response as GoalResponse;
 };
-
 
 export const fetchGoalsById = async (id: any) => {
   const session = await getServerSession(authOptions);
@@ -64,20 +59,21 @@ export const fetchGoalsById = async (id: any) => {
 export const completeGoalsById = async (id: any) => {
   const session = await getServerSession(authOptions);
 
-  const response = await request("PATCH", `${baseUrl}/v1/goals/${id}/complete`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.token}`,
+  const response = await request(
+    "PATCH",
+    `${baseUrl}/v1/goals/${id}/complete`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.token}`,
+      },
     },
-  });
+  );
 
   return response;
 };
 
-
-
 //performace-mgt
-
 
 //performace-mgt
 
@@ -86,7 +82,7 @@ export const getAllMySelfAssessment = async (
   page: number,
   limit: number,
   search?: string,
-    type: string = "SELF",
+  type: string = "SELF",
 ): Promise<GetAllMySelfAssessmentResponse> => {
   const session = await getServerSession(authOptions);
 
@@ -101,13 +97,11 @@ export const getAllMySelfAssessment = async (
       limit,
       search,
       type,
-
     },
   });
 
   return response as GetAllMySelfAssessmentResponse;
 };
-
 
 export const getAssessmentById = async (id: any) => {
   const session = await getServerSession(authOptions);
@@ -122,8 +116,7 @@ export const getAssessmentById = async (id: any) => {
   return response;
 };
 
-
-export const answerAssessmentById = async (data : any) => {
+export const answerAssessmentById = async (data: any) => {
   const session = await getServerSession(authOptions);
 
   const response = await request("POST", `${baseUrl}/v1/answers`, {

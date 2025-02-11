@@ -4,14 +4,14 @@ import {
   Droppable,
   DropResult,
 } from "@hello-pangea/dnd";
-import React from "react";
+
 import TaskCard from "./cards/task";
 import { BoardData } from "./types";
 
 export type KanbanBoardProps = {
   boardData: BoardData;
   onDragEnd: (arg: DropResult) => void;
-  onTaskClick: () => void;
+  onTaskClick: (taskId: string) => void;
 };
 
 const KanbanBoard: React.FC<KanbanBoardProps> = ({
@@ -82,7 +82,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({
                                   ...provided.draggableProps.style,
                                   cursor: "default",
                                 }}
-                                onClick={onTaskClick}
+                                onClick={() => onTaskClick(task.id)}
                               >
                                 <TaskCard {...task} status={column.status} />
                               </div>

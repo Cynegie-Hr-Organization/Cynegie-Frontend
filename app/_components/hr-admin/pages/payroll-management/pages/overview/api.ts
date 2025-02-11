@@ -9,8 +9,11 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import {
   AttendanceRecord,
   BenefitsSummary,
+  Device,
+  EmployeeUpdateRequest,
   FetchParams,
   FetchResponse,
+  PaginatedDevices,
   PaginatedResponse2,
   PaginatedResponse5,
   PaginatedResponse6,
@@ -278,4 +281,30 @@ export const setPayrollSettings = async (payload: PayrollSettings) => {
     },
     data: payload,
   });
+};
+
+export const requestEmployeeUpdate = async (payload: EmployeeUpdateRequest) => {
+  const session = await getServerSession(authOptions);
+
+  return request("POST", `${baseUrl}/v1/profile-updates`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: payload,
+  });
+};
+
+export const getDevices = async (
+  params: FetchParams
+): Promise<PaginatedDevices<Device>> => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/devices`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`, // Add session token to Authorization header
+    },
+    params: params,
+  }) as Promise<PaginatedDevices<Device>>;
 };

@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import React from 'react';
+import Image from "next/image";
+import React from "react";
 
 type IconWithDataProps = {
   icon: string;
@@ -35,7 +35,7 @@ const IconWithData: React.FC<IconWithDataProps> = ({ icon, data, color }) => {
   return (
     <div className={`flex items-center gap-2 text-[${color}] font-bold`}>
       <div>
-        <Image src={icon} alt='Message' width={16} height={16} />
+        <Image src={icon} alt="Message" width={16} height={16} />
       </div>
       <div>{data}</div>
     </div>

@@ -132,7 +132,7 @@ const NavLinks = ({
           path: route.hrAdmin.deviceManagement.overview.home,
         },
         {
-          name: "Device Inventory",
+          name: "Device Invetory",
           path: route.hrAdmin.deviceManagement.overview.inventory,
         },
         // {

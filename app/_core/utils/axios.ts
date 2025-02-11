@@ -1,26 +1,16 @@
-import axios, {
-  AxiosInstance,
-  AxiosRequestConfig,
-  isAxiosError,
-} from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig, isAxiosError } from "axios";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
-
-
-
-
-
-
 export const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-export const testMode = process.env.NEXT_PUBLIC_TEST == 'true';
+export const testMode = process.env.NEXT_PUBLIC_TEST == "true";
 
-// 
+//
 export const getCurrentUrl = () => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     return window.location.href;
   }
-}
+};
 
 export interface ErrorRes {
   status: boolean;
@@ -28,11 +18,14 @@ export interface ErrorRes {
   data: string;
 }
 
-
-
-export const handleError = <T>(error: unknown, message?: string, makeToast = true) => {
+export const handleError = <T>(
+  error: unknown,
+  message?: string,
+  makeToast = true,
+) => {
   if (isAxiosError<T>(error)) {
-    const msg = (error?.response?.data as { message: string })?.message ?? error?.message;
+    const msg =
+      (error?.response?.data as { message: string })?.message ?? error?.message;
     if (makeToast) toast.error(msg);
     return msg;
   }
@@ -70,28 +63,28 @@ const api = (axios: AxiosInstance) => {
     },
     delete: <T>(
       url: string,
-      config: HTTPRequestConfig = { headers: headers() }
+      config: HTTPRequestConfig = { headers: headers() },
     ) => {
       return axios.delete<T>(url, config);
     },
     put: <T>(
       url: string,
       body: unknown,
-      config: HTTPRequestConfig = { headers: headers() }
+      config: HTTPRequestConfig = { headers: headers() },
     ) => {
       return axios.put<T>(url, body, config);
     },
     patch: <T>(
       url: string,
       body: unknown,
-      config: HTTPRequestConfig = { headers: headers() }
+      config: HTTPRequestConfig = { headers: headers() },
     ) => {
       return axios.patch<T>(url, body, config);
     },
     post: <T>(
       url: string,
       body: unknown,
-      config: HTTPRequestConfig = { headers: headers() }
+      config: HTTPRequestConfig = { headers: headers() },
     ) => {
       return axios.post<T>(url, body, config);
     },

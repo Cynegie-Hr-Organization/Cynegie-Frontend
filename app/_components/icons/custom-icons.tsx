@@ -1,7 +1,5 @@
 import { SVGProps } from "react";
 
-
-
 export const DeleteSvg = () => {
   return (
     <svg
@@ -23,8 +21,6 @@ export const DeleteSvg = () => {
     </svg>
   );
 };
-
-
 
 export const SuccessSvg = (props: SVGProps<SVGSVGElement>) => (
   <svg

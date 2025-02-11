@@ -3,10 +3,6 @@ import { AppTimePicker } from "@/app/_components/shared/date-picker";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import AppInputText from "@/app/_components/shared/input-text";
 
-
-
-
-
 const UserAcessAndSecuritySettingsForm = () => {
   return (
     <form className="p-4 md:p-6 space-y-4">
@@ -18,7 +14,7 @@ const UserAcessAndSecuritySettingsForm = () => {
           id="minimum-password-length"
           placeholder="Enter minimum password length"
           value=""
-          onChange={() => { }}
+          onChange={() => {}}
         />
         <AppMultipleSelect
           label="Password Complexity"
@@ -29,13 +25,13 @@ const UserAcessAndSecuritySettingsForm = () => {
             { label: "Numbers", value: "numbers" },
             { label: "Special Characters", value: "special-characters" },
           ]}
-          onSelectionChange={() => { }}
+          onSelectionChange={() => {}}
         />
         <AppTimePicker
           minutesOnly
           label="Session Time Out"
           placeholder="Pick a time"
-          setSelectedTime={() => { }}
+          setSelectedTime={() => {}}
         />
 
         {/* <TimePicker

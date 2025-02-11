@@ -94,10 +94,10 @@ export function addNavItemEllipsis(text: string) {
 
 export function getHumanReadableDateRange(
   startDate?: string,
-  endDate?: string
+  endDate?: string,
 ) {
   return `${dayjs(startDate).format("DD MMM")} - ${dayjs(endDate).format(
-    "DD MMM"
+    "DD MMM",
   )}`;
 }
 

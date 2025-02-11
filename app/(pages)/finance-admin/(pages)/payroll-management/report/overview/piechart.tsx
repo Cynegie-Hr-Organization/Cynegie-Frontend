@@ -10,11 +10,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-
-
-
-
-
 export function AppPieChart<T extends { value: number }>({
   chartData,
   chartConfig,

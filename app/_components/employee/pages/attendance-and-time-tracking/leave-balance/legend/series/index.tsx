@@ -1,7 +1,7 @@
-import { Stack } from '@mui/material';
-import React from 'react';
-import SeriesLabel from './label';
-import SeriesValue from './value';
+import { Stack } from "@mui/material";
+import React from "react";
+import SeriesLabel from "./label";
+import SeriesValue from "./value";
 
 const LegendSeries: React.FC<{
   color: string;
@@ -14,7 +14,7 @@ const LegendSeries: React.FC<{
       sx={{
         borderLeft: `3.26px solid ${color}`,
         pl: 1.5,
-        ...(valueOnTop && { flexDirection: 'column-reverse' }),
+        ...(valueOnTop && { flexDirection: "column-reverse" }),
       }}
       gap={1}
     >
