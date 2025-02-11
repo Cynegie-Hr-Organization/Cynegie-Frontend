@@ -364,7 +364,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
                 onClick: () =>
                   router.push(
                     route.hrAdmin.employeeManagement.attendanceManagement
-                      .bulkReport
+                      .bulkReport,
                   ),
               },
               position: "center",
@@ -407,7 +407,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
                 onClick: () =>
                   router.push(
                     route.hrAdmin.employeeManagement.attendanceManagement
-                      .individualReport
+                      .individualReport,
                   ),
               },
               position: "center",

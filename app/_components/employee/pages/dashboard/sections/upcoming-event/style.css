@@ -1,11 +1,11 @@
 .MuiDateCalendar-root {
-    width: 100% !important;
-    height: 220px !important;
+  width: 100% !important;
+  height: 220px !important;
 }
 
 .MuiPickersCalendarHeader-root {
-    display: none !important;
+  display: none !important;
 }
 .MuiDayCalendar-weekDayLabel {
-    font-weight: 900 !important;
+  font-weight: 900 !important;
 }

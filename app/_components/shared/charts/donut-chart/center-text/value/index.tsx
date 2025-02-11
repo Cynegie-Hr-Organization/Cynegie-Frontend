@@ -1,4 +1,4 @@
-import { ChartCenterTextValueProps } from '../../types';
+import { ChartCenterTextValueProps } from "../../types";
 
 const CenterTextValue: React.FC<ChartCenterTextValueProps> = ({
   value,
@@ -6,9 +6,9 @@ const CenterTextValue: React.FC<ChartCenterTextValueProps> = ({
   denominator,
 }) => {
   return (
-    <div style={{ fontSize: '24px', fontWeight: 600, color: '#000000' }}>
+    <div style={{ fontSize: "24px", fontWeight: 600, color: "#000000" }}>
       {value}
-      {isPercentage && '%'}
+      {isPercentage && "%"}
       {denominator && <span></span>}
     </div>
   );

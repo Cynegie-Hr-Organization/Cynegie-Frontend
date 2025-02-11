@@ -1,4 +1,4 @@
-import SvgIcon from '@/app/_components/icons/container';
+import SvgIcon from "@/app/_components/icons/container";
 
 export type QuickActionProps = {
   icon: string | React.ReactElement;
@@ -16,9 +16,9 @@ const QuickAction: React.FC<QuickActionProps> = ({
   return (
     <div
       style={{ backgroundColor: bgColor, fill: color }}
-      className='flex flex-col items-center justify-center gap-5 py-8'
+      className="flex flex-col items-center justify-center gap-5 py-8"
     >
-      {typeof icon === 'string' ? (
+      {typeof icon === "string" ? (
         <SvgIcon path={icon} width={44} height={44} />
       ) : (
         <>{icon}</>

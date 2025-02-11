@@ -3,21 +3,24 @@ import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import { PageProps } from "@/app/_components/shared/page/types";
 import { CardGroupProps } from "@/app/_components/shared/section-with-cards/types";
 import { FieldType, TableProps } from "@/app/_components/shared/table/types";
-import {
-  getAllBenefits,
-  getAllBenefitsMetrics,
-  getAllMyBenefitsRequest,
-  requestbenefits,
-} from "@/app/api/services/employee/benefits";
+
 import { icon, route } from "@/constants";
 import Skeleton from "@mui/material/Skeleton";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { ModalProps } from "../../../modal/types";
+import { InputFieldValue, ModalProps } from "../../../modal/types";
 import { FetchParams } from "@/types";
 import { debounce } from "lodash";
+import { formatDate } from "@/lib/utils";
+import { getAllBenefits, getAllMyBenefitsRequests, getBenefitRequestById, requestBenefit } from "@/app/api/services/employee/benefits";
+
+const INIT_FETCH_PARAMS: FetchParams = {
+  page: 1,
+  limit: 10,
+  sortOrder: "desc",
+};
 
 const useBenefitsPage = () => {
   const [openRequestModal, setOpenRequestModal] = useState(false);
@@ -28,12 +31,18 @@ const useBenefitsPage = () => {
   const [benefit, setBenefit] = useState<string | number | undefined>("");
   const [provider, setProvider] = useState<string | number | undefined>("");
   const [coveragePlan, setCoveragePlan] = useState<string | number | undefined>(
-    ""
+    "",
   );
   const [monthlyCost, setMonthlyCost] = useState<string | number | undefined>(
-    ""
+    "",
   );
-// Debounced search
+  const [benefitDetails, setBenefitDetails] = useState<any>(null);
+  const [statusFilter, setStatusFilter] = useState<InputFieldValue>();
+
+  const [fetchParams, setFetchParams] =
+    useState<FetchParams & { status? : InputFieldValue} >(INIT_FETCH_PARAMS);
+
+  // Debounced search
   const debouncedSearch = debounce((value: string) => {
     setFetchParams((prev) => ({ ...prev, search: value || undefined }));
   }, 300);
@@ -42,21 +51,12 @@ const useBenefitsPage = () => {
     debouncedSearch(value);
   };
 
-  const [fetchParams, setFetchParams] = useState<FetchParams>({
-      page: 1,
-      limit: 10,
-      sortOrder: 'desc',
-      search: undefined,
-  });
-  
-
-
   const router = useRouter();
 
   useEffect(() => {
     const fetchBenefits = async () => {
       const fetchedBenefits = await getAllBenefits();
-      console.log(fetchedBenefits);
+      console.log(`Benefits All `, fetchedBenefits);
       setAllBenefits(fetchedBenefits);
       setLoading(false);
     };
@@ -64,18 +64,6 @@ const useBenefitsPage = () => {
     fetchBenefits();
   }, []);
 
-
-  const { data: benefitsMetrics, isLoading: isMetricsLoading } = useQuery({
-    queryKey: ['benefitsMetrics'],
-    queryFn: async () => {  
-      const response = await getAllBenefitsMetrics(); 
-      return response;
-      },
-    staleTime: 3000,
-    refetchOnWindowFocus: false,
-  });
-  console.log(benefitsMetrics);
-  
   const handleSubmitRequest = async () => {
     const payload = {
       benefit,
@@ -85,7 +73,7 @@ const useBenefitsPage = () => {
     };
     console.log(payload);
     try {
-      const response = await requestbenefits(payload);
+      const response = await requestBenefit(payload);
       console.log(response);
       if (response?.createdAt.length > 0) {
         setOpenRequestModal(false);
@@ -100,25 +88,34 @@ const useBenefitsPage = () => {
   };
 
   const {
-  data: benefitsRequests,
-  refetch,
-  isLoading,
-} = useQuery({
-  queryKey: ['benefitsRequest', { ...fetchParams }],
-  queryFn: async () => {
-    const response = await getAllMyBenefitsRequest(
-      fetchParams.sortOrder,
-      fetchParams.page,
-      fetchParams.limit,
-      fetchParams.search
-    );
-    console.log(response);
-    return response.data;
-  },
-  refetchOnWindowFocus: false, // Prevent refetching on window focus
-  staleTime: 60000, // Cache for 1 minute
-});
-  
+    data: benefitsRequests,
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ["benefitsRequest", { ...fetchParams }],
+    queryFn: async () => {
+      const response = await getAllMyBenefitsRequests(fetchParams);
+      return response;
+    },
+    refetchOnWindowFocus: false, // Prevent refetching on window focus
+    staleTime: 60000, // Cache for 1 minute
+  });
+
+  const fetchBenefitDetailsMutation = useMutation({
+    mutationFn: (id: string | number) => getBenefitRequestById(id),
+    onSuccess: (data) => {
+      setBenefitDetails(data);
+      setOpenDetailsModal(true);
+    },
+    onError: (error) => {
+      console.error("Failed to fetch benefit details:", error);
+      toast.error("Failed to fetch benefit details.");
+    },
+  });
+
+  const handleViewDetails = (id: string | number) => {
+    fetchBenefitDetailsMutation.mutate(id);
+  };
 
   const isFormComplete = () => {
     return benefit && provider && coveragePlan && monthlyCost;
@@ -147,38 +144,35 @@ const useBenefitsPage = () => {
     cards: [
       {
         labelText: "Total Benefits Enrolled",
-        value: benefitsMetrics?.totalBenefits || "0",
+        value: benefitsRequests?.total || "0",
         valueBelow: true,
         icon: giftIcon,
         iconColorVariant: "success",
-        loading: isMetricsLoading,
+        loading: isLoading,
       },
       {
-        labelText: "Active Benefits",
-        value: benefitsMetrics?.benefitsByStatus?.active || "0",
+        labelText: "Approved Benefits",
+        value: benefitsRequests?.statusCount.approved || "0",
         valueBelow: true,
         icon: giftIcon,
         iconColorVariant: "info",
-                loading: isMetricsLoading,
-
+        loading: isLoading,
       },
       {
         labelText: "Pending Benefits",
-        value: benefitsMetrics?.benefitsByStatus?.pending || "0",
+        value: benefitsRequests?.statusCount?.pending || "0",
         valueBelow: true,
         icon: giftIcon,
         iconColorVariant: "warning",
-                loading: isMetricsLoading,
-
+        loading: isLoading,
       },
       {
         labelText: "Rejected Benefits",
-        value: benefitsMetrics?.benefitsByStatus?.rejected || "0",
+        value: benefitsRequests?.statusCount?.rejected || "0",
         valueBelow: true,
         icon: giftIcon,
         iconColorVariant: "error",
-                loading: isMetricsLoading,
-
+        loading: isLoading,
       },
     ],
   };
@@ -193,7 +187,8 @@ const useBenefitsPage = () => {
           provider: <Skeleton />,
           coveragePlan: <Skeleton />,
         })
-      : benefitsRequests?.map((request) => ({
+      : benefitsRequests?.data?.map((request) => ({
+          id: request.id,
           name: request.benefit?.name,
           provider: request.provider,
           coveragePlan: request.coveragePlan,
@@ -201,15 +196,54 @@ const useBenefitsPage = () => {
     fieldTypes: Array(4).fill(FieldType.text),
     displayedFields: ["name", "provider", "coveragePlan"],
     actions: [
-      { name: "View Details", onClick: () => setOpenDetailsModal(true) },
-    ],
-    onSearch: handleSearch,
-    filters: [
       {
-        name: "Benefit Type",
-        items: ["Health", "Pension", "Retirement", "Transport", "Life"],
+        name: "View Details",
+        onDataReturned(id) {
+          handleViewDetails(id);
+        },
+        onClick: () => {},
       },
     ],
+    onSearch: handleSearch,
+    fieldToReturnOnActionItemClick: "id",
+    paginationMeta: {
+      page: benefitsRequests?.page,
+      totalPages: benefitsRequests?.total,
+      limit: benefitsRequests?.limit,
+      itemCount: benefitsRequests?.total,
+      itemsOnPage: benefitsRequests?.data.length,
+      loading: isLoading,
+      onChangeLimit: (limit) => setFetchParams((prev) => ({ ...prev, limit })),
+      onPrevClick: () =>
+        setFetchParams((prev) => ({ ...prev, page: prev.page - 1 })),
+      onNextClick: () =>
+        setFetchParams((prev) => ({ ...prev, page: prev.page + 1 })),
+    },
+    formFilter: {
+      gridSpacing: 2,
+      inputFields: [
+            {
+              label: "Status",
+              type: "select",
+              options: [
+                { label: "Approved", value: "approved" },
+                { label: "Pending", value: "pending" },
+                { label: "Rejected", value: "rejected" },
+              ],
+              value: statusFilter,
+              setValue: setStatusFilter,
+              selectValControlledFromOutside: true,
+            },
+          ],
+    },
+   onResetClick: () => {
+      setStatusFilter(undefined);
+      setFetchParams({ ...fetchParams, status: undefined });
+    },
+    onFilterClick: () =>
+      setFetchParams((prev) => ({ ...prev, status: statusFilter })),
+
+    
   };
 
   const requestModalProps: ModalProps = {
@@ -256,8 +290,7 @@ const useBenefitsPage = () => {
     },
     buttonOne: {
       type: isFormComplete() ? ButtonType.contained : ButtonType.disabled,
-
-      text: "Request Beneift",
+      text: "Request Benefit",
       onClick: handleSubmitRequest,
     },
     centerButton: true,
@@ -270,32 +303,31 @@ const useBenefitsPage = () => {
     subtitle: "View details below",
     detailGroup: {
       spaceBetweenLayout: true,
-      details: [
-        {
-          name: "Benefit Name",
-          value: "Retirment Plans",
-        },
-        {
-          name: "Benefit Type",
-          value: "Financial",
-        },
-        {
-          name: "Provider",
-          value: "Cynegie",
-        },
-        {
-          name: "Start Date",
-          value: "January 30, 2024",
-        },
-        {
-          name: "End Date",
-          value: "December 21, 2024",
-        },
-        {
-          name: "Employee Contribution",
-          value: "N20,000",
-        },
-      ],
+      details: benefitDetails
+        ? [
+            {
+              name: "Benefit Name",
+              value: benefitDetails.benefit.name,
+            },
+
+            {
+              name: "Provider",
+              value: benefitDetails.provider,
+            },
+            {
+              name: "Start Date",
+              value: formatDate(benefitDetails.createdAt),
+            },
+            {
+              name: "Status",
+              value: benefitDetails.status,
+            },
+            // {
+            //   name: "Employee Contribution",
+            //   value: benefitDetails.employeeContribution,
+            // },
+          ]
+        : [],
     },
     buttonOne: {
       type: ButtonType.outlinedBlue,

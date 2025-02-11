@@ -1,48 +1,52 @@
-'use client';
-import { useState, useEffect } from 'react';
-import { DropResult } from 'react-beautiful-dnd';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getTasks, changeTaskStatusById } from '@/app/api/services/employee/tasks';
-import { BoardData } from '../types';
+"use client";
+import { useState, useEffect } from "react";
+import { DropResult } from "react-beautiful-dnd";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  getTasks,
+  changeTaskStatusById,
+} from "@/app/api/services/employee/tasks";
+import { BoardData } from "../types";
 
 const useKanbanBoard = () => {
   const queryClient = useQueryClient();
 
   const { data: tasksData, isLoading } = useQuery({
-    queryKey: ['tasks'],
+    queryKey: ["tasks"],
     queryFn: getTasks,
   });
 
-  console.log('tasksData:', tasksData);
+  console.log("tasksData:", tasksData);
 
   const mutation = useMutation({
-    mutationFn: ({ id, status }: { id: string; status: string }) => changeTaskStatusById(id, status.toLowerCase()),
+    mutationFn: ({ id, status }: { id: string; status: string }) =>
+      changeTaskStatusById(id, status.toLowerCase()),
     onSuccess: (data) => {
-      console.log('Mutation successful:', data);
-      queryClient.invalidateQueries({ queryKey: ['tasks'] });
+      console.log("Mutation successful:", data);
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
     onError: (error) => {
-      console.error('Mutation failed:', error);
+      console.error("Mutation failed:", error);
     },
   });
 
   const initialData: BoardData = {
     tasks: {},
     columns: {
-      'pending-task': {
-        id: 'pending-task',
-        title: 'Pending Task',
-        status: 'pending',
+      "pending-task": {
+        id: "pending-task",
+        title: "Pending Task",
+        status: "pending",
         taskIds: [],
       },
-      'completed-task': {
-        id: 'completed-task',
-        title: 'Completed Task',
-        status: 'completed',
+      "completed-task": {
+        id: "completed-task",
+        title: "Completed Task",
+        status: "completed",
         taskIds: [],
       },
     },
-    columnOrder: ['pending-task', 'completed-task'],
+    columnOrder: ["pending-task", "completed-task"],
   };
 
   const [boardData, setBoardData] = useState<BoardData>(initialData);
@@ -62,26 +66,30 @@ const useKanbanBoard = () => {
         return acc;
       }, {});
 
-      const pendingTaskIds = tasksData.filter((task: any) => task.status === 'pending').map((task: any) => task.id);
-      const completedTaskIds = tasksData.filter((task: any) => task.status === 'completed').map((task: any) => task.id);
+      const pendingTaskIds = tasksData
+        .filter((task: any) => task.status === "pending")
+        .map((task: any) => task.id);
+      const completedTaskIds = tasksData
+        .filter((task: any) => task.status === "completed")
+        .map((task: any) => task.id);
 
       setBoardData({
         tasks,
         columns: {
-          'pending-task': {
-            id: 'pending-task',
-            title: 'Pending Task',
-            status: 'pending',
+          "pending-task": {
+            id: "pending-task",
+            title: "Pending Task",
+            status: "pending",
             taskIds: pendingTaskIds,
           },
-          'completed-task': {
-            id: 'completed-task',
-            title: 'Completed Task',
-            status: 'completed',
+          "completed-task": {
+            id: "completed-task",
+            title: "Completed Task",
+            status: "completed",
             taskIds: completedTaskIds,
           },
         },
-        columnOrder: ['pending-task', 'completed-task'],
+        columnOrder: ["pending-task", "completed-task"],
       });
     }
   }, [isLoading, tasksData]);

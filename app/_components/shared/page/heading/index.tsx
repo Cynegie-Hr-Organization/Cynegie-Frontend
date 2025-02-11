@@ -1,9 +1,9 @@
-import React from 'react';
-import { ButtonType, PageHeadingProps } from './types';
-import Button from '../../button-group/button';
-import { Close } from '@mui/icons-material';
-import HeadingBack from './back';
-import SvgIcon from '@/app/_components/icons/container';
+import React from "react";
+import { ButtonType, PageHeadingProps } from "./types";
+import Button from "../../button-group/button";
+import { Close } from "@mui/icons-material";
+import HeadingBack from "./back";
+import SvgIcon from "@/app/_components/icons/container";
 
 const PageHeading: React.FC<PageHeadingProps> = (props) => {
   return (
@@ -11,18 +11,18 @@ const PageHeading: React.FC<PageHeadingProps> = (props) => {
       {props.backText && (
         <div
           onClick={props.onBackTextClick}
-          className={`${props.title ? 'mb-6' : 'mb-[-10]'}`}
+          className={`${props.title ? "mb-6" : "mb-[-10]"}`}
         >
           <HeadingBack text={props.backText} />
         </div>
       )}
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div className='flex flex-col gap-1 flex-grow'>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <div className="flex flex-col gap-1 flex-grow">
           <div
             className={
-              props.type === 'modal' || props.smallHeading
-                ? 'card-title-large'
-                : 'section-heading'
+              props.type === "modal" || props.smallHeading
+                ? "card-title-large"
+                : "section-heading"
             }
           >
             {props.title}
@@ -30,9 +30,9 @@ const PageHeading: React.FC<PageHeadingProps> = (props) => {
           {props.subtitle && (
             <div
               className={
-                props.type === 'modal'
-                  ? 'card-subtitle-small'
-                  : 'section-subtitle'
+                props.type === "modal"
+                  ? "card-subtitle-small"
+                  : "section-subtitle"
               }
             >
               {props.subtitle}
@@ -40,22 +40,22 @@ const PageHeading: React.FC<PageHeadingProps> = (props) => {
           )}
         </div>
         {props.hasButtons && (
-          <div className='hidden md:flex gap-5'>
+          <div className="hidden md:flex gap-5">
             {props.leftButton && <Button {...props.leftButton} />}
             {props.rightButton && <Button {...props.rightButton} />}
           </div>
         )}
         {props.smActions && (
-          <div className='block md:hidden'>
+          <div className="block md:hidden">
             <Button
-              text='Actions'
+              text="Actions"
               type={ButtonType.outlined}
               popoverOptions={props.smActions}
             />
           </div>
         )}
         {props.rightButtonSm && props.rightButton && (
-          <div className='block md:hidden ml-3'>
+          <div className="block md:hidden ml-3">
             <Button
               small={props.rightButtonSm}
               iconOnly={props.rightButtonIconOnlySm}
@@ -72,9 +72,9 @@ const PageHeading: React.FC<PageHeadingProps> = (props) => {
             />
           </div>
         )}
-        {props.type === 'modal' && (
+        {props.type === "modal" && (
           <Close
-            sx={{ cursor: 'pointer' }}
+            sx={{ cursor: "pointer" }}
             onClick={() => props.onCloseClick?.(false)}
           />
         )}

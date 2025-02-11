@@ -21,7 +21,7 @@ const ApprovalAndWorkflowSettingsForm = () => {
           id="stage-name"
           placeholder="Stage Name"
           value=""
-          onChange={() => { }}
+          onChange={() => {}}
         />
         <AppMultipleSelect
           label="Approvers"
@@ -42,7 +42,7 @@ const ApprovalAndWorkflowSettingsForm = () => {
         <button
           type="button"
           className="text-primary font-semibold flex items-center gap-2"
-          onClick={() => { }}
+          onClick={() => {}}
         >
           <FaCirclePlus size={16} className="text-primary" />
           Add Stage
@@ -51,7 +51,7 @@ const ApprovalAndWorkflowSettingsForm = () => {
           label="Enable System Notification"
           id="enable-dark-mode"
           checked={true}
-          onChange={() => { }}
+          onChange={() => {}}
         />
       </div>
     </form>

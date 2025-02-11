@@ -15,6 +15,7 @@ import { debounce } from "lodash";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { ModalProps } from "../../../modal/types";
+import { DeviceRequestStatusMap } from "@/constants";
 
 const useDeviceManagementPage = () => {
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
@@ -53,7 +54,7 @@ const useDeviceManagementPage = () => {
         fetchParams.sortOrder,
         fetchParams.page,
         fetchParams.limit,
-        fetchParams.search
+        fetchParams.search,
       );
       console.log(response);
       return response.requests;
@@ -73,7 +74,7 @@ const useDeviceManagementPage = () => {
       } else {
         console.error(
           "Failed to request maintenance:",
-          response?.message || "Unknown error"
+          response?.message || "Unknown error",
         );
       }
     } catch (error) {
@@ -105,8 +106,13 @@ const useDeviceManagementPage = () => {
             ? formatDate(request.returnDate)
             : "N/A",
         })) || [],
-    fieldTypes: Array(4).fill(FieldType.text),
+    fieldTypes: [
+      FieldType.text,
+      FieldType.status,
+      ...Array(2).fill(FieldType.text),
+    ],
     onSearch: handleSearch,
+    statusMap: DeviceRequestStatusMap,
     fieldToReturnOnActionItemClick: "id",
     displayedFields: ["name", "status", "requestedOn", "returnedOn"],
     actions: [

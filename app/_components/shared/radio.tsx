@@ -1,9 +1,15 @@
-const AppRadio = ({ label, id, checked, name, onChange }: {
-  label: string,
-  id: string,
-  checked: boolean,
-  name?: string,
-  onChange: (value: boolean) => void
+const AppRadio = ({
+  label,
+  id,
+  checked,
+  name,
+  onChange,
+}: {
+  label: string;
+  id: string;
+  checked: boolean;
+  name?: string;
+  onChange: (value: boolean) => void;
 }) => {
   return (
     <div className="flex items-center gap-x-3 text-sm text-gray-500 cursor-pointer capitalize">
@@ -16,16 +22,21 @@ const AppRadio = ({ label, id, checked, name, onChange }: {
       />
       <label htmlFor={id}>{label}</label>
     </div>
-  )
-}
+  );
+};
 
-
-export const AppCheckbox = ({ label, id, checked, onChange, name }: {
-  label: string,
-  id: string,
-  checked: boolean,
-  onChange: (value: boolean) => void,
-  name?: string
+export const AppCheckbox = ({
+  label,
+  id,
+  checked,
+  onChange,
+  name,
+}: {
+  label: string;
+  id: string;
+  checked: boolean;
+  onChange: (value: boolean) => void;
+  name?: string;
 }) => {
   return (
     <div className="flex items-center gap-x-3 text-sm text-gray-500 cursor-pointer capitalize">
@@ -39,7 +50,7 @@ export const AppCheckbox = ({ label, id, checked, onChange, name }: {
       />
       <label htmlFor={id}>{label}</label>
     </div>
-  )
-}
+  );
+};
 
 export default AppRadio;

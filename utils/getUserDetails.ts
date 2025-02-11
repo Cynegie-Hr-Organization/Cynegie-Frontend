@@ -4,15 +4,14 @@ export const getUserDetails = async () => {
   try {
     const session = await getSession();
 
-    if (session && session.user)
-    {
+    if (session && session.user) {
       const fullName =
-      `${session.user.firstName || ""} ${session.user.lastName || ""}`.trim();
-      const roles = session.user.role
+        `${session.user.firstName || ""} ${session.user.lastName || ""}`.trim();
+      const roles = session.user.role;
       return {
         name: fullName || "User",
         email: session.user.email || "Email",
-        roles  
+        roles,
       };
     }
   } catch (error) {

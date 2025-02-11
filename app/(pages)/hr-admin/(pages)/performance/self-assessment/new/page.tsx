@@ -64,7 +64,6 @@ const NewSelfAssessmentPage = () => {
   const handleSubmit = async () => {
     const { assessmentName, employees, dueDate, template } = formData;
 
-
     if (!assessmentName.trim() || !employees.length || !dueDate || !template) {
       toast.error("Please fill out all fields before submitting.");
       return;
@@ -185,7 +184,7 @@ const NewSelfAssessmentPage = () => {
         <AppButton
           label="Save & Continue Later"
           className="btn-secondary"
-          onClick={() => { }}
+          onClick={() => {}}
         />
         <AppButton
           label="Submit"

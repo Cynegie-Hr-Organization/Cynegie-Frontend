@@ -1,10 +1,10 @@
-'use client';
-import { Grid2 } from '@mui/material';
-import usePayrollPage from './hooks/usePayrollPage';
-import Page from '@/app/_components/shared/page';
-import Table from '@/app/_components/shared/table';
-import Card from '@/app/_components/shared/section-with-cards/card-group/card';
-import Modal from '../../modal';
+"use client";
+import { Grid2 } from "@mui/material";
+import usePayrollPage from "./hooks/usePayrollPage";
+import Page from "@/app/_components/shared/page";
+import Table from "@/app/_components/shared/table";
+import Card from "@/app/_components/shared/section-with-cards/card-group/card";
+import Modal from "../../modal";
 
 const EmployeePayroll = () => {
   const { pageProps, tableProps, cards, payrollSlipModalProps } =

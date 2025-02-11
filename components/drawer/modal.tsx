@@ -19,15 +19,9 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger
+  DrawerTrigger,
 } from "@/components/ui/drawer";
 import { ReactNode } from "react";
-
-
-
-
-
-
 
 export function DrawerDialog({
   children,
@@ -36,27 +30,22 @@ export function DrawerDialog({
   description,
   footer,
   open,
-  setOpen
+  setOpen,
 }: {
-  children?: ReactNode
-  trigger: ReactNode
-  header: ReactNode
-  description?: ReactNode
-  footer?: ReactNode
-  open?: boolean
-  setOpen?: (open: boolean) => void
+  children?: ReactNode;
+  trigger: ReactNode;
+  header: ReactNode;
+  description?: ReactNode;
+  footer?: ReactNode;
+  open?: boolean;
+  setOpen?: (open: boolean) => void;
 }) {
-  const isDesktop = useMediaQuery("(min-width: 768px)")
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   if (isDesktop) {
     return (
-      <Dialog
-        open={open}
-        onOpenChange={setOpen}
-      >
-        <DialogTrigger asChild>
-          {trigger}
-        </DialogTrigger>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>{trigger}</DialogTrigger>
         <DialogContent className="sm:max-w-[600px] bg-white max-h-[600px] px-4 overflow-y-scroll">
           <DialogHeader className="px-0 mx-0">
             <DialogTitle className="text-base">{header}</DialogTitle>
@@ -72,13 +61,8 @@ export function DrawerDialog({
   }
 
   return (
-    <Drawer
-      open={open}
-      onOpenChange={setOpen}
-    >
-      <DrawerTrigger asChild>
-        {trigger}
-      </DrawerTrigger>
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent className="bg-white max-h-max px-4">
         <DrawerHeader className="text-left">
           <DrawerTitle className="text-base">{header}</DrawerTitle>

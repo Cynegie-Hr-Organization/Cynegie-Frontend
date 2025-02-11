@@ -10,7 +10,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-
 interface CustomChartConfig extends ChartConfig {
   [key: string]: {
     label: string;
@@ -18,15 +17,13 @@ interface CustomChartConfig extends ChartConfig {
   };
 }
 
-
-
 export function AppPieChart<T extends { value: number }>({
   chartData,
   chartConfig,
   innerRadius = 60,
   totalName = "Total",
   totalNameBeforeFigure = false,
-  height = 'max-h-[200px]'
+  height = "max-h-[200px]",
 }: {
   chartData: T[];
   chartConfig: CustomChartConfig;
@@ -63,10 +60,7 @@ export function AppPieChart<T extends { value: number }>({
         >
           {Object.keys(chartConfig).map((entry, index) => {
             return (
-              <Cell
-                key={`cell-${index}`}
-                fill={chartConfig[entry]?.color}
-              />
+              <Cell key={`cell-${index}`} fill={chartConfig[entry]?.color} />
             );
           })}
           {!totalNameBeforeFigure ? (
@@ -99,7 +93,8 @@ export function AppPieChart<T extends { value: number }>({
                   );
                 }
               }}
-            />) : (
+            />
+          ) : (
             <Label
               content={({ viewBox }) => {
                 if (viewBox && "cx" in viewBox && "cy" in viewBox) {

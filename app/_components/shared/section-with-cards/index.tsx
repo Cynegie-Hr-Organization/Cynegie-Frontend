@@ -1,8 +1,8 @@
 import React from "react";
-import SelectField from "../../employee/input-fields/select";
 import CardGroup from "./card-group";
 import SectionCardContainer from "./container";
 import { SectionWithCardsProps } from "./types";
+import SelectField from "../../employee/input-fields/select";
 
 const SectionWithCards: React.FC<SectionWithCardsProps> = (props) => {
   const {
@@ -25,15 +25,7 @@ const SectionWithCards: React.FC<SectionWithCardsProps> = (props) => {
     >
       {selectFilterProps && (
         <div className="w-[100px]">
-          <SelectField
-            {...selectFilterProps}
-            defaultValue={
-              typeof selectFilterProps.defaultValue === "string" ||
-              typeof selectFilterProps.defaultValue === "number"
-                ? selectFilterProps.defaultValue
-                : undefined
-            }
-          />
+          <SelectField {...selectFilterProps} />
         </div>
       )}
       {cardsData && <CardGroup cards={cardsData} />}

@@ -14,10 +14,9 @@ const CustomizationSettingsForm = () => {
             { label: "Dark mode", value: "dark" },
             { label: "Custom", value: "custom" },
           ]}
-          onChange={() => { }}
+          onChange={() => {}}
         />
 
-        
         <AppSelect
           label="Dashboard Configuration"
           placeholder="Select dashboard configuration"
@@ -26,7 +25,7 @@ const CustomizationSettingsForm = () => {
             { label: "User permission", value: "user-permission" },
             { label: "User activity", value: "user-activity" },
           ]}
-          onChange={() => { }}
+          onChange={() => {}}
         />
       </div>
     </form>

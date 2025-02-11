@@ -93,6 +93,7 @@ interface PayrollData {
   nextPayDate: string;
   lastPaycheck: string;
   totalEarnings: number;
+  timeInCompany: number;
 }
 
 interface GetAllMyPayrollResponse {
@@ -102,16 +103,16 @@ interface GetAllMyPayrollResponse {
 }
 
 export const getAllMyPayroll = async (
-  sortOrder: string = 'desc',
+  sortOrder: string = "desc",
   page: number,
   limit: number,
-    search?: string,
+  search?: string,
 ): Promise<GetAllMyPayrollResponse> => {
   const session = await getServerSession(authOptions);
 
-  const response = await request('GET', `${baseUrl}/v1/payroll/mine`, {
+  const response = await request("GET", `${baseUrl}/v1/payroll/mine`, {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${session?.token}`,
     },
     params: {
@@ -123,4 +124,4 @@ export const getAllMyPayroll = async (
   });
 
   return response as GetAllMyPayrollResponse;
-}
+};

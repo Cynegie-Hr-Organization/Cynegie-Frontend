@@ -6,6 +6,48 @@ import { request } from "@/utils/request";
 import { baseUrl } from "@/constants/config";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/options";
+import { FetchParams } from "@/types";
+
+
+export interface LeaveType {
+  name: string;
+  description: string;
+  numberOfDays: number;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}
+
+export interface LeaveRequest {
+  employee: string;
+  leaveType: LeaveType;
+  startDate: string;
+  endDate: string;
+  numberOfDays: number;
+  status: string;
+  reliefOfficer: string;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  user: string;
+  id: string;
+}
+
+export interface LeaveRequestResponse {
+  data: LeaveRequest[];
+  totalPages: number;
+  currentPage: number;
+  count: number;
+}
+
+export interface GetAllLeaveRequestResponse {
+  status: number;
+  message: string;
+  data: LeaveRequestResponse;
+}
+
+
 
 export const getLeaveType = async () => {
   const session = await getServerSession(authOptions);
@@ -45,12 +87,8 @@ export const requestLeave = async (payload: any) => {
 };
 
 export const getAllLeaveRequest = async (
-  sortOrder: string = "desc",
-  page: number,
-  limit: number,
-  status?: string,
-  search?: string,
-) => {
+  fetchParams : FetchParams
+): Promise<GetAllLeaveRequestResponse> => {
   const session = await getServerSession(authOptions);
 
   const response = await request("GET", `${baseUrl}/v1/leave/mine`, {
@@ -58,16 +96,10 @@ export const getAllLeaveRequest = async (
       "Content-Type": "application/json",
       Authorization: `Bearer ${session?.token}`,
     },
-    params: {
-      sortOrder,
-      page,
-      limit,
-      status,
-      search,
-    },
+    params: fetchParams,
   });
 
-  return response;
+  return response as GetAllLeaveRequestResponse;
 };
 
 export const fetchLeaveRequestById = async (id: any) => {
@@ -96,16 +128,19 @@ export const deleteLeaveRequestById = async (id: any) => {
   return response;
 };
 
-
 export const getAllLeaveMetrics = async () => {
   const session = await getServerSession(authOptions);
 
-  const response = await request("GET", `${baseUrl}/v1/leave/current-year-summary`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.token}`,
+  const response = await request(
+    "GET",
+    `${baseUrl}/v1/leave/current-year-summary`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.token}`,
+      },
     },
-  });
+  );
 
   return response;
 };

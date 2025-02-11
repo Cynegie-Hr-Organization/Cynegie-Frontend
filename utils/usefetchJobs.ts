@@ -33,7 +33,7 @@ const useFetchJobs = () => {
         searchQuery,
         filters.company,
         filters.requiredSkills,
-        filters.type
+        filters.type,
       ),
     staleTime: 2 * 60 * 1000,
   });

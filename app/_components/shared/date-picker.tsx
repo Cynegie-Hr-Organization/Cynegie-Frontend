@@ -12,27 +12,25 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-
-
-
-
-
-
-
-export function AppDatePicker({ label, requiredField = false, selectedDate, setSelectedDate, placeholder = "Pick a date" }: {
-  label?: string,
-  requiredField?: boolean,
-  selectedDate?: Date,
-  setSelectedDate: (date?: Date) => void,
-  placeholder?: string
+export function AppDatePicker({
+  label,
+  requiredField = false,
+  selectedDate,
+  setSelectedDate,
+  placeholder = "Pick a date",
+}: {
+  label?: string;
+  requiredField?: boolean;
+  selectedDate?: Date;
+  setSelectedDate: (date?: Date) => void;
+  placeholder?: string;
 }) {
-
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const handleDateChange = (date?: Date) => {
-    setSelectedDate(date)
-    setOpen(false)
-  }
+    setSelectedDate(date);
+    setOpen(false);
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -53,7 +51,12 @@ export function AppDatePicker({ label, requiredField = false, selectedDate, setS
               !selectedDate && "text-muted-foreground",
             )}
           >
-            {selectedDate ? format(selectedDate, "MMM d, yyyy") : <span className="text-gray-400 text-xs">{placeholder}</span>} <Calendar1 size={18} />
+            {selectedDate ? (
+              format(selectedDate, "MMM d, yyyy")
+            ) : (
+              <span className="text-gray-400 text-xs">{placeholder}</span>
+            )}{" "}
+            <Calendar1 size={18} />
           </button>
         </div>
       </PopoverTrigger>
@@ -70,18 +73,13 @@ export function AppDatePicker({ label, requiredField = false, selectedDate, setS
               "bg-primary text-white hover:bg-primary hover:text-white focus:bg-primary focus:text-white rounded-full h-6 w-6 font-semibold text-sm",
             day_today: "text-amber-500 font-semibold",
             day_outside: "day-outside hidden",
-            day: 'text-xs p-3 h-7 w-7 flex items-center justify-center hover:bg-gray-200 hover:text-black focus:bg-primary focus:text-white rounded-full transition-all duration-300',
+            day: "text-xs p-3 h-7 w-7 flex items-center justify-center hover:bg-gray-200 hover:text-black focus:bg-primary focus:text-white rounded-full transition-all duration-300",
           }}
         />
       </PopoverContent>
     </Popover>
   );
 }
-
-
-
-
-
 
 export function AppTimePicker({
   label,
@@ -90,22 +88,26 @@ export function AppTimePicker({
   setSelectedTime,
   placeholder = "Pick a time",
   className,
-  minutesOnly = false
+  minutesOnly = false,
 }: {
-  label?: string,
-  requiredField?: boolean,
-  selectedTime?: Date,
-  setSelectedTime: (time?: Date) => void,
-  placeholder?: string,
-  className?: string,
-  minutesOnly?: boolean
+  label?: string;
+  requiredField?: boolean;
+  selectedTime?: Date;
+  setSelectedTime: (time?: Date) => void;
+  placeholder?: string;
+  className?: string;
+  minutesOnly?: boolean;
 }) {
-  const [open, setOpen] = useState(false)
-  const [selectedHour, setSelectedHour] = useState(selectedTime ? (selectedTime.getHours() % 12 || 12) : 12)
-  const [selectedMinute, setSelectedMinute] = useState(selectedTime ? selectedTime.getMinutes() : 0)
-  const [selectedPeriod, setSelectedPeriod] = useState<'AM' | 'PM'>(
-    selectedTime ? (selectedTime.getHours() >= 12 ? 'PM' : 'AM') : 'AM'
-  )
+  const [open, setOpen] = useState(false);
+  const [selectedHour, setSelectedHour] = useState(
+    selectedTime ? selectedTime.getHours() % 12 || 12 : 12,
+  );
+  const [selectedMinute, setSelectedMinute] = useState(
+    selectedTime ? selectedTime.getMinutes() : 0,
+  );
+  const [selectedPeriod, setSelectedPeriod] = useState<"AM" | "PM">(
+    selectedTime ? (selectedTime.getHours() >= 12 ? "PM" : "AM") : "AM",
+  );
 
   const handleTimeChange = () => {
     if (minutesOnly) {
@@ -118,14 +120,18 @@ export function AppTimePicker({
 
     const newTime = new Date();
     const adjustedHour =
-      selectedPeriod === 'PM'
-        ? (selectedHour === 12 ? 12 : selectedHour + 12)
-        : (selectedHour === 12 ? 0 : selectedHour);
+      selectedPeriod === "PM"
+        ? selectedHour === 12
+          ? 12
+          : selectedHour + 12
+        : selectedHour === 12
+          ? 0
+          : selectedHour;
 
     newTime.setHours(adjustedHour, selectedMinute, 0, 0);
     setSelectedTime(newTime);
     setOpen(false);
-  }
+  };
 
   const renderDisplayText = () => {
     if (minutesOnly) {
@@ -134,10 +140,12 @@ export function AppTimePicker({
         : `${selectedMinute} minutes`;
     }
 
-    return selectedTime
-      ? `${selectedHour}:${selectedMinute.toString().padStart(2, '0')} ${selectedPeriod}`
-      : <span className="text-gray-400 text-xs">{placeholder}</span>;
-  }
+    return selectedTime ? (
+      `${selectedHour}:${selectedMinute.toString().padStart(2, "0")} ${selectedPeriod}`
+    ) : (
+      <span className="text-gray-400 text-xs">{placeholder}</span>
+    );
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -179,7 +187,8 @@ export function AppTimePicker({
                     onClick={() => setSelectedHour(hour)}
                     className={cn(
                       "w-full p-2 hover:bg-gray-100 transition-colors duration-200 text-xs text-center",
-                      selectedHour === hour && "bg-primary/10 text-primary font-semibold"
+                      selectedHour === hour &&
+                        "bg-primary/10 text-primary font-semibold",
                     )}
                   >
                     {hour}
@@ -198,10 +207,11 @@ export function AppTimePicker({
                     onClick={() => setSelectedMinute(minute)}
                     className={cn(
                       "w-full p-2 hover:bg-gray-100 transition-colors duration-200 text-xs text-center",
-                      selectedMinute === minute && "bg-primary/10 text-primary font-semibold"
+                      selectedMinute === minute &&
+                        "bg-primary/10 text-primary font-semibold",
                     )}
                   >
-                    {minute.toString().padStart(2, '0')}
+                    {minute.toString().padStart(2, "0")}
                   </button>
                 ))}
               </div>
@@ -210,14 +220,15 @@ export function AppTimePicker({
             {/* Period Column */}
             <div className="w-1/3 max-h-64 overflow-y-auto">
               <div className="divide-y divide-gray-200">
-                {(['AM', 'PM'] as const).map((period) => (
+                {(["AM", "PM"] as const).map((period) => (
                   <button
                     key={period}
                     type="button"
                     onClick={() => setSelectedPeriod(period)}
                     className={cn(
                       "w-full p-2 hover:bg-gray-100 transition-colors duration-200 text-xs text-center",
-                      selectedPeriod === period && "bg-primary/10 text-primary font-semibold"
+                      selectedPeriod === period &&
+                        "bg-primary/10 text-primary font-semibold",
                     )}
                   >
                     {period}
@@ -239,10 +250,11 @@ export function AppTimePicker({
                   }}
                   className={cn(
                     "w-full text-left p-2 hover:bg-gray-100 transition-colors duration-200 text-xs",
-                    selectedMinute === minute && "bg-primary/10 text-primary font-semibold"
+                    selectedMinute === minute &&
+                      "bg-primary/10 text-primary font-semibold",
                   )}
                 >
-                  {minute} {minute === 1 ? 'minute' : 'minutes'}
+                  {minute} {minute === 1 ? "minute" : "minutes"}
                 </button>
               ))}
             </div>

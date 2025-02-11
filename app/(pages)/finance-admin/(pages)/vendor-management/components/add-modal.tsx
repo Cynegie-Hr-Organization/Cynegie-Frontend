@@ -1,14 +1,16 @@
-import AppButton from "@/app/_components/shared/button"
-import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu"
-import AppInputText from "@/app/_components/shared/input-text"
-import { useVendorMutations } from "@/app/_core/use-cases/finance/useVendors"
-import { DrawerDialog } from "@/components/drawer/modal"
-import { useState } from "react"
+import AppButton from "@/app/_components/shared/button";
+import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
+import AppInputText from "@/app/_components/shared/input-text";
+import { useVendorMutations } from "@/app/_core/use-cases/finance/useVendors";
+import { DrawerDialog } from "@/components/drawer/modal";
+import { useState } from "react";
 
-const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => {
-  const [isOpenAddVendorModal, setIsOpenAddVendorModal] = useState(false)
-  const { addVendor } = useVendorMutations({})
-  const isLoading = addVendor.isPending
+const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({
+  trigger,
+}) => {
+  const [isOpenAddVendorModal, setIsOpenAddVendorModal] = useState(false);
+  const { addVendor } = useVendorMutations({});
+  const isLoading = addVendor.isPending;
   const [formData, setFormData] = useState({
     vendorName: "Luthor",
     phoneNumber: "2384567898765",
@@ -16,20 +18,18 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
     vendorAddress: "somewhere on planet earth",
     paymentTerms: "",
     contactPerson: "Luthor Rosefields",
-  })
-
+  });
 
   const handleSubmit = () => {
     return addVendor.mutate(formData, {
       onSuccess: () => {
-        setIsOpenAddVendorModal(false)
+        setIsOpenAddVendorModal(false);
       },
       onError: () => {
-        setIsOpenAddVendorModal(false)
-      }
-    })
-  }
-
+        setIsOpenAddVendorModal(false);
+      },
+    });
+  };
 
   return (
     <DrawerDialog
@@ -39,23 +39,37 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
       header={
         <span className="flex flex-col gap-y-1">
           <span className="font-roboto text-xl font-bold">New Vendor</span>
-          <span className="font-roboto text-sm font-normal text-gray-500">Add details</span>
+          <span className="font-roboto text-sm font-normal text-gray-500">
+            Add details
+          </span>
         </span>
       }
       footer={
         <div className="flex items-center justify-center gap-4">
-          <AppButton label="Cancel" className="btn-secondary w-[296px]" disabled={isLoading} onClick={() => setIsOpenAddVendorModal(false)} />
-          <AppButton label="Add" className="btn-primary w-[296px]" isLoading={isLoading} disabled={isLoading} onClick={handleSubmit} />
+          <AppButton
+            label="Cancel"
+            className="btn-secondary w-[296px]"
+            disabled={isLoading}
+            onClick={() => setIsOpenAddVendorModal(false)}
+          />
+          <AppButton
+            label="Add"
+            className="btn-primary w-[296px]"
+            isLoading={isLoading}
+            disabled={isLoading}
+            onClick={handleSubmit}
+          />
         </div>
       }
     >
-
       <form>
         <div className="space-y-4">
           <AppInputText
             label="Vendor Name"
             placeholder="Enter vendor name"
-            onChange={(e) => { setFormData({ ...formData, vendorName: e.target.value }) }}
+            onChange={(e) => {
+              setFormData({ ...formData, vendorName: e.target.value });
+            }}
             value={formData.vendorName}
             id={"vendor-name"}
             requiredField
@@ -64,7 +78,9 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
           <AppInputText
             label="Phone Number"
             placeholder="Enter vendor phone number"
-            onChange={(e) => { setFormData({ ...formData, phoneNumber: e.target.value }) }}
+            onChange={(e) => {
+              setFormData({ ...formData, phoneNumber: e.target.value });
+            }}
             value={formData.phoneNumber}
             id={"vendor-name"}
             requiredField
@@ -73,7 +89,9 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
           <AppInputText
             label="Email"
             placeholder="Enter vendor email"
-            onChange={(e) => { setFormData({ ...formData, contactEmail: e.target.value }) }}
+            onChange={(e) => {
+              setFormData({ ...formData, contactEmail: e.target.value });
+            }}
             value={formData.contactEmail}
             id={"vendor-name"}
             requiredField
@@ -82,7 +100,9 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
           <AppInputText
             label="Contact Person"
             placeholder="Enter vendor contact person"
-            onChange={(e) => { setFormData({ ...formData, contactPerson: e.target.value }) }}
+            onChange={(e) => {
+              setFormData({ ...formData, contactPerson: e.target.value });
+            }}
             value={formData.contactPerson}
             id={"vendor-name"}
             requiredField
@@ -100,15 +120,25 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
               { label: "Net 90", value: "net_90" },
               { label: "Net 100", value: "net_100" },
             ]}
-            selectedValues={formData.paymentTerms ? formData.paymentTerms.split(", ") : []}
+            selectedValues={
+              formData.paymentTerms ? formData.paymentTerms.split(", ") : []
+            }
             onSelectionChange={(values) => {
-              setFormData({ ...formData, paymentTerms: values.length > 0 ? values.map((value: string) => value).join(", ") : '' });
+              setFormData({
+                ...formData,
+                paymentTerms:
+                  values.length > 0
+                    ? values.map((value: string) => value).join(", ")
+                    : "",
+              });
             }}
           />
           <AppInputText
             label="Vendor Address"
             placeholder="Enter vendor name"
-            onChange={(e) => { setFormData({ ...formData, vendorAddress: e.target.value }) }}
+            onChange={(e) => {
+              setFormData({ ...formData, vendorAddress: e.target.value });
+            }}
             value={formData.vendorAddress}
             id={"vendor-name"}
             requiredField
@@ -117,8 +147,7 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => 
         </div>
       </form>
     </DrawerDialog>
-  )
-}
-
+  );
+};
 
 export default AddVendorModal;

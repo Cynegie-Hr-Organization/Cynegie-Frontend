@@ -25,8 +25,8 @@ const JobsTabTable = ({
 }: any) => {
   const router = useRouter();
   const [isFilterDropdownOpen, setFilterDropdownOpen] = React.useState(false);
-  const [isModalOpen, setIsModalOpen] = React.useState(false); 
-  const [selectedJobId, setSelectedJobId] = useState<string | null>(null); 
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
 
   const filterDropdownRef = React.useRef<HTMLDivElement>(null);
 

@@ -1,7 +1,6 @@
-
-import { withAuth } from 'next-auth/middleware';
-import { NextRequest } from 'next/server';
-import { JWT } from 'next-auth/jwt';
+import { withAuth } from "next-auth/middleware";
+import { NextRequest } from "next/server";
+import { JWT } from "next-auth/jwt";
 
 export default withAuth({
   callbacks: {
@@ -13,11 +12,11 @@ export default withAuth({
       const pathname = req.nextUrl.pathname;
       const userRole = token.role;
 
-      if (pathname.startsWith('/hr-admin') && userRole !== 'HR_ADMIN') {
+      if (pathname.startsWith("/hr-admin") && userRole !== "HR_ADMIN") {
         return false;
       }
 
-      if (pathname.startsWith('/super-admin') && userRole !== 'SUPER_ADMIN') {
+      if (pathname.startsWith("/super-admin") && userRole !== "SUPER_ADMIN") {
         return false; // Restrict access to Super Admin pages
       }
 

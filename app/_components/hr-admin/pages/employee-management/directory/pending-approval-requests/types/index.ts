@@ -1,8 +1,8 @@
-import { TableAction } from '@/app/_components/shared/table/types';
+import { TableAction } from "@/app/_components/shared/table/types";
 
 export type PendingApprovalRequestsProps = {
   requests: PendingApprovalRequestsItemProps[];
-  type: 'actions' | 'switch';
+  type: "actions" | "switch";
   actions?: TableAction[];
 };
 

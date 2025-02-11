@@ -209,7 +209,7 @@ const ManagerAssessmentPage = () => {
         <AppButton
           label="Save & Continue Later"
           className="btn-secondary"
-          onClick={() => { }}
+          onClick={() => {}}
         />
         <AppButton
           label="Submit"

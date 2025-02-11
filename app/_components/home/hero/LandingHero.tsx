@@ -36,7 +36,10 @@ const LandingHero = () => {
                 />
               </form>
               <div className={"flex items-center justify-center"}>
-                <Link href={"/"} className='btn-link-primary'> Explore Cynegie </Link>
+                <Link href={"/"} className="btn-link-primary">
+                  {" "}
+                  Explore Cynegie{" "}
+                </Link>
               </div>
             </div>
           </div>

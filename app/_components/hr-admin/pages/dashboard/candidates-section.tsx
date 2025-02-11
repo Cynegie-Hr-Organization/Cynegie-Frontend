@@ -11,7 +11,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField
+  TextField,
 } from "@mui/material";
 import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
@@ -48,7 +48,10 @@ const CandidatesSection = () => {
           </Box>
           <AppDropdownMenu
             trigger={
-              <button type="button" className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
+              <button
+                type="button"
+                className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2"
+              >
                 <LuListFilter /> Filter
               </button>
             }
@@ -63,14 +66,13 @@ const CandidatesSection = () => {
                     ]}
                     label="Status"
                     placeholder="Pending"
-                    onChange={() => { }}
+                    onChange={() => {}}
                   />
                 </div>
               </div>
             }
           />
         </Stack>
-
 
         <CandidatesTable />
       </Stack>
@@ -111,7 +113,7 @@ const CandidatesTable = () => {
                 ].map((field, columnIndex) =>
                   columnIndex == 0 ? (
                     <TableCell key={field}>
-                      <Stack direction='row' alignItems='center' gap={2}>
+                      <Stack direction="row" alignItems="center" gap={2}>
                         <Box>{field}</Box>
                       </Stack>
                     </TableCell>

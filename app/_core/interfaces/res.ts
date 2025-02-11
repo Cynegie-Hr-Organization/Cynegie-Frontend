@@ -1,4 +1,3 @@
-
 export interface IRes<T> {
   status: boolean;
   data: T;

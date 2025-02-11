@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { usePathname, useRouter } from 'next/navigation';
-import { FaChevronDown } from 'react-icons/fa6';
-import { addNavItemEllipsis } from '@/utils';
-import SvgIcon from '@/app/_components/icons/container';
-import { icon } from '@/constants';
+import { usePathname, useRouter } from "next/navigation";
+import { FaChevronDown } from "react-icons/fa6";
+import { addNavItemEllipsis } from "@/utils";
+import SvgIcon from "@/app/_components/icons/container";
+import { icon } from "@/constants";
 
 const NavLinks = ({
   onNavLinkClick,
@@ -28,85 +28,85 @@ const NavLinks = ({
 
   const menuLinks: DashboardMenu[] = [
     {
-      name: 'Dashboard',
+      name: "Dashboard",
       icon: <SvgIcon path={icon.grid} width={iconSize} height={iconSize} />,
-      path: '/employee',
+      path: "/employee",
     },
     {
-      name: 'Task',
+      name: "Task",
       icon: (
         <SvgIcon path={icon.clipboard} width={iconSize} height={iconSize} />
       ),
-      path: '/employee/task',
+      path: "/employee/task",
     },
     {
-      name: 'Profile',
+      name: "Profile",
       icon: <SvgIcon path={icon.user} width={iconSize} height={iconSize} />,
-      path: '/employee/profile',
+      path: "/employee/profile",
     },
     {
-      name: 'Benefits',
+      name: "Benefits",
       icon: <SvgIcon path={icon.gift} width={iconSize} height={iconSize} />,
-      path: '/employee/benefits',
+      path: "/employee/benefits",
     },
     {
-      name: 'App Request and Permission',
+      name: "App Request and Permission",
       icon: <SvgIcon path={icon.key} width={iconSize} height={iconSize} />,
-      path: '/employee/app-request',
+      path: "/employee/app-request",
     },
     {
-      name: 'Payroll',
+      name: "Payroll",
       icon: (
         <SvgIcon path={icon.paperMoneyTwo} width={iconSize} height={iconSize} />
       ),
-      path: '/employee/payroll',
+      path: "/employee/payroll",
     },
     {
-      name: 'Device Management',
+      name: "Device Management",
       icon: <SvgIcon path={icon.devices} width={iconSize} height={iconSize} />,
-      path: '/employee/device-management',
+      path: "/employee/device-management",
     },
     {
-      name: 'Leave Management',
+      name: "Leave Management",
       icon: <SvgIcon path={icon.airplane} width={iconSize} height={iconSize} />,
-      path: '/employee/leave-management',
+      path: "/employee/leave-management",
     },
     {
-      name: 'Performance Management',
+      name: "Performance Management",
       icon: <SvgIcon path={icon.barChart} width={iconSize} height={iconSize} />,
-      path: '/employee/performance-management',
+      path: "/employee/performance-management",
     },
     {
-      name: 'Learning Development',
+      name: "Learning Development",
       icon: (
         <SvgIcon path={icon.graduatingCap} width={iconSize} height={iconSize} />
       ),
-      path: '/employee/learning-development',
+      path: "/employee/learning-development",
     },
     {
-      name: 'Attendance and Time Tracking',
+      name: "Attendance and Time Tracking",
       icon: <SvgIcon path={icon.clockTwo} width={iconSize} height={iconSize} />,
-      path: '/employee/attendance',
+      path: "/employee/attendance",
     },
   ];
 
   const isPathActive = (
     path: string,
-    subMenu?: { name: string; path: string }[]
+    subMenu?: { name: string; path: string }[],
   ) => {
-    if (path === '/employee') {
+    if (path === "/employee") {
       return /^\/employee$/.test(pathname);
     }
 
-    const pathParts = path.split('/').filter(Boolean);
-    const currentPathParts = pathname.split('/').filter(Boolean);
+    const pathParts = path.split("/").filter(Boolean);
+    const currentPathParts = pathname.split("/").filter(Boolean);
 
     const isMainPathActive =
       currentPathParts.length >= pathParts.length &&
       pathParts.every((part, index) => currentPathParts[index] === part);
 
     const isSubPathActive = subMenu?.some((subItem) =>
-      pathname.startsWith(subItem.path)
+      pathname.startsWith(subItem.path),
     );
 
     return isMainPathActive || isSubPathActive;
@@ -120,26 +120,26 @@ const NavLinks = ({
   };
 
   const keyIconStyle = {
-    default: 'stroke-black fill-white',
-    active: 'stroke-white fill-none',
+    default: "stroke-black fill-white",
+    active: "stroke-white fill-none",
   };
 
   const isAppRequestAndPermissionPage = (page: string) => {
-    return page === 'App Request and Permission';
+    return page === "App Request and Permission";
   };
 
   const graduatingCapIconStyle = {
-    default: 'stroke-black fill-none stroke-[1.2]',
-    active: 'stroke-white fill-none stroke-[1.2]',
+    default: "stroke-black fill-none stroke-[1.2]",
+    active: "stroke-white fill-none stroke-[1.2]",
   };
 
   const isLearningDevelopmentPage = (page: string) => {
-    return page === 'Learning Development';
+    return page === "Learning Development";
   };
 
   return (
-    <div className=' transition-all duration-300 ease-in-out'>
-      <ul className='flex flex-col mt-[-2]'>
+    <div className=" transition-all duration-300 ease-in-out">
+      <ul className="flex flex-col mt-[-2]">
         {menuLinks.map((item: DashboardMenu) => {
           const isActive = isPathActive(item.path, item.subMenu);
 
@@ -151,35 +151,35 @@ const NavLinks = ({
                                       isActive
                                         ? `bg-primary text-white fill-white ${
                                             isAppRequestAndPermissionPage(
-                                              item.name
+                                              item.name,
                                             ) && keyIconStyle.active
                                           } ${
                                             isLearningDevelopmentPage(
-                                              item.name
+                                              item.name,
                                             ) && graduatingCapIconStyle.active
                                           }`
                                         : `text-black ${
                                             isAppRequestAndPermissionPage(
-                                              item.name
+                                              item.name,
                                             ) && keyIconStyle.default
                                           } ${
                                             isLearningDevelopmentPage(
-                                              item.name
+                                              item.name,
                                             ) && graduatingCapIconStyle.default
                                           }`
                                     } transition duration-100`}
                 onClick={() => {
                   setOpenDropDown(
-                    openDropDown === item.path ? null : item.path
+                    openDropDown === item.path ? null : item.path,
                   );
                   handleNavLinkClick(item.path);
                 }}
               >
-                <div className='flex items-center gap-x-2'>
+                <div className="flex items-center gap-x-2">
                   <span>{item.icon}</span>
                   <span
                     className={`text-[14px] font-sans ${
-                      isActive ? 'font-semibold' : 'font-normal'
+                      isActive ? "font-semibold" : "font-normal"
                     }`}
                   >
                     {addNavItemEllipsis(item.name)}
@@ -188,13 +188,13 @@ const NavLinks = ({
                 {item.subMenu && (
                   <FaChevronDown
                     className={`transition-transform duration-300 ${
-                      openDropDown === item.path ? 'rotate-180' : ''
+                      openDropDown === item.path ? "rotate-180" : ""
                     }`}
                   />
                 )}
               </button>
               {item.subMenu && openDropDown === item.path && (
-                <ul className='ml-4'>
+                <ul className="ml-4">
                   {item.subMenu.map((subItem) => {
                     const isSubActive = isPathActive(subItem.path);
 
@@ -204,8 +204,8 @@ const NavLinks = ({
                           onClick={() => handleNavLinkClick(subItem.path)}
                           className={`flex items-center p-2 text-[14px] font-sans pl-5 ${
                             isSubActive
-                              ? 'text-primary font-semibold'
-                              : 'text-gray-700 font-normal'
+                              ? "text-primary font-semibold"
+                              : "text-gray-700 font-normal"
                           }`}
                         >
                           {subItem.name}

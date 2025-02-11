@@ -1,12 +1,13 @@
-"import client";
+"use client";
 import SvgIcon from "@/app/_components/icons/container";
 import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import { PageProps } from "@/app/_components/shared/page/types";
 import { CardGroupProps } from "@/app/_components/shared/section-with-cards/types";
 import { FieldType, TableProps } from "@/app/_components/shared/table/types";
 import {
-  getAllMyRequest,
-  salaryAdvanceRequests,
+  getAllMySalaryAdvanceRequests,
+  getSalaryAdvanceMetrics,
+  requestSalaryAdvance,
 } from "@/app/api/services/employee/benefits";
 import { CPStatusMap, icon, route } from "@/constants";
 import { toast } from "@/hooks/use-toast";
@@ -16,27 +17,31 @@ import { useQuery } from "@tanstack/react-query";
 import { debounce } from "lodash";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ModalProps } from "../../../modal/types";
+import { InputFieldValue, ModalProps } from "../../../modal/types";
+
+const INIT_FETCH_PARAMS: FetchParams = {
+  page: 1,
+  limit: 10,
+  sortOrder: "desc",
+};
 
 const useSalaryAdvancePage = () => {
   const router = useRouter();
   const [openRequestModal, setOpenRequestModal] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [advanceTaken, setAdvanceTaken] = useState<string | number | undefined>(
-    ""
+    "",
   );
   const [installment, setInstallment] = useState<string | number | undefined>(
-    ""
+    "",
   );
   const [paymentFrequency, setPaymentFrequency] = useState<
     string | number | undefined
   >("");
-  const [fetchParams, setFetchParams] = useState<FetchParams>({
-    page: 1,
-    limit: 10,
-    sortOrder: "desc",
-    search: undefined,
-  });
+  const [statusFilter, setStatusFilter] = useState<InputFieldValue>();
+
+  const [fetchParams, setFetchParams] =
+    useState<FetchParams & { status?: InputFieldValue }>(INIT_FETCH_PARAMS);
 
   // Debounced search
   const debouncedSearch = debounce((value: string) => {
@@ -50,16 +55,16 @@ const useSalaryAdvancePage = () => {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["salary-advance-requests", { ...fetchParams }],
     queryFn: async () => {
-      const response = await getAllMyRequest(
-        fetchParams.sortOrder,
-        fetchParams.page,
-        fetchParams.limit,
-        fetchParams.search
-      );
-      console.log(response.data);
-      return response.data.items;
+      const response = await getAllMySalaryAdvanceRequests(fetchParams);
+      return response;
     },
     refetchOnWindowFocus: false,
+    staleTime: 60000,
+  });
+
+  const { data: metricsData, isLoading: isMetricsLoading } = useQuery({
+    queryKey: ["salary-advance-metrics"],
+    queryFn: getSalaryAdvanceMetrics,
     staleTime: 60000,
   });
 
@@ -71,8 +76,7 @@ const useSalaryAdvancePage = () => {
     };
 
     try {
-      const response = await salaryAdvanceRequests(preparedData);
-      console.log(response);
+      const response = await requestSalaryAdvance(preparedData);
       if (response.createdAt !== "") {
         toast({
           title: "Success!",
@@ -91,7 +95,10 @@ const useSalaryAdvancePage = () => {
         });
       }
     } catch (error) {
-      console.error("Error submitting request:", error);
+      toast({
+        title: "Error",
+        description: `${error}`,
+      });
     }
 
     refetch();
@@ -116,24 +123,27 @@ const useSalaryAdvancePage = () => {
     cards: [
       {
         labelText: "Approved Requests",
-        value: "10",
+        value: metricsData?.approvedCount || "0",
         valueBelow: true,
         icon: svgIcon,
         iconColorVariant: "info",
+        loading: isMetricsLoading,
       },
       {
         labelText: "Pending Requests",
-        value: "4",
+        value: metricsData?.pendingCount || "0",
         valueBelow: true,
         icon: svgIcon,
         iconColorVariant: "warning",
+        loading: isMetricsLoading,
       },
       {
         labelText: "Rejected Requests",
-        value: "3",
+        value: metricsData?.rejectedCount || "0",
         valueBelow: true,
         icon: svgIcon,
         iconColorVariant: "error",
+        loading: isMetricsLoading,
       },
     ],
   };
@@ -153,12 +163,15 @@ const useSalaryAdvancePage = () => {
           amountRepaid: <Skeleton />,
           nextPaymentDate: <Skeleton />,
         })
-      : Array.isArray(data)
-      ? data.map((item: any) => ({
+      : Array.isArray(data?.data)
+      ? data.data.map((item: any) => ({
+          id: item._id,
           advanceTaken: `₦${item.advanceTaken.toLocaleString()}`,
           status: `${item.status}`,
           amountRepaid: `₦${item.amountRepaid.toLocaleString()}`,
-          nextPaymentDate: new Date(item.nextPaymentDate).toLocaleDateString(),
+          nextPaymentDate: new Date(
+            item.nextPaymentDate,
+          ).toLocaleDateString(),
         }))
       : [],
     fieldTypes: [
@@ -175,12 +188,42 @@ const useSalaryAdvancePage = () => {
     statusMap: CPStatusMap,
     actions: [{ name: "No Actions", onClick: () => {} }],
     onSearch: handleSearch,
-    filters: [
-      {
-        name: "Status",
-        items: ["All", "Approved", "Pending", "Rejected"],
-      },
-    ],
+    formFilter: {
+      gridSpacing: 2,
+      inputFields: [
+        {
+          label: "Status",
+          type: "select",
+          options: [
+            { label: "Approved", value: "approved" },
+            { label: "Pending", value: "pending" },
+            { label: "Rejected", value: "rejected" },
+          ],
+          value: statusFilter,
+          setValue: setStatusFilter,
+          selectValControlledFromOutside: true,
+        },
+      ],
+    },
+    onResetClick: () => {
+      setStatusFilter(undefined);
+      setFetchParams({ ...fetchParams, status: undefined });
+    },
+    onFilterClick: () =>
+      setFetchParams((prev) => ({ ...prev, status: statusFilter })),
+    paginationMeta: {
+      page: data?.meta.page,
+      totalPages: data?.meta.pageCount,
+      limit: data?.meta.limit,
+      itemCount: data?.meta.itemCount,
+      itemsOnPage: data?.data.length,
+      loading: isLoading,
+      onChangeLimit: (limit) => setFetchParams((prev) => ({ ...prev, limit })),
+      onPrevClick: () =>
+        setFetchParams((prev) => ({ ...prev, page: prev.page - 1 })),
+      onNextClick: () =>
+        setFetchParams((prev) => ({ ...prev, page: prev.page + 1 })),
+    },
   };
 
   const requestModalProps: ModalProps = {
@@ -208,7 +251,7 @@ const useSalaryAdvancePage = () => {
           type: "select",
           options: [
             { label: "Monthly", value: "MONTHLY" },
-            { label: "Weekly", value: "WEEKLY" },
+            { label: "Quarterly", value: "QUARTERLY" },
           ],
           value: paymentFrequency,
           setValue: setPaymentFrequency,

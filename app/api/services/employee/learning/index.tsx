@@ -1,4 +1,3 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
@@ -7,7 +6,6 @@ import { request } from "@/utils/request";
 import { baseUrl } from "@/constants/config";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/options";
-
 
 // Define the types for a course
 export interface Course {
@@ -64,23 +62,25 @@ export const getAllAssignCourse = async (
   }) as Promise<GetAllAssignCourseResponse>;
 };
 
-
-
-export const completeCourse = async (id : any , status : any) => {
+export const completeCourse = async (id: any, status: any) => {
   const session = await getServerSession(authOptions);
 
-  const response = await request("PUT", `${baseUrl}/v1/course-management/${id}/status`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.token}`,
+  const response = await request(
+    "PUT",
+    `${baseUrl}/v1/course-management/${id}/status`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.token}`,
       },
-    data: {
-        status : status
+      data: {
+        status: status,
       },
-  });
+    },
+  );
 
   return response;
-}
+};
 
 export const fetchCourseById = async (id: any) => {
   const session = await getServerSession(authOptions);
@@ -98,9 +98,6 @@ export const fetchCourseById = async (id: any) => {
 
   return response;
 };
-
-
-
 
 export const getAllMetrics = async () => {
   const session = await getServerSession(authOptions);

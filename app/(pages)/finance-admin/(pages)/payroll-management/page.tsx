@@ -1,12 +1,9 @@
-"use client"
+"use client";
 
 import AppButton from "@/app/_components/shared/button";
 import { useRouter } from "next/navigation";
 import { TiMediaStop } from "react-icons/ti";
 import PayrollManagementTable from "./table";
-
-
-
 
 const PayrollManagement = () => {
   const pageCards = [
@@ -52,8 +49,17 @@ const PayrollManagement = () => {
         {pageCards.map((card, index) => (
           <div className="common-card space-y-5" key={index}>
             <div className="flex items-center gap-2">
-              {card.icon && <div className="rounded-full p-2" style={{ backgroundColor: card.color, color: card.textColor }}>{card.icon}</div>}
-              <h3 className="font-roboto lg:text-xs text-sm text-[#848897] font-medium">{card.title}</h3>
+              {card.icon && (
+                <div
+                  className="rounded-full p-2"
+                  style={{ backgroundColor: card.color, color: card.textColor }}
+                >
+                  {card.icon}
+                </div>
+              )}
+              <h3 className="font-roboto lg:text-xs text-sm text-[#848897] font-medium">
+                {card.title}
+              </h3>
             </div>
             <p className="font-roboto text-xl font-bold">{card.description}</p>
           </div>
@@ -65,22 +71,26 @@ const PayrollManagement = () => {
         <PayrollManagementTable />
       </div>
     </div>
-  )
-}
+  );
+};
 
-
-const PageHeader = ({ title, description, buttonLabel, to }: {
-  title: string,
-  description: string,
-  actionButtonLabel?: string,
-  buttonLabel: string,
-  to: string,
+const PageHeader = ({
+  title,
+  description,
+  buttonLabel,
+  to,
+}: {
+  title: string;
+  description: string;
+  actionButtonLabel?: string;
+  buttonLabel: string;
+  to: string;
 }) => {
   const router = useRouter();
 
   const handleClick = () => {
     router.push(to);
-  }
+  };
 
   return (
     <div className="flex justify-between items-center">
@@ -90,12 +100,14 @@ const PageHeader = ({ title, description, buttonLabel, to }: {
       </div>
 
       <div className="flex items-center gap-4">
-        <AppButton onClick={handleClick} label={buttonLabel} className="btn-primary w-full hidden md:block" />
+        <AppButton
+          onClick={handleClick}
+          label={buttonLabel}
+          className="btn-primary w-full hidden md:block"
+        />
       </div>
     </div>
-  )
-}
-
-
+  );
+};
 
 export default PayrollManagement;

@@ -1,6 +1,6 @@
-import { ChartOptions } from 'chart.js';
+import { ChartOptions } from "chart.js";
 
-const reviewCycleProgressChartOptions: ChartOptions<'doughnut'> = {
+const reviewCycleProgressChartOptions: ChartOptions<"doughnut"> = {
   rotation: 270,
   responsive: true,
   maintainAspectRatio: false,
@@ -13,7 +13,7 @@ const reviewCycleProgressChartOptions: ChartOptions<'doughnut'> = {
     },
   },
   events: [],
-  cutout: '85%',
+  cutout: "85%",
 };
 
 export default reviewCycleProgressChartOptions;

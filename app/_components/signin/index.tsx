@@ -32,71 +32,73 @@ const SigninMain = () => {
     if (email.trim() === "") return;
     setStep("password");
   };
-  
-const handlePasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  setIsLoading(true);
 
-  try {
-    console.log("Attempting signIn with credentials:", { email, password });
-    const res = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    });
-    console.log("SignIn response:", res);
+  const handlePasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
 
-    if (res?.ok) {
-      const user = await getSession();
-      console.log("User session data:", user);
+    try {
+      console.log("Attempting signIn with credentials:", { email, password });
+      const res = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+      console.log("SignIn response:", res);
 
-// Normalize roles to lowercase before passing to getRedirectPath
-      const roles = (user?.user?.role || []).map(role => role.toLowerCase());
-      const redirectPath = getRedirectPath(roles);
-      if (redirectPath)
-      {
-        router.push(redirectPath);
-      } else {
-        toast.error("User role not found. Please contact support.", {
-          className: "text-blue-600",
-        });
-      }
-    } else if (res?.error) {
-      // Handle specific error messages
-      if (res.error === "CredentialsSignin") {
-        toast.error("Invalid login credentials. Please try again.", {
-          className: "text-blue-600",
-        });
-      } else {
-        toast.error(
-          "Login failed due to a server issue. Please try again later.",
-          { className: "text-blue-600" }
+      if (res?.ok) {
+        const user = await getSession();
+        console.log("User session data:", user);
+
+        // Normalize roles to lowercase before passing to getRedirectPath
+        const roles = (user?.user?.role || []).map((role) =>
+          role.toLowerCase(),
         );
+        const redirectPath = getRedirectPath(roles);
+        if (redirectPath) {
+          router.push(redirectPath);
+        } else {
+          toast.error("User role not found. Please contact support.", {
+            className: "text-blue-600",
+          });
+        }
+      } else if (res?.error) {
+        // Handle specific error messages
+        if (res.error === "CredentialsSignin") {
+          toast.error("Invalid login credentials. Please try again.", {
+            className: "text-blue-600",
+          });
+        } else {
+          toast.error(
+            "Login failed due to a server issue. Please try again later.",
+            { className: "text-blue-600" },
+          );
+        }
+      } else {
+        toast.error("Login failed. Please try again.", {
+          className: "text-blue-600",
+        });
       }
-    } else {
-      toast.error("Login failed. Please try again.", {
-        className: "text-blue-600",
-      });
+    } catch (error) {
+      console.error("An unexpected error occurred:", error);
+
+      // Detect network errors
+      if (error instanceof TypeError && error.message === "Failed to fetch") {
+        toast.error(
+          "Network error. Please check your connection and try again.",
+          {
+            className: "text-blue-600",
+          },
+        );
+      } else {
+        toast.error("An unexpected error occurred. Please try again.", {
+          className: "text-blue-600",
+        });
+      }
+    } finally {
+      setIsLoading(false);
     }
-  } catch (error) {
-    console.error("An unexpected error occurred:", error);
-
-    // Detect network errors
-    if (error instanceof TypeError && error.message === "Failed to fetch") {
-      toast.error("Network error. Please check your connection and try again.", {
-        className: "text-blue-600",
-      });
-    } else {
-      toast.error("An unexpected error occurred. Please try again.", {
-        className: "text-blue-600",
-      });
-    }
-  } finally {
-    setIsLoading(false);
-  }
-};
-
-
+  };
 
   return (
     <section

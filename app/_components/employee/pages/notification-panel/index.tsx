@@ -1,8 +1,8 @@
-'use client';
-import useNotificationPanelPage from './hooks/useNotificationPanelPage';
-import Page from '@/app/_components/shared/page';
-import Table from '@/app/_components/shared/table';
-import Modal from '../../modal';
+"use client";
+import useNotificationPanelPage from "./hooks/useNotificationPanelPage";
+import Page from "@/app/_components/shared/page";
+import Table from "@/app/_components/shared/table";
+import Modal from "../../modal";
 
 const EmployeeNotificationPanel = () => {
   const { pageProps, tableProps, modalsProps } = useNotificationPanelPage();

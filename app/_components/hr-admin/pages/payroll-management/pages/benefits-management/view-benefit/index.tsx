@@ -42,7 +42,7 @@ const HrAdminViewPayrollBenefitPage = () => {
           }`,
           startDate: "N/A",
           endDate: "N/A",
-        }))
+        })),
       );
     } else {
       setEmployees(undefined);
@@ -78,7 +78,7 @@ const HrAdminViewPayrollBenefitPage = () => {
             iconColorVariant: "success",
             labelText: "Next Expiration",
             value: `${dayjs(benefitData?.benefit.endDate).format(
-              "DD MMMM YYYY"
+              "DD MMMM YYYY",
             )}`,
           },
         ]}

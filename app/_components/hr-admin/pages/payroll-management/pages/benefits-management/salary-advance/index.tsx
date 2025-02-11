@@ -123,7 +123,7 @@ const HrAdminPayrollSalaryAdvancePage = () => {
           requestedAmount: request.advanceTaken,
           requestedDate: "N/A",
           repaymentTerms: "N/A",
-        }))
+        })),
       );
     } else {
       setPendingRequests(undefined);
@@ -140,9 +140,9 @@ const HrAdminPayrollSalaryAdvancePage = () => {
           repaymentStatus: `${request.repaymentStatus}`,
           amountRepaid: request.amountRepaid,
           nextPaymentDate: `${dayjs(request.nextPaymentDate).format(
-            "DD MMMM YYYY"
+            "DD MMMM YYYY",
           )}`,
-        }))
+        })),
       );
     } else {
       setApprovedRequests(undefined);
@@ -166,7 +166,7 @@ const HrAdminPayrollSalaryAdvancePage = () => {
           {
             labelText: "Total Advances Disbursed",
             value: `${currencyFormatter.format(
-              summaryData?.approvedTotalAdvanceTaken ?? 0
+              summaryData?.approvedTotalAdvanceTaken ?? 0,
             )}`,
             icon: <SvgIcon path={icon.paperMoney} width={16} height={16} />,
             iconColorVariant: "info",

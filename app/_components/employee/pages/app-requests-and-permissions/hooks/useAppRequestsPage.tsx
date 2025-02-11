@@ -1,3 +1,4 @@
+"use client";
 import Skeleton from "@mui/material/Skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { debounce } from "lodash";
@@ -14,7 +15,13 @@ import {
 } from "@/app/api/services/employee/app-request";
 import { AppRequestStatusMap } from "@/constants";
 import { FetchParams } from "@/types";
-import { ModalProps } from "../../../modal/types";
+import { InputFieldValue, ModalProps } from "../../../modal/types";
+
+const INIT_FETCH_PARAMS: FetchParams = {
+  page: 1,
+  limit: 10,
+  sortOrder: "desc",
+};
 
 const useAppRequestsPage = () => {
   // State variables
@@ -28,12 +35,10 @@ const useAppRequestsPage = () => {
     string | number | undefined
   >("");
   const [detailsData, setDetailsData] = useState<any | null>(null);
-  const [fetchParams, setFetchParams] = useState<FetchParams>({
-    page: 1,
-    limit: 10,
-    sortOrder: "desc",
-    search: undefined,
-  });
+  const [statusFilter, setStatusFilter] = useState<InputFieldValue>();
+
+  const [fetchParams, setFetchParams] =
+    useState<FetchParams & { status?: InputFieldValue }>(INIT_FETCH_PARAMS);
 
   // Debounced search
   const debouncedSearch = debounce((value: string) => {
@@ -84,13 +89,8 @@ const useAppRequestsPage = () => {
   } = useQuery({
     queryKey: ["app-requests", { ...fetchParams }],
     queryFn: async () => {
-      const response = await getAllMyAppRequest(
-        fetchParams.sortOrder,
-        fetchParams.page,
-        fetchParams.limit,
-        fetchParams.search
-      );
-      return response.data.items;
+      const response = await getAllMyAppRequest(fetchParams);
+      return response;
     },
     refetchOnWindowFocus: false,
     staleTime: 60000,
@@ -121,8 +121,8 @@ const useAppRequestsPage = () => {
           status: <Skeleton width={100} />,
           requestDate: <Skeleton width={120} />,
         })
-      : appRequests?.map((request) => ({
-          requestId: request.id,
+      : appRequests?.data?.map((request) => ({
+          requestId: request._id,
           appName: request.appId.appName,
           status: request.status,
           requestDate: new Date(request.requestDate).toLocaleDateString(),
@@ -151,7 +151,41 @@ const useAppRequestsPage = () => {
     ],
     fieldToReturnOnActionItemClick: "requestId",
     onSearch: handleSearch,
-    filters: [{ name: "Access Level", items: ["All", "Admin", "Read"] }],
+    formFilter: {
+      gridSpacing: 2,
+      inputFields: [
+        {
+          label: "Status",
+          type: "select",
+          options: [
+            { label: "Active", value: "active" },
+            { label: "In Active", value: "inactive" },
+          ],
+          value: statusFilter,
+          setValue: setStatusFilter,
+          selectValControlledFromOutside: true,
+        },
+      ],
+    },
+    onResetClick: () => {
+      setStatusFilter(undefined);
+      setFetchParams({ ...fetchParams, status: undefined });
+    },
+    onFilterClick: () =>
+      setFetchParams((prev) => ({ ...prev, status: statusFilter })),
+    paginationMeta: {
+      page: appRequests?.meta.page,
+      totalPages: appRequests?.meta.pageCount,
+      limit: appRequests?.meta.limit,
+      itemCount: appRequests?.meta.itemCount,
+      itemsOnPage: appRequests?.data.length,
+      loading: isLoading,
+      onChangeLimit: (limit) => setFetchParams((prev) => ({ ...prev, limit })),
+      onPrevClick: () =>
+        setFetchParams((prev) => ({ ...prev, page: prev.page - 1 })),
+      onNextClick: () =>
+        setFetchParams((prev) => ({ ...prev, page: prev.page + 1 })),
+    },
   };
 
   // Modal properties

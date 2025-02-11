@@ -158,7 +158,7 @@ const HrAdminDeviceOverview = () => {
               name: "View Details",
               onClick: () =>
                 router.push(
-                  route.hrAdmin.deviceManagement.overview.viewRequest
+                  route.hrAdmin.deviceManagement.overview.viewRequest,
                 ),
             },
           ],
@@ -167,7 +167,7 @@ const HrAdminDeviceOverview = () => {
               name: "View Details",
               onClick: () =>
                 router.push(
-                  route.hrAdmin.deviceManagement.overview.viewRequest
+                  route.hrAdmin.deviceManagement.overview.viewRequest,
                 ),
             },
             { name: "Approve Request", onClick: () => {} },
@@ -178,7 +178,7 @@ const HrAdminDeviceOverview = () => {
               name: "View Details",
               onClick: () =>
                 router.push(
-                  route.hrAdmin.deviceManagement.overview.viewRequest
+                  route.hrAdmin.deviceManagement.overview.viewRequest,
                 ),
             },
           ],

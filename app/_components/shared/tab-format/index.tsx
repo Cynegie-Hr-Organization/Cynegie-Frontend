@@ -1,10 +1,10 @@
-import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Tab } from "@mui/material";
 import React, { useState } from "react";
-import ButtonGroup from "../button-group";
-import Button from "../button-group/button";
-import { ButtonType } from "../page/heading/types";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { TabFormatProps } from "./types";
+import { ButtonType } from "../page/heading/types";
+import Button from "../button-group/button";
+import ButtonGroup from "../button-group";
 
 const TabFormat: React.FC<TabFormatProps> = ({
   tabs,
@@ -32,9 +32,9 @@ const TabFormat: React.FC<TabFormatProps> = ({
 
   return (
     <div className="w-full">
-      <TabContext value={customTabValue ?? value}>
+      <TabContext value={value}>
         {type !== "button" && (
-          <TabList onChange={customHandleChange ?? handleChange}>
+          <TabList onChange={handleChange}>
             {tabs?.map((tab, index) => (
               <Tab
                 className="!normal-case"
@@ -86,7 +86,7 @@ const TabFormat: React.FC<TabFormatProps> = ({
           ))}
         </div>
       </TabContext>
-      {type === "multi-step-form" && hasButtons && (
+      {type === "multi-step-form" && (
         <div className="mt-4">
           <ButtonGroup
             leftButton={{

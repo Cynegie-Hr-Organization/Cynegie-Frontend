@@ -13,20 +13,17 @@ const TablePermissionsCell: React.FC<TablePermissionsCellProps> = ({
   onClick,
 }) => {
   return (
-    permissions &&
-    permissions?.length > 0 && (
-      <span>
-        {permissions[0].name + " "}
-        <span
-          className={`text-[${color.info.dark}] underline ${
-            onClick && "cursor-pointer"
-          }`}
-          onClick={() => onClick?.(permissions)}
-        >
-          {permissions.length > 1 && `+${permissions.length - 1}`}
-        </span>
+    <span>
+      {permissions[0].name + " "}
+      <span
+        className={`text-[${color.info.dark}] underline ${
+          onClick && "cursor-pointer"
+        }`}
+        onClick={() => onClick?.(permissions)}
+      >
+        {permissions.length > 1 && `+${permissions.length - 1}`}
       </span>
-    )
+    </span>
   );
 };
 

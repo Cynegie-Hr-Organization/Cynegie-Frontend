@@ -1,6 +1,6 @@
-import { getColorVariant } from '@/utils';
-import React from 'react';
-import { CardLabelIconProps } from '../../../../types';
+import { getColorVariant } from "@/utils";
+import React from "react";
+import { CardLabelIconProps } from "../../../../types";
 
 const CardLabelIcon: React.FC<CardLabelIconProps> = (props) => {
   const { icon, colorVariant, containerHeight, containerWidth } = props;
@@ -8,10 +8,10 @@ const CardLabelIcon: React.FC<CardLabelIconProps> = (props) => {
     <div
       style={{
         ...getColorVariant(colorVariant),
-        borderRadius: '50%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        borderRadius: "50%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         height: `${containerHeight}px`,
         width: `${containerWidth}px`,
       }}

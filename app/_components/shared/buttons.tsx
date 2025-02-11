@@ -1,6 +1,5 @@
 "use client";
 
-
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
@@ -29,6 +28,8 @@ const Appbutton = ({
   );
 };
 
-export const Spinner = ({ ...props }) => <Loader2 className={`animate-spin ${props.className ?? ""}`} />;
+export const Spinner = ({ ...props }) => (
+  <Loader2 className={`animate-spin ${props.className ?? ""}`} />
+);
 
 export default Appbutton;

@@ -1,16 +1,16 @@
 // import { Avatar } from '@mui/material';
-import { color } from '@/constants';
-import { AvatarGroupProps } from './types';
-import { Avatar, AvatarGroup as RsuiteAvatarGroup } from 'rsuite';
+import { color } from "@/constants";
+import { AvatarGroupProps } from "./types";
+import { Avatar, AvatarGroup as RsuiteAvatarGroup } from "rsuite";
 
 const AvatarGroup: React.FC<AvatarGroupProps> = (props) => {
   const { avatars } = props;
   const max = 4;
   const avatarStyle = {
-    border: '3px solid white',
+    border: "3px solid white",
   };
   return (
-    <RsuiteAvatarGroup stack size='sm'>
+    <RsuiteAvatarGroup stack size="sm">
       {avatars
         ?.filter((_avatar, i) => i < max)
         .map((avatar, index) => (
@@ -19,7 +19,7 @@ const AvatarGroup: React.FC<AvatarGroupProps> = (props) => {
             circle
             key={index}
             src={avatar}
-            alt={''}
+            alt={""}
           />
         ))}
       {avatars && avatars.length > 4 && (

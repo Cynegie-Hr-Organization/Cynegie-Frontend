@@ -7,11 +7,6 @@ import { HiOutlineUserGroup } from "react-icons/hi2";
 import { LuClock3 } from "react-icons/lu";
 import { PiChartLineUp } from "react-icons/pi";
 
-
-
-
-
-
 const OverViewSection = () => {
   const router = useRouter();
 
@@ -42,7 +37,6 @@ const OverViewSection = () => {
     },
   ];
 
-
   return (
     <Stack gap={3}>
       <Stack gap={2}>
@@ -64,8 +58,10 @@ const OverViewSection = () => {
             >
               <Stack gap={2}>
                 <Stack direction="row" alignItems="center" gap={2}>
-                  <div className="p-1 rounded-full text-center flex justify-center w-fit"
-                    style={{ backgroundColor: content.color }}>
+                  <div
+                    className="p-1 rounded-full text-center flex justify-center w-fit"
+                    style={{ backgroundColor: content.color }}
+                  >
                     {content.icon}
                   </div>
                   <p className="text-xs font-semibold text-[#1B1B1B]">

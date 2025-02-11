@@ -1,4 +1,3 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
@@ -7,7 +6,7 @@ import { request } from "@/utils/request";
 import { baseUrl } from "@/constants/config";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/options";
-
+import { FetchParams } from "@/types";
 
 interface AppId {
   appName: string;
@@ -23,22 +22,20 @@ interface AppRequestItem {
   requestDate: string;
   createdAt: string;
   updatedAt: string;
-  id: string;
+  _id: string;
 }
 
 export interface AppRequestsResponse {
-  status: number;
-  message: string;
-  data: {
-    items: AppRequestItem[];
-    totalItems: number;
-    totalPages: number;
-    currentPage: number;
+  data: AppRequestItem[];
+  meta: {
+    page: number;
+    limit: number;
+    itemCount: number;
+    pageCount: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
   };
 }
-
-
-
 
 export const getApps = async () => {
   const session = await getServerSession(authOptions);
@@ -49,15 +46,15 @@ export const getApps = async () => {
       Authorization: `Bearer ${session?.token}`,
     },
   });
-    
-  const apps = response?.data?.items.map((item: any) => ({
-    label: item.appName, 
-    value: item.id, 
-  })) || [];
 
-  return apps ;
+  const apps =
+    response?.data?.items.map((item: any) => ({
+      label: item.appName,
+      value: item.id,
+    })) || [];
+
+  return apps;
 };
-
 
 export const requestApp = async (payload: any) => {
   const session = await getServerSession(authOptions);
@@ -67,22 +64,14 @@ export const requestApp = async (payload: any) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${session?.token}`,
     },
-    data : payload,
+    data: payload,
   });
 
   return response;
-}
-
-
-
-
+};
 
 export const getAllMyAppRequest = async (
-  sortOrder: string = "desc",
-  page: number,
-  limit: number,
-  status?: string,
-  search?: string
+  fetchParams : FetchParams
 ): Promise<AppRequestsResponse> => {
   const session = await getServerSession(authOptions);
 
@@ -91,18 +80,11 @@ export const getAllMyAppRequest = async (
       "Content-Type": "application/json",
       Authorization: `Bearer ${session?.token}`,
     },
-    params: {
-      sortOrder,
-      page,
-      limit,
-      status,
-      search,
-    },
+    params: fetchParams,
   });
 
   return response as AppRequestsResponse;
 };
-
 
 export const fetchAppRequestById = async (id: any) => {
   const session = await getServerSession(authOptions);
@@ -116,4 +98,3 @@ export const fetchAppRequestById = async (id: any) => {
 
   return response;
 };
-

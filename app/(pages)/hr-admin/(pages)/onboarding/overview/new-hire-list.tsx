@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import AppButton from "@/app/_components/shared/button";
 import CardLayout from "@/app/_components/shared/cards";
@@ -7,18 +7,16 @@ import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import { DrawerDialog } from "@/components/drawer/modal";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
-
-
-
-
-
-
 
 const NewHireList = () => {
   return (
@@ -33,26 +31,30 @@ const NewHireList = () => {
           />
         </div>
 
-        <AppDropdownMenu trigger={
-          <button
-            type="button"
-            className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
-            <LuListFilter /> Filter
-          </button>
-        }
+        <AppDropdownMenu
+          trigger={
+            <button
+              type="button"
+              className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2"
+            >
+              <LuListFilter /> Filter
+            </button>
+          }
           menuItems={
             <div className="p-4 space-y-10">
               <div className="space-y-4">
-                <AppSelect listItems={[
-                  { label: "High", value: "high" },
-                  { label: "Medium", value: "medium" },
-                  { label: "Low", value: "low" }
-                ]}
+                <AppSelect
+                  listItems={[
+                    { label: "High", value: "high" },
+                    { label: "Medium", value: "medium" },
+                    { label: "Low", value: "low" },
+                  ]}
                   label="Priority"
                   placeholder="High"
                   onChange={(value) => {
-                    console.log(value)
-                  }} />
+                    console.log(value);
+                  }}
+                />
 
                 <AppSelect
                   listItems={[
@@ -63,8 +65,9 @@ const NewHireList = () => {
                   label="Status"
                   placeholder="Pending"
                   onChange={function (value: string): void {
-                    console.log(value)
-                  }} />
+                    console.log(value);
+                  }}
+                />
               </div>
 
               <div className="flex items-center justify-between gap-4">
@@ -72,9 +75,8 @@ const NewHireList = () => {
                 <AppButton label="Filter" className="btn-primary w-[90px]" />
               </div>
             </div>
-          } />
-
-
+          }
+        />
       </div>
 
       <div className="-mx-6">
@@ -131,78 +133,105 @@ const NewHireList = () => {
   );
 };
 
-
 function PopoverMenu() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <button className='cursor-pointer outline-none p-1 border border-gray-300 rounded-lg'>
+        <button className="cursor-pointer outline-none p-1 border border-gray-300 rounded-lg">
           <HiDotsVertical />
         </button>
       </PopoverTrigger>
 
-      <PopoverContent className='w-fit p-2 bg-white cursor-pointer rounded-lg flex flex-col items-start text-[#475367]'>
+      <PopoverContent className="w-fit p-2 bg-white cursor-pointer rounded-lg flex flex-col items-start text-[#475367]">
         <button
           className="hover:bg-gray-100 w-full text-left text-sm p-2 rounded-md"
-          onClick={() => router.push('/hr-admin/onboarding/template/new-template/1')}>
-          View details</button>
-        <button
-          className="hover:bg-gray-100 w-full text-left text-sm p-2 rounded-md"
-          onClick={() => router.push('/hr-admin/onboarding/template/new-template/1')}>
-          View Onboarding template</button>
-        <SetReminderModal trigger={<button
-          className="hover:bg-gray-100 w-full text-left text-sm p-2 rounded-md"
+          onClick={() =>
+            router.push("/hr-admin/onboarding/template/new-template/1")
+          }
         >
-          Send Reminders</button>} />
+          View details
+        </button>
+        <button
+          className="hover:bg-gray-100 w-full text-left text-sm p-2 rounded-md"
+          onClick={() =>
+            router.push("/hr-admin/onboarding/template/new-template/1")
+          }
+        >
+          View Onboarding template
+        </button>
+        <SetReminderModal
+          trigger={
+            <button className="hover:bg-gray-100 w-full text-left text-sm p-2 rounded-md">
+              Send Reminders
+            </button>
+          }
+        />
       </PopoverContent>
     </Popover>
   );
 }
 
-
-
-const SetReminderModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => {
-  const [isOpen, setIsOPen] = useState(false)
+const SetReminderModal: React.FC<{ trigger: React.ReactNode }> = ({
+  trigger,
+}) => {
+  const [isOpen, setIsOPen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     startDate: "",
     endDate: "",
     description: "",
-  })
-
+  });
 
   return (
-    <DrawerDialog open={isOpen} setOpen={setIsOPen} trigger={trigger}
+    <DrawerDialog
+      open={isOpen}
+      setOpen={setIsOPen}
+      trigger={trigger}
       header={
         <span className="flex flex-col">
           <span className="font-roboto text-sm font-bold">Set Reminder</span>
-          <span className="font-roboto text-xs font-normal text-gray-500">Set Reminder</span>
+          <span className="font-roboto text-xs font-normal text-gray-500">
+            Set Reminder
+          </span>
         </span>
       }
       footer={
         <div className="flex items-center justify-center gap-4">
           <AppButton label="Cancel" className="btn-secondary w-[296px]" />
-          <AppButton label="Add" className="btn-primary w-[296px]" onClick={() => setIsOPen(false)} />
+          <AppButton
+            label="Add"
+            className="btn-primary w-[296px]"
+            onClick={() => setIsOPen(false)}
+          />
         </div>
       }
     >
-
       <form>
         <div className="space-y-4">
           <div className="flex flex-col md:flex-row items-center gap-4">
             <AppDatePicker
               label="Set Date"
-              selectedDate={formData.startDate !== '' ? new Date(formData.startDate) : undefined}
-              setSelectedDate={(date) => { setFormData({ ...formData, startDate: `${date}` }) }}
+              selectedDate={
+                formData.startDate !== ""
+                  ? new Date(formData.startDate)
+                  : undefined
+              }
+              setSelectedDate={(date) => {
+                setFormData({ ...formData, startDate: `${date}` });
+              }}
               requiredField
             />
             <AppDatePicker
               label="Set Date"
-              selectedDate={formData.endDate !== '' ? new Date(formData.endDate) : undefined}
-              setSelectedDate={(date) => { setFormData({ ...formData, endDate: `${date}` }) }}
+              selectedDate={
+                formData.endDate !== "" ? new Date(formData.endDate) : undefined
+              }
+              setSelectedDate={(date) => {
+                setFormData({ ...formData, endDate: `${date}` });
+              }}
               requiredField
             />
           </div>
@@ -210,19 +239,16 @@ const SetReminderModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) =
             id="reminder-description"
             label="Reminder Description"
             placeholder="Reminder Description"
-            onChange={(e) => { setFormData({ ...formData, description: e.target.value }) }}
+            onChange={(e) => {
+              setFormData({ ...formData, description: e.target.value });
+            }}
             value={formData.description}
             requiredField
           />
         </div>
       </form>
     </DrawerDialog>
-  )
-}
-
-
-
-
-
+  );
+};
 
 export default NewHireList;

@@ -54,7 +54,7 @@ const TablePagination: React.FC<TablePaginationProps> = ({
           <Skeleton variant="text" width={60} height={20} />
         ) : (
           <div>
-            {itemsOnPage === 0 ? 0 : start ?? 0}-{end ?? 0} of {itemCount}
+            {itemsOnPage === 0 ? 0 : (start ?? 0)}-{end ?? 0} of {itemCount}
           </div>
         )}
         <Stack direction="row" gap={2}>

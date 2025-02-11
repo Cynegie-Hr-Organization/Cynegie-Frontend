@@ -49,7 +49,7 @@ const ViewPayrollDetailsPage = () => {
               ? employee.employeeInfo.compensation.overtime
               : "",
           status: "pending",
-        }))
+        })),
       );
     } else {
       setEmployees(undefined);
@@ -74,7 +74,7 @@ const ViewPayrollDetailsPage = () => {
             name: "Payroll Period",
             value: getHumanReadableDateRange(
               payrollData?.data.startDate,
-              payrollData?.data.endDate
+              payrollData?.data.endDate,
             ),
           },
           {

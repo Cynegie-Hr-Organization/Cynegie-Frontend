@@ -1,4 +1,4 @@
-import { ButtonProps } from '../../page/heading/types';
+import { ButtonProps } from "../../page/heading/types";
 
 export type ButtonGroupProps = {
   leftButton: ButtonProps;
@@ -6,4 +6,4 @@ export type ButtonGroupProps = {
   position: ButtonGroupPosition;
 };
 
-export type ButtonGroupPosition = 'start' | 'center' | 'end';
+export type ButtonGroupPosition = "start" | "center" | "end";

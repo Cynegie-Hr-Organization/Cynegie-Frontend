@@ -64,15 +64,22 @@ const OverViewCards = () => {
     <div className="space-y-8">
       <h3 className="text-base font-bold text-black">Overview</h3>
 
-      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4" >
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {overviewContents.map((content) => (
-          <div key={content.title} className="common-card p-3 md:p-5 rounded-[12.56px] space-y-4">
+          <div
+            key={content.title}
+            className="common-card p-3 md:p-5 rounded-[12.56px] space-y-4"
+          >
             <div className="flex items-center gap-2">
-              <div className="p-1 rounded-full text-center flex justify-center w-fit"
-                style={{ backgroundColor: content.color }}>
+              <div
+                className="p-1 rounded-full text-center flex justify-center w-fit"
+                style={{ backgroundColor: content.color }}
+              >
                 <PiListChecksFill />
               </div>
-              <p className="font-semibold text-[#1B1B1B] text-xs">{content.title}</p>
+              <p className="font-semibold text-[#1B1B1B] text-xs">
+                {content.title}
+              </p>
             </div>
 
             <p className="text-lg font-bold text-[#1B1B1B]"> {content.count}</p>
@@ -96,9 +103,10 @@ const ChartsCard = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
       <div className="common-card p-4 rounded-[12.56px] col-span-1 lg:col-span-8">
-
         <div className="flex items-center justify-between gap-2">
-          <h3 className="text-base font-semibold text-black w-full flex-grow">Total Payroll Processed</h3>
+          <h3 className="text-base font-semibold text-black w-full flex-grow">
+            Total Payroll Processed
+          </h3>
           <div>
             <AppSelect
               width="w-[120px]"
@@ -112,9 +120,11 @@ const ChartsCard = () => {
         <GradientLineChart />
       </div>
 
-      <div className="common-card p-4 rounded-xl col-span-1 lg:col-span-4" >
+      <div className="common-card p-4 rounded-xl col-span-1 lg:col-span-4">
         <div className="space-y-2">
-          <h3 className="text-base font-semibold text-black">Employee Status Distribution</h3>
+          <h3 className="text-base font-semibold text-black">
+            Employee Status Distribution
+          </h3>
 
           <div className="flex justify-center mt-0 md:-mt-5 lg:mt-0">
             <PieChart
@@ -133,7 +143,10 @@ const ChartsCard = () => {
               { color: colors.grey, label: "Probation", percentage: 5 },
               { color: colors.red, label: "Resigned", percentage: 10 },
             ].map((item, index) => (
-              <div key={index} className="flex items-center justify-between gap-1 text-base">
+              <div
+                key={index}
+                className="flex items-center justify-between gap-1 text-base"
+              >
                 <div className="flex items-center gap-1">
                   <GoDotFill color={item.color} size={18} />
                   <p className="font-semibold text-xs">{item.label}</p>
@@ -162,7 +175,9 @@ const PriorityCard = () => {
     <Grid2 className="common-card" size={{ xs: 12, sm: 6, md: 8.5 }}>
       <Stack gap={2}>
         <Stack direction="row">
-          <Box className="text-base font-semibold flex-grow">Priority Todos</Box>
+          <Box className="text-base font-semibold flex-grow">
+            Priority Todos
+          </Box>
           <AppSelect
             width="w-[120px]"
             placeholder="Monthly"
@@ -181,7 +196,10 @@ const PriorityCard = () => {
               );
             })}
         </Grid2>
-        <Link href="/hr-admin/onboarding/overview" className="underline text-[#0035C3] cursor-pointer">
+        <Link
+          href="/hr-admin/onboarding/overview"
+          className="underline text-[#0035C3] cursor-pointer"
+        >
           View all tasks
         </Link>
       </Stack>

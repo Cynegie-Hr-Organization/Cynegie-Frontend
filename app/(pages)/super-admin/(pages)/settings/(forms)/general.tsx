@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import AppCheckbox from "@/app/_components/shared/checkbox";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
@@ -6,12 +6,6 @@ import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import { AppFileUpload } from "@/app/_components/shared/file-upload";
 import AppInputText from "@/app/_components/shared/input-text";
 import { useState } from "react";
-
-
-
-
-
-
 
 const GeneralSettingsForm = () => {
   const [formData, setFormData] = useState({
@@ -22,9 +16,8 @@ const GeneralSettingsForm = () => {
     time_zone: "",
     date_format: "",
     language_preference: "",
-    enableSystemNotifications: false
+    enableSystemNotifications: false,
   });
-
 
   return (
     <form className="p-4 md:p-6 space-y-4">
@@ -36,24 +29,23 @@ const GeneralSettingsForm = () => {
           id="company-name"
           placeholder="Enter company name"
           value=""
-          onChange={() => { }}
+          onChange={() => {}}
         />
         <AppInputText
           label="Company Address"
           id="company-address"
           placeholder="Enter company address"
           value=""
-          onChange={() => { }}
+          onChange={() => {}}
         />
         <AppInputText
           label="Company Email Address"
           id="company-email-address"
           placeholder="Enter company email address"
           value=""
-          onChange={() => { }}
+          onChange={() => {}}
         />
       </div>
-
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <AppInputText
@@ -61,7 +53,7 @@ const GeneralSettingsForm = () => {
           id="company-phone-number"
           placeholder="Enter company phone number"
           value=""
-          onChange={() => { }}
+          onChange={() => {}}
         />
         <AppMultipleSelect
           label="Time Zone"
@@ -84,10 +76,9 @@ const GeneralSettingsForm = () => {
           label="Date Format"
           placeholder="Enter date format"
           selectedDate={new Date()}
-          setSelectedDate={() => { }}
+          setSelectedDate={() => {}}
         />
       </div>
-
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <AppMultipleSelect
@@ -113,17 +104,18 @@ const GeneralSettingsForm = () => {
             { label: "HR Approvals", value: "hr-approvals" },
             { label: "IT Request", value: "it-request" },
             { label: "Finance Update", value: "finance-update" },
-            { label: "Compliance Alert", value: "compliance-alert" }
+            { label: "Compliance Alert", value: "compliance-alert" },
           ]}
           onSelectionChange={(value) => console.log(value)}
         />
         <AppFileUpload
           label="Company Logo"
           bottomInfo="Supported file types: PDF. Max file size allowed is 3MB."
-          onChange={(files) => { console.log(files) }}
+          onChange={(files) => {
+            console.log(files);
+          }}
         />
       </div>
-
 
       <AppCheckbox
         label="Enable System Notification"

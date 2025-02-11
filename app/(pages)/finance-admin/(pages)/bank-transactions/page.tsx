@@ -1,5 +1,5 @@
 const BankingTransactionsPage = () => {
-    return <div>Banking Transactions</div>;
+  return <div>Banking Transactions</div>;
 };
 
 export default BankingTransactionsPage;

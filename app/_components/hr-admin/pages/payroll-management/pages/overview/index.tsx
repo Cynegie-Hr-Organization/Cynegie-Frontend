@@ -70,7 +70,7 @@ const HrAdminPayrollOverviewPage = () => {
             id: payroll.id,
             payrollName: payroll.payrollName,
             payrollPeriod: `${dayjs(payroll.startDate).format(
-              "DD MMM"
+              "DD MMM",
             )} - ${dayjs(payroll.endDate).format("DD MMM")}`,
             paymentDate: dayjs(payroll.paymentDate).format("DD MMM YYYY"),
             totalEmployees: payroll.employees.length,
@@ -80,7 +80,7 @@ const HrAdminPayrollOverviewPage = () => {
               ? dayjs(payroll.approvalDate).format("DD MMM YYYY")
               : "--",
             status: payroll.status,
-          }))
+          })),
         );
       }
     } else {
@@ -161,7 +161,7 @@ const HrAdminPayrollOverviewPage = () => {
           {
             labelText: "Total Payroll Cost",
             value: currencyFormatter.format(
-              payrollSummary?.totalCostByStatus.approved ?? 0
+              payrollSummary?.totalCostByStatus.approved ?? 0,
             ),
             // additionalInfo: {
             //   left: { text: "+20% ", color: "#099137" },

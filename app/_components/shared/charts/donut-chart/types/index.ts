@@ -1,9 +1,9 @@
-import { SxProps } from '@mui/material';
-import { ChartData, ChartOptions } from 'chart.js';
+import { SxProps } from "@mui/material";
+import { ChartData, ChartOptions } from "chart.js";
 
 export type DonutChartProps = {
-  data: ChartData<'doughnut', number[], string>;
-  options: ChartOptions<'doughnut'>;
+  data: ChartData<"doughnut", number[], string>;
+  options: ChartOptions<"doughnut">;
   chartwidth: number;
   chartheight: number;
   centertext?: ChartCenterTextProps;

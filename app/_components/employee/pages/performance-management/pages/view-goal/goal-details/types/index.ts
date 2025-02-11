@@ -1,4 +1,4 @@
-import { Tab } from '@/app/_components/shared/tab-format/types';
+import { Tab } from "@/app/_components/shared/tab-format/types";
 
 export type GoalDetailsProps = {
   generalDetails: GeneralGoalDetailsProps;

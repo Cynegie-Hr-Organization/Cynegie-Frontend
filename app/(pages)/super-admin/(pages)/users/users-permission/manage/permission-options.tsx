@@ -1,20 +1,26 @@
 import { ReactNode } from "react";
 import { AccessType } from "./page";
 
-
-
-
-const PermissionOptionLayout = ({ children, fullAccessChecked, limitAccessChecked, viewOnlyChecked, onPermissionChange, disabled }: {
-  children: ReactNode
-  fullAccessChecked: boolean
-  limitAccessChecked: boolean
-  viewOnlyChecked: boolean
-  onPermissionChange: (value: AccessType) => void
-  disabled: boolean
+const PermissionOptionLayout = ({
+  children,
+  fullAccessChecked,
+  limitAccessChecked,
+  viewOnlyChecked,
+  onPermissionChange,
+  disabled,
+}: {
+  children: ReactNode;
+  fullAccessChecked: boolean;
+  limitAccessChecked: boolean;
+  viewOnlyChecked: boolean;
+  onPermissionChange: (value: AccessType) => void;
+  disabled: boolean;
 }) => {
   return (
     <div className="space-y-6">
-      <h3 className="text-base font-bold text-black font-roboto">Assign Permissions</h3>
+      <h3 className="text-base font-bold text-black font-roboto">
+        Assign Permissions
+      </h3>
 
       <div className="space-y-4 divide-gray-200">
         <PermissionRadio
@@ -22,7 +28,7 @@ const PermissionOptionLayout = ({ children, fullAccessChecked, limitAccessChecke
           description="Grant access to all modules and actions"
           id="full-access"
           checked={fullAccessChecked}
-          onChange={() => onPermissionChange('fullAccess')}
+          onChange={() => onPermissionChange("fullAccess")}
           disabled={disabled}
         />
 
@@ -33,7 +39,7 @@ const PermissionOptionLayout = ({ children, fullAccessChecked, limitAccessChecke
           description="Grant specific, customized access to various parts of the system"
           id="limit-access"
           checked={limitAccessChecked}
-          onChange={() => onPermissionChange('limitAccess')}
+          onChange={() => onPermissionChange("limitAccess")}
           disabled={disabled}
         />
 
@@ -44,7 +50,7 @@ const PermissionOptionLayout = ({ children, fullAccessChecked, limitAccessChecke
           description="Grant access to information without the ability to modify or improve anything"
           id="view-only"
           checked={viewOnlyChecked}
-          onChange={() => onPermissionChange('viewOnlyAccess')}
+          onChange={() => onPermissionChange("viewOnlyAccess")}
           disabled={disabled}
         />
 
@@ -53,19 +59,23 @@ const PermissionOptionLayout = ({ children, fullAccessChecked, limitAccessChecke
       {children}
     </div>
   );
-}
+};
 
-
-
-export const PermissionRadio = ({ label, description, id, checked, onChange, disabled }: {
-  label: string,
-  description: string,
-  id: string,
-  checked: boolean,
-  onChange: (e: any) => void,
-  disabled?: boolean
+export const PermissionRadio = ({
+  label,
+  description,
+  id,
+  checked,
+  onChange,
+  disabled,
+}: {
+  label: string;
+  description: string;
+  id: string;
+  checked: boolean;
+  onChange: (e: any) => void;
+  disabled?: boolean;
 }) => {
-
   return (
     <div className="flex items-center gap-x-6 lg:gap-x-16">
       <input
@@ -83,9 +93,7 @@ export const PermissionRadio = ({ label, description, id, checked, onChange, dis
         <p className="text-gray-500">{description}</p>
       </label>
     </div>
-  )
-}
+  );
+};
 
-
-export default PermissionOptionLayout
-
+export default PermissionOptionLayout;

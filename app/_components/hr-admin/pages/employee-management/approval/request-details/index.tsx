@@ -112,7 +112,7 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
             ...confirmationModalProps.buttonTwo,
             onClick: () =>
               router.push(
-                route.hrAdmin.employeeManagement.approvalManagement.home
+                route.hrAdmin.employeeManagement.approvalManagement.home,
               ),
           }}
         />

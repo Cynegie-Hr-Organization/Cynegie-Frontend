@@ -4,12 +4,14 @@ import Page from "@/app/_components/shared/page";
 import KanbanBoard from "./kanban-board";
 import SearchField from "../../input-fields/search";
 import SvgIcon from "@/app/_components/icons/container";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { icon } from "@/constants";
 import TaskList from "./list";
 import useKanbanBoard from "./kanban-board/hooks/useKanbanBoard";
 import Modal from "../../modal";
-import { ButtonType } from "@/app/_components/shared/page/heading/types";
+import { getTaskByID } from "@/app/api/services/employee/tasks";
+import { formatDate } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
 
 export type TaskLayout = "kanban" | "list";
 
@@ -30,10 +32,33 @@ const EmployeeTask = () => {
 
   const { boardData, onDragEnd } = useKanbanBoard();
   const [openViewTask, setOpenViewTask] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
 
-  const handleTaskClick = () => {
-    setOpenViewTask(true);
+  const { data: taskDetails } = useQuery({
+    queryKey: ["tasks", selectedTaskId],
+    queryFn: () => getTaskByID(selectedTaskId!),
+    enabled: !!selectedTaskId,
+  });
+
+  useEffect(() => {
+    if (taskDetails) {
+      setOpenViewTask(true);
+    }
+  }, [taskDetails]);
+
+  const handleTaskClick = (taskId: string) => {
+    setSelectedTaskId(taskId);
   };
+
+  //   const handleTaskClick = async (taskId: string) => {
+  //   try {
+  //     const response = await getTaskByID(taskId);
+  //     setTaskDetails(response);
+  //     setOpenViewTask(true);
+  //   } catch (error) {
+  //     console.error("Failed to fetch task details:", error);
+  //   }
+  // };
 
   const handleSearchQuery = (query: string) => {
     console.log("Search Query:", query); // Replace with actual search logic
@@ -92,31 +117,32 @@ const EmployeeTask = () => {
         title="View Task"
         subtitle="View task below"
         viewTaskProps={{
-          name: "Workstation",
+          id: taskDetails?.id,
+          name: taskDetails?.taskName,
+          status: taskDetails?.status,
           appName: "Slack",
           assignedTo: [],
-          dateCreated: "Nov 10, 2021",
+          dateCreated: formatDate(taskDetails?.createdAt),
           label: "Development",
-          dueDate: "Nov 20, 2021",
-          description:
-            "Analytics delivers actionable, industry-ready initiatives each time a business complete their full account. Phasellus vitae amet amet, mauris faucibus at sit. Pellentesque rhoncus adipiscing a enim, quis tortor, non etiam. Eget faucibus mattis consequat dui imperdiet scelerisque. Lorem placerat blandit ut lobortis volutpat convallis libero. Sed imperdiet dignissim ipsum quam.",
-          userPicture: "/image/persons/person-1.png",
-          comments: [
-            {
-              name: "Andre Voleavaou",
-              image: "/image/persons/person-3.png",
-              timePosted: "10 hours ago",
-              comment:
-                "Almost there @Angela, can you see the comments in Figma now",
-            },
-          ],
+          dueDate: formatDate(taskDetails?.dueDate),
+          description: taskDetails?.description,
+          // userPicture: "/image/persons/person-1.png",
+          // comments: [
+          //   {
+          //     name: "Andre Vovaou",
+          //     image: "/image/persons/person-3.png",
+          //     timePosted: "10 hours ago",
+          //     comment:
+          //       "Almost there @Angela, can you see the comments in Figma now",
+          //   },
+          // ],
         }}
-        centerButton
-        buttonOne={{
-          type: ButtonType.contained,
-          text: "Edit Task",
-          fullWidth: true,
-        }}
+        // centerButton
+        // buttonOne={{
+        //   type: ButtonType.contained,
+        //   text: "Edit Task",
+        //   fullWidth: true,
+        // }}
       />
     </>
   );

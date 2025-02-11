@@ -14,7 +14,7 @@ const ComplianceSettingsForm = () => {
             { label: "Bi Weekly", value: "bi-weekly" },
             { label: "Monthly", value: "monthly" },
           ]}
-          onChange={() => { }}
+          onChange={() => {}}
         />
         <AppSelect
           label="Data Retention Duration"
@@ -22,9 +22,9 @@ const ComplianceSettingsForm = () => {
           listItems={[
             { label: "6 months", value: "6-months" },
             { label: "1 year", value: "1-year" },
-            { label: "2 years", value: "2-years" }
+            { label: "2 years", value: "2-years" },
           ]}
-          onChange={() => { }}
+          onChange={() => {}}
         />
       </div>
     </form>

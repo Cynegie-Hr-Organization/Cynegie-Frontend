@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { color } from '@/constants';
-import { useRouter } from 'next/navigation';
+import { color } from "@/constants";
+import { useRouter } from "next/navigation";
 
 type TableLinkCellProps = {
   value?: string | number;
@@ -13,7 +13,7 @@ const TableLinkCell: React.FC<TableLinkCellProps> = ({ value, path }) => {
   return (
     <span
       className={`cursor-pointer text-[${color.info.dark}]`}
-      onClick={() => router.push(path ?? '')}
+      onClick={() => router.push(path ?? "")}
     >
       {value}
     </span>

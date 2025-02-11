@@ -1,4 +1,4 @@
-import { color } from '@/constants';
+import { color } from "@/constants";
 
 type TableLessonCellProps = {
   value?: number;

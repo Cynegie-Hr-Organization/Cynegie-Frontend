@@ -13,10 +13,13 @@ import { useToast } from "@/hooks/use-toast";
 
 const useMyCoursesTable = () => {
   const router = useRouter();
-
   const { toast } = useToast();
 
-  const { data: courses, refetch, isLoading } = useQuery({
+  const {
+    data: courses,
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["my-courses"],
     queryFn: async () => {
       const response = await getAllAssignCourse("desc", 1, 10);
@@ -26,6 +29,16 @@ const useMyCoursesTable = () => {
     refetchOnWindowFocus: false,
     staleTime: 30000,
   });
+
+  const completedCourses = courses?.filter(course => course.status === "COMPLETED").map(course => ({
+    name: course.courseTitle,
+    datePhrase: "Completed On",
+    date: new Date(course.updatedAt).toLocaleDateString("en-US", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }),
+  })) || [];
 
   const tableProps: TableProps = {
     title: "My Courses",
@@ -38,12 +51,12 @@ const useMyCoursesTable = () => {
           status: <Skeleton width={100} />,
         })
       : Array.isArray(courses)
-        ? courses.map((course) => ({
-            id: course.id,
-            title: course.courseTitle,
-            status: course.status,
-          }))
-        : [],
+      ? courses.map((course) => ({
+          id: course.id,
+          title: course.courseTitle,
+          status: course.status,
+        }))
+      : [],
     displayedFields: ["title", "status"],
     fieldTypes: [FieldType.text, FieldType.status],
     statusMap: CourseStatusMap,
@@ -72,8 +85,7 @@ const useMyCoursesTable = () => {
           try {
             const response = await completeCourse(id, "COMPLETED");
             console.log(response);
-            if (response.created !== "")
-            {
+            if (response.created !== "") {
               refetch();
               toast({
                 title: "Success!",
@@ -107,7 +119,7 @@ const useMyCoursesTable = () => {
     ],
   };
 
-  return { tableProps };
+  return { tableProps, completedCourses };
 };
 
 export default useMyCoursesTable;

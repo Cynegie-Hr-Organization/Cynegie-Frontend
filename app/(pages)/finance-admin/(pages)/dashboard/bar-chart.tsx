@@ -1,7 +1,6 @@
-"use client"
+"use client";
 
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
-
 
 import {
   ChartConfig,
@@ -10,20 +9,19 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-
-
-
 export interface ChartData {
-  [key: string]: string | number
+  [key: string]: string | number;
 }
 
 export interface BarChartComponentProps {
-  chartData: ChartData[]
-  chartConfig: ChartConfig
+  chartData: ChartData[];
+  chartConfig: ChartConfig;
 }
 
-
-export function BarChartComponent({ chartData, chartConfig }: BarChartComponentProps) {
+export function BarChartComponent({
+  chartData,
+  chartConfig,
+}: BarChartComponentProps) {
   return (
     <ChartContainer className="w-full h-full" config={chartConfig}>
       <BarChart accessibilityLayer data={chartData} barCategoryGap="37%">
@@ -32,13 +30,13 @@ export function BarChartComponent({ chartData, chartConfig }: BarChartComponentP
           vertical={false}
           strokeDasharray="5 5"
           stroke="#f0f0f0"
-          horizontalFill={['#fafafa']}
+          horizontalFill={["#fafafa"]}
           fillOpacity={0.1}
         />
         <YAxis
           className="text-xs font-semibold text-[#bebebe]"
           dataKey={(data) => {
-            const keys = Object.keys(data).filter(key => key !== 'month');
+            const keys = Object.keys(data).filter((key) => key !== "month");
             return keys.reduce((sum, key) => sum + data[key], 0);
           }}
           tickLine={false}
@@ -62,5 +60,5 @@ export function BarChartComponent({ chartData, chartConfig }: BarChartComponentP
         <Bar dataKey="mobile" fill="#0035C3" radius={4} />
       </BarChart>
     </ChartContainer>
-  )
+  );
 }

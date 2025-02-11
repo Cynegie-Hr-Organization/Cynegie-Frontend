@@ -1,6 +1,6 @@
-import { Grid2 } from '@mui/material';
-import LegendSeries from './series';
-import leaveBalanceLegendData from './data';
+import { Grid2 } from "@mui/material";
+import LegendSeries from "./series";
+import leaveBalanceLegendData from "./data";
 
 const LeaveBalanceLegend = () => {
   return (

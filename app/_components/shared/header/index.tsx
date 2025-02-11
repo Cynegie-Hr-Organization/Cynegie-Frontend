@@ -1,14 +1,14 @@
-import { rolesMap } from '@/types/form';
-import { getUserDetails } from '@/utils/getUserDetails';
-import { Avatar } from '@mui/material';
-import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { IoMenu } from 'react-icons/io5';
-import { PiBell } from 'react-icons/pi';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
-import RecentActivities from '../../it-admin/pages/it-admin/recent-activities';
-import { AppSelect } from '../select';
+import { rolesMap } from "@/types/form";
+import { getUserDetails } from "@/utils/getUserDetails";
+import { Avatar } from "@mui/material";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { IoMenu } from "react-icons/io5";
+import { PiBell } from "react-icons/pi";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import RecentActivities from "../../it-admin/pages/it-admin/recent-activities";
+import { AppSelect } from "../select";
 
 const reverseRolesMap: Record<string, string> = Object.entries(rolesMap).reduce(
   (acc: Record<string, string>, [role, path]) => {
@@ -16,17 +16,15 @@ const reverseRolesMap: Record<string, string> = Object.entries(rolesMap).reduce(
     acc[normalizedPath] = role;
     return acc;
   },
-  {}
+  {},
 );
 
-
-
 const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
-  const [userName, setUserName] = useState<string>('');
+  const [userName, setUserName] = useState<string>("");
   const [roles, setRoles] = useState<string[]>([]);
-  const [currentRole, setCurrentRole] = useState<string>('');
+  const [currentRole, setCurrentRole] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
-  const [currentDate, setCurrentDate] = useState<string>('');
+  const [currentDate, setCurrentDate] = useState<string>("");
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const pathname = usePathname();
@@ -41,7 +39,7 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
           setRoles(userDetails.roles || []);
         }
       } catch (error) {
-        console.error('Error fetching user details:', error);
+        console.error("Error fetching user details:", error);
       } finally {
         setLoading(false);
       }
@@ -52,17 +50,17 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
     // Set current date
     const date = new Date();
     const options: Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
     };
-    setCurrentDate(date.toLocaleDateString('en-US', options));
+    setCurrentDate(date.toLocaleDateString("en-US", options));
   }, []);
 
   useEffect(() => {
     // Extract the first segment of the pathname
-    const path = pathname.split('/').filter(Boolean)[0]; // Split and remove empty segments
+    const path = pathname.split("/").filter(Boolean)[0]; // Split and remove empty segments
     const roleFromPath = reverseRolesMap[path];
 
     if (roleFromPath) {
@@ -80,7 +78,7 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
     if (redirectPath) {
       router.push(redirectPath);
     } else {
-      console.error('No valid redirect path found for this role');
+      console.error("No valid redirect path found for this role");
     }
   };
 
@@ -99,7 +97,7 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
               <Avatar className="w-[40px] h-[40px]" src="" alt="avatar" />
               <div className="space-y-1">
                 <p className="font-sans text-lg font-bold text-Sambucus">
-                  Welcome, {userName || 'User'} 👋
+                  Welcome, {userName || "User"} 👋
                 </p>
                 {currentDate && (
                   <p className="font-sans text-xs font-normal text-Charcoal">
@@ -116,7 +114,7 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
         <AppSelect
           listItems={roles.map((role) => ({ label: role, value: role }))}
           onChange={(value) => handleRoleChange(value)}
-          placeholder={currentRole || 'Select a role'}
+          placeholder={currentRole || "Select a role"}
         />
 
         <PiBell strokeWidth={3} size={25} onClick={handleNotificationClick} />
@@ -140,11 +138,11 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
 
 const ProfileSkeleton = () => {
   return (
-    <div className='flex gap-x-2 items-center'>
-      <Skeleton width={40} height={40} circle className='my-0' />
-      <div className=''>
-        <Skeleton width={200} height={16} className='mt-2' />
-        <Skeleton width={200} height={12} className='my-0' />
+    <div className="flex gap-x-2 items-center">
+      <Skeleton width={40} height={40} circle className="my-0" />
+      <div className="">
+        <Skeleton width={200} height={16} className="mt-2" />
+        <Skeleton width={200} height={12} className="my-0" />
       </div>
     </div>
   );

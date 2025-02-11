@@ -28,7 +28,9 @@ const contactUsSchema = z.object({
   email: z.string().email("Invalid email address"),
   phone: z.string().min(11, "Phone number must be at least 11 characters"),
   companyName: z.string().min(3, "Company name must be at least 3 characters"),
-  numberOfEmployees: z.coerce.number().min(1, "Number of employees must be at least 1"),
+  numberOfEmployees: z.coerce
+    .number()
+    .min(1, "Number of employees must be at least 1"),
   subject: z.string().min(3, "Subject must be at least 3 characters"),
   message: z.string().min(10, "Message must be at least 10 characters"),
 });

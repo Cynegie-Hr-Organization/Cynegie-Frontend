@@ -1,7 +1,7 @@
+import React, { useEffect, useState } from "react";
+import { Container, FormHelperText } from "@mui/material";
 import { color } from "@/constants";
 import { Close } from "@mui/icons-material";
-import { Container, FormHelperText } from "@mui/material";
-import React, { useEffect, useState } from "react";
 import {
   FieldErrors,
   FieldValues,
@@ -12,6 +12,7 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
+
 
 export const UploadFieldInfo: React.FC<{ text: string }> = ({ text }) => {
   return (
@@ -36,7 +37,7 @@ export const AddedFile: React.FC<AddedFileProps> = (props) => {
       <div style={{ fontSize: "12px", fontWeight: "bold" }}>{props.name}</div>
       <Close
         onClick={props.onRemoveClick}
-        className="p-0.5 cursor-pointer"
+        className="p-0.5"
         sx={{
           width: "20px",
           height: "20px",
@@ -125,21 +126,17 @@ const DragUpload = ({
           marginBottom: "3px",
           padding: "10px",
           border: "2px dashed #DFDFDF",
-          cursor: fileUrl ? "default" : "pointer",
+          cursor: "pointer",
           maxWidth: "none",
         }}
-        onDragOver={fileUrl ? () => {} : (e) => e.preventDefault()}
-        onDrop={fileUrl ? () => {} : handleFileDrop}
-        onClick={
-          fileUrl
-            ? () => {}
-            : () => document.getElementById(name ?? "fileInput")?.click()
-        }
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={handleFileDrop}
+        onClick={() => document.getElementById("fileInput")?.click()}
       >
         <div>
           <input
             type="file"
-            id={name ?? "fileInput"}
+            id="fileInput"
             accept=".pdf, .doc, .docx"
             hidden
             {...(!register

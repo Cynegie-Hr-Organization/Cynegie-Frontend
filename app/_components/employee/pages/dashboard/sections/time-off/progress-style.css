@@ -1,24 +1,26 @@
-.progress{
-    position: relative;
-    margin: 4px;
-    float:left;
-    text-align: center;
-  }
-  .barOverflow{
-    position: relative;
-    overflow: hidden;
-    width: 180px; height: 90px;
-    margin-bottom: -14px;
-  }
-  .bar{
-    position: absolute;
-    top: 0; left: 0;
-    width: 180px; height: 180px;
-    border-radius: 50%;
-    box-sizing: border-box;
-    border: 25px solid #eee;
-    border-bottom-color: #0035C3;
-    border-right-color: #0035C3;
-    transition: transform 0.5s ease;
-  }
-  
+.progress {
+  position: relative;
+  margin: 4px;
+  float: left;
+  text-align: center;
+}
+.barOverflow {
+  position: relative;
+  overflow: hidden;
+  width: 180px;
+  height: 90px;
+  margin-bottom: -14px;
+}
+.bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 25px solid #eee;
+  border-bottom-color: #0035c3;
+  border-right-color: #0035c3;
+  transition: transform 0.5s ease;
+}

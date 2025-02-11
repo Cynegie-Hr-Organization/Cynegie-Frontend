@@ -66,7 +66,7 @@ const HrAdminDeviceInventory = () => {
             name: "View Details",
             onClick: () =>
               router.push(
-                route.hrAdmin.deviceManagement.overview.viewDeviceInfo
+                route.hrAdmin.deviceManagement.overview.viewDeviceInfo,
               ),
           },
         ]}

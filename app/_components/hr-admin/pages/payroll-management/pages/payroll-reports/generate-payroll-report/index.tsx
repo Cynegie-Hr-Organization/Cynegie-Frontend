@@ -49,10 +49,7 @@ const HrAdminGeneratePayrollReport = () => {
   return (
     <Stack gap={3} mb={10} mt={6}>
       <div className="section-heading">Payroll Report Generator</div>
-      <div
-        className="common-card"
-        style={{ paddingBottom: "80px" }}
-      >
+      <div className="common-card" style={{ paddingBottom: "80px" }}>
         <Stack gap={4}>
           <Grid2 spacing={2} container>
             {[
