@@ -578,6 +578,7 @@ export type AddEmployeePayload = {
     contractEndDate: string;
     staffId: string;
     workEmail: string;
+    workPhoneNumber: string;
     hireDate: string;
     jobDescription: string;
   };
@@ -596,6 +597,8 @@ export type AddEmployeePayload = {
     streetAddress: string;
     postalCode: string;
     nationality: string;
+    idUpload: string;
+    passport: string;
   };
   compensation: {
     baseSalary: number;
@@ -609,18 +612,19 @@ export type AddEmployeePayload = {
     bonusStructure?: string;
     commission: number;
     stockOptions: number;
+    routingNo: string;
     payGrade: string;
     taxIdentificationNumber: string;
     allowance: { [x: string]: string | number }[];
     deduction: { [x: string]: string | number }[];
   };
   nextOfKin: {
-    firstName: string;
-    lastName: string;
+    fName: string;
+    lName: string;
     gender: "male" | "female" | "other";
     relationship: string;
-    phoneNumber: string;
-    email: string;
+    nextPhoneNumber: string;
+    nextemail: string;
   };
   documents: {
     documentName: string;
@@ -633,13 +637,6 @@ export type AddEmployeePayload = {
       id: string;
     }[];
   }[];
-};
-
-type AllowanceOrDeduction = {
-  name: string;
-  amount: number;
-  _id: string;
-  id: string;
 };
 
 export type PayrollSettings = {
@@ -690,4 +687,23 @@ export type PaginatedResponse6<T> = {
   total: number;
   page: number;
   limit: number;
+};
+
+export type EmployeeUpdateRequest = {
+  employeeId: string;
+  updates: {
+    field: string;
+    value: any;
+  }[];
+  isEmployeeRequest: boolean;
+  isHrRequest: boolean;
+  reasonForUpdate: string;
+  supportingDocuments: string[];
+};
+
+export type PaginatedDevices<T> = {
+  totalDevices: number;
+  totalPages: number;
+  currentPage: number;
+  devices: T[];
 };

@@ -54,7 +54,7 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
             // label="Date of Birth"
             // inputFormat="DD/MM/YYYY"
             value={field.value ? dayjs(field.value) : null}
-            onChange={(date) => field.onChange(date ? date.toDate() : null)}
+            onChange={(date) => field.onChange(date ? date : null)}
             sx={{
               "& .MuiOutlinedInput-root": {
                 borderRadius: "8px",

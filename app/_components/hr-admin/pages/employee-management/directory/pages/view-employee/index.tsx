@@ -116,11 +116,11 @@ const HrAdminEmployeeManagementViewEmployee = () => {
                     details={[
                       {
                         name: "First Name",
-                        value: employeeData?.nextOfKin[0].firstName,
+                        value: employeeData?.nextOfKin[0].fName,
                       },
                       {
                         name: "Last Name",
-                        value: employeeData?.nextOfKin[0].firstName,
+                        value: employeeData?.nextOfKin[0].lName,
                       },
                       {
                         name: "Gender",
@@ -132,11 +132,11 @@ const HrAdminEmployeeManagementViewEmployee = () => {
                       },
                       {
                         name: "Email Address",
-                        value: employeeData?.nextOfKin[0].email,
+                        value: employeeData?.nextOfKin[0].nextemail,
                       },
                       {
                         name: "Phone Number",
-                        value: employeeData?.nextOfKin[0].phoneNumber,
+                        value: employeeData?.nextOfKin[0].nextPhoneNumber,
                       },
                       {
                         name: "Relationship",
@@ -288,7 +288,7 @@ const HrAdminEmployeeManagementViewEmployee = () => {
                       },
                       {
                         name: "Routing Number",
-                        value: employeeData?.compensation.routingNumber,
+                        value: employeeData?.compensation.routingNo,
                       },
                       {
                         name: "Tax Filing Status",
@@ -360,9 +360,9 @@ const HrAdminEmployeeManagementViewEmployee = () => {
                     gridLayout="3-columns"
                     loading={loading}
                     details={employeeData?.accessRights[0].devices.map(
-                      (device) => ({
-                        name: device,
-                        value: device,
+                      (device, index) => ({
+                        name: `Device ${index + 1}`,
+                        value: device.deviceName,
                       })
                     )}
                   />
