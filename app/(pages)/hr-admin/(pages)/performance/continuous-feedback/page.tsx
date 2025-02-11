@@ -13,6 +13,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { LuCirclePlus, LuTrash } from "react-icons/lu";
 import ContinuousFeedbackTable from "./table";
 
+
 const ContinuousFeedbackPage = () => {
   return (
     <div className="space-y-8">

@@ -6,9 +6,12 @@ import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import { route } from "@/constants";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useMutation } from '@tanstack/react-query';
+import { useMutation } from "@tanstack/react-query";
 import { AssessmentById } from "@/app/api/services/employee/performance-mgt/types";
-import { answerAssessmentById, getAssessmentById } from "@/app/api/services/employee/performance-mgt";
+import {
+  answerAssessmentById,
+  getAssessmentById,
+} from "@/app/api/services/employee/performance-mgt";
 
 const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
   const router = useRouter();
@@ -16,17 +19,17 @@ const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [assessment, setAssessment] = useState<AssessmentById | null>(null);
   const [response, setResponse] = useState<string | number | undefined>("");
-  const [ questionId, setQuestionId ] = useState<string>("");
+  const [questionId, setQuestionId] = useState<string>("");
 
   const fetchAssessmentMutation = useMutation({
     mutationFn: () => getAssessmentById(id),
     onSuccess: (response) => {
       setAssessment(response.data);
       setQuestionId(response.data.template.questions[0].id);
-      console.log('Assessment fetched successfully:', response);
+      console.log("Assessment fetched successfully:", response);
     },
     onError: (error) => {
-      console.error('Failed to fetch assessment:', error);
+      console.error("Failed to fetch assessment:", error);
     },
   });
 
@@ -37,25 +40,24 @@ const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
   const answerAssessmentMutation = useMutation({
     mutationFn: (data: any) => answerAssessmentById(data),
     onSuccess: (data) => {
-      console.log('Assessment answered successfully:', data);
+      console.log("Assessment answered successfully:", data);
       setShowSuccessModal(true);
     },
     onError: (error) => {
-      console.error('Failed to answer assessment:', error);
+      console.error("Failed to answer assessment:", error);
     },
   });
-
 
   const handleFormSubmit = () => {
     const data = {
       question: questionId,
       response: [response],
-      allowComments: false, 
-      comment: "", 
-      responseCriteria: "MULTI_SELECT", 
+      allowComments: false,
+      comment: "",
+      responseCriteria: "MULTI_SELECT",
     };
 
-    console.log('Data:', data);
+    console.log("Data:", data);
     answerAssessmentMutation.mutate(data);
   };
 
@@ -74,7 +76,7 @@ const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
         inputFields={
           assessment?.template.questions.map((question) => ({
             label: question.question,
-            type: "text", 
+            type: "text",
             value: response,
             setValue: setResponse,
           })) || []
@@ -87,8 +89,7 @@ const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
           rightButton: {
             type: ButtonType.contained,
             text: "Submit",
-                        onClick: handleFormSubmit,
-
+            onClick: handleFormSubmit,
           },
           position: "end",
         }}

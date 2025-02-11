@@ -1,5 +1,5 @@
-import StatusPill from '@/app/_components/shared/pills/status';
-import { StatusMap } from '../../../types';
+import StatusPill from "@/app/_components/shared/pills/status";
+import { StatusMap } from "../../../types";
 
 type TableStatusCellProps = {
   value?: string;
@@ -12,8 +12,8 @@ const TableStatusCell: React.FC<TableStatusCellProps> = ({
 }) => {
   return (
     <StatusPill
-      variant={statusMap?.[value ?? ''] || 'grey'}
-      text={value ?? ''}
+      variant={statusMap?.[value ?? ""] || "grey"}
+      text={value ?? ""}
     />
   );
 };

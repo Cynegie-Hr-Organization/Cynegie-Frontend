@@ -1,3 +1,4 @@
+"use client";
 import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import { PageProps } from "@/app/_components/shared/page/types";
 import { FieldType, TableProps } from "@/app/_components/shared/table/types";
@@ -12,13 +13,19 @@ import {
 import { APRStatusMap, color } from "@/constants";
 import { FetchParams } from "@/types";
 import Skeleton from "@mui/material/Skeleton";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { debounce } from "lodash";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { ModalProps } from "../../../modal/types";
+import { InputFieldValue, ModalProps } from "../../../modal/types";
 import { LeaveManagementChartProps } from "../chart";
+
+const INIT_FETCH_PARAMS: FetchParams = {
+  page: 1,
+  limit: 10,
+  sortOrder: "desc",
+};
 
 const useLeaveManagementPage = () => {
   const [openRequestTimeOffModal, setOpenRequestTimeOffModal] = useState(false);
@@ -26,29 +33,16 @@ const useLeaveManagementPage = () => {
   const [openLeaveDetailsModal, setOpenLeaveDetailsModal] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [leaveTypes, setLeaveTypes] = useState<any[]>([]);
-  const [deleteRequestId, setDeleteRequestId] = useState<
-    string | number | null
-  >(null); // New state for delete request ID
-
+  const [deleteRequestId, setDeleteRequestId] = useState<string | number | null>(null);
+  const [numberOfDays, setNumberOfDays] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [detailsData, setDetailsData] = useState<any | null>(null);
   const [leaveType, setLeaveType] = useState<string | number | undefined>("");
-  const [leavePeriod, setLeavePeriod] = useState({
-    startDate: "",
-    endDate: "",
-  });
-  const [numberOfDays, setNumberOfDays] = useState<string | number | undefined>(
-    ""
-  );
-  const [reliefOfficer, setReliefOfficer] = useState<
-    string | number | undefined
-  >("");
-  const [fetchParams, setFetchParams] = useState<FetchParams>({
-    page: 1,
-    limit: 10,
-    sortOrder: "desc",
-    search: undefined,
-  });
+  const [leavePeriod, setLeavePeriod] = useState({ startDate: "", endDate: "" });
+  const [reliefOfficer, setReliefOfficer] = useState<string | number | undefined>("");
+  const [statusFilter, setStatusFilter] = useState<InputFieldValue>();
+
+  const [fetchParams, setFetchParams] = useState<FetchParams & { status?: InputFieldValue }>(INIT_FETCH_PARAMS);
 
   // Debounced search
   const debouncedSearch = debounce((value: string) => {
@@ -60,14 +54,25 @@ const useLeaveManagementPage = () => {
   };
 
   const isFormComplete = () => {
-    return (
-      leaveType &&
-      leavePeriod.endDate &&
-      leavePeriod.startDate &&
-      numberOfDays &&
-      reliefOfficer
-    );
+    return leaveType && leavePeriod.endDate && leavePeriod.startDate && reliefOfficer;
   };
+
+  const clearForm = () => {
+    setLeaveType("");
+    setLeavePeriod({ startDate: "", endDate: "" });
+    setReliefOfficer("");
+  };
+
+  useEffect(() => {
+    if (leavePeriod.startDate && leavePeriod.endDate) {
+      const start = dayjs(leavePeriod.startDate);
+      const end = dayjs(leavePeriod.endDate);
+      const days = end.diff(start, "day") + 1; // Include the start date
+      setNumberOfDays(days);
+    } else {
+      setNumberOfDays(0);
+    }
+  }, [leavePeriod]);
 
   useEffect(() => {
     const fetchLeaveTypes = async () => {
@@ -75,35 +80,36 @@ const useLeaveManagementPage = () => {
       setLeaveTypes(fetchedLeaveTypes);
       setLoading(false);
     };
-
     fetchLeaveTypes();
   }, []);
 
-  const handleSubmitRequest = async () => {
+  // Define the mutation
+  const requestLeaveMutation = useMutation({
+    mutationFn: requestLeave,
+    onSuccess: (response) => {
+      if (response?.status == 201) {
+        refetch();
+        clearForm();
+        setOpenRequestTimeOffModal(false);
+        setOpenSuccessModal(true);
+      } else if (response.error && response.statusCode) {
+        toast.error(response.message);
+      }
+    },
+    onError: (error: any) => {
+      console.error("Error while submitting leave request:", error);
+      toast.error(error.response.data.message);
+    },
+  });
+
+  const handleSubmitRequest = () => {
     const payload = {
       leaveType,
       startDate: new Date(leavePeriod.startDate).toISOString(),
       endDate: new Date(leavePeriod.endDate).toISOString(),
-      numberOfDays: Number(numberOfDays),
       reliefOfficer,
     };
-
-    console.log(payload);
-
-    try {
-      const response = await requestLeave(payload);
-      if (response?.createdAt !== "") {
-        refetch();
-        setOpenRequestTimeOffModal(false);
-        setOpenSuccessModal(true);
-      } else {
-        console.error("Request failed:", response?.message || "Unknown error");
-      }
-      setOpenRequestTimeOffModal(false);
-      setOpenSuccessModal(true);
-    } catch (error) {
-      console.error("Error while submitting leave request:", error);
-    }
+    requestLeaveMutation.mutate(payload);
   };
 
   const {
@@ -113,14 +119,8 @@ const useLeaveManagementPage = () => {
   } = useQuery({
     queryKey: ["leave-requests", { ...fetchParams }],
     queryFn: async () => {
-      const response = await getAllLeaveRequest(
-        fetchParams.sortOrder,
-        fetchParams.page,
-        fetchParams.limit,
-        fetchParams.search
-      );
-      console.log(response.data.data);
-      return response.data.data;
+      const response = await getAllLeaveRequest(fetchParams);
+      return response.data;
     },
     refetchOnWindowFocus: false,
     staleTime: 60000, // Cache for 1 minute
@@ -130,24 +130,19 @@ const useLeaveManagementPage = () => {
     try {
       const response = await deleteLeaveRequestById(id);
       if (response.message) {
-        console.log("Leave request deleted successfully", response);
         toast.success("Leave request deleted successfully");
         refetch(); // Refresh the data
         setOpenDeleteModal(false);
       } else {
-        console.error(
-          "Failed to delete leave request:",
-          response?.message || "Unknown error"
-        );
+        console.error("Failed to delete leave request:", response?.message || "Unknown error");
       }
     } catch (error) {
       console.error("Error during deletion:", error);
     }
   };
 
-   const {
+  const {
     data: leaveMetrics,
-    // isLoading: isMetricsLoading,
   } = useQuery({
     queryKey: ["leave-metrics"],
     queryFn: getAllLeaveMetrics,
@@ -166,47 +161,20 @@ const useLeaveManagementPage = () => {
     rightButtonSm: true,
   };
 
-  // const chartsData: LeaveManagementChartProps[] = [
-  //   {
-  //     title: "Maternity/Paternity Leave",
-  //     usedDays: 60,
-  //     totalDays: 60,
-  //     usedDaysColor: color.warning.dark,
-  //   },
-  //   {
-  //     title: "Annual Leave",
-  //     usedDays: 0,
-  //     totalDays: 20,
-  //     usedDaysColor: color.success.dark,
-  //   },
-  //   {
-  //     title: "Sick Leave",
-  //     usedDays: 2,
-  //     totalDays: 10,
-  //     usedDaysColor: color.info.dark,
-  //   },
-  //   {
-  //     title: "Exam Leave",
-  //     usedDays: 1,
-  //     totalDays: 10,
-  //     usedDaysColor: color.error.dark,
-  //   },
-  // ];
-
-
-const colors = [
+  const colors = [
     color.success.dark,
     color.warning.dark,
     color.info.dark,
     color.error.dark,
   ];
 
-  const chartsData: LeaveManagementChartProps[] = leaveMetrics?.data.map((metric: any, index: number) => ({
-    title: metric.leaveType,
-    usedDays: metric.daysUsed,
-    totalDays: metric.daysUsed + metric.daysLeft,
-    usedDaysColor: colors[index % colors.length], // Use color based on position
-  })) || [];
+  const chartsData: LeaveManagementChartProps[] =
+    leaveMetrics?.data.map((metric: any, index: number) => ({
+      title: metric.leaveType,
+      usedDays: metric.daysUsed,
+      totalDays: metric.daysUsed + metric.daysLeft,
+      usedDaysColor: colors[index % colors.length], // Use color based on position
+    })) || [];
 
   const tableData: TableProps = {
     title: "Leave History",
@@ -217,19 +185,15 @@ const colors = [
           requestDate: <Skeleton width={100} />,
           leaveType: <Skeleton width={150} />,
           duration: <Skeleton width={120} />,
-
           status: <Skeleton width={100} />,
         })
-      : leaveRequest?.map((request: any) => ({
+      : leaveRequest?.data?.map((request: any) => ({
           requestId: request?.id,
-          requestDate: new Date(request?.startDate).toLocaleDateString(
-            "en-US",
-            {
-              day: "2-digit",
-              month: "short",
-              year: "numeric",
-            }
-          ),
+          requestDate: new Date(request?.startDate).toLocaleDateString("en-US", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          }),
           leaveType: request.leaveType?.name,
           duration: `${request?.numberOfDays} days`,
           status: request?.status,
@@ -245,9 +209,7 @@ const colors = [
           onClick: () => setOpenLeaveDetailsModal(true),
           onDataReturned: async (id) => {
             try {
-              console.log("Fetching leave request details:", id);
               const data = await fetchLeaveRequestById(id);
-              console.log(data);
               setDetailsData(data);
               setOpenLeaveDetailsModal(true);
             } catch (error) {
@@ -262,9 +224,7 @@ const colors = [
           onClick: () => setOpenLeaveDetailsModal(true),
           onDataReturned: async (id) => {
             try {
-              console.log("Fetching leave request details:", id);
               const data = await fetchLeaveRequestById(id);
-              console.log(data);
               setDetailsData(data);
               setOpenLeaveDetailsModal(true);
             } catch (error) {
@@ -286,9 +246,7 @@ const colors = [
           name: "View Request Details",
           onDataReturned: async (id) => {
             try {
-              console.log("Fetching leave request details:", id);
               const data = await fetchLeaveRequestById(id);
-              console.log(data);
               setDetailsData(data);
               setOpenLeaveDetailsModal(true);
             } catch (error) {
@@ -301,12 +259,43 @@ const colors = [
     },
     fieldToReturnOnActionItemClick: "requestId",
     onSearch: handleSearch,
-    filters: [
-      {
-        name: "Status",
-        items: ["All", "Approved", "Pending", "Rejected"],
-      },
-    ],
+    formFilter: {
+      gridSpacing: 2,
+      inputFields: [
+        {
+          label: "Status",
+          type: "select",
+          options: [
+            { label: "All", value: "" },
+            { label: "Approved", value: "APPROVED" },
+            { label: "Pending", value: "PENDING" },
+            { label: "Rejected", value: "REJECTED" },
+          ],
+          value: statusFilter,
+          setValue: setStatusFilter,
+          selectValControlledFromOutside: true,
+        },
+      ],
+    },
+    onResetClick: () => {
+      setStatusFilter(undefined);
+      setFetchParams({ ...fetchParams, status: undefined });
+    },
+    onFilterClick: () =>
+      setFetchParams((prev) => ({ ...prev, status: statusFilter })),
+    paginationMeta: {
+      page: leaveRequest?.currentPage,
+      totalPages: leaveRequest?.totalPages,
+      limit: fetchParams.limit,
+      itemCount: leaveRequest?.count,
+      itemsOnPage: leaveRequest?.data.length,
+      loading: isLoading,
+      onChangeLimit: (limit) => setFetchParams((prev) => ({ ...prev, limit })),
+      onPrevClick: () =>
+        setFetchParams((prev) => ({ ...prev, page: prev.page - 1 })),
+      onNextClick: () =>
+        setFetchParams((prev) => ({ ...prev, page: prev.page + 1 })),
+    },
   };
 
   const requestTimeOffModalData: ModalProps = {
@@ -352,13 +341,11 @@ const colors = [
           value: leavePeriod.endDate,
           disabled: loading,
         },
-
         {
           label: "Number of Days",
           type: "text",
-          placeholder: "Placeholder",
-          value: numberOfDays,
-          setValue: setNumberOfDays,
+          value: numberOfDays.toString(),
+          disabled: true,
         },
         {
           label: "Relief Officer",
@@ -376,7 +363,6 @@ const colors = [
     },
     buttonTwo: {
       type: isFormComplete() ? ButtonType.contained : ButtonType.disabled,
-      //  type:  ButtonType.contained ,
       text: "Submit",
       onClick: () => {
         handleSubmitRequest();
@@ -409,7 +395,7 @@ const colors = [
     centerImage: "/icons/modal-delete.svg",
     centerTitle: "Delete Request",
     centerMessage:
-      "If you delete this leave request, admin will be notified and your request wil be withdrawn. You can reapply at anytime",
+      "If you delete this leave request, admin will be notified and your request will be withdrawn. You can reapply at any time",
     buttonOne: {
       type: ButtonType.outlined,
       text: "Cancel",
@@ -420,7 +406,6 @@ const colors = [
       text: "Delete Leave Request",
       onClick: () => {
         if (deleteRequestId) {
-          console.log("click");
           handleDeleteRequest(deleteRequestId);
         }
       },
@@ -444,25 +429,19 @@ const colors = [
             { name: "Status", value: detailsData?.status || "N/A" },
             {
               name: "Start Date",
-              value: new Date(detailsData?.startDate).toLocaleDateString(
-                "en-US",
-                {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                }
-              ),
+              value: new Date(detailsData?.startDate).toLocaleDateString("en-US", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              }),
             },
             {
               name: "End Date",
-              value: new Date(detailsData?.endDate).toLocaleDateString(
-                "en-US",
-                {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                }
-              ),
+              value: new Date(detailsData?.endDate).toLocaleDateString("en-US", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              }),
             },
           ]
         : [],

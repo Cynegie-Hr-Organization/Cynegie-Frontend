@@ -122,7 +122,7 @@ const AddItems: React.FC<AddItemsProps> = ({
   };
 
   const [localAddedItems, setLocalAddedItems] = useState<AddedItem[]>(
-    addedItems ?? []
+    addedItems ?? [],
   );
 
   const handleSearchQuery = (query: string) => {
@@ -135,7 +135,7 @@ const AddItems: React.FC<AddItemsProps> = ({
   });
 
   const [searchQuery, setSearchQuery] = useState<string | number | undefined>(
-    ""
+    "",
   );
 
   const [showAddField, setShowAddField] = useState(false);
@@ -146,7 +146,7 @@ const AddItems: React.FC<AddItemsProps> = ({
 
   const displayedAvailableItems = availableItems
     .filter(
-      (item) => typeof searchQuery === "string" && item.includes(searchQuery)
+      (item) => typeof searchQuery === "string" && item.includes(searchQuery),
     )
     .map((item) => ({ name: item }));
 
@@ -168,7 +168,7 @@ const AddItems: React.FC<AddItemsProps> = ({
       localAddedItems.filter((localItem) => localItem !== item)
     );
     setLocalAddedItems(
-      localAddedItems.filter((localItem) => localItem !== item)
+      localAddedItems.filter((localItem) => localItem !== item),
     );
     //Add deleted item to available items
     if (!availableItems.includes(item.name))
@@ -188,7 +188,7 @@ const AddItems: React.FC<AddItemsProps> = ({
         getAvailableItems([
           ...checkedItems,
           ...localAddedItems.map((localItem) => localItem.name),
-        ] as string[]) ?? []
+        ] as string[]) ?? [],
       );
       removeChecks();
     }
@@ -233,7 +233,7 @@ const AddItems: React.FC<AddItemsProps> = ({
   const showDeleteButton = (
     startIndexToShowDelete: number,
     index: number,
-    item: AddedItem
+    item: AddedItem,
   ) => {
     return startIndexToShowDelete ? (
       index < startIndexToShowDelete ? (
@@ -326,11 +326,11 @@ const AddItems: React.FC<AddItemsProps> = ({
                 ? middleField
                   ? "mt-8"
                   : inputFieldType === "select"
-                  ? "mt-8"
-                  : "mt-2"
+                    ? "mt-8"
+                    : "mt-2"
                 : inputFieldType == "drag-upload"
-                ? "mt-0"
-                : "mt-6"
+                  ? "mt-0"
+                  : "mt-6"
             }`}
           >
             {showDeleteButton(startIndexToShowDelete, index, item)}

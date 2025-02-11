@@ -3,7 +3,7 @@ import { ChangeEvent, useState } from "react";
 const useCheckboxes = <T,>(
   rows: T[],
   getCheckedItems?: (rows: T[]) => void,
-  defaultCheckedItems?: T[]
+  defaultCheckedItems?: T[],
 ) => {
   const [checkedItems, setCheckedItems] = useState<T[]>([]);
 
@@ -26,7 +26,7 @@ const useCheckboxes = <T,>(
 
   const handleCheckboxChange = (
     event: ChangeEvent<HTMLInputElement>,
-    row: T
+    row: T,
   ) => {
     let items: T[] = [];
     if (event.target.checked) {

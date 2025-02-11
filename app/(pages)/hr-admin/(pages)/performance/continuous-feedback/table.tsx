@@ -21,7 +21,7 @@ const CandidateFeedbackTable = () => {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["feedback", currentPage, itemsPerPage, search, status],
     queryFn: () =>
-    getAllFeedback(currentPage, itemsPerPage, "desc", status, search),
+      getAllFeedback(currentPage, itemsPerPage, "desc", status, search),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
@@ -112,7 +112,7 @@ const CandidateFeedbackTable = () => {
               </tr>
             </thead>
             <tbody>
-              {feedbacks.map((feedback : any) => (
+              {feedbacks.map((feedback: any) => (
                 <tr
                   key={feedback.id}
                   className="border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]"

@@ -1,28 +1,28 @@
-import { Box, Divider, Stack } from '@mui/material';
-import React from 'react';
-import Title from '../title';
-import Period from '../period';
-import { CardHeaderProps } from '../types';
+import { Box, Divider, Stack } from "@mui/material";
+import React from "react";
+import Title from "../title";
+import Period from "../period";
+import { CardHeaderProps } from "../types";
 
 const Header: React.FC<CardHeaderProps> = (props) => {
   const {
     headerIcon,
     title,
-    period = '',
+    period = "",
     hasDivider = false,
-    titleSize = 'small',
+    titleSize = "small",
     periodFont,
     periodClick,
   } = props;
   return (
     <Stack {...(hasDivider && { gap: 1.5 })}>
-      <Stack direction='row' alignItems='center'>
+      <Stack direction="row" alignItems="center">
         <Box
           flexGrow={1}
           style={{
             ...(headerIcon && {
-              display: 'flex',
-              alignItems: 'center',
+              display: "flex",
+              alignItems: "center",
               gap: 8,
             }),
           }}
@@ -32,7 +32,7 @@ const Header: React.FC<CardHeaderProps> = (props) => {
         </Box>
         <div
           onClick={periodClick}
-          style={{ ...(periodClick && { cursor: 'pointer' }) }}
+          style={{ ...(periodClick && { cursor: "pointer" }) }}
         >
           <Period
             isClickable={periodClick ? true : false}

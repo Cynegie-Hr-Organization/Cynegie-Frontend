@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
-import { icon, route } from "@/constants";
 import { usePathname, useRouter } from "next/navigation";
 import { FaChevronDown } from "react-icons/fa6";
-import { HiOutlineChartBar, HiOutlineUserPlus } from "react-icons/hi2";
-import { LiaMoneyBillWaveSolid } from "react-icons/lia";
 import { RxDashboard } from "react-icons/rx";
+import { HiOutlineChartBar, HiOutlineUserPlus } from "react-icons/hi2";
 import { TbFileUpload } from "react-icons/tb";
+import { LiaMoneyBillWaveSolid } from "react-icons/lia";
 import SvgIcon from "../../icons/container";
+import { icon, route } from "@/constants";
 
 const NavLinks = ({
   onNavLinkClick,
@@ -132,7 +132,7 @@ const NavLinks = ({
           path: route.hrAdmin.deviceManagement.overview.home,
         },
         {
-          name: "Device Inventory",
+          name: 'Device Invetory',
           path: route.hrAdmin.deviceManagement.overview.inventory,
         },
         // {
@@ -181,7 +181,7 @@ const NavLinks = ({
 
   const isPathActive = (
     path: string,
-    subMenu?: { name: string; path: string }[]
+    subMenu?: { name: string; path: string }[],
   ) => {
     if (path === "/hr-admin") {
       return /^\/hr-admin$/.test(pathname);
@@ -195,7 +195,7 @@ const NavLinks = ({
       pathParts.every((part, index) => currentPathParts[index] === part);
 
     const isSubPathActive = subMenu?.some((subItem) =>
-      pathname.startsWith(subItem.path)
+      pathname.startsWith(subItem.path),
     );
 
     return isMainPathActive || isSubPathActive;
@@ -251,11 +251,7 @@ const NavLinks = ({
                     data-path={item.path}
                     className="p-1"
                   >
-                    <FaChevronDown
-                      className={`transition-transform duration-300 ${
-                        openDropDown === item.path ? "rotate-180" : ""
-                      }`}
-                    />
+                    <FaChevronDown className={`transition-transform duration-300 ${((openDropDown === item.path)) ? 'rotate-180' : ''}`} />
                   </button>
                 )}
               </div>

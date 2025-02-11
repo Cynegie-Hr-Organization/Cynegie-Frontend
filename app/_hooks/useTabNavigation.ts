@@ -5,11 +5,14 @@ type UseTabNavigationProps<T> = {
   initialStep: T;
 };
 
-export const useTabNavigation = <T extends string>({ steps, initialStep }: UseTabNavigationProps<T>) => {
+export const useTabNavigation = <T extends string>({
+  steps,
+  initialStep,
+}: UseTabNavigationProps<T>) => {
   const [activeStep, setActiveStep] = useState<T>(initialStep);
 
   const refs = useRef<RefObject<HTMLButtonElement>[]>(
-    steps.map(() => ({ current: null }))
+    steps.map(() => ({ current: null })),
   );
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,4 +38,4 @@ export const useTabNavigation = <T extends string>({ steps, initialStep }: UseTa
     containerRef,
     sliderRef,
   };
-}; 
+};

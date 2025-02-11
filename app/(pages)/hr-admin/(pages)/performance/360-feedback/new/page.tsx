@@ -221,7 +221,7 @@ const StepOne = ({ formData, setFormData, nextStep }: any) => {
         <AppButton
           label="Save & Continue Later"
           className="btn-secondary"
-          onClick={() => { }}
+          onClick={() => {}}
         />
         <AppButton label="Next" className="btn-primary" onClick={nextStep} />
       </div>

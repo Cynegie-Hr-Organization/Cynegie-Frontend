@@ -17,10 +17,16 @@ export interface BarChartComponentProps {
   chartConfig: ChartConfig;
 }
 
-export function BarChartComponent({ chartData, chartConfig }: BarChartComponentProps) {
+export function BarChartComponent({
+  chartData,
+  chartConfig,
+}: BarChartComponentProps) {
   const processedData = chartData.map((data) => {
     const keys = Object.keys(data).filter((key) => key !== "xAxis");
-    const computedValue = keys.reduce((sum, key) => sum + (Number(data[key]) || 0), 0);
+    const computedValue = keys.reduce(
+      (sum, key) => sum + (Number(data[key]) || 0),
+      0,
+    );
     return { ...data, computedValue };
   });
 
@@ -55,11 +61,7 @@ export function BarChartComponent({ chartData, chartConfig }: BarChartComponentP
           cursor={false}
           content={<ChartTooltipContent className="bg-white border-none" />}
         />
-        <Bar
-          fill="#0035C3"
-          radius={4}
-          dataKey="computedValue"
-        />
+        <Bar fill="#0035C3" radius={4} dataKey="computedValue" />
       </BarChart>
     </ChartContainer>
   );

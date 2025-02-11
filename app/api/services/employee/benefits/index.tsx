@@ -1,59 +1,61 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
 import { request } from "@/utils/request";
-
 import { baseUrl } from "@/constants/config";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/options";
+import { FetchParams } from "@/types";
 
-// Type for the company object inside each item
+// Define the structure of the company object
 interface Company {
   name: string;
   id: string;
 }
 
-// Type for each salary advance request item
+// Define the structure of each salary advance request item
 interface SalaryAdvanceRequest {
   _id: string;
   employeeId: string;
   advanceTaken: number;
-  status: "pending" | "approved" | "rejected"; // assuming possible statuses
-  paymentFrequency: "MONTHLY" | "YEARLY"; // assuming possible payment frequencies
+  status: "pending" | "approved" | "rejected";
+  paymentFrequency: "MONTHLY" | "YEARLY";
   installment: number;
   amountRepaid: number;
-  payments: any[]; // you can refine this type based on the actual payment structure
-  nextPaymentDate: string; // ISO date string
+  payments: any[];
+  nextPaymentDate: string;
   company: Company;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
+  createdAt: string;
+  updatedAt: string;
   __v: number;
 }
 
+// Define the structure of the meta object
+interface Meta {
+  page: number;
+  limit: number;
+  itemCount: number;
+  pageCount: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
 
-
-// Type for the full response data from `getAllMyRequest`
+// Define the overall response type
 interface GetAllMyRequestResponse {
-  data: {
-    items: SalaryAdvanceRequest[];
-  totalItems: number;
-  totalPages: number;
-  currentPage: number;
-  }
-  
+  data: SalaryAdvanceRequest[];
+  meta: Meta;
 }
 
 // Define the structure of each benefit item
-type Benefit = {
+interface Benefit {
   name: string;
   id: string;
-};
+}
 
 // Define the structure of the response data
-type BenefitData = {
-  benefitType?: string; // Optional since some items might not have it
-  benefit?: Benefit;    // Optional since some items might have it instead
+interface BenefitData {
+  benefitType?: string;
+  benefit?: Benefit;
   employee: string;
   provider: string;
   coveragePlan: string;
@@ -63,40 +65,45 @@ type BenefitData = {
   createdAt: string;
   updatedAt: string;
   id: string;
-};
+}
+
+interface StatusCount {
+  pending: string;
+  approved: string;
+  rejected: string;
+}
 
 // Define the overall response type
-type GetAllMyAppResponse = {
+interface GetAllMyAppResponse {
   data: BenefitData[];
   total: number;
   page: number;
   limit: number;
-};
-
-
-
-
-export const salaryAdvanceRequests = async (payload : any) => {
-  const session = await getServerSession(authOptions);
-
-  const response = await request("POST", `${baseUrl}/v1/salary-advance-requests`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.token}`,
-      },
-      data : payload,
-  });
-
-  return response;
+  statusCount: StatusCount;
 }
 
+// Function to request salary advance
+export const requestSalaryAdvance = async (payload: any) => {
+  const session = await getServerSession(authOptions);
 
-export const getAllMyRequest = async (
-  sortOrder: string = "desc",
-  page: number,
-  limit: number,
-  status?: string,
-  search?: string
+  const response = await request(
+    "POST",
+    `${baseUrl}/v1/salary-advance-requests`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.token}`,
+      },
+      data: payload,
+    },
+  );
+
+  return response;
+};
+
+// Function to get all salary advance requests
+export const getAllMySalaryAdvanceRequests = async (
+  fetchParams : FetchParams
 ): Promise<GetAllMyRequestResponse> => {
   const session = await getServerSession(authOptions);
 
@@ -105,20 +112,12 @@ export const getAllMyRequest = async (
       "Content-Type": "application/json",
       Authorization: `Bearer ${session?.token}`,
     },
-    params: {
-      sortOrder,
-      page,
-      limit,
-      status,
-      search,
-    },
+    params: fetchParams,
   }) as Promise<GetAllMyRequestResponse>;
 };
 
-
-
-//get all benefits 
-export const getAllBenefits = async () => {
+// Function to get all benefits
+export const getAllBenefits = async (): Promise<{ label: string; value: string }[]> => {
   const session = await getServerSession(authOptions);
 
   const response = await request("GET", `${baseUrl}/v1/benefits`, {
@@ -127,44 +126,57 @@ export const getAllBenefits = async () => {
       Authorization: `Bearer ${session?.token}`,
     },
   });
-    
-    
+
   if (!response || !response.data) {
-  throw new Error("Failed to fetch benefits data");
-}
+    throw new Error("Failed to fetch benefits data");
+  }
 
-const allBenefits = response.data.map((item: any) => ({
-  label: item.benefitType, 
-  value: item.id, 
-})) || [];
-
-  return allBenefits ;
+  return response.data.map((item: any) => ({
+    label: item.benefitType,
+    value: item.id,
+  })) || [];
 };
 
-
-export const requestbenefits = async (payload : any) => {
+// Function to request a benefit
+export const requestBenefit = async (payload: any) => {
   const session = await getServerSession(authOptions);
-  
-  const response = await request("POST", `${baseUrl}/v1/benefits/request-benefit`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.token}`,
+
+  const response = await request(
+    "POST",
+    `${baseUrl}/v1/benefits/request-benefit`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.token}`,
+      },
+      data: payload,
     },
-    data : payload
-    }
-  )
+  );
 
   return response;
+};
 
-}
+// Function to get benefit request by ID
+export const getBenefitRequestById = async (id: string | number) => {
+  const session = await getServerSession(authOptions);
 
+  const response = await request(
+    "GET",
+    `${baseUrl}/v1/benefits/request/${id}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.token}`,
+      },
+    },
+  );
 
+  return response;
+};
 
-export const getAllMyBenefitsRequest = async (
-  sortOrder: string = "desc",
-  page: number,
-  limit: number,
-  search?: string
+// Function to get all my benefits requests
+export const getAllMyBenefitsRequests = async (
+  fetchParams: FetchParams 
 ): Promise<GetAllMyAppResponse> => {
   const session = await getServerSession(authOptions);
 
@@ -173,28 +185,26 @@ export const getAllMyBenefitsRequest = async (
       "Content-Type": "application/json",
       Authorization: `Bearer ${session?.token}`,
     },
-    params: {
-      sortOrder,
-      page,
-      limit,
-      search,
-    },
+    params: fetchParams,
   });
 
   return response as GetAllMyAppResponse;
 };
 
-
-
-export const getAllBenefitsMetrics = async () => {
+// Function to get salary advance metrics
+export const getSalaryAdvanceMetrics = async () => {
   const session = await getServerSession(authOptions);
 
-  const response = await request("GET", `${baseUrl}/v1/benefits/summary`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.token}`,
+  const response = await request(
+    "GET",
+    `${baseUrl}/v1/salary-advance-requests/summary?type=employee`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.token}`,
+      },
     },
-  });
-  
+  );
+
   return response;
-}
+};

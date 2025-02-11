@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const useSelection = <T extends string | number>() => {
   const [selectedItems, setSelectedItems] = useState<Set<T>>(new Set());

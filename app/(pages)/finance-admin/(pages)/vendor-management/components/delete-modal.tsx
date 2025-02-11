@@ -1,23 +1,31 @@
-import { DeleteSvg } from "@/app/_components/icons/custom-icons"
-import AppButton from "@/app/_components/shared/button"
-import { IVendor } from "@/app/_core/actions/finance/vendor"
-import { useVendorMutations } from "@/app/_core/use-cases/finance/useVendors"
-import { DrawerDialog } from "@/components/drawer/modal"
-import { useState } from "react"
+import { DeleteSvg } from "@/app/_components/icons/custom-icons";
+import AppButton from "@/app/_components/shared/button";
+import { IVendor } from "@/app/_core/actions/finance/vendor";
+import { useVendorMutations } from "@/app/_core/use-cases/finance/useVendors";
+import { DrawerDialog } from "@/components/drawer/modal";
+import { useState } from "react";
 
-const DeleteModal = ({ trigger, vendor }: { trigger: React.ReactNode, vendor: IVendor }) => {
-  const [isOpen, setIsOpen] = useState(false)
+const DeleteModal = ({
+  trigger,
+  vendor,
+}: {
+  trigger: React.ReactNode;
+  vendor: IVendor;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
   const { deactivateVendor } = useVendorMutations({ id: vendor?.id });
-  const isDeactivatingVendor = deactivateVendor.isPending
+  const isDeactivatingVendor = deactivateVendor.isPending;
 
   const handleDeactivation = () => {
-    return deactivateVendor.mutate({ id: vendor?.id }, {
-      onSuccess: () => {
-        setIsOpen(false)
-      }
-    })
-  }
-
+    return deactivateVendor.mutate(
+      { id: vendor?.id },
+      {
+        onSuccess: () => {
+          setIsOpen(false);
+        },
+      },
+    );
+  };
 
   return (
     <DrawerDialog
@@ -29,7 +37,9 @@ const DeleteModal = ({ trigger, vendor }: { trigger: React.ReactNode, vendor: IV
           <span className="flex flex-col items-center justify-center gap-y-6">
             <DeleteSvg />
             <span className="flex flex-col items-center justify-center gap-y-2">
-              <span>Are you sure you want to deactivate {vendor.vendorName}?</span>
+              <span>
+                Are you sure you want to deactivate {vendor.vendorName}?
+              </span>
             </span>
           </span>
         </span>
@@ -53,8 +63,7 @@ const DeleteModal = ({ trigger, vendor }: { trigger: React.ReactNode, vendor: IV
     >
       <></>
     </DrawerDialog>
-  )
-}
-
+  );
+};
 
 export default DeleteModal;
