@@ -1,6 +1,6 @@
 import { AppAccordion } from "@/app/(pages)/super-admin/(pages)/settings/accordion";
 import AppButton from "@/app/_components/shared/button";
-import { ISuperAdminSettings } from "@/app/_core/actions/super-admin/super-admin-settings";
+import { ISuperAdminSettings } from "@/app/_core/interfaces/super-admin";
 import { useSuperAdminSettings, useSuperAdminSettingsMutations } from "@/app/_core/use-cases/superadmin/useSuperAdminSettings";
 import { useAppToast } from "@/app/_hooks/toast";
 import { useRouter } from "next/navigation";
@@ -62,8 +62,7 @@ const SettingsForm = () => {
         dashboardConfiguration: "compact",
       },
     },
-  }
-  )
+  });
 
   useEffect(() => {
     if (generalSettings) {
@@ -78,7 +77,16 @@ const SettingsForm = () => {
         phone: generalSettings.phone,
         timeZone: generalSettings.timeZone,
         supportedLanguages: generalSettings.supportedLanguages,
-        settings: generalSettings.settings
+        settings: {
+          approvalWorkflowSettings: generalSettings.settings.approvalWorkflowSettings,
+          userAccessSecuritySettings: generalSettings.settings.userAccessSecuritySettings,
+          integrationSettings: generalSettings.settings.integrationSettings,
+          complianceSettings: {
+            complianceReminderFrequency: generalSettings.settings.complianceSettings.complianceReminderFrequency,
+            dataRetentionDuration: generalSettings.settings.complianceSettings.dataRetentionDuration
+          },
+          customizationSettings: generalSettings.settings.customizationSettings
+        }
       })
     }
   }, [generalSettings])
@@ -103,13 +111,10 @@ const SettingsForm = () => {
           <h3 className="text-base font-semibold">Company Settings</h3>
           <AppAccordion
             items={[
-              {
-                label: "General Settings", value: "general", contents: <GeneralSettingsForm
-                  settingsData={{ generalSettings: formData, setGeneralSettings: setFormData, isLoading }} />
-              },
-              { label: "Compliance Settings", value: "compliance", contents: <ComplianceSettingsForm /> },
-              { label: "Approval And Workflow Settings", value: "approval", contents: <ApprovalAndWorkflowSettingsForm /> },
-              { label: "User Access and Security", value: "user", contents: <UserAcessAndSecuritySettingsForm /> },
+              { label: "General Settings", value: "general", contents: <GeneralSettingsForm settingsData={{ formData, setFormData, isLoading }} /> },
+              { label: "Compliance Settings", value: "compliance", contents: <ComplianceSettingsForm settingsData={{ formData, setFormData, isLoading }} /> },
+              { label: "Approval And Workflow Settings", value: "approval", contents: <ApprovalAndWorkflowSettingsForm settingsData={{ formData, setFormData, isLoading }} /> },
+              { label: "User Access and Security", value: "user", contents: <UserAcessAndSecuritySettingsForm settingsData={{ formData, setFormData, isLoading }} /> },
             ]} />
         </div>
 

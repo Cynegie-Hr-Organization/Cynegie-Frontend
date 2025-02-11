@@ -1,7 +1,7 @@
 import { getAllPermissions } from "@/app/_core/actions/super-admin/permissions"
 import { queryKeys } from "@/app/_core/utils/queryKeys"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { getCashflowTrends } from "../../actions/super-admin/cashflow"
+import { getCashflowTrends } from "../../actions/super-admin/charts-and-cards"
 
 export const useCashflowTrends = () => {
   return useQuery({

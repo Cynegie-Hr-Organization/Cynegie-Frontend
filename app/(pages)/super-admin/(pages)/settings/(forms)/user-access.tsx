@@ -2,12 +2,19 @@ import AppCheckbox from "@/app/_components/shared/checkbox";
 import { AppTimePicker } from "@/app/_components/shared/date-picker";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import AppInputText from "@/app/_components/shared/input-text";
+import { ISuperAdminSettings } from "@/app/_core/interfaces/super-admin";
 
 
 
 
 
-const UserAcessAndSecuritySettingsForm = () => {
+const UserAcessAndSecuritySettingsForm = ({ settingsData }: {
+  settingsData: {
+    formData: Partial<ISuperAdminSettings>,
+    setFormData: (settings: Partial<ISuperAdminSettings>) => void,
+    isLoading: boolean
+  }
+}) => {
   return (
     <form className="p-4 md:p-6 space-y-4">
       <h3 className="text-base font-bold">User Access & Security Settings</h3>

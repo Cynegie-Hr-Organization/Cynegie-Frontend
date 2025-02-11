@@ -18,4 +18,5 @@ export const queryKeys = {
   ALL_PERMISSIONS: 'all-permissions',
   PERMISSION: 'permission',
   SUPER_ADMIN_SETTINGS: 'super-admin-settings',
+  CASH_FLOW_TRENDS: 'cash-flow-trends',
 }

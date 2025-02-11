@@ -1,4 +1,5 @@
 
+
 import { IRes } from "@/app/_core/interfaces/res";
 import { IUser } from "@/app/_core/interfaces/user";
 import { handleError, Http } from "@/app/_core/utils/axios";
@@ -11,7 +12,7 @@ export const getCashflowTrends = async () => {
     const { data } = await Http.get<IRes<IUser>>('overview/cash-flow-trends', {
       headers: await headers(session?.token ?? ''),
     });
-
+    console.log(data)
     return data;
 
   } catch (error) {

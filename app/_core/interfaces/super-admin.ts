@@ -1,4 +1,3 @@
-
 export type TimeFrequency = 'daily' | 'weekly' | 'monthly' | 'quarterly';
 export type ErrorLevel = 'debug' | 'info' | 'warn' | 'error';
 export type PasswordComplexity = 'low' | 'medium' | 'high';
@@ -31,7 +30,7 @@ export type IntegrationSettings = {
 
 export type ComplianceSettings = {
   complianceReminderFrequency: TimeFrequency;
-  dataRetentionDuration: number;
+  dataRetentionDuration?: number;
 };
 
 export type CustomizationSettings = {

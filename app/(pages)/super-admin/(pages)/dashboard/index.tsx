@@ -21,7 +21,7 @@ import SuperAdminOverviewTable from "./table";
 
 const SuperAdminDashboard = () => {
   // const { data, status } = useCashflowTrends();
-
+  // console.log(data, status)
 
 
   const getConfigKey = (config: ChartConfigType, label: string): string => {

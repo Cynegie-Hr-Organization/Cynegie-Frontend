@@ -5,16 +5,16 @@ import { AppDatePicker } from "@/app/_components/shared/date-picker";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import { AppFileUpload } from "@/app/_components/shared/file-upload";
 import AppInputText from "@/app/_components/shared/input-text";
-import { ISuperAdminSettings } from "@/app/_core/actions/super-admin/super-admin-settings";
+import { ISuperAdminSettings } from "@/app/_core/interfaces/super-admin";
 
 const GeneralSettingsForm = ({ settingsData }: {
   settingsData: {
-    generalSettings: Partial<ISuperAdminSettings>,
-    setGeneralSettings: (settings: Partial<ISuperAdminSettings>) => void,
+    formData: Partial<ISuperAdminSettings>,
+    setFormData: (settings: Partial<ISuperAdminSettings>) => void,
     isLoading: boolean
   }
 }) => {
-  const { generalSettings, setGeneralSettings, isLoading } = settingsData
+  const { formData: generalSettings, setFormData: setGeneralSettings, isLoading } = settingsData
 
   return (
     <form className="p-4 md:p-6 space-y-4">
