@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   DragDropContext,
   Draggable,
@@ -27,7 +28,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({
             {boardData.columnOrder.map((columnId) => {
               const column = boardData.columns[columnId];
               const tasks = column.taskIds.map(
-                (taskId) => boardData.tasks[taskId]
+                (taskId) => boardData.tasks[taskId],
               );
 
               return (

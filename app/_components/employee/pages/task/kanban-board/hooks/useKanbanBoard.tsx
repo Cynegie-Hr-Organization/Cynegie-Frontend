@@ -3,17 +3,17 @@ import { useState, useEffect } from "react";
 import { DropResult } from "react-beautiful-dnd";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  getTasks,
+  getMyTasks,
   changeTaskStatusById,
 } from "@/app/api/services/employee/tasks";
 import { BoardData } from "../types";
 
-const useKanbanBoard = () => {
+const useKanbanBoard = (searchQuery : string) => {
   const queryClient = useQueryClient();
 
   const { data: tasksData, isLoading } = useQuery({
-    queryKey: ["tasks"],
-    queryFn: getTasks,
+    queryKey: ["tasks", searchQuery],
+    queryFn: () => getMyTasks(searchQuery),
   });
 
   console.log("tasksData:", tasksData);
@@ -52,8 +52,8 @@ const useKanbanBoard = () => {
   const [boardData, setBoardData] = useState<BoardData>(initialData);
 
   useEffect(() => {
-    if (!isLoading && tasksData) {
-      const tasks = tasksData.reduce((acc: any, task: any) => {
+    if (!isLoading && tasksData && tasksData.data) {
+      const tasks = tasksData.data.reduce((acc: any, task: any) => {
         acc[task.id] = {
           id: task.id,
           name: task.taskName,
@@ -66,10 +66,10 @@ const useKanbanBoard = () => {
         return acc;
       }, {});
 
-      const pendingTaskIds = tasksData
+      const pendingTaskIds = tasksData.data
         .filter((task: any) => task.status === "pending")
         .map((task: any) => task.id);
-      const completedTaskIds = tasksData
+      const completedTaskIds = tasksData.data
         .filter((task: any) => task.status === "completed")
         .map((task: any) => task.id);
 

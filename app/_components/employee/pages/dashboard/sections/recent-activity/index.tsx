@@ -4,8 +4,11 @@ import TaskCard from "../../../task/kanban-board/cards/task";
 import useKanbanBoard from "../../../task/kanban-board/hooks/useKanbanBoard";
 
 const RecentActivityCardDetails = () => {
-  const { boardData, isLoading } = useKanbanBoard();
+   const searchQuery = ""
 
+  const { boardData, isLoading } = useKanbanBoard(searchQuery);
+
+  
   if (isLoading) {
     return <div>Loading...</div>;
   }

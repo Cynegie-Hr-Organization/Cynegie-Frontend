@@ -18,6 +18,8 @@ export type TaskLayout = "kanban" | "list";
 const EmployeeTask = () => {
   const [taskLayout, setTaskLayout] = useState<TaskLayout>("kanban");
   const isVerticalLayout = taskLayout === "kanban";
+    const [searchQuery, setSearchQuery] = useState<string>("");
+
 
   const getActiveLayoutStyle = (index: number) => {
     const activeStyle = "bg-[blue] fill-white p-2 rounded-full";
@@ -30,7 +32,7 @@ const EmployeeTask = () => {
     return "fill=[#657081]";
   };
 
-  const { boardData, onDragEnd } = useKanbanBoard();
+  const { boardData, onDragEnd } = useKanbanBoard(searchQuery);
   const [openViewTask, setOpenViewTask] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
 
@@ -44,7 +46,7 @@ const EmployeeTask = () => {
     if (taskDetails) {
       setOpenViewTask(true);
     }
-  }, [taskDetails]);
+  }, [selectedTaskId , taskDetails]);
 
   const handleTaskClick = (taskId: string) => {
     setSelectedTaskId(taskId);
@@ -61,7 +63,7 @@ const EmployeeTask = () => {
   // };
 
   const handleSearchQuery = (query: string) => {
-    console.log("Search Query:", query); // Replace with actual search logic
+    setSearchQuery(query);
   };
 
   return (
@@ -149,3 +151,4 @@ const EmployeeTask = () => {
 };
 
 export default EmployeeTask;
+
