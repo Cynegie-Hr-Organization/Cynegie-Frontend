@@ -120,7 +120,7 @@ const useLeaveManagementPage = () => {
     queryKey: ["leave-requests", { ...fetchParams }],
     queryFn: async () => {
       const response = await getAllLeaveRequest(fetchParams);
-      return response.data;
+      return response?.data;
     },
     refetchOnWindowFocus: false,
     staleTime: 60000, // Cache for 1 minute
@@ -129,7 +129,7 @@ const useLeaveManagementPage = () => {
   const handleDeleteRequest = async (id: any) => {
     try {
       const response = await deleteLeaveRequestById(id);
-      if (response.message) {
+      if (response?.message) {
         toast.success("Leave request deleted successfully");
         refetch(); // Refresh the data
         setOpenDeleteModal(false);
@@ -288,7 +288,7 @@ const useLeaveManagementPage = () => {
       totalPages: leaveRequest?.totalPages,
       limit: fetchParams.limit,
       itemCount: leaveRequest?.count,
-      itemsOnPage: leaveRequest?.data.length,
+      itemsOnPage: leaveRequest?.data?.length,
       loading: isLoading,
       onChangeLimit: (limit) => setFetchParams((prev) => ({ ...prev, limit })),
       onPrevClick: () =>
