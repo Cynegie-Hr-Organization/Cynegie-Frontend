@@ -53,7 +53,7 @@ const useKanbanBoard = (searchQuery : string) => {
 
   useEffect(() => {
     if (!isLoading && tasksData && tasksData.data) {
-      const tasks = tasksData.data.reduce((acc: any, task: any) => {
+      const tasks = tasksData?.data?.reduce((acc: any, task: any) => {
         acc[task.id] = {
           id: task.id,
           name: task.taskName,
