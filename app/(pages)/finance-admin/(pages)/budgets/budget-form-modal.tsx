@@ -4,7 +4,6 @@ import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-t
 import { AppSelect } from "@/app/_components/shared/select";
 import { IBudgetCreate } from "@/app/_core/interfaces/budget";
 import { useBudgetMutations } from "@/app/_core/use-cases/finance/useBudget";
-import { handleError } from "@/app/_core/utils/axios";
 import { AppModal } from "@/components/drawer/modal";
 import { useIsMutating } from "@tanstack/react-query";
 import { useState } from "react";
@@ -13,12 +12,12 @@ const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const isMutatingCreateBudget = useIsMutating({ mutationKey: ["create-budget"] });
   const [formData, setFormData] = useState<IBudgetCreate>({
-    budgetName: "Support Infrastructure Upgrade",
-    department: "Finance",
-    allocation: 20000,
-    description: "Upgrade servers and networking equipments",
-    startDate: "2024-01-01T00:00:00Z",
-    endDate: "2024-12-31T23:59:59Z"
+    budgetName: "",
+    department: "",
+    allocation: 0,
+    description: "",
+    startDate: "",
+    endDate: ""
   })
 
   const isFormValidated = formData.department && formData.allocation && formData.description && formData.startDate && formData.endDate
@@ -26,9 +25,7 @@ const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
   const { createBudget } = useBudgetMutations()
 
   const handleCreateBudget = () => {
-    createBudget.mutate(formData, {
-      onError: (error) => handleError(error, '', false)
-    })
+    createBudget.mutate(formData)
   }
 
   return (
@@ -37,9 +34,7 @@ const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
       setOpen={setIsOpen}
       trigger={trigger}
       header={
-        <span>
           <span className="font-roboto text-xl font-bold">New Budget</span>
-        </span>
       }
       footer={
         <div className="flex items-center justify-center gap-4">

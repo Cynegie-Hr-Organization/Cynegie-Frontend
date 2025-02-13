@@ -11,6 +11,12 @@ const ApprovalAndWorkflowSettingsForm = ({ settingsData }: {
     isLoading: boolean
   }
 }) => {
+
+  const { settings } = settingsData?.formData ?? {}
+  const { approvalWorkflowSettings } = settings ?? {}
+
+  const { stages } = approvalWorkflowSettings ?? {}
+
   return (
     <form className="p-4 md:p-6 space-y-4">
       <h3 className="text-base font-bold">Approval And Workflow Settings</h3>

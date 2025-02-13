@@ -10,6 +10,8 @@ const BudgetsTable = () => {
   const { data, isLoading } = useAllBudget({});
   const { items: budgets } = data?.data ?? {}
 
+  console.log(budgets)
+
 
   return (
     <div className="common-card space-y-4 overflow-x-auto">
@@ -40,8 +42,8 @@ const BudgetsTable = () => {
 
               <tbody>
                 {(budgets && budgets.length > 0) ? budgets.map((budget, idx) => {
-                  const { department, startDate, endDate, allocation, status } = budget;
-                  const { departmentName } = department;
+                  const { department, startDate, endDate, allocation, status } = budget ?? {};
+                  const { departmentName } = department ?? {};
 
                   return (
                     <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>

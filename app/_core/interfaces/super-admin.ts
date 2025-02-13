@@ -3,7 +3,8 @@ export type ErrorLevel = 'debug' | 'info' | 'warn' | 'error';
 export type PasswordComplexity = 'low' | 'medium' | 'high';
 export type AppThemeType = 'light' | 'dark' | 'system';
 export type DashboardLayout = 'default' | 'compact' | 'detailed';
-export type NotificationType = 'email' | 'sms' | 'push' | 'none';
+// export type NotificationType = 'email' | 'sms' | 'push' | 'none';
+export type NotificationType = 'hr-approval' | 'it-request' | 'finance-update' | 'compliance-alert';
 export type SuperAdminStatus = 'active' | 'inactive' | 'suspended';
 
 export type ApprovalStage = {
@@ -59,7 +60,7 @@ export interface ISuperAdminSettings {
   dateFormat: string;
   timeZone: string;
   supportedLanguages: string[];
-  notificationType: NotificationType;
+  notificationType: NotificationType[];
   enableSystemNotification: boolean;
   settings: SystemSettings;
 }

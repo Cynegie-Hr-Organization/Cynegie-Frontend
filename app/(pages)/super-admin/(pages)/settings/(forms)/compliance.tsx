@@ -1,6 +1,5 @@
 import { AppSelect } from "@/app/_components/shared/select";
 import { ISuperAdminSettings, TimeFrequency } from "@/app/_core/interfaces/super-admin";
-import { useState } from 'react';
 
 const ComplianceSettingsForm = ({ settingsData }: {
   settingsData: {
@@ -9,18 +8,23 @@ const ComplianceSettingsForm = ({ settingsData }: {
     isLoading: boolean
   }
 }) => {
-  const [complianceSettingsForm, setComplianceSettingsForm] = useState<{
-    settings?: {
-      complianceSettings?: {
-        dataRetentionDuration?: number;
-        complianceReminderFrequency?: string;
-      }
-    }
-  }>({});
   const { formData, setFormData, isLoading } = settingsData;
   const { settings } = formData ?? {}
   const { complianceSettings } = settings ?? {}
   const { complianceReminderFrequency, dataRetentionDuration } = complianceSettings ?? {}
+
+  const updateComplianceSettings = (updates: Partial<typeof complianceSettings>) => {
+    setFormData({
+      ...formData,
+      settings: {
+        ...formData.settings!,
+        complianceSettings: {
+          ...formData?.settings?.complianceSettings!,
+          ...updates
+        }
+      }
+    });
+  };
 
   return (
     <form className="p-4 md:p-6 space-y-4">
@@ -37,26 +41,25 @@ const ComplianceSettingsForm = ({ settingsData }: {
             { label: "Monthly", value: "monthly" },
           ]}
           onChange={(value) => {
-            setFormData({
-              ...formData,
-              settings: {
-                complianceSettings: {
-                  ...formData?.settings?.complianceSettings,
-                  complianceReminderFrequency: value as TimeFrequency
-                }
-              }
-            })
+            updateComplianceSettings({
+              complianceReminderFrequency: value as TimeFrequency
+            });
           }}
         />
         <AppSelect
           label="Data Retention Duration"
           placeholder="Select data retention duration"
+          value={`${dataRetentionDuration}`}
           listItems={[
-            { label: "6 months", value: "6-months" },
-            { label: "1 year", value: "1-year" },
-            { label: "2 years", value: "2-years" }
+            { label: "6 months", value: `${6 * 30}` },
+            { label: "1 year", value: `${1 * 365}` },
+            { label: "2 years", value: `${2 * 365}` }
           ]}
-          onChange={(value) => { }}
+          onChange={(value) => {
+            updateComplianceSettings({
+              dataRetentionDuration: parseInt(value, 10)
+            });
+          }}
         />
       </div>
     </form>

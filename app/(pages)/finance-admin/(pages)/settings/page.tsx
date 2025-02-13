@@ -8,6 +8,7 @@ import AppInputText from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import { IFinanceSettings, useFinanceSettingsMutations } from "@/app/_core/actions/finance/settings";
 import { useFinanceSettings } from "@/app/_core/use-cases/finance/useSettings";
+import { useAppToast } from "@/app/_hooks/toast";
 import { useIsMutating } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
@@ -15,6 +16,7 @@ const FinanceAdminSettings = () => {
   const { data: financeSettings, isLoading: isLoadingCurrentSettings } = useFinanceSettings()
   const { updateSettings } = useFinanceSettingsMutations()
   const mutating = useIsMutating();
+  const {apptoast} = useAppToast();
   const isUpdating = mutating > 0;
 
 
@@ -30,7 +32,7 @@ const FinanceAdminSettings = () => {
         paymentMethod: financeSettings.paymentMethod ?? '',
         fiscalYearStart: financeSettings.fiscalYearStart ?? '',
         notificationSettings: financeSettings.notificationSettings ?? [],
-        budgetAlerts: financeSettings.budgetAlerts ?? ''
+        budgetAlerts: financeSettings.budgetAlerts ?? []
       });
     }
   }, [financeSettings]);
@@ -39,7 +41,7 @@ const FinanceAdminSettings = () => {
   const handleSave = () => {
     updateSettings.mutate(formData, {
       onSuccess: () => {
-
+        apptoast.success({ title: 'Successful', message: 'Settings updated successfully' })
       }
     })
   }

@@ -5,7 +5,8 @@ import { AppDatePicker } from "@/app/_components/shared/date-picker";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import { AppFileUpload } from "@/app/_components/shared/file-upload";
 import AppInputText from "@/app/_components/shared/input-text";
-import { ISuperAdminSettings } from "@/app/_core/interfaces/super-admin";
+import { AppSelect } from "@/app/_components/shared/select";
+import { ISuperAdminSettings, NotificationType } from "@/app/_core/interfaces/super-admin";
 
 const GeneralSettingsForm = ({ settingsData }: {
   settingsData: {
@@ -62,24 +63,32 @@ const GeneralSettingsForm = ({ settingsData }: {
           placeholder="Enter time zone"
           selectedValues={[...new Set(generalSettings?.timeZone?.split(", "))]}
           items={[
-            { label: "UTC+0", value: "utc+0" },
-            { label: "UTC+1", value: "utc+1" },
-            { label: "UTC+2", value: "utc+2" },
-            { label: "UTC+3", value: "utc+3" },
-            { label: "UTC+4", value: "utc+4" },
-            { label: "UTC+5", value: "utc+5" },
-            { label: "UTC+6", value: "utc+6" },
-            { label: "UTC+7", value: "utc+7" },
-            { label: "UTC+8", value: "utc+8" },
+            { label: "GMT +0", value: "gmt+0" },
+            { label: "PST", value: "pst" },
+            { label: "EST", value: "est" },
+            { label: "GMT", value: "gmt" },
+            { label: "CET", value: "cet" }
           ]}
           onSelectionChange={(values) => setGeneralSettings({ ...generalSettings, timeZone: values.map((value) => value).join(", ") })}
         />
-        <AppDatePicker
+        <AppSelect
           label="Date Format"
-          placeholder="Enter date format"
-          selectedDate={new Date()}
-          setSelectedDate={() => { }}
+          placeholder="Select date format"
+          value={generalSettings?.dateFormat ?? 'DD/MM/YYYY'}
+          listItems={[
+            { label: "DD/MM/YYYY", value: "dd-/mm/yyyy" },
+            { label: "MM/DD/YYYY", value: "MM/DD/YYYY" },
+            { label: "YYYY-MM-DD", value: "YYYY-MM-DD" }
+          ]}
+          onChange={(value) => setGeneralSettings({ ...generalSettings, dateFormat: value })}
         />
+        {/* <AppDatePicker
+          label="Time Zone"
+          placeholder="Select time zone"
+          selectedDate={generalSettings?.dateFormat ? new Date(generalSettings.dateFormat) : undefined}
+          setSelectedDate={(value) => { setGeneralSettings({ ...generalSettings, dateFormat: value?.toISOString() }) }}
+        /> */}
+
       </div>
 
 
@@ -101,15 +110,17 @@ const GeneralSettingsForm = ({ settingsData }: {
         <AppMultipleSelect
           label="Notification Type"
           placeholder="Select notification type"
-          selectedValues={[...new Set(generalSettings?.notificationType?.split(", "))]}
+          selectedValues={generalSettings?.notificationType}
           items={[
-            { label: "None", value: "email" },
+            // { label: "None", value: "none" },
             { label: "HR Approvals", value: "hr-approvals" },
             { label: "IT Request", value: "it-request" },
             { label: "Finance Update", value: "finance-update" },
             { label: "Compliance Alert", value: "compliance-alert" }
           ]}
-          onSelectionChange={(values) => setGeneralSettings({ ...generalSettings, timeZone: values.map((value) => value).join(", ") })}
+          onSelectionChange={(values) => setGeneralSettings({
+            ...generalSettings, notificationType: values as NotificationType[]
+          })}
         />
         <AppFileUpload
           label="Company Logo"

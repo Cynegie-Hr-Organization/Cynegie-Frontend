@@ -3,7 +3,6 @@ import AppButton from "@/app/_components/shared/button";
 import { ISuperAdminSettings } from "@/app/_core/interfaces/super-admin";
 import { useSuperAdminSettings, useSuperAdminSettingsMutations } from "@/app/_core/use-cases/superadmin/useSuperAdminSettings";
 import { useAppToast } from "@/app/_hooks/toast";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ApprovalAndWorkflowSettingsForm from "./(forms)/approval-and-workflow";
 import ComplianceSettingsForm from "./(forms)/compliance";
@@ -22,7 +21,7 @@ const SettingsForm = () => {
   const { updateSettings } = useSuperAdminSettingsMutations();
   const { apptoast } = useAppToast();
   const isUpdating = updateSettings.isPending;
-  const router = useRouter();
+  // const router = useRouter();
 
   const [formData, setFormData] = useState<Partial<Omit<ISuperAdminSettings, 'id' | 'createdAt' | 'updatedAt'>>>({
     name: "",
@@ -31,7 +30,7 @@ const SettingsForm = () => {
     email: "",
     enableSystemNotification: false,
     logo: "",
-    notificationType: "email",
+    notificationType: [],
     phone: "",
     timeZone: "",
     supportedLanguages: [],
@@ -83,7 +82,7 @@ const SettingsForm = () => {
           integrationSettings: generalSettings.settings.integrationSettings,
           complianceSettings: {
             complianceReminderFrequency: generalSettings.settings.complianceSettings.complianceReminderFrequency,
-            dataRetentionDuration: generalSettings.settings.complianceSettings.dataRetentionDuration
+            dataRetentionDuration: generalSettings.settings.complianceSettings.dataRetentionDuration ?? 0
           },
           customizationSettings: generalSettings.settings.customizationSettings
         }
