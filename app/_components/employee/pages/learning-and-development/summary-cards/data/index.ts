@@ -38,7 +38,7 @@ const useSummaryCardsData = () => {
     mutationFn: getAllMetrics,
     onSuccess: (response) => {
       console.log("Metrics fetched successfully:", response);
-      const metrics = response[0];
+      const metrics = response[0] ?? "";
       console.log("Metrics:", metrics.completedCourses);
       setSummaryCardsData([
         {
@@ -77,7 +77,7 @@ const useSummaryCardsData = () => {
 
   useEffect(() => {
     fetchMetricsMutation.mutate();
-  }, []);
+  }, [fetchMetricsMutation]);
 
   return { summaryCardsData, isLoading, error };
 };

@@ -80,7 +80,7 @@ const useEmployeeProfilePage = () => {
 
   useEffect(() => {
     fetchProfileMutation.mutate();
-  }, []);
+  }, [fetchProfileMutation]);
 
   const requestUpdateMutation = useMutation({
     mutationFn: (data: any) => requestUpdateProfile(data),
