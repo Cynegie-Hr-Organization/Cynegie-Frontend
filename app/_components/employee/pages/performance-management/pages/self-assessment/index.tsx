@@ -35,7 +35,7 @@ const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
 
   useEffect(() => {
     fetchAssessmentMutation.mutate();
-  }, [id]);
+  }, [id, fetchAssessmentMutation]);
 
   const answerAssessmentMutation = useMutation({
     mutationFn: (data: any) => answerAssessmentById(data),

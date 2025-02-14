@@ -71,7 +71,7 @@ const useRequests = () => {
   useEffect(() => {
     fetchDeviceRequestsMutation.mutate();
     fetchAppRequestsMutation.mutate();
-  }, []);
+  }, [fetchAppRequestsMutation, fetchDeviceRequestsMutation]);
 
   return { deviceRequests, appRequests, isDeviceLoading, isAppLoading };
 };
