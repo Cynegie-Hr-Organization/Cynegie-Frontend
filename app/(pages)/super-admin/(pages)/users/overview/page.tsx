@@ -3,39 +3,50 @@
 import UsersOverviewTable from "@/app/(pages)/super-admin/(pages)/users/overview/table";
 import AppButton from "@/app/_components/shared/button";
 import { AppSelect } from "@/app/_components/shared/select";
+import { useUserStatistics } from "@/app/_core/use-cases/superadmin/useUser";
 import { useRouter } from "next/navigation";
+import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
 import { GoDotFill } from "react-icons/go";
 import { BarChartComponent } from "./bar-chart";
 
 const UserManagement = () => {
+  const { data: userStatistics } = useUserStatistics();
+  const { engagementRate, totalActiveUsers, totalInactiveUsers, retentionRate } = userStatistics ?? {}
+  const totalUsers = (totalActiveUsers ?? 0) + (totalInactiveUsers ?? 0)
+
+  const calculatePercentage = (value: number) => {
+    if (value) {
+      return `${(value / totalUsers) * 100}`
+    }
+    return '...'
+  }
+
   const managementCards = [
     {
       color: "#F9FAFB",
       textColor: "#344054",
-      title: "Total Users",
-      value: "3,000",
-      percentage: "+20",
+      title: "Total Active Users",
+      value: `${totalActiveUsers ?? 0}`,
+      percentage: `${calculatePercentage(totalActiveUsers ?? 0)}`,
     },
     {
       color: "#F9FAFB",
       textColor: "#344054",
-      title: "Active Users",
-      value: "2,000",
-      percentage: "-4.09",
+      title: "Total Inactive Users",
+      value: `${totalInactiveUsers ?? 0}`,
+      percentage: `${calculatePercentage(totalActiveUsers ?? 0)}`,
     },
     {
       color: "#F9FAFB",
       textColor: "#344054",
-      title: "Inactive Users",
-      value: "1,000",
-      percentage: "30",
+      title: "User Engagement Rate",
+      value: `${engagementRate ?? 0}`,
     },
     {
       color: "#F9FAFB",
       textColor: "#344054",
-      title: "Inactive Users",
-      value: "1,000",
-      percentage: "30",
+      title: "User Retention Rate",
+      value: `${retentionRate ?? 0}`
     }
   ];
 
@@ -55,7 +66,19 @@ const UserManagement = () => {
 
             <div className="flex items-center justify-between space-y-0">
               <p className="text-sm font-bold">{card.value}</p>
-              <p className="text-xs"><span className={(card?.percentage.includes("+")) ? "text-green-500" : "text-red-500"}>{card.percentage}%</span> Last Month</p>
+              {card?.percentage ? (
+                <p className="text-xs">
+                  <span className={(card?.percentage?.includes("-")) ? "text-red-500" : "text-green-500"}>{card.percentage}% </span>
+                  Last Month
+                </p>
+              ) : (
+                <p className="text-xs">
+                  {(card?.percentage?.includes("-")) ?
+                    (<FaArrowTrendDown className="text-red-500" />)
+                    : (<FaArrowTrendUp className="text-green-500" />)
+                  }
+                </p>
+              )}
             </div>
           </div>
         ))}

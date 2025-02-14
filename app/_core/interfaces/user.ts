@@ -25,3 +25,10 @@ export interface ICompanyUser {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface IUserStatistics {
+  totalActiveUsers: number;
+  totalInactiveUsers: number;
+  retentionRate: string;
+  engagementRate: string;
+}

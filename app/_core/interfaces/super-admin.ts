@@ -64,3 +64,54 @@ export interface ISuperAdminSettings {
   enableSystemNotification: boolean;
   settings: SystemSettings;
 }
+
+export type IPermissionStatus = 'active' | 'inactive' | 'suspended'
+
+export interface IUserRole {
+  name: string;
+  id: string;
+}
+
+export interface IUserPermission {
+  AccessModules?: string[];
+  type: 'full_access' | 'limited_access' | 'no_access';
+  limitedAccessModules?: string[];
+  viewModules?: string[];
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}
+
+export interface IUserData {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  employee: string;
+  company: string;
+  status: IPermissionStatus;
+  isActive: boolean;
+  isEmailVerified: boolean;
+  role: IUserRole[];
+  permissions: IUserPermission[];
+  deletedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IPermissionsMeta {
+  page: number;
+  limit: number;
+  itemCount: number;
+  pageCount: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
+export interface IPermissionRes {
+  status: number;
+  message: string;
+  data: IUserData[];
+  meta: IPermissionsMeta;
+}
