@@ -6,14 +6,20 @@ import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import TabFormat from "@/app/_components/shared/tab-format";
 import Table from "@/app/_components/shared/table";
 import { FieldType } from "@/app/_components/shared/table/types";
-import { AttendanceStatusMap, color, route } from "@/constants";
+import { color, route } from "@/constants";
+import { useAttendanceStore } from "@/hooks/useBulkAttendanceParam";
 import { FetchParams } from "@/types";
 import { formatHours } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getAttendanceRecords } from "../../payroll-management/pages/overview/api";
+import { useForm } from "react-hook-form";
+import { getDepartments } from "../../payroll-management/pages/benefits-management/api";
+import {
+  getAllLeaves,
+  getAttendanceRecords,
+} from "../../payroll-management/pages/overview/api";
 
 const attendanceRateChartData = [
   { item: "Monday", present: 580, absent: 750, "on leave": 500 },
@@ -38,6 +44,17 @@ type MappedAttendanceRecord = {
   overtimeHours: string;
 };
 
+type MappedLeaveRecord = {
+  employeeName: string;
+  staffID: string;
+  department: string;
+  leaveType: string;
+  startDate: string;
+  endDate: string;
+  daysOnLeave: string;
+  backupEmployee: string;
+};
+
 const HrAdminEmployeeAttendanceManagement = () => {
   const router = useRouter();
   const [openAdjustAttendanceModal, setOpenAdjustAttendanceModal] =
@@ -49,6 +66,28 @@ const HrAdminEmployeeAttendanceManagement = () => {
     setOpenIndividualGenerateReportModal,
   ] = useState(false);
 
+  const [departments, setDepartments] =
+    useState<{ label: string; value: string }[]>();
+  const { data: departmentsData } = useQuery({
+    queryKey: ["departments"],
+    queryFn: () => getDepartments({ page: 1, limit: 50, sortOrder: "asc" }),
+  });
+
+  useEffect(() => {
+    if (departmentsData) {
+      setDepartments(
+        departmentsData.data
+          ? departmentsData.data?.map((department) => ({
+              label: department.departmentName,
+              value: department.id,
+            }))
+          : []
+      );
+    } else {
+      setAttendanceRecords(undefined);
+    }
+  }, [departmentsData]);
+
   const [attendanceRecords, setAttendanceRecords] =
     useState<MappedAttendanceRecord[]>();
   const [fetchParams, setFetchParams] = useState<FetchParams>({
@@ -57,10 +96,19 @@ const HrAdminEmployeeAttendanceManagement = () => {
     sortOrder: "asc",
   });
 
+  const [leaveRecords, setLeaveRecords] = useState<MappedLeaveRecord[]>();
+
   const { data: attendanceRecordsData } = useQuery({
     queryKey: ["attendance-records", fetchParams],
     queryFn: () => getAttendanceRecords(fetchParams),
   });
+
+  const { data: leaveRecordsData } = useQuery({
+    queryKey: ["leave-records", fetchParams],
+    queryFn: () => getAllLeaves(fetchParams),
+  });
+
+  const { setStartDate, setEndDate, setDepartment } = useAttendanceStore();
 
   useEffect(() => {
     if (attendanceRecordsData) {
@@ -70,7 +118,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
               id: record.attendanceId,
               employeeName: record.employeeName,
               staffID: record.staffId,
-              department: record.department,
+              department: record.department.departmentName,
               jobTitle: record.jobTitle,
               date: record.date,
               checkInTime: dayjs(record.clockIn).format("hh:mm A"),
@@ -92,6 +140,35 @@ const HrAdminEmployeeAttendanceManagement = () => {
       setAttendanceRecords(undefined);
     }
   }, [attendanceRecordsData]);
+
+  useEffect(() => {
+    if (leaveRecordsData) {
+      setLeaveRecords(
+        leaveRecordsData.data
+          ? leaveRecordsData.data?.map((record) => ({
+              employeeName: `${record.employee.personalInfo.firstName} ${record.employee.personalInfo.lastName}`,
+              staffID: record.employee.employmentInformation.staffId,
+              department:
+                record.employee.employmentInformation.department.departmentName,
+              leaveType: record.leaveType.name,
+              startDate: dayjs(record.startDate).format("DD-MM-YYYY"),
+              endDate: dayjs(record.endDate).format("DD-MM-YYYY"),
+              daysOnLeave: record.numberOfDays.toString(),
+              backupEmployee: "N/A",
+            }))
+          : []
+      );
+    } else {
+      setLeaveRecords(undefined);
+    }
+  }, [leaveRecordsData]);
+
+  const {
+    register: bulkReportRegister,
+    control: bulkReportControl,
+    formState: { isValid, errors },
+    getValues,
+  } = useForm();
 
   return (
     <Page
@@ -163,7 +240,10 @@ const HrAdminEmployeeAttendanceManagement = () => {
                   "overtimeHours",
                 ]}
                 bodyRowData={attendanceRecords}
-                statusMap={AttendanceStatusMap}
+                statusMap={{
+                  late: "warning",
+                  on_leave: "info",
+                }}
                 formFilter={{
                   inputFields: [
                     {
@@ -229,25 +309,16 @@ const HrAdminEmployeeAttendanceManagement = () => {
                 ]}
                 fieldTypes={Array(8).fill(FieldType.text)}
                 displayedFields={[
-                  "name",
-                  "id",
+                  "employeeName",
+                  "staffID",
                   "department",
-                  "jobTitle",
-                  "checkInTime",
-                  "checkOutTime",
-                  "hoursWorked",
+                  "leaveType",
+                  "startDate",
+                  "endDate",
+                  "daysOnLeave",
                   "backupEmployee",
                 ]}
-                bodyRowData={Array(5).fill({
-                  name: "Ayomide Alibaba",
-                  id: "CYN0235",
-                  department: "Product",
-                  jobTitle: "Product Manager",
-                  checkInTime: "9:02 AM",
-                  checkOutTime: "4:56 PM",
-                  hoursWorked: "8",
-                  backupEmployee: "N/A",
-                })}
+                bodyRowData={leaveRecords}
                 filters={[
                   { name: "Department", items: ["Sales"] },
                   { name: "Leave Type", items: ["Annual"] },
@@ -258,6 +329,8 @@ const HrAdminEmployeeAttendanceManagement = () => {
                   onChangeLimit: (limit) =>
                     setFetchParams({ ...fetchParams, limit: limit }),
                 }}
+                statusMap={{ late: "warning" }}
+                fieldToGetAction="status"
               />
             ),
           },
@@ -334,24 +407,54 @@ const HrAdminEmployeeAttendanceManagement = () => {
           subtitle="Select filters for the report"
           form={{
             gridSpacing: 3,
+            register: bulkReportRegister,
+            control: bulkReportControl,
+            errors: errors,
             inputFields: [
               {
                 label: "Start Date",
                 type: "date",
+                required: true,
+                hookFormField: true,
+                controllerRules: {
+                  required: true,
+                },
               },
               {
                 label: "End Date",
                 type: "date",
+                required: true,
+                hookFormField: true,
+                controllerRules: {
+                  required: true,
+                },
               },
               {
                 label: "Department",
-                type: "select",
+                type: "multi-select",
                 placeholder: "Select",
+                options: departments,
+                hookFormField: true,
+                required: true,
+                controllerRules: {
+                  required: true,
+                },
               },
               {
                 label: "Attendance Status",
                 type: "multi-select",
                 placeholder: "Select",
+                options: [
+                  { label: "Present", value: "present" },
+                  { label: "Late", value: "late" },
+                  { label: "Absent", value: "absent" },
+                  { label: "On Leave", value: "on_leave" },
+                ],
+                required: true,
+                hookFormField: true,
+                controllerRules: {
+                  required: true,
+                },
               },
             ],
             buttonGroup: {
@@ -361,13 +464,22 @@ const HrAdminEmployeeAttendanceManagement = () => {
                 onClick: () => setOpenBulkGenerateReportModal(false),
               },
               rightButton: {
-                type: ButtonType.contained,
+                type: isValid ? ButtonType.contained : ButtonType.disabled,
                 text: "Generate Report",
-                onClick: () =>
+                onClick: () => {
+                  setStartDate(dayjs(getValues("Start Date")).toISOString());
+                  setEndDate(dayjs(getValues("End Date")).toISOString());
+                  setDepartment(
+                    getValues("Department").map(
+                      (department: { label: string; value: string }) =>
+                        department.label
+                    )
+                  );
                   router.push(
                     route.hrAdmin.employeeManagement.attendanceManagement
                       .bulkReport
-                  ),
+                  );
+                },
               },
               position: "center",
             },
@@ -380,41 +492,48 @@ const HrAdminEmployeeAttendanceManagement = () => {
           onClose={() => setOpenIndividualGenerateReportModal(false)}
           title="Generate Attendance Report"
           subtitle="Customize the report details for Emmanuel Okpara"
-          form={{
-            gridSpacing: 3,
-            inputFields: [
-              {
-                label: "Start Date",
-                type: "date",
+          forms={[
+            {
+              gridSpacing: 3,
+              inputFields: [
+                {
+                  label: "Start Date",
+                  type: "date",
+                  required: true,
+                },
+                {
+                  label: "End Date",
+                  type: "date",
+                  required: true,
+                },
+                {
+                  label: "Attendance Status",
+                  type: "multi-select",
+                  placeholder: "Select",
+                  hookFormField: true,
+                  required: true,
+                },
+              ],
+              buttonGroup: {
+                leftButton: {
+                  type: ButtonType.outlined,
+                  text: "Cancel",
+                  onClick: () => setOpenIndividualGenerateReportModal(false),
+                },
+                rightButton: {
+                  type: ButtonType.contained,
+                  text: "Generate Report",
+                  isSubmit: true,
+                  onClick: () =>
+                    router.push(
+                      route.hrAdmin.employeeManagement.attendanceManagement
+                        .individualReport
+                    ),
+                },
+                position: "center",
               },
-              {
-                label: "End Date",
-                type: "date",
-              },
-              {
-                label: "Attendance Status",
-                type: "multi-select",
-                placeholder: "Select",
-              },
-            ],
-            buttonGroup: {
-              leftButton: {
-                type: ButtonType.outlined,
-                text: "Cancel",
-                onClick: () => setOpenIndividualGenerateReportModal(false),
-              },
-              rightButton: {
-                type: ButtonType.contained,
-                text: "Generate Report",
-                onClick: () =>
-                  router.push(
-                    route.hrAdmin.employeeManagement.attendanceManagement
-                      .individualReport
-                  ),
-              },
-              position: "center",
             },
-          }}
+          ]}
         />
       )}
     </Page>
