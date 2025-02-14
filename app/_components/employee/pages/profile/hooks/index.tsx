@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FormProps } from "@/app/_components/shared/form/types";
 import {
   ButtonProps,
@@ -80,7 +81,7 @@ const useEmployeeProfilePage = () => {
 
   useEffect(() => {
     fetchProfileMutation.mutate();
-  }, [fetchProfileMutation]);
+  }, []);
 
   const requestUpdateMutation = useMutation({
     mutationFn: (data: any) => requestUpdateProfile(data),
