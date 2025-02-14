@@ -2,18 +2,21 @@
 import { useState, useEffect } from "react";
 import { DropResult } from "react-beautiful-dnd";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { debounce } from "lodash";
 import {
   getMyTasks,
   changeTaskStatusById,
 } from "@/app/api/services/employee/tasks";
 import { BoardData } from "../types";
 
-const useKanbanBoard = (searchQuery : string) => {
+const useKanbanBoard = (searchQuery: string) => {
   const queryClient = useQueryClient();
+
+  const debouncedFetchTasks = debounce((query: string) => getMyTasks(query), 300);
 
   const { data: tasksData, isLoading } = useQuery({
     queryKey: ["tasks", searchQuery],
-    queryFn: () => getMyTasks(searchQuery),
+    queryFn: () => debouncedFetchTasks(searchQuery),
   });
 
   console.log("tasksData:", tasksData);
@@ -53,7 +56,7 @@ const useKanbanBoard = (searchQuery : string) => {
 
   useEffect(() => {
     if (!isLoading && tasksData && tasksData.data) {
-      const tasks = tasksData?.data?.reduce((acc: any, task: any) => {
+      const tasks = tasksData.data.reduce((acc: any, task: any) => {
         acc[task.id] = {
           id: task.id,
           name: task.taskName,
