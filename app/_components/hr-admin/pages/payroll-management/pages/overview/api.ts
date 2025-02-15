@@ -8,20 +8,28 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import {
   AttendanceRecord,
+  AttendanceResponse,
   BenefitsSummary,
   Device,
+  EmployeeDistribution,
+  EmployeeStats,
   EmployeeUpdateRequest,
   FetchParams,
   FetchResponse,
+  LeaveRequest,
+  LeaveResponse,
   PaginatedDevices,
   PaginatedResponse2,
+  PaginatedResponse4,
   PaginatedResponse5,
   PaginatedResponse6,
+  PaginatedResponse8,
   Payroll,
   PayrollSettings,
   PayrollSummary,
   SalaryAdvanceRequest,
   SalaryAdvanceSummary,
+  Task,
 } from "@/types";
 import { Employee } from "@/types/api-index";
 
@@ -262,7 +270,7 @@ export const getAttendanceRecords = async (
 ): Promise<PaginatedResponse6<AttendanceRecord>> => {
   const session = await getServerSession(authOptions);
 
-  return request("GET", `${baseUrl}/v1/attendance/all`, {
+  return request("GET", `${baseUrl}/v1/attendance`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${session?.token}`, // Add session token to Authorization header
@@ -307,4 +315,106 @@ export const getDevices = async (
     },
     params: params,
   }) as Promise<PaginatedDevices<Device>>;
+};
+
+export const getBulkAttendanceReport = async (
+  params: FetchParams & {
+    startDate?: string;
+    endDate?: string;
+  }
+): Promise<AttendanceResponse> => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/attendance/report`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`, // Add session token to Authorization header
+    },
+    params: params,
+  }) as Promise<AttendanceResponse>;
+};
+
+export const getAllLeaves = async (
+  params: FetchParams
+): Promise<LeaveResponse> => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/leave/all-leaves`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`, // Add session token to Authorization header
+    },
+    params: params,
+  }) as Promise<LeaveResponse>;
+};
+
+export const getTaskSummary = async (): Promise<{
+  totalTasks: number;
+  completedTasks: number;
+  tasksInProgress: number;
+  dueTasks: number;
+}> => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/task/summary`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`, // Add session token to Authorization header
+    },
+  }) as Promise<{
+    totalTasks: number;
+    completedTasks: number;
+    tasksInProgress: number;
+    dueTasks: number;
+  }>;
+};
+
+export const getEmployeeDemographyCharts = async (): Promise<EmployeeStats> => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/employees/totals`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`, // Add session token to Authorization header
+    },
+  }) as Promise<EmployeeStats>;
+};
+
+export const getAllTasks = async (
+  params: FetchParams
+): Promise<PaginatedResponse4<Task>> => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/task`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`, // Add session token to Authorization header
+    },
+    params: params,
+  }) as Promise<PaginatedResponse4<Task>>;
+};
+
+export const getDepartmentStats = async (
+  params: FetchParams
+): Promise<PaginatedResponse8<EmployeeDistribution>> => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/employees/department-stats`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`, // Add session token to Authorization header
+    },
+    params: params,
+  }) as Promise<PaginatedResponse8<EmployeeDistribution>>;
+};
+
+export const getLeaveRequest = async (id: string): Promise<LeaveRequest> => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/leave/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`, // Add session token to Authorization header
+    },
+  }) as Promise<LeaveRequest>;
 };

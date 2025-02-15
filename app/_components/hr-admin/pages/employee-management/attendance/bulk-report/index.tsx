@@ -1,7 +1,13 @@
 "use client";
 import { FieldType } from "@/app/_components/shared/table/types";
-import HrAdminEmployeeAttendanceManagementReport from "../report";
 import { color } from "@/constants";
+import { useAttendanceStore } from "@/hooks/useBulkAttendanceParam";
+import { formatHours } from "@/utils";
+import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { getBulkAttendanceReport } from "../../../payroll-management/pages/overview/api";
+import HrAdminEmployeeAttendanceManagementReport from "../report";
 
 const attendanceRateChartData = [
   { item: "Monday", present: 580, absent: 750 },
@@ -13,10 +19,80 @@ const attendanceRateChartData = [
   { item: "Sunday", present: 400, absent: 500 },
 ];
 
+type MappedAttendanceRecord = {
+  id: string;
+  employeeName: string;
+  staffID: string;
+  department: string;
+  jobTitle: string;
+  checkInTime: string;
+  clockOutTime: string;
+  hoursWorked: string;
+  status: string;
+  overtimeHours: string;
+};
+
 const HrAdminEmployeeAttendanceManagementBulkReport = () => {
+  const { startDate, endDate, department } = useAttendanceStore();
+
+  const { data } = useQuery({
+    queryKey: ["bulk-attendance-report"],
+    queryFn: () =>
+      getBulkAttendanceReport({
+        page: 1,
+        limit: 20,
+        sortOrder: "asc",
+        startDate: startDate,
+        endDate: endDate,
+      }),
+  });
+
+  const [attendanceRecords, setAttendanceRecords] =
+    useState<MappedAttendanceRecord[]>();
+
+  useEffect(() => {
+    if (data) {
+      setAttendanceRecords(
+        data.data
+          ? data.data?.map((record) => ({
+              id: record.attendanceId,
+              employeeName: record.employeeName,
+              staffID: record.staffId,
+              department: record.department.departmentName,
+              jobTitle: record.jobTitle,
+              date: record.date,
+              checkInTime: dayjs(record.clockIn).format("hh:mm A"),
+              clockOutTime:
+                record.clockOut === "N/A"
+                  ? record.clockOut
+                  : dayjs(record.clockOut).format("hh:mm A"),
+              hoursWorked:
+                record.totalHoursWorked !== null
+                  ? formatHours(record.totalHoursWorked)
+                  : "N/A",
+              status: record.attendanceStatus,
+              overtimeHours:
+                record.overtime !== null ? formatHours(record.overtime) : "N/A",
+            }))
+          : []
+      );
+    } else {
+      setAttendanceRecords(undefined);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+    }
+  }, [data]);
+
   return (
     <HrAdminEmployeeAttendanceManagementReport
-      title="Attendance Report (HR & IT Department: Oct 1 - Oct 15, 2024)"
+      title={`Attendance Report (${department} Department: ${startDate.slice(
+        0,
+        10
+      )} - ${endDate.slice(0, 10)})`}
       barChart={{
         title: "Attendance Rate",
         inputFields: [
@@ -39,22 +115,22 @@ const HrAdminEmployeeAttendanceManagementBulkReport = () => {
       cards={[
         {
           labelText: "Total Employees",
-          value: 120,
+          value: data?.totalEmployees,
           valueBelow: true,
         },
         {
           labelText: "Total Days Analyzed",
-          value: 15,
+          value: data?.totalDaysAnalyzed,
           valueBelow: true,
         },
         {
           labelText: "Present Employees",
-          value: 80,
+          value: "N/A",
           valueBelow: true,
         },
         {
           labelText: "Absent Employees",
-          value: 25,
+          value: "N/A",
           valueBelow: true,
         },
       ]}
@@ -76,8 +152,8 @@ const HrAdminEmployeeAttendanceManagementBulkReport = () => {
           FieldType.text,
         ],
         displayedFields: [
-          "name",
-          "id",
+          "employeeName",
+          "staffID",
           "department",
           "jobTitle",
           "checkInTime",
@@ -86,17 +162,7 @@ const HrAdminEmployeeAttendanceManagementBulkReport = () => {
           "status",
           "overtimeHours",
         ],
-        bodyRowData: Array(5).fill({
-          name: "Ayomide Alibaba",
-          id: "CYN0235",
-          department: "Product",
-          jobTitle: "Product Manager",
-          checkInTime: "9:02 AM",
-          checkOutTime: "4:56 PM",
-          hoursWorked: "8",
-          status: "Absent",
-          overtimeHours: "8",
-        }),
+        bodyRowData: attendanceRecords,
         filters: [
           { name: "Name", items: ["Emmanuel Okpara"] },
           { name: "Department", items: ["Sales"] },

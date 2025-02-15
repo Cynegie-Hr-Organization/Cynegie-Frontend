@@ -11,37 +11,16 @@ import TabFormat from "@/app/_components/shared/tab-format";
 import Table from "@/app/_components/shared/table";
 import { FieldType } from "@/app/_components/shared/table/types";
 import { color, icon } from "@/constants";
-import { useState } from "react";
-
-const chart1 = {
-  chartLabels: ["Male", "Female"],
-  chartValues: [55, 45],
-  chartColors: [color.pieChart.info, color.pieChart.warning],
-};
-
-const chart2 = {
-  chartLabels: ["Full Time", "Part Time", "Contract", "Intern", "Freelancer"],
-  chartValues: [50, 5, 10, 10, 25],
-  chartColors: [
-    color.pieChart.info,
-    color.pieChart.success,
-    color.pieChart.grey,
-    color.pieChart.warning,
-    color.pieChart.error,
-  ],
-};
-
-const chart3 = {
-  chartLabels: ["Active", "On Leave", "Probation", "Resigned", "Terminated"],
-  chartValues: [50, 5, 10, 10, 25],
-  chartColors: [
-    color.pieChart.info,
-    color.pieChart.success,
-    color.pieChart.grey,
-    color.pieChart.warning,
-    color.pieChart.error,
-  ],
-};
+import { EmployeeDistribution, FetchParams } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import {
+  getAllTasks,
+  getDepartmentStats,
+  getEmployeeDemographyCharts,
+  getTaskSummary,
+} from "../../payroll-management/pages/overview/api";
 
 const employeeTurnoverChartData = [
   { item: "Jan", value: 23 },
@@ -58,11 +37,133 @@ const employeeTurnoverChartData = [
   { item: "Dec", value: 25 },
 ];
 
+type MappedTasks = {
+  taskName: string;
+  assignedTo: string;
+  date: string;
+  status: string;
+};
+
+type MappedDepartmentStat = {
+  department: string;
+  totalEmployeeNo: number;
+  male: number;
+  female: number;
+};
+
 const HrAdminEmployeeComplianceReporting = () => {
   const [openExportModal, setOpenExportModal] = useState(false);
   const userGroupIcon = (
     <SvgIcon path={icon.userGroupTwo} width={14} height={14} />
   );
+
+  const [tasks, setTasks] = useState<MappedTasks[]>();
+
+  const [departmentStats, setDepartmentStats] =
+    useState<MappedDepartmentStat[]>();
+
+  const [fetchParams] = useState<FetchParams>({
+    page: 1,
+    limit: 10,
+    sortOrder: "asc",
+  });
+
+  const { data } = useQuery({
+    queryKey: ["task-summary"],
+    queryFn: () => getTaskSummary(),
+  });
+
+  const { data: chartsData } = useQuery({
+    queryKey: ["charts"],
+    queryFn: () => getEmployeeDemographyCharts(),
+  });
+
+  const { data: tasksData } = useQuery({
+    queryKey: ["tasks", fetchParams],
+    queryFn: () => getAllTasks(fetchParams),
+  });
+
+  const { data: departmentStatsData } = useQuery({
+    queryKey: ["departmentStats", fetchParams],
+    queryFn: () => getDepartmentStats(fetchParams),
+  });
+
+  useEffect(() => {
+    if (tasksData) {
+      setTasks(
+        tasksData.data.map((task) => ({
+          taskName: task.taskName,
+          assignedTo: `${task.employees[0].personalInfo?.firstName} ${task.employees[0].personalInfo?.lastName}`,
+          date: dayjs(task.dueDate).format("DD-MM-YYYY"),
+          status: task.status,
+        }))
+      );
+    } else {
+      setTasks(undefined);
+    }
+  }, [tasksData]);
+
+  function mapEmployeeDistribution(
+    data: EmployeeDistribution
+  ): MappedDepartmentStat[] {
+    return Object.entries(data).map(([department, stats]) => ({
+      department,
+      totalEmployeeNo: stats.totalEmployees,
+      male: stats.male,
+      female: stats.female,
+    }));
+  }
+
+  useEffect(() => {
+    if (departmentStatsData) {
+      setDepartmentStats(mapEmployeeDistribution(departmentStatsData.data));
+    } else {
+      setTasks(undefined);
+    }
+  }, [departmentStatsData]);
+
+  const chart1 = {
+    chartLabels: ["Male", "Female"],
+    chartValues: [chartsData?.gender.Male ?? 0, chartsData?.gender.Female ?? 0],
+    chartColors: [color.pieChart.info, color.pieChart.warning],
+  };
+
+  const chart2 = {
+    chartLabels: ["Full Time", "Part Time", "Contract", "Intern", "Freelancer"],
+    chartValues: [
+      chartsData?.employmentType.FullTime ?? 0,
+      chartsData?.employmentType.PartTime ?? 0,
+      chartsData?.employmentType.Contract ?? 0,
+      chartsData?.employmentType.Intern ?? 0,
+      chartsData?.employmentType.Freelancer ?? 0,
+    ],
+    chartColors: [
+      color.pieChart.info,
+      color.pieChart.success,
+      color.pieChart.grey,
+      color.pieChart.warning,
+      color.pieChart.error,
+    ],
+  };
+
+  const chart3 = {
+    chartLabels: ["Active", "On Leave", "Probation", "Resigned", "Terminated"],
+    chartValues: [
+      chartsData?.employmentStatus.Active ?? 0,
+      chartsData?.employmentStatus.OnLeave ?? 0,
+      chartsData?.employmentStatus.Probation ?? 0,
+      chartsData?.employmentStatus.Resigned ?? 0,
+      chartsData?.employmentStatus.Terminated ?? 0,
+    ],
+    chartColors: [
+      color.pieChart.info,
+      color.pieChart.success,
+      color.pieChart.grey,
+      color.pieChart.warning,
+      color.pieChart.error,
+    ],
+  };
+
   return (
     <Page title="Compliance and Reports">
       <TabFormat
@@ -77,7 +178,7 @@ const HrAdminEmployeeComplianceReporting = () => {
                     {
                       labelText: "Number of Tasks",
                       largeLabelText: true,
-                      value: 19,
+                      value: data?.totalTasks,
                       icon: userGroupIcon,
                       iconColorVariant: "ash",
                       valueBelow: true,
@@ -85,7 +186,7 @@ const HrAdminEmployeeComplianceReporting = () => {
                     {
                       labelText: "Completed Tasks",
                       largeLabelText: true,
-                      value: 4,
+                      value: data?.completedTasks,
                       icon: userGroupIcon,
                       iconColorVariant: "purple",
                       valueBelow: true,
@@ -93,7 +194,7 @@ const HrAdminEmployeeComplianceReporting = () => {
                     {
                       labelText: "Tasks in Progress",
                       largeLabelText: true,
-                      value: 3,
+                      value: data?.tasksInProgress,
                       icon: userGroupIcon,
                       iconColorVariant: "purple",
                       valueBelow: true,
@@ -101,7 +202,7 @@ const HrAdminEmployeeComplianceReporting = () => {
                     {
                       labelText: "Due Tasks",
                       largeLabelText: true,
-                      value: 12,
+                      value: data?.dueTasks,
                       icon: userGroupIcon,
                       iconColorVariant: "purple",
                       valueBelow: true,
@@ -115,14 +216,9 @@ const HrAdminEmployeeComplianceReporting = () => {
                     ...Array(3).fill(FieldType.text),
                     FieldType.status,
                   ]}
-                  displayedFields={["name", "assignedTo", "dueDate", "status"]}
-                  bodyRowData={Array(5).fill({
-                    name: "Data Privacy Audit",
-                    assignedTo: "Ayomide Alibaba",
-                    dueDate: "13-Jul-2024",
-                    status: "In Progress",
-                  })}
-                  statusMap={{ "In Progress": "warning" }}
+                  displayedFields={["taskName", "assignedTo", "date", "status"]}
+                  bodyRowData={tasks}
+                  statusMap={{ pending: "warning", completed: "success" }}
                   formFilter={{
                     inputFields: [
                       {
@@ -184,24 +280,11 @@ const HrAdminEmployeeComplianceReporting = () => {
                             fieldTypes={[...Array(4).fill(FieldType.text)]}
                             displayedFields={[
                               "department",
-                              "noOfEmployees",
-                              "noOfMales",
-                              "noOfFemales",
+                              "totalEmployeeNo",
+                              "male",
+                              "female",
                             ]}
-                            bodyRowData={[
-                              ...Array(5).fill({
-                                department: "Product",
-                                noOfEmployees: "32",
-                                noOfMales: "20",
-                                noOfFemales: "12",
-                              }),
-                              {
-                                department: "Total Number",
-                                noOfEmployees: 18,
-                                noOfMales: 4,
-                                noOfFemales: 6,
-                              },
-                            ]}
+                            bodyRowData={departmentStats}
                             formFilter={{
                               inputFields: [
                                 {
@@ -238,37 +321,50 @@ const HrAdminEmployeeComplianceReporting = () => {
                         </SectionCardContainer>
                         <Table
                           title="Turnover Breakdown"
+                          // headerRowData={[
+                          //   "S/N",
+                          //   "Department",
+                          //   "Total Employee Number",
+                          //   "Male",
+                          //   "Female",
+                          // ]}
                           headerRowData={[
-                            "S/N",
                             "Department",
                             "Total Employee Number",
                             "Male",
                             "Female",
                           ]}
                           fieldTypes={[...Array(5).fill(FieldType.text)]}
+                          // displayedFields={[
+                          //   "sn",
+                          //   "department",
+                          //   "noOfEmployees",
+                          //   "noOfMales",
+                          //   "noOfFemales",
+                          // ]}
                           displayedFields={[
-                            "sn",
                             "department",
-                            "noOfEmployees",
-                            "noOfMales",
-                            "noOfFemales",
+                            "totalEmployeeNo",
+                            "male",
+                            "female",
                           ]}
-                          bodyRowData={[
-                            ...Array(5).fill({
-                              sn: "01",
-                              department: "Product",
-                              noOfEmployees: "32",
-                              noOfMales: "20",
-                              noOfFemales: "12",
-                            }),
-                            {
-                              sn: undefined,
-                              department: "Total Number",
-                              noOfEmployees: 130,
-                              noOfMales: 11,
-                              noOfFemales: 6,
-                            },
-                          ]}
+                          // bodyRowData={[
+                          //   ...Array(5).fill({
+                          //     sn: "01",
+                          //     department: "Product",
+                          //     noOfEmployees: "32",
+                          //     noOfMales: "20",
+                          //     noOfFemales: "12",
+                          //   }),
+                          //   {
+                          //     sn: undefined,
+                          //     department: "Total Number",
+                          //     noOfEmployees: 130,
+                          //     noOfMales: 11,
+                          //     noOfFemales: 6,
+                          //   },
+                          // ]}
+                          bodyRowData={departmentStats}
                           formFilter={{
                             inputFields: [
                               {

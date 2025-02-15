@@ -672,7 +672,7 @@ export type AttendanceRecord = {
   attendanceId: string;
   employeeName: string;
   staffId: string;
-  department: string;
+  department: { departmentId: string; departmentName: string };
   jobTitle: string;
   date: string; // ISO date string
   clockIn: string; // ISO date string
@@ -706,4 +706,176 @@ export type PaginatedDevices<T> = {
   totalPages: number;
   currentPage: number;
   devices: T[];
+};
+
+export type AttendanceResponse = {
+  data: AttendanceRecord[];
+  total: number;
+  totalEmployees: number;
+  totalDaysAnalyzed: number;
+  statusCounts: {
+    null?: number;
+    late?: number;
+    on_leave?: number;
+  };
+  currentPage: number;
+  totalPages: number;
+};
+
+type LeaveRecord = {
+  employee: {
+    employmentInformation: {
+      department: {
+        departmentName: string;
+        id: string;
+      };
+      staffId: string;
+      id: string;
+    };
+    personalInfo: {
+      firstName: string;
+      lastName: string;
+      id: string;
+    };
+    id: string;
+  };
+  leaveType: {
+    name: string;
+    description: string;
+    numberOfDays: number;
+    company: string;
+    createdAt: string;
+    updatedAt: string;
+    id: string;
+  };
+  startDate: string;
+  endDate: string;
+  numberOfDays: number;
+  status: string;
+  reliefOfficer: string;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  approvedAt?: string;
+  user: {
+    employmentInformation: {
+      department: {
+        departmentName: string;
+        id: string;
+      };
+      staffId: string;
+      id: string;
+    };
+    personalInfo: {
+      firstName: string;
+      lastName: string;
+      id: string;
+    };
+    id: string;
+  };
+  id: string;
+};
+
+export type LeaveResponse = {
+  data: LeaveRecord[];
+  totalPages: number;
+  currentPage: number;
+  count: number;
+  totalDaysOnLeave: number;
+};
+
+export type Task = {
+  taskName: string;
+  status: string;
+  description: string;
+  label: string;
+  dueDate: string;
+  employees: {
+    personalInfo: {
+      firstName: string;
+      lastName: string;
+      id: string;
+    };
+    id: string;
+  }[];
+  deletedAt: string | null;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+};
+
+type DepartmentStats = {
+  totalEmployees: number;
+  male: number;
+  female: number;
+};
+
+export interface PaginatedResponse8<T> {
+  data: T;
+  meta: {
+    page: number;
+    limit: number;
+    itemCount: number;
+    pageCount: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+  };
+}
+
+export type EmployeeDistribution = {
+  [departmentName: string]: DepartmentStats;
+};
+
+type GenderStats = {
+  Male: number;
+  Female: number;
+};
+
+type EmploymentTypeStats = {
+  FullTime: number;
+  PartTime: number;
+  Contract: number;
+  Intern: number;
+  Freelancer: number;
+};
+
+type EmploymentStatusStats = {
+  Active: number;
+  OnLeave: number;
+  Probation: number;
+  Resigned: number;
+  Terminated: number;
+};
+
+export type EmployeeStats = {
+  gender: GenderStats;
+  employmentType: EmploymentTypeStats;
+  employmentStatus: EmploymentStatusStats;
+};
+
+type LeaveType = {
+  name: string;
+  description: string;
+  numberOfDays: number;
+  company: string;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  id: string;
+};
+
+export type LeaveRequest = {
+  employee: string;
+  leaveType: LeaveType;
+  startDate: string; // ISO date string
+  endDate: string; // ISO date string
+  numberOfDays: number;
+  status: "approved" | "pending" | "rejected"; // Adjust as needed
+  reliefOfficer: string;
+  company: string;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  approvedAt?: string; // Optional because it might not exist for pending/rejected leaves
+  user: string;
+  id: string;
 };
