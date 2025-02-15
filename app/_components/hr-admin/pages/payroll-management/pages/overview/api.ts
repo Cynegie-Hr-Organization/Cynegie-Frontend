@@ -16,6 +16,7 @@ import {
   EmployeeUpdateRequest,
   FetchParams,
   FetchResponse,
+  LeaveRequest,
   LeaveResponse,
   PaginatedDevices,
   PaginatedResponse2,
@@ -405,4 +406,15 @@ export const getDepartmentStats = async (
     },
     params: params,
   }) as Promise<PaginatedResponse8<EmployeeDistribution>>;
+};
+
+export const getLeaveRequest = async (id: string): Promise<LeaveRequest> => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/leave/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`, // Add session token to Authorization header
+    },
+  }) as Promise<LeaveRequest>;
 };

@@ -853,3 +853,29 @@ export type EmployeeStats = {
   employmentType: EmploymentTypeStats;
   employmentStatus: EmploymentStatusStats;
 };
+
+type LeaveType = {
+  name: string;
+  description: string;
+  numberOfDays: number;
+  company: string;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  id: string;
+};
+
+export type LeaveRequest = {
+  employee: string;
+  leaveType: LeaveType;
+  startDate: string; // ISO date string
+  endDate: string; // ISO date string
+  numberOfDays: number;
+  status: "approved" | "pending" | "rejected"; // Adjust as needed
+  reliefOfficer: string;
+  company: string;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  approvedAt?: string; // Optional because it might not exist for pending/rejected leaves
+  user: string;
+  id: string;
+};

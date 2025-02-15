@@ -7,7 +7,9 @@ import Page from "@/app/_components/shared/page";
 import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import SectionCardContainer from "@/app/_components/shared/section-with-cards/container";
 import { icon, route } from "@/constants";
-import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { useParams, useRouter } from "next/navigation";
+import { getLeaveRequest } from "../../../payroll-management/pages/overview/api";
 import useApprovalConfirmationModal from "../hooks/useApprovalConfirmationModal";
 
 const HrAdminEmployeeManagementApprovalRequestDetails = () => {
@@ -17,6 +19,15 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
     setOpenConfirmationModal,
     confirmationModalProps,
   } = useApprovalConfirmationModal();
+
+  const { slug } = useParams();
+
+  const { data } = useQuery({
+    queryKey: ["leave-request", slug],
+    queryFn: () => {
+      if (typeof slug === "string") getLeaveRequest(slug ?? "");
+    },
+  });
 
   return (
     <Page
@@ -112,7 +123,7 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
             ...confirmationModalProps.buttonTwo,
             onClick: () =>
               router.push(
-                route.hrAdmin.employeeManagement.approvalManagement.home,
+                route.hrAdmin.employeeManagement.approvalManagement.home
               ),
           }}
         />

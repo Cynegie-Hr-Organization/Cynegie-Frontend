@@ -161,7 +161,7 @@ const HrAdminEmployeeManagementApproval = () => {
           rejected: "error",
         }}
         fieldActionMap={{
-          Pending: [
+          pending: [
             {
               name: "View Details",
               onClick: () =>
@@ -177,6 +177,16 @@ const HrAdminEmployeeManagementApproval = () => {
             {
               name: "Reject",
               onClick: () => {},
+            },
+          ],
+          approved: [
+            {
+              name: "View Details",
+              onClick: () =>
+                router.push(
+                  route.hrAdmin.employeeManagement.approvalManagement
+                    .requestDetails
+                ),
             },
           ],
         }}
