@@ -4,18 +4,7 @@ import AppInputText from "@/app/_components/shared/input-text";
 import { ISuperAdminSettings } from "@/app/_core/interfaces/super-admin";
 import { FaCirclePlus } from "react-icons/fa6";
 
-const ApprovalAndWorkflowSettingsForm = ({ settingsData }: {
-  settingsData: {
-    formData: Partial<ISuperAdminSettings>,
-    setFormData: (settings: Partial<ISuperAdminSettings>) => void,
-    isLoading: boolean
-  }
-}) => {
-
-  const { settings } = settingsData?.formData ?? {}
-  const { approvalWorkflowSettings } = settings ?? {}
-
-  const { stages } = approvalWorkflowSettings ?? {}
+const ApprovalAndWorkflowSettingsForm = () => {
 
   return (
     <form className="p-4 md:p-6 space-y-4">

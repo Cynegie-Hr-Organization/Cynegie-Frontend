@@ -1,21 +1,15 @@
 'use client';
 
+import useFormStore from "@/app/(pages)/super-admin/(pages)/settings/(forms)/form-state";
 import AppCheckbox from "@/app/_components/shared/checkbox";
-import { AppDatePicker } from "@/app/_components/shared/date-picker";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import { AppFileUpload } from "@/app/_components/shared/file-upload";
 import AppInputText from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
-import { ISuperAdminSettings, NotificationType } from "@/app/_core/interfaces/super-admin";
+import { NotificationType } from "@/app/_core/interfaces/super-admin";
 
-const GeneralSettingsForm = ({ settingsData }: {
-  settingsData: {
-    formData: Partial<ISuperAdminSettings>,
-    setFormData: (settings: Partial<ISuperAdminSettings>) => void,
-    isLoading: boolean
-  }
-}) => {
-  const { formData: generalSettings, setFormData: setGeneralSettings, isLoading } = settingsData
+const GeneralSettingsForm = () => {
+  const { data, setData } = useFormStore();
 
   return (
     <form className="p-4 md:p-6 space-y-4">
@@ -26,25 +20,22 @@ const GeneralSettingsForm = ({ settingsData }: {
           label="Company Name"
           id="company-name"
           placeholder="Enter company name"
-          value={generalSettings.name ?? ''}
-          onChange={(e) => setGeneralSettings({ ...generalSettings, name: e.target.value })}
-          isLoadingContent={isLoading}
+          value={data?.name ?? ''}
+          onChange={(e) => setData({ ...data, name: e.target.value })}
         />
         <AppInputText
           label="Company Address"
           id="company-address"
           placeholder="Enter company address"
-          value={generalSettings.address ?? ''}
-          onChange={(e) => setGeneralSettings({ ...generalSettings, address: e.target.value })}
-          isLoadingContent={isLoading}
+          value={data?.address ?? ''}
+          onChange={(e) => setData({ ...data, address: e.target.value })}
         />
         <AppInputText
           label="Company Email Address"
           id="company-email-address"
           placeholder="Enter company email address"
-          value={generalSettings.email ?? ''}
-          onChange={(e) => setGeneralSettings({ ...generalSettings, email: e.target.value })}
-          isLoadingContent={isLoading}
+          value={data?.email ?? ''}
+          onChange={(e) => setData({ ...data, email: e.target.value })}
         />
       </div>
 
@@ -54,14 +45,13 @@ const GeneralSettingsForm = ({ settingsData }: {
           label="Company Phone Number"
           id="company-phone-number"
           placeholder="Enter company phone number"
-          value={generalSettings.phone ?? 0}
-          onChange={(e) => setGeneralSettings({ ...generalSettings, phone: e.target.value })}
-          isLoadingContent={isLoading}
+          value={data?.phone ?? 0}
+          onChange={(e) => setData({ ...data, phone: e.target.value })}
         />
         <AppMultipleSelect
           label="Time Zone"
           placeholder="Enter time zone"
-          selectedValues={[...new Set(generalSettings?.timeZone?.split(", "))]}
+          selectedValues={[...new Set(data?.timeZone?.split(", "))]}
           items={[
             { label: "GMT +0", value: "gmt+0" },
             { label: "PST", value: "pst" },
@@ -69,18 +59,18 @@ const GeneralSettingsForm = ({ settingsData }: {
             { label: "GMT", value: "gmt" },
             { label: "CET", value: "cet" }
           ]}
-          onSelectionChange={(values) => setGeneralSettings({ ...generalSettings, timeZone: values.map((value) => value).join(", ") })}
+          onSelectionChange={(values) => setData({ ...data, timeZone: values.map((value) => value).join(", ") })}
         />
         <AppSelect
           label="Date Format"
           placeholder="Select date format"
-          value={generalSettings?.dateFormat ?? 'DD/MM/YYYY'}
+          value={data?.dateFormat ?? 'DD/MM/YYYY'}
           listItems={[
             { label: "DD/MM/YYYY", value: "dd-/mm/yyyy" },
             { label: "MM/DD/YYYY", value: "MM/DD/YYYY" },
             { label: "YYYY-MM-DD", value: "YYYY-MM-DD" }
           ]}
-          onChange={(value) => setGeneralSettings({ ...generalSettings, dateFormat: value })}
+          onChange={(value) => setData({ ...data, dateFormat: value })}
         />
         {/* <AppDatePicker
           label="Time Zone"
@@ -96,7 +86,7 @@ const GeneralSettingsForm = ({ settingsData }: {
         <AppMultipleSelect
           label="Language Preference"
           placeholder="Select language preference"
-          selectedValues={[...new Set(generalSettings?.supportedLanguages)]}
+          selectedValues={[...new Set(data?.supportedLanguages)]}
           items={[
             { label: "English", value: "english" },
             { label: "Spanish", value: "spanish" },
@@ -105,12 +95,12 @@ const GeneralSettingsForm = ({ settingsData }: {
             { label: "Arabic", value: "arabic" },
             { label: "Russian", value: "russian" },
           ]}
-          onSelectionChange={(values) => setGeneralSettings({ ...generalSettings, supportedLanguages: values })}
+          onSelectionChange={(values) => setData({ ...data, supportedLanguages: values })}
         />
         <AppMultipleSelect
           label="Notification Type"
           placeholder="Select notification type"
-          selectedValues={generalSettings?.notificationType}
+          selectedValues={data?.notificationType}
           items={[
             // { label: "None", value: "none" },
             { label: "HR Approvals", value: "hr-approvals" },
@@ -118,14 +108,17 @@ const GeneralSettingsForm = ({ settingsData }: {
             { label: "Finance Update", value: "finance-update" },
             { label: "Compliance Alert", value: "compliance-alert" }
           ]}
-          onSelectionChange={(values) => setGeneralSettings({
-            ...generalSettings, notificationType: values as NotificationType[]
+          onSelectionChange={(values) => setData({
+            ...data, notificationType: values as NotificationType[]
           })}
         />
         <AppFileUpload
           label="Company Logo"
           bottomInfo="Supported file types: PDF. Max file size allowed is 3MB."
-          onChange={(files) => { setGeneralSettings({ ...generalSettings, logo: files.map((file) => file.name).join(", ") }) }}
+          onChange={(files) => {
+            // const logoValue = files.map((file) => file.name).join(", ");
+            console.log(files)
+          }}
         />
       </div>
 
@@ -133,10 +126,10 @@ const GeneralSettingsForm = ({ settingsData }: {
       <AppCheckbox
         label="Enable System Notification"
         id="enable-dark-mode"
-        checked={generalSettings?.enableSystemNotification ?? false}
+        checked={data?.enableSystemNotification ?? false}
         onChange={(value) => {
-          setGeneralSettings({
-            ...generalSettings,
+          setData({
+            ...data,
             enableSystemNotification: value.target.checked,
           });
         }}

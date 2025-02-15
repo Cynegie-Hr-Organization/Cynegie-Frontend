@@ -33,7 +33,7 @@ export const AppFileUpload = ({ label, onChange, className, bottomInfo }: {
   };
 
   return (
-    <div className={cn("space-y-2", className)}>
+    <div className={cn("space-y-1", className)}>
       <p className="text-xs font-semibold text-black">{label}</p>
       <div className="space-y-1">
         <div className='flex flex-col border-dashed border-2 outline-none rounded-lg p-2 relative'>

@@ -13,11 +13,11 @@ export const EquipmentAccessInformation = ({ userData }: { userData?: AccessRigh
         <h3 className="text-base font-semibold text-primary">Employee Equipment</h3>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {userData?.map((item) => (
+          {/* {userData?.map((item) => (
             item.devices.map((device) => (
-              <DetailBlock key={item?._id} label="Device Category" value={device ?? 'NIL'} />
+              <DetailBlock key={item?._id} label="Device Category" value={device?.deviceName ?? 'NIL'} />
             ))
-          ))}
+          ))} */}
           {/* <DetailBlock label="Device Category" value="Macbook Pro 2022" /> */}
         </div>
       </div>

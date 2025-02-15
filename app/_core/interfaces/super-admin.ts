@@ -30,7 +30,7 @@ export type IntegrationSettings = {
 };
 
 export type ComplianceSettings = {
-  complianceReminderFrequency: TimeFrequency;
+  complianceReminderFrequency?: TimeFrequency;
   dataRetentionDuration?: number;
 };
 
@@ -40,29 +40,29 @@ export type CustomizationSettings = {
 };
 
 export type SystemSettings = {
-  approvalWorkflowSettings: ApprovalWorkflowSettings;
-  userAccessSecuritySettings: UserAccessSecuritySettings;
-  integrationSettings: IntegrationSettings;
-  complianceSettings: ComplianceSettings;
-  customizationSettings: CustomizationSettings;
+  approvalWorkflowSettings?: ApprovalWorkflowSettings;
+  userAccessSecuritySettings?: UserAccessSecuritySettings;
+  integrationSettings?: IntegrationSettings;
+  complianceSettings?: ComplianceSettings;
+  customizationSettings?: CustomizationSettings;
 };
 
 export interface ISuperAdminSettings {
-  id: string;
-  name: string;
-  status: SuperAdminStatus;
-  createdAt: string;
-  updatedAt: string;
-  address: string;
-  email: string;
-  phone: string;
-  logo: string;
-  dateFormat: string;
-  timeZone: string;
-  supportedLanguages: string[];
-  notificationType: NotificationType[];
-  enableSystemNotification: boolean;
-  settings: SystemSettings;
+  id?: string;
+  name?: string;
+  status?: SuperAdminStatus;
+  createdAt?: string;
+  updatedAt?: string;
+  address?: string;
+  email?: string;
+  phone?: string;
+  logo?: string;
+  dateFormat?: string;
+  timeZone?: string;
+  supportedLanguages?: string[];
+  notificationType?: NotificationType[];
+  enableSystemNotification?: boolean;
+  settings?: SystemSettings;
 }
 
 export type IPermissionStatus = 'active' | 'inactive' | 'suspended'
