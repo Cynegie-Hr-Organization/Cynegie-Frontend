@@ -1,43 +1,48 @@
 "use client";
 
 import AppButton from "@/app/_components/shared/button";
+import CardSkeleton from "@/app/_components/shared/skelentons/card";
+import { usePayrollCount } from "@/app/_core/use-cases/finance/usePayroll";
 import { useRouter } from "next/navigation";
 import { TiMediaStop } from "react-icons/ti";
 import PayrollManagementTable from "./table";
 
 const PayrollManagement = () => {
+  const { data, isLoading } = usePayrollCount();
+  const { pending, processed, rejected } = data ?? {}
+
   const pageCards = [
     {
       color: "#F9FAFB",
       textColor: "#344054",
       title: "Total Amount Processed",
-      description: "₦34,886,000",
+      description: `₦0`,
     },
     {
       icon: <TiMediaStop />,
       color: "#FFF5E6",
       textColor: "#FFAD33",
       title: "Pending Payrolls",
-      description: "3",
+      description: `${pending ?? '...'}`,
     },
     {
       icon: <TiMediaStop />,
       color: "#E7F6EC",
       textColor: "#0F973D",
       title: "Completed Payrolls",
-      description: "27",
+      description: `${processed ?? '...'}`,
     },
     {
       icon: <TiMediaStop />,
       color: "#FBEAE9",
       textColor: "#D42620",
       title: "Rejected Payrolls",
-      description: "80%",
+      description: `${rejected ?? '...'}`,
     },
   ];
 
   return (
-    <div className="space-y-8 my-6">
+    <div className="space-y-8 my-8">
       <PageHeader
         title="Payroll Management"
         description="Manage your payroll and organization"
@@ -46,7 +51,9 @@ const PayrollManagement = () => {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {pageCards.map((card, index) => (
+        {isLoading ? (
+          <CardSkeleton numberOfCards={pageCards.length} />
+        ) : pageCards.map((card, index) => (
           <div className="common-card space-y-5" key={index}>
             <div className="flex items-center gap-2">
               {card.icon && (

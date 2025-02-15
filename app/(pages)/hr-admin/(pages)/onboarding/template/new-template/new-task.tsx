@@ -1,10 +1,6 @@
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Avatar } from "@mui/material";
 import { ReactNode } from "react";
 import { BsPerson } from "react-icons/bs";
@@ -161,7 +157,7 @@ function PopoverMenu() {
 
 function AddTaskModal({ children }: { children: ReactNode }) {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={children}
       header={
         <DialogTitle className="">
@@ -282,13 +278,13 @@ function AddTaskModal({ children }: { children: ReactNode }) {
           </div>
         </div>
       </form>
-    </DrawerDialog>
+    </AppModal>
   );
 }
 
 export function EditTaskModal({ triggers }: { triggers: ReactNode }) {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={triggers}
       header={
         <DialogTitle className="">
@@ -409,13 +405,13 @@ export function EditTaskModal({ triggers }: { triggers: ReactNode }) {
           </div>
         </div>
       </form>
-    </DrawerDialog>
+    </AppModal>
   );
 }
 
 function ViewTaskModal({ children }: { children: ReactNode }) {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={children}
       header={
         <DialogTitle className="">
@@ -533,7 +529,7 @@ function ViewTaskModal({ children }: { children: ReactNode }) {
           </div>
         </div>
       </>
-    </DrawerDialog>
+    </AppModal>
   );
 }
 

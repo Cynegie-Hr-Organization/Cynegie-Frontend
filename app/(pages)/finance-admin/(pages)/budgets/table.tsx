@@ -1,17 +1,20 @@
 "use client";
 
+import EmptyTable from "@/app/_components/shared/empty-table";
 import { useAllBudget } from "@/app/_core/use-cases/finance/useBudget";
 import { Skeleton } from "@/components/ui/skeleton";
 import { localTime } from "@/lib/utils";
 import { RiSearchLine } from "react-icons/ri";
 
 const BudgetsTable = () => {
-  // const { selectedItems, toggleSelection, selectAll, clearSelection } = useSelection<string>()
-  // const { totalItems } = budgets?.data ?? { totalItems: 0 }
-  const { data: budgets, isLoading } = useAllBudget();
+  const { data, isLoading } = useAllBudget({});
+  const { items: budgets } = data?.data ?? {}
+
+  console.log(budgets)
+
 
   return (
-    <div className="common-card space-y-4">
+    <div className="common-card space-y-4 overflow-x-auto">
       {isLoading ? (
         <TableSkelenton />
       ) : (
@@ -31,51 +34,25 @@ const BudgetsTable = () => {
             <table className="w-full border-collapse">
               <thead className="bg-[#F7F9FC]">
                 <tr>
-                  {/* <th className='px-6 py-3 text-left'>
-                      <Checkbox
-                        id={""}
-                        className={"rounded-md border-gray-300"}
-                        checked={selectedItems.size === totalItems}
-                        onChange={handleSelectAll}
-                      />
-                    </th> */}
-                  <th className="px-4 py-3 text-left text-nowrap">
-                    Department
-                  </th>
-                  <th className="px-4 py-3 text-left text-nowrap">
-                    Start date
-                  </th>
-                  <th className="px-4 py-3 text-left text-nowrap">End date</th>
-                  <th className="px-4 py-3 text-left text-nowrap">
-                    Total Allocation
-                  </th>
-                  <th className="px-4 py-3 text-left text-nowrap">Spent</th>
-                  <th className="px-4 py-3 text-left text-nowrap">Remaining</th>
-                  <th className="px-4 py-3 text-left text-nowrap">Status</th>
+                  <th className='px-4 py-3 text-left text-nowrap'>Department</th>
+                  <th className='px-4 py-3 text-left text-nowrap'>Start date</th>
+                  <th className='px-4 py-3 text-left text-nowrap'>End date</th>
+                  <th className='px-4 py-3 text-left text-nowrap'>Total Allocation</th>
+                  <th className='px-4 py-3 text-left text-nowrap'>Spent</th>
+                  <th className='px-4 py-3 text-left text-nowrap'>Remaining</th>
+                  <th className='px-4 py-3 text-left text-nowrap'>Status</th>
                 </tr>
               </thead>
 
               <tbody>
-                {budgets?.data?.items?.reverse().map((budget, idx) => {
-                  const { department, startDate, endDate, allocation, status } =
-                    budget;
-                  const { departmentName } = department;
+                {(budgets && budgets.length > 0) ? budgets.map((budget, idx) => {
+                  const { department, startDate, endDate, allocation, status } = budget ?? {};
+                  const { departmentName } = department ?? {};
 
                   return (
-                    <tr
-                      key={idx}
-                      className="border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]"
-                    >
-                      {/* <td className='px-6 py-4'>
-                          <Checkbox
-                            id={budget.id}
-                            className={"rounded-md border-gray-300"}
-                            checked={selectedItems.has(budget.id)}
-                            onChange={(e) => toggleSelection(e.target.id)}
-                          />
-                        </td> */}
-                      <td className="px-4 py-4">
-                        <p className="text-sm">{departmentName}</p>
+                    <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
+                      <td className='px-4 py-4'>
+                        <p className='text-sm'>{departmentName}</p>
                       </td>
                       <td className="px-4 py-4">
                         <p className="text-sm">
@@ -103,7 +80,9 @@ const BudgetsTable = () => {
                       </td>
                     </tr>
                   );
-                })}
+                }) : (
+                  <EmptyTable message="No budgets found" />
+                )}
               </tbody>
             </table>
           </div>
@@ -175,3 +154,7 @@ const TableSkelenton = () => {
 };
 
 export default BudgetsTable;
+
+function useAsync(arg0: () => Promise<Partial<import("next-auth").User> | undefined>, arg1: never[]) {
+  throw new Error("Function not implemented.");
+}

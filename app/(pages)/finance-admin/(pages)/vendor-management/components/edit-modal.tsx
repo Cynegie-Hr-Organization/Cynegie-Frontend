@@ -1,25 +1,24 @@
 import AppButton from "@/app/_components/shared/button";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import AppInputText from "@/app/_components/shared/input-text";
-import {
-  useGetVendor,
-  useVendorMutations,
-} from "@/app/_core/use-cases/finance/useVendors";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { useGetVendor, useVendorMutations } from "@/app/_core/use-cases/finance/useVendors";
+import { AppModal2 } from "@/components/drawer/modal";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+
+
 
 const EditVendorModal: React.FC<{
-  trigger: React.ReactNode;
-  vendorId: string;
-}> = ({ trigger, vendorId }) => {
-  const { data: vendor, isLoading: isLoadingVendor } = useGetVendor({
-    id: vendorId,
-  });
+  vendorId: string,
+  isOpen?: boolean,
+  onClose: () => void
+}> = ({ isOpen, onClose, vendorId }) => {
+
+  const { data: vendor, isLoading: isLoadingVendor } = useGetVendor({ id: vendorId });
   const { updateVendor } = useVendorMutations({ id: vendorId });
 
   const isUpdatingVendor = updateVendor.isPending;
 
-  const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     vendorName: "",
     phoneNumber: "",
@@ -28,8 +27,9 @@ const EditVendorModal: React.FC<{
     contactPerson: "",
     // city: '',
     // state: '',
-    paymentTerms: "",
-  });
+    paymentTerms: '',
+  })
+
 
   useEffect(() => {
     if (vendor) {
@@ -47,29 +47,26 @@ const EditVendorModal: React.FC<{
   }, [vendor]);
 
   const handleSubmit = () => {
-    updateVendor.mutate(
-      { id: vendorId, body: formData },
-      {
-        onSuccess: () => setOpen(false),
-        onError: (error) => console.log(error),
+    updateVendor.mutate({ id: vendorId, body: formData }, {
+      onSuccess: () => {
+        onClose();
+        toast.success('Vendor details edited successfully');
       },
-    );
-  };
+      onError: (error) => console.log(error)
+    })
+  }
 
   return (
-    <DrawerDialog
-      open={open}
-      setOpen={setOpen}
-      trigger={trigger}
-      header={
-        <span className="font-roboto text-xl font-bold">Edit Vendor</span>
-      }
+    <AppModal2
+      open={isOpen}
+      onClose={() => onClose?.()}
+      header={<span className="font-roboto text-xl font-bold">Edit Vendor</span>}
       footer={
         <div className="flex items-center justify-center gap-4">
           <AppButton
             label="Cancel"
             className="btn-secondary w-[296px]"
-            onClick={() => setOpen(false)}
+            onClick={onClose}
           />
           <AppButton
             label="Save"
@@ -155,13 +152,13 @@ const EditVendorModal: React.FC<{
             label="Payment Terms"
             placeholder="Select payment terms"
             items={[
-              { label: "Net 30", value: "net_30" },
-              { label: "Net 45", value: "net_45" },
-              { label: "Net 60", value: "net_60" },
-              { label: "Net 70", value: "net_70" },
-              { label: "Net 80", value: "net_80" },
-              { label: "Net 90", value: "net_90" },
-              { label: "Net 100", value: "net_100" },
+              { label: "Net 30 days", value: "Net 30 days" },
+              { label: "Net 45 days", value: "Net 45 days" },
+              { label: "Net 60 days", value: "Net 60 days" },
+              { label: "Net 70 days", value: "Net 70 days" },
+              { label: "Net 80 days", value: "Net 80 days" },
+              { label: "Net 90 days", value: "Net 90 days" },
+              { label: "Net 100 days", value: "Net 100 days" },
             ]}
             selectedValues={
               formData.paymentTerms ? formData.paymentTerms.split(", ") : []
@@ -178,8 +175,8 @@ const EditVendorModal: React.FC<{
           />
         </div>
       </form>
-    </DrawerDialog>
-  );
-};
+    </AppModal2>
+  )
+}
 
 export default EditVendorModal;

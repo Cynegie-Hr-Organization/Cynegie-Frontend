@@ -6,12 +6,8 @@ import { AppDatePicker } from "@/app/_components/shared/date-picker";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
-import { DrawerDialog } from "@/components/drawer/modal";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { AppModal } from "@/components/drawer/modal";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
@@ -186,10 +182,7 @@ const SetReminderModal: React.FC<{ trigger: React.ReactNode }> = ({
   });
 
   return (
-    <DrawerDialog
-      open={isOpen}
-      setOpen={setIsOPen}
-      trigger={trigger}
+    <AppModal open={isOpen} setOpen={setIsOPen} trigger={trigger}
       header={
         <span className="flex flex-col">
           <span className="font-roboto text-sm font-bold">Set Reminder</span>
@@ -247,8 +240,13 @@ const SetReminderModal: React.FC<{ trigger: React.ReactNode }> = ({
           />
         </div>
       </form>
-    </DrawerDialog>
-  );
-};
+    </AppModal>
+  )
+}
+
+
+
+
+
 
 export default NewHireList;

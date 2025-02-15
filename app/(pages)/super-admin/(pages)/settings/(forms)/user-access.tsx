@@ -2,6 +2,7 @@ import AppCheckbox from "@/app/_components/shared/checkbox";
 import { AppTimePicker } from "@/app/_components/shared/date-picker";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import AppInputText from "@/app/_components/shared/input-text";
+import { ISuperAdminSettings } from "@/app/_core/interfaces/super-admin";
 
 const UserAcessAndSecuritySettingsForm = () => {
   return (

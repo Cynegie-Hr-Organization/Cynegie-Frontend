@@ -1,5 +1,9 @@
+import useFormStore from "@/app/(pages)/super-admin/(pages)/settings/(forms)/form-state";
 import { AppAccordion } from "@/app/(pages)/super-admin/(pages)/settings/accordion";
 import AppButton from "@/app/_components/shared/button";
+import { useSuperAdminSettings, useSuperAdminSettingsMutations } from "@/app/_core/use-cases/superadmin/useSuperAdminSettings";
+import { useAppToast } from "@/app/_hooks/toast";
+import { useEffect } from "react";
 import ApprovalAndWorkflowSettingsForm from "./(forms)/approval-and-workflow";
 import ComplianceSettingsForm from "./(forms)/compliance";
 import CustomizationSettingsForm from "./(forms)/customization";
@@ -8,7 +12,47 @@ import IntegrationSettingsForm from "./(forms)/integration";
 import SystemMaintenanceSettingsForm from "./(forms)/system-maintenance";
 import UserAcessAndSecuritySettingsForm from "./(forms)/user-access";
 
+
+
+
+
 const SettingsForm = () => {
+  const { data: generalSettings } = useSuperAdminSettings();
+  const { data, setData } = useFormStore();
+  const { updateSettings } = useSuperAdminSettingsMutations();
+  // const { data } = useSharedState({});
+  const { apptoast } = useAppToast();
+  const isUpdating = updateSettings.isPending;
+  // const router = useRouter();
+
+  useEffect(() => {
+    if (generalSettings) {
+      const { updatedAt, createdAt, } = generalSettings
+      if (!updatedAt || !createdAt) {
+        setData(generalSettings)
+      }
+    }
+  }, [generalSettings]);
+
+  // console.log('After useEffect - formData:', formData);
+
+  // if (isLoading) {
+  //   return <div>Loading settings...</div>;
+  // }
+
+  const handleSave = () => {
+    updateSettings.mutate(data, {
+      onSuccess: () => apptoast.success({ title: 'Successful', message: 'Settings updated successfully' }),
+      onError: (error) => apptoast.error({ title: `${error.name ?? 'Error'}`, message: `${error.message ?? 'Something went wrong'}` })
+    })
+  }
+
+  const handleCancel = () => {
+    if (isUpdating) {
+      updateSettings.cancel();
+    }
+  }
+
   return (
     <div className="space-y-8">
       <div className="common-card space-y-8">
@@ -75,26 +119,32 @@ const SettingsForm = () => {
       <FooterButtons
         btn1Label="Cancel"
         btn2Label="Save"
-        onBtn1Click={() => {}}
-        onBtn2Click={() => {}}
+        onBtn1Click={handleCancel}
+        onBtn2Click={handleSave}
+        isBtn2Loading={isUpdating}
+        btn2Disabled={isUpdating}
       />
     </div>
-  );
-};
+  )
+}
 
-const FooterButtons = ({
-  btn1Label,
-  btn2Label,
-  onBtn1Click,
-  onBtn2Click,
+const FooterButtons = ({ btn1Label,
+  btn2Label, onBtn1Click, onBtn2Click,
   className,
-}: {
-  btn1Label: string;
-  btn2Label: string;
-  onBtn1Click: () => void;
-  onBtn2Click: () => void;
-  className?: string;
-}) => {
+  btn1Disabled,
+  btn2Disabled,
+  isBtn1Loading,
+  isBtn2Loading }: {
+    btn1Label: string,
+    btn2Label: string,
+    onBtn1Click: () => void,
+    onBtn2Click: () => void,
+    className?: string,
+    btn1Disabled?: boolean,
+    btn2Disabled?: boolean,
+    isBtn1Loading?: boolean,
+    isBtn2Loading?: boolean
+  }) => {
   return (
     <div
       className={`flex flex-col md:flex-row justify-end gap-4 ${className ?? ""}`}
@@ -102,15 +152,18 @@ const FooterButtons = ({
       <AppButton
         label={btn1Label}
         className="btn-secondary"
+        disabled={btn1Disabled}
+        isLoading={isBtn1Loading}
         onClick={onBtn1Click}
       />
-      <AppButton
-        label={btn2Label}
-        className="disabled:btn-inactive btn-primary"
+      <AppButton label={btn2Label}
+        className="btn-primary"
+        disabled={btn2Disabled}
+        isLoading={isBtn2Loading}
         onClick={onBtn2Click}
       />
     </div>
-  );
-};
+  )
+}
 
 export default SettingsForm;

@@ -1,7 +1,7 @@
 "use client";
 
 import { DeleteSvg } from "@/app/_components/icons/custom-icons";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import { IoIosArrowDown } from "react-icons/io";
@@ -91,7 +91,7 @@ const PageHeader = () => {
 
 const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <DialogTitle className="text-lg font-bold text-center">
@@ -122,7 +122,7 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
       }
     >
       <></>
-    </DrawerDialog>
+    </AppModal>
   );
 };
 

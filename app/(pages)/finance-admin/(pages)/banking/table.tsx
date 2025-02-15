@@ -1,7 +1,7 @@
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppSelect } from "@/app/_components/shared/select";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HiDotsVertical } from "react-icons/hi";
 import { LuListFilter } from "react-icons/lu";
@@ -154,7 +154,7 @@ const TransactionsHistoryTable = () => {
 
 const PreviewModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <span className="text-lg font-bold pl-4">
@@ -174,9 +174,9 @@ const PreviewModal = ({ trigger }: { trigger: React.ReactNode }) => {
         <TransactionDetailItem label="Catergory" value="Revenue" />
         <TransactionDetailItem label="Status" pillValue="Completed" />
       </div>
-    </DrawerDialog>
-  );
-};
+    </AppModal>
+  )
+}
 
 const TransactionDetailItem = ({
   label,

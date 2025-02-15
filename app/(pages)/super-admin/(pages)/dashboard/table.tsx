@@ -2,7 +2,7 @@ import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppSelect } from "@/app/_components/shared/select";
 import AppTabs from "@/app/_components/shared/tabs";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 import {
   Popover,
@@ -386,12 +386,12 @@ const PreviewModal = ({ trigger }: { trigger: React.ReactNode }) => {
   };
 
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
-        <DialogTitle className="text-lg font-bold pl-4">
-          <p>Transaction Details</p>
-        </DialogTitle>
+        <span className="text-lg font-bold pl-4">
+          <span>Transaction Details</span>
+        </span>
       }
     >
       <div className="md:p-4 lg:p-6 p-2 space-y-4 py-5">
@@ -415,9 +415,9 @@ const PreviewModal = ({ trigger }: { trigger: React.ReactNode }) => {
           );
         })}
       </div>
-    </DrawerDialog>
-  );
-};
+    </AppModal>
+  )
+}
 
 type TransactionDetail = {
   value: string;

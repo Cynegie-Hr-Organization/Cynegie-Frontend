@@ -1,9 +1,11 @@
 import AppCheckbox from "@/app/_components/shared/checkbox";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import AppInputText from "@/app/_components/shared/input-text";
+import { ISuperAdminSettings } from "@/app/_core/interfaces/super-admin";
 import { FaCirclePlus } from "react-icons/fa6";
 
 const ApprovalAndWorkflowSettingsForm = () => {
+
   return (
     <form className="p-4 md:p-6 space-y-4">
       <h3 className="text-base font-bold">Approval And Workflow Settings</h3>
