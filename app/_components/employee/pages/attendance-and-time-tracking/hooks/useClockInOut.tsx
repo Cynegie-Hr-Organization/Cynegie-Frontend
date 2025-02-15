@@ -17,8 +17,7 @@ const useClockInOut = () => {
 
   const handleClockIn = async () => {
     try {
-      const payload = { date: new Date().toISOString() };
-      const response = await clockIn(payload);
+      const response = await clockIn();
       console.log("Clock In Response:", response);
       setToastMessage("You have successfully clocked in!");
       setToastStatus("Successful");
@@ -50,7 +49,7 @@ const useClockInOut = () => {
         throw new Error("No attendance record found.");
       }
 
-      const response = await clockOut(lastAttendanceRecord.attendanceId);
+      const response = await clockOut(lastAttendanceRecord.id);
       console.log("Clock Out Response:", response);
       setToastMessage("You have successfully clocked out!");
       setToastStatus("Successful");

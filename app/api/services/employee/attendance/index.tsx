@@ -7,18 +7,37 @@ import { baseUrl } from "@/constants/config";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/options";
 
-export interface AttendanceRecord {
-  attendanceId: string;
-  employeeName: string;
-  staffId: string;
-  department: string;
+export interface PersonalInfo {
+  firstName: string;
+  lastName: string;
+  id: string;
+}
+
+export interface EmploymentInformation {
   jobTitle: string;
+  department: string;
+  staffId: string;
+  id: string;
+}
+
+export interface Employee {
+  employmentInformation: EmploymentInformation;
+  personalInfo: PersonalInfo;
+  id: string;
+}
+
+export interface AttendanceRecord {
+  id: string;
+  employee: Employee;
   date: string;
   clockIn?: string;
   clockOut?: string;
-  totalHoursWorked?: number | null;
-  attendanceStatus: string;
-  overtime: number;
+  status: string;
+  deletedAt: string | null;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  hoursWorked: number;
 }
 
 export interface AttendanceResponse {
@@ -29,7 +48,7 @@ export interface AttendanceResponse {
   statusCounts: Record<string, number>;
 }
 
-export const clockIn = async (payload: any) => {
+export const clockIn = async () => {
   const session = await getServerSession(authOptions);
 
   const response = request("POST", `${baseUrl}/v1/attendance/clock-in`, {
@@ -37,7 +56,6 @@ export const clockIn = async (payload: any) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${session?.token}`,
     },
-    data: payload,
   });
 
   return response;
