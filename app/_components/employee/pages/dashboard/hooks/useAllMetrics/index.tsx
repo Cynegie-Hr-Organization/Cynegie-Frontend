@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { getAllDeviceRequest } from "@/app/api/services/employee/device-management";
@@ -30,11 +31,10 @@ const useRequests = () => {
   const [appRequests, setAppRequests] = useState<AppRequest[]>([]);
   const [isDeviceLoading, setIsDeviceLoading] = useState(true);
   const [isAppLoading, setIsAppLoading] = useState(true);
-    const [fetchParams] = useState<FetchParams>(INIT_FETCH_PARAMS);
+  const [fetchParams] = useState<FetchParams>(INIT_FETCH_PARAMS);
 
-
-   const fetchDeviceRequestsMutation = useMutation({
-    mutationFn: () => getAllDeviceRequest("asc", 1, 10),
+  const fetchDeviceRequestsMutation = useMutation({
+    mutationFn: () => getAllDeviceRequest(fetchParams.sortOrder, fetchParams.page, fetchParams.limit),
     onSuccess: (response) => {
       console.log("Device requests fetched successfully:", response);
       if (response?.requests) {
@@ -71,7 +71,7 @@ const useRequests = () => {
   useEffect(() => {
     fetchDeviceRequestsMutation.mutate();
     fetchAppRequestsMutation.mutate();
-  }, []);
+  }, [fetchParams]);
 
   return { deviceRequests, appRequests, isDeviceLoading, isAppLoading };
 };

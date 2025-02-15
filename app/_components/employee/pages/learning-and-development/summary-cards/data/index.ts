@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState, useCallback } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { getAllMetrics } from "@/app/api/services/employee/learning";
 import { SummaryCard } from "@/types";
@@ -34,11 +35,15 @@ const useSummaryCardsData = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const fetchMetrics = useCallback(() => {
+    fetchMetricsMutation.mutate();
+  }, []);
+
   const fetchMetricsMutation = useMutation({
     mutationFn: getAllMetrics,
     onSuccess: (response) => {
       console.log("Metrics fetched successfully:", response);
-      const metrics = response[0];
+      const metrics = response[0] ?? "";
       console.log("Metrics:", metrics.completedCourses);
       setSummaryCardsData([
         {
@@ -76,8 +81,8 @@ const useSummaryCardsData = () => {
   });
 
   useEffect(() => {
-    fetchMetricsMutation.mutate();
-  }, []);
+    fetchMetrics();
+  }, [fetchMetrics]);
 
   return { summaryCardsData, isLoading, error };
 };

@@ -13,7 +13,7 @@ const RecentActivityCardDetails = () => {
     return <div>Loading...</div>;
   }
 
-  const tasks = Object.values(boardData.tasks).slice(0, 2); // Get the first 2 tasks
+  const tasks = Object.values(boardData.tasks).slice(0, 2) ?? ""; // Get the first 2 tasks
 
   return (
     <Stack gap={2}>
