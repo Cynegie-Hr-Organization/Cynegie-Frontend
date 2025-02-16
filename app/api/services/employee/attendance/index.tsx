@@ -141,3 +141,17 @@ export const getCurrentAttendanceRecords = async () => {
 
   return response;
 };
+
+
+export const getTotalHoursWorked = async() => {
+  const session = await getServerSession(authOptions);
+
+  const response = await request("GET", `${baseUrl}/v1/attendance/weekly-hours/{employeeId}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  });
+
+  return response;
+};
