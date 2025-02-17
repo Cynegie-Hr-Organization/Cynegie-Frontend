@@ -17,9 +17,9 @@ export type ApprovalWorkflowSettings = {
 };
 
 export type UserAccessSecuritySettings = {
-  minPasswordLength: number;
-  passwordComplexity: PasswordComplexity;
-  sessionTimeout: number;
+  minPasswordLength?: number;
+  passwordComplexity?: PasswordComplexity;
+  sessionTimeout?: number;
 };
 
 export type IntegrationSettings = {
