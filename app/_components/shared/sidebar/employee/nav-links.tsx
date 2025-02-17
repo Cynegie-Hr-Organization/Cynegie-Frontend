@@ -77,7 +77,7 @@ const NavLinks = ({
       path: "/employee/performance-management",
     },
     {
-      name: "Learning Development",
+      name: "Learning and Development",
       icon: (
         <SvgIcon path={icon.graduatingCap} width={iconSize} height={iconSize} />
       ),

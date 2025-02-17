@@ -9,6 +9,29 @@ import { authOptions } from "../../../auth/[...nextauth]/options";
 import { FetchParams } from "@/types";
 
 
+export interface Department {
+  departmentName: string;
+  id: string;
+}
+
+export interface EmploymentInformation {
+  department: Department;
+  staffId: string;
+  id: string;
+}
+
+export interface PersonalInfo {
+  firstName: string;
+  lastName: string;
+  id: string;
+}
+
+export interface Employee {
+  employmentInformation: EmploymentInformation;
+  personalInfo: PersonalInfo;
+  id: string;
+}
+
 export interface LeaveType {
   name: string;
   description: string;
@@ -20,7 +43,7 @@ export interface LeaveType {
 }
 
 export interface LeaveRequest {
-  employee: string;
+  employee: Employee;
   leaveType: LeaveType;
   startDate: string;
   endDate: string;
@@ -30,7 +53,7 @@ export interface LeaveRequest {
   company: string;
   createdAt: string;
   updatedAt: string;
-  user: string;
+  user: Employee;
   id: string;
 }
 
@@ -39,13 +62,9 @@ export interface LeaveRequestResponse {
   totalPages: number;
   currentPage: number;
   count: number;
+  totalDaysOnLeave: number;
 }
 
-export interface GetAllLeaveRequestResponse {
-  status: number;
-  message: string;
-  data: LeaveRequestResponse;
-}
 
 
 
@@ -88,7 +107,7 @@ export const requestLeave = async (payload: any) => {
 
 export const getAllLeaveRequest = async (
   fetchParams : FetchParams
-): Promise<GetAllLeaveRequestResponse> => {
+): Promise<LeaveRequestResponse> => {
   const session = await getServerSession(authOptions);
 
   const response = await request("GET", `${baseUrl}/v1/leave/mine`, {
@@ -99,7 +118,7 @@ export const getAllLeaveRequest = async (
     params: fetchParams,
   });
 
-  return response as GetAllLeaveRequestResponse;
+  return response as LeaveRequestResponse;
 };
 
 export const fetchLeaveRequestById = async (id: any) => {
