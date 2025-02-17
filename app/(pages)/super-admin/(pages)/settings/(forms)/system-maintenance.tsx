@@ -1,6 +1,38 @@
+import useFormStore from "@/app/(pages)/super-admin/(pages)/settings/(forms)/form-state";
 import { AppSelect } from "@/app/_components/shared/select";
+import { ErrorLevel, TimeFrequency } from "@/app/_core/interfaces/super-admin";
 
 const SystemMaintenanceSettingsForm = () => {
+  const { data, setData } = useFormStore();
+
+  const handleScheduleChange = (value: string) => {
+    setData({
+      ...data,
+      settings: {
+        ...data?.settings,
+        integrationSettings: {
+          ...(data?.settings?.integrationSettings ?? {}),
+          scheduleDataBackups: value as TimeFrequency
+        }
+      }
+    })
+  }
+
+
+  const handleErrorLevelChange = (value: string) => {
+    setData({
+      ...data,
+      settings: {
+        ...data?.settings,
+        integrationSettings: {
+          ...(data?.settings?.integrationSettings ?? {}),
+          errorLogLevel: value as ErrorLevel
+        }
+      }
+    })
+  }
+
+
   return (
     <form className="p-4 md:p-6 space-y-4">
       <h3 className="text-base font-bold">System Maintenance Settings</h3>
@@ -14,7 +46,8 @@ const SystemMaintenanceSettingsForm = () => {
             { label: "Weekly", value: "weekly" },
             { label: "Monthly", value: "monthly" },
           ]}
-          onChange={() => {}}
+          value={data?.settings?.integrationSettings?.scheduleDataBackups}
+          onChange={handleScheduleChange}
         />
 
         <AppSelect
@@ -25,7 +58,8 @@ const SystemMaintenanceSettingsForm = () => {
             { label: "Warnings", value: "warnings" },
             { label: "All Logs", value: "all-logs" },
           ]}
-          onChange={() => {}}
+          value={data?.settings?.integrationSettings?.errorLogLevel}
+          onChange={handleErrorLevelChange}
         />
       </div>
     </form>

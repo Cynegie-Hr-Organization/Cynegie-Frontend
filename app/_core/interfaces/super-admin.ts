@@ -23,10 +23,10 @@ export type UserAccessSecuritySettings = {
 };
 
 export type IntegrationSettings = {
-  api: string;
-  thirdPartyIntegrations: string[];
-  scheduleDataBackups: TimeFrequency;
-  errorLogLevel: ErrorLevel;
+  api?: string;
+  thirdPartyIntegrations?: string[];
+  scheduleDataBackups?: TimeFrequency;
+  errorLogLevel?: ErrorLevel;
 };
 
 export type ComplianceSettings = {
