@@ -46,14 +46,6 @@ export const useAllPermissions = ({
   const search = searchQuery ?? searchParams.get('search') ?? undefined;
   const status = (overrideStatus ?? searchParams.get('status')) as any;
 
-  let queryStr = `?`;
-
-  if (sortOrder) queryStr += `sortOrder=${sortOrder}`;
-  if (page) queryStr += `&page=${page}`;
-  if (limit) queryStr += `&limit=${limit}`;
-  if (status) queryStr += `&status=${status}`;
-  if (search) queryStr += `&search=${search}`;
-
 
   return useQuery({
     queryKey: userId ? [...filteredQueryKey(queryKey), userId, search, sortOrder, page, limit]

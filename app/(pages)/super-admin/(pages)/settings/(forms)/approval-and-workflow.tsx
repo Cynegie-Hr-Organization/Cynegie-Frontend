@@ -18,7 +18,7 @@ const ApprovalAndWorkflowSettingsForm = () => {
   }, [data]);
 
   const handleAddStage = () => {
-    const newStageNumber = stages.length + 1;
+    // const newStageNumber = stages.length + 1;
     const newStage = {
       stageName: '',
       approvers: [],

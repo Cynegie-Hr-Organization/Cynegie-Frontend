@@ -10,17 +10,16 @@ import useSelection from "@/app/_hooks/useSelection";
 import { AppModal } from "@/components/drawer/modal";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { localTime } from "@/lib/utils";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 
-const TableSkelenton = dynamic(
-  () => import("@/app/_components/shared/skelentons/table"),
-  { ssr: false },
-);
+// const TableSkelenton = dynamic(
+//   () => import("@/app/_components/shared/skelentons/table"),
+//   { ssr: false },
+// );
 
 const PayrollManagementTable = () => {
   const { selectedItems, toggleSelection, selectAll, clearSelection } = useSelection<string>()

@@ -54,6 +54,7 @@ const PayrollApproval = () => {
           btn2Label="Approve"
           onBtn1Click={() => router.back()}
           onBtn2Click={() => handleApprove()}
+          btn2Disabled={isApprovingPayroll}
         />
       </div>
     </div>
@@ -72,8 +73,8 @@ const TransactionDetailItem = ({ label, value, pillValue }: { label: string, val
   )
 }
 
-const FooterButtons = ({ btn1Label, btn2Label, onBtn1Click, onBtn2Click, className }: {
-  btn1Label: string, btn2Label: string, onBtn1Click: () => void, onBtn2Click: () => void, className?: string
+const FooterButtons = ({ btn1Label, btn2Label, onBtn1Click, onBtn2Click, btn2Disabled, className }: {
+  btn1Label: string, btn2Label: string, onBtn1Click: () => void, onBtn2Click: () => void, btn2Disabled: boolean, className?: string
 }) => {
   return (
     <div className={`flex flex-col md:flex-row justify-end gap-4 ${className ?? ''}`}>
@@ -88,6 +89,7 @@ const FooterButtons = ({ btn1Label, btn2Label, onBtn1Click, onBtn2Click, classNa
             label={btn2Label}
             className="disabled:btn-inactive btn-primary"
             onClick={onBtn2Click}
+            disabled={btn2Disabled}
           />
         }
       />

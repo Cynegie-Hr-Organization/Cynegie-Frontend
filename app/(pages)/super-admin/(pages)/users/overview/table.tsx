@@ -224,7 +224,7 @@ function PopoverMenu({ user }: { user?: IEmployee }) {
 
 
 const DeleteModal = ({ isOpen, onClose, employee }: { isOpen: boolean, onClose: () => void, employee?: IEmployee }) => {
-  const { firstName, lastName, id } = employee?.personalInfo ?? {}
+  const { firstName, lastName } = employee?.personalInfo ?? {}
   const [deletionReason, setDeletionReason] = useState('');
   const { deleteUser } = useEmployeeMutations();
   const isLoading = deleteUser.isPending;

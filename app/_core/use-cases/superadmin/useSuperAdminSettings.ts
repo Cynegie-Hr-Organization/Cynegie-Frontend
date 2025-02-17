@@ -3,10 +3,9 @@ import { ISuperAdminSettings } from "@/app/_core/interfaces/super-admin"
 import { handleError, Http } from "@/app/_core/utils/axios"
 import { queryKeys } from "@/app/_core/utils/queryKeys"
 import { headers } from "@/app/_core/utils/session"
-import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { getSession } from "next-auth/react"
 
-const queryClient = new QueryClient();
 
 export const useSuperAdminSettings = () => {
   return useQuery({

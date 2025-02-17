@@ -32,13 +32,6 @@ export const useEmployees = ({
   const search = searchQuery ?? searchParams.get('search') ?? undefined;
   const status = (overrideStatus ?? searchParams.get('status')) as IEmployeeStatus;
 
-  let queryStr = `?`;
-
-  if (sortOrder) queryStr += `sortOrder=${sortOrder}`;
-  if (page) queryStr += `&page=${page}`;
-  if (limit) queryStr += `&limit=${limit}`;
-  if (status) queryStr += `&status=${status}`;
-  if (search) queryStr += `&search=${search}`;
 
   return useQuery({
     queryKey: employeeId ? [...filteredQueryKey(queryKey), employeeId, status, search, sortOrder, page, limit]

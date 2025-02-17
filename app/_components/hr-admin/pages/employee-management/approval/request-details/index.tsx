@@ -7,7 +7,7 @@ import Page from "@/app/_components/shared/page";
 import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import SectionCardContainer from "@/app/_components/shared/section-with-cards/container";
 import { icon, route } from "@/constants";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import useApprovalConfirmationModal from "../hooks/useApprovalConfirmationModal";
 
 const HrAdminEmployeeManagementApprovalRequestDetails = () => {
@@ -18,7 +18,7 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
     confirmationModalProps,
   } = useApprovalConfirmationModal();
 
-  const { slug } = useParams();
+  // const { slug } = useParams();
 
   // const { data } = useQuery({
   //   queryKey: ["leave-request", slug],

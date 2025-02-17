@@ -10,7 +10,7 @@ const BudgetsTable = () => {
   const { data, isLoading } = useAllBudget({});
   const { items: budgets } = data?.data ?? {}
 
-  console.log(budgets)
+  // console.log(budgets)
 
 
   return (
@@ -154,7 +154,3 @@ const TableSkelenton = () => {
 };
 
 export default BudgetsTable;
-
-function useAsync(arg0: () => Promise<Partial<import("next-auth").User> | undefined>, arg1: never[]) {
-  throw new Error("Function not implemented.");
-}

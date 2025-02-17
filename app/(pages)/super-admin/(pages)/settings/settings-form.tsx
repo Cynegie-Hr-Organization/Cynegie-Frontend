@@ -3,7 +3,7 @@ import { AppAccordion } from "@/app/(pages)/super-admin/(pages)/settings/accordi
 import AppButton from "@/app/_components/shared/button";
 import { useSuperAdminSettings, useSuperAdminSettingsMutations } from "@/app/_core/use-cases/superadmin/useSuperAdminSettings";
 import { useAppToast } from "@/app/_hooks/toast";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import ApprovalAndWorkflowSettingsForm from "./(forms)/approval-and-workflow";
 import ComplianceSettingsForm from "./(forms)/compliance";
 import CustomizationSettingsForm from "./(forms)/customization";
@@ -19,26 +19,27 @@ const SettingsForm = () => {
   const { apptoast } = useAppToast();
   const isUpdating = updateSettings.isPending;
 
-  const settings = useMemo(() => {
-    if (generalSettings) {
-      const { updatedAt, createdAt, } = generalSettings
-      if (!updatedAt || !createdAt) {
-        setData(generalSettings)
-        // console.log('***************', data);
-      }
-      // console.log('***************', data);
-    }
-    return generalSettings
-  }, [generalSettings])
+  // const settings = useMemo(() => {
+  //   if (generalSettings) {
+  //     const { updatedAt, createdAt, } = generalSettings
+  //     if (!updatedAt || !createdAt) {
+  //       setData(generalSettings)
+  //       // console.log('***************', data);
+  //     }
+  //     // console.log('***************', data);
+  //   }
+  //   return generalSettings
+  // }, [generalSettings])
 
   useEffect(() => {
-    if (settings) {
-      setData(settings)
+    if (generalSettings) {
+      setData(generalSettings)
     }
-  }, [settings]);
+  }, [generalSettings]);
 
   const handleSave = () => {
     const { id, status, createdAt, updatedAt, ...editedSettings } = data ?? {};
+    console.log({ id, status, createdAt, updatedAt })
 
     console.log(editedSettings)
 

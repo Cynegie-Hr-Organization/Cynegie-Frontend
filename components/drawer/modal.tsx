@@ -5,7 +5,6 @@ import { useMediaQuery } from "@/app/_hooks/use-media-query";
 // import { Button } from "@/components/ui/button"
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -22,7 +21,6 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { ReactNode } from "react";
-import { IoCloseOutline } from "react-icons/io5";
 
 
 

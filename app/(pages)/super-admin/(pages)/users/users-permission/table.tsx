@@ -268,7 +268,7 @@ const DeleteModal = ({ isOpen, onClose, user }: ActionModalProps) => {
           <AppButton
             label="Delete Admin"
             className="bg-red-700 text-white md:w-[150px] w-full border border-red-700"
-            onClick={() => onClose()}
+            onClick={handleDelete}
           />
         </div>
       }

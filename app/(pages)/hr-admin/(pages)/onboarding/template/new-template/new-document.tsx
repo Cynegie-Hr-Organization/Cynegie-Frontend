@@ -10,7 +10,7 @@ import { CiCalendarDate } from "react-icons/ci";
 import { GoPlus } from "react-icons/go";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { IoCloseCircle } from "react-icons/io5";
-import { LuListFilter, LuPlusCircle } from "react-icons/lu";
+import { LuCirclePlus, LuListFilter } from "react-icons/lu";
 import { ReusableSelect } from "./components/ReusableSelect";
 
 const NewDocument = () => {

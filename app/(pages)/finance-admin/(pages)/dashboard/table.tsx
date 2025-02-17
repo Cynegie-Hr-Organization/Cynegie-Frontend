@@ -21,7 +21,7 @@ import { RiSearchLine } from "react-icons/ri";
 
 const TransactionsTable = () => {
   const { data: transactions, isLoading: isLoadingTransactions } = useMyTransfers({})
-  const { transfers, totalBeneficiaries, totalPages, currentPage } = transactions ?? {}
+  const { transfers } = transactions ?? {}
 
   console.log(transfers)
 

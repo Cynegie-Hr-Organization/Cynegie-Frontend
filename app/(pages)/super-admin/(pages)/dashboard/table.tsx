@@ -3,7 +3,6 @@ import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppSelect } from "@/app/_components/shared/select";
 import AppTabs from "@/app/_components/shared/tabs";
 import { AppModal } from "@/components/drawer/modal";
-import { DialogTitle } from "@/components/ui/dialog";
 import {
   Popover,
   PopoverContent,

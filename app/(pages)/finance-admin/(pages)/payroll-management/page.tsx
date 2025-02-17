@@ -4,6 +4,7 @@ import AppButton from "@/app/_components/shared/button";
 import CardSkeleton from "@/app/_components/shared/skelentons/card";
 import { usePayrollCount } from "@/app/_core/use-cases/finance/usePayroll";
 import { useRouter } from "next/navigation";
+import { Suspense } from "react";
 import { TiMediaStop } from "react-icons/ti";
 import PayrollManagementTable from "./table";
 
@@ -42,42 +43,44 @@ const PayrollManagement = () => {
   ];
 
   return (
-    <div className="space-y-8 my-8">
-      <PageHeader
-        title="Payroll Management"
-        description="Manage your payroll and organization"
-        buttonLabel="Payroll Report"
-        to="/finance-admin/payroll-management/report"
-      />
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="space-y-8 my-8">
+        <PageHeader
+          title="Payroll Management"
+          description="Manage your payroll and organization"
+          buttonLabel="Payroll Report"
+          to="/finance-admin/payroll-management/report"
+        />
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {isLoading ? (
-          <CardSkeleton numberOfCards={pageCards.length} />
-        ) : pageCards.map((card, index) => (
-          <div className="common-card space-y-5" key={index}>
-            <div className="flex items-center gap-2">
-              {card.icon && (
-                <div
-                  className="rounded-full p-2"
-                  style={{ backgroundColor: card.color, color: card.textColor }}
-                >
-                  {card.icon}
-                </div>
-              )}
-              <h3 className="font-roboto lg:text-xs text-sm text-[#848897] font-medium">
-                {card.title}
-              </h3>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {isLoading ? (
+            <CardSkeleton numberOfCards={pageCards.length} />
+          ) : pageCards.map((card, index) => (
+            <div className="common-card space-y-5" key={index}>
+              <div className="flex items-center gap-2">
+                {card.icon && (
+                  <div
+                    className="rounded-full p-2"
+                    style={{ backgroundColor: card.color, color: card.textColor }}
+                  >
+                    {card.icon}
+                  </div>
+                )}
+                <h3 className="font-roboto lg:text-xs text-sm text-[#848897] font-medium">
+                  {card.title}
+                </h3>
+              </div>
+              <p className="font-roboto text-xl font-bold">{card.description}</p>
             </div>
-            <p className="font-roboto text-xl font-bold">{card.description}</p>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      <div className="space-y-4">
-        <h3 className="font-roboto text-xl font-bold">Payrolls</h3>
-        <PayrollManagementTable />
+        <div className="space-y-4">
+          <h3 className="font-roboto text-xl font-bold">Payrolls</h3>
+          <PayrollManagementTable />
+        </div>
       </div>
-    </div>
+    </Suspense>
   );
 };
 

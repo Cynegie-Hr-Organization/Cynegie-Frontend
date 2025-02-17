@@ -15,7 +15,6 @@ export const EmploymentInformationComponent = ({ userData }: { userData?: Employ
     staffId,
     probationPeriod,
     contractEndDate,
-    createdAt,
     jobDescription,
     employmentType,
     workEmail
