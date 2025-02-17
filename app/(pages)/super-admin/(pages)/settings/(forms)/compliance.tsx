@@ -3,9 +3,6 @@ import { AppSelect } from "@/app/_components/shared/select";
 import { TimeFrequency } from "@/app/_core/interfaces/super-admin";
 
 const ComplianceSettingsForm = () => {
-
-
-
   const { setData, data } = useFormStore();
 
   return (
@@ -39,9 +36,9 @@ const ComplianceSettingsForm = () => {
           placeholder="Select data retention duration"
           value={`${data?.settings?.complianceSettings?.dataRetentionDuration}`}
           listItems={[
-            { label: "6 months", value: `${6 * 30}` },
-            { label: "1 year", value: `${1 * 365}` },
-            { label: "2 years", value: `${2 * 365}` }
+            { label: "6 months", value: '6-months' },
+            { label: "1 year", value: '1-year' },
+            { label: "2 years", value: '2-years' }
           ]}
           onChange={(value) => {
             setData({
@@ -50,10 +47,11 @@ const ComplianceSettingsForm = () => {
                 ...data?.settings,
                 complianceSettings: {
                   ...(data?.settings?.complianceSettings ?? {}),
-                  dataRetentionDuration: parseInt(value, 10)
+                  // dataRetentionDuration: parseInt(value, 10)
+                  dataRetentionDuration: (value ?? '')
                 }
               }
-            })
+            });
           }}
         />
       </div>

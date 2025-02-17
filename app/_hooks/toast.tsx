@@ -130,7 +130,7 @@ const CustomToast = ({ type, message, title, onClose }: {
 
   return (
     <div className={`w-full px-4 py-3 rounded-sm bg-white shadow-md border-l-[6px] ${border} flex gap-x-2`}>
-      <div className={`border border-${iconStyle} bg-${iconStyle} rounded-lg w-[24px] h-[24px] flex items-center justify-center`}>
+      <div className={`border border-${iconStyle} bg-${iconStyle} rounded-lg min-w-[24px] h-[24px] flex items-center justify-center`}>
         <Icon className={iconStyle} size={10} />
       </div>
       <div className="space-y-0">

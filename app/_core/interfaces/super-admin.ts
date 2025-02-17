@@ -31,7 +31,7 @@ export type IntegrationSettings = {
 
 export type ComplianceSettings = {
   complianceReminderFrequency?: TimeFrequency;
-  dataRetentionDuration?: number;
+  dataRetentionDuration?: string;
 };
 
 export type CustomizationSettings = {

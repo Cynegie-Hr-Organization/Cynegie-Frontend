@@ -3,7 +3,7 @@ import { AppAccordion } from "@/app/(pages)/super-admin/(pages)/settings/accordi
 import AppButton from "@/app/_components/shared/button";
 import { useSuperAdminSettings, useSuperAdminSettingsMutations } from "@/app/_core/use-cases/superadmin/useSuperAdminSettings";
 import { useAppToast } from "@/app/_hooks/toast";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import ApprovalAndWorkflowSettingsForm from "./(forms)/approval-and-workflow";
 import ComplianceSettingsForm from "./(forms)/compliance";
 import CustomizationSettingsForm from "./(forms)/customization";
@@ -12,45 +12,46 @@ import IntegrationSettingsForm from "./(forms)/integration";
 import SystemMaintenanceSettingsForm from "./(forms)/system-maintenance";
 import UserAcessAndSecuritySettingsForm from "./(forms)/user-access";
 
-
-
-
-
 const SettingsForm = () => {
   const { data: generalSettings } = useSuperAdminSettings();
   const { data, setData } = useFormStore();
   const { updateSettings } = useSuperAdminSettingsMutations();
-  // const { data } = useSharedState({});
   const { apptoast } = useAppToast();
   const isUpdating = updateSettings.isPending;
-  // const router = useRouter();
 
-  useEffect(() => {
+  const settings = useMemo(() => {
     if (generalSettings) {
       const { updatedAt, createdAt, } = generalSettings
       if (!updatedAt || !createdAt) {
         setData(generalSettings)
+        // console.log('***************', data);
       }
+      // console.log('***************', data);
     }
-  }, [generalSettings]);
+    return generalSettings
+  }, [generalSettings])
 
-  // console.log('After useEffect - formData:', formData);
-
-  // if (isLoading) {
-  //   return <div>Loading settings...</div>;
-  // }
+  useEffect(() => {
+    if (settings) {
+      setData(settings)
+    }
+  }, [settings]);
 
   const handleSave = () => {
-    updateSettings.mutate(data, {
+    const { id, status, createdAt, updatedAt, ...editedSettings } = data ?? {};
+
+    console.log(editedSettings)
+
+    updateSettings.mutate(editedSettings, {
       onSuccess: () => apptoast.success({ title: 'Successful', message: 'Settings updated successfully' }),
       onError: (error) => apptoast.error({ title: `${error.name ?? 'Error'}`, message: `${error.message ?? 'Something went wrong'}` })
     })
   }
 
   const handleCancel = () => {
-    if (isUpdating) {
-      updateSettings.cancel();
-    }
+    // if (isUpdating) {
+    //   updateSettings.cancel();
+    // }
   }
 
   return (

@@ -37,13 +37,13 @@ export const useSuperAdminSettingsMutations = () => {
         });
         return data;
       } catch (error) {
-        throw handleError(error)
+        handleError(error)
       }
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [queryKeys.SUPER_ADMIN_SETTINGS] });
     },
-    onError: (error) => handleError(error)
+    // onError: (error) => handleError(error)
   });
 
   return {
