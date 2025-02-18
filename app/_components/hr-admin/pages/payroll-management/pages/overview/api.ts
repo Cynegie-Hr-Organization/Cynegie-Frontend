@@ -418,3 +418,42 @@ export const getLeaveRequest = async (id: string): Promise<LeaveRequest> => {
     },
   }) as Promise<LeaveRequest>;
 };
+
+export const post = async (endpoint: string) => {
+  const session = await getServerSession(authOptions);
+  return request("POST", `${baseUrl}/v1/${endpoint}`, {
+    headers: {
+      "Content-type": "Application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  });
+};
+
+export const apiRequest = async (
+  method: "GET" | "POST" | "PATCH" | "DELETE",
+  endpoint: string,
+  body?: any,
+  params?: any
+) => {
+  const session = await getServerSession(authOptions);
+  return request(method, `${baseUrl}/v1/${endpoint}`, {
+    headers: {
+      "Content-type": "Application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    ...(body !== undefined && { data: body }),
+    params: params,
+  });
+};
+
+export const bulkApprove = async (payload: { leaveIds: string[] }) => {
+  const session = await getServerSession(authOptions);
+
+  return request("POST", `${baseUrl}/v1/leave/bulk-approve`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: payload,
+  });
+};

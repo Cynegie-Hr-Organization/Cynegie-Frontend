@@ -10,13 +10,14 @@ import { color, route } from "@/constants";
 import { useAttendanceStore } from "@/hooks/useBulkAttendanceParam";
 import { FetchParams } from "@/types";
 import { formatHours } from "@/utils";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { getDepartments } from "../../payroll-management/pages/benefits-management/api";
 import {
+  apiRequest,
   getAllLeaves,
   getAttendanceRecords,
 } from "../../payroll-management/pages/overview/api";
@@ -34,6 +35,7 @@ const attendanceRateChartData = [
 type MappedAttendanceRecord = {
   id: string;
   employeeName: string;
+  employeeId: string;
   staffID: string;
   department: string;
   jobTitle: string;
@@ -66,12 +68,17 @@ const HrAdminEmployeeAttendanceManagement = () => {
     setOpenIndividualGenerateReportModal,
   ] = useState(false);
 
+  const [mutationLoading, setMutationLoading] = useState(false);
+
   const [departments, setDepartments] =
     useState<{ label: string; value: string }[]>();
   const { data: departmentsData } = useQuery({
     queryKey: ["departments"],
     queryFn: () => getDepartments({ page: 1, limit: 50, sortOrder: "asc" }),
   });
+
+  const [selectedAttendanceRecord, setSelectedAttendanceRecord] =
+    useState<MappedAttendanceRecord>();
 
   useEffect(() => {
     if (departmentsData) {
@@ -108,7 +115,55 @@ const HrAdminEmployeeAttendanceManagement = () => {
     queryFn: () => getAllLeaves(fetchParams),
   });
 
-  const { setStartDate, setEndDate, setDepartment } = useAttendanceStore();
+  const {
+    register: employeeAttendanceRegister,
+    control: employeeAttendanceControl,
+    formState: {
+      isValid: employeeAttendanceIsValid,
+      errors: employeeAttendanceErrors,
+    },
+    getValues: employeeAttendanceGetValues,
+    reset: employeeAttendanceReset,
+  } = useForm();
+
+  // const { data: employeeAttendanceData } = useQuery({
+  //   queryKey: [
+  //     "employee-attendance",
+  //     {
+  //       page: 1,
+  //       limit: 50,
+  //       sortOrder: "asc",
+  //       startDate: dayjs(
+  //         employeeAttendanceGetValues("Start Date")
+  //       ).toISOString(),
+  //       endDate: dayjs(employeeAttendanceGetValues("End Date")).toISOString(),
+  //       attendanceStatus: employeeAttendanceGetValues("Attendance Status"),
+  //     },
+  //   ],
+  //   queryFn: () =>
+  //     apiRequest(
+  //       "GET",
+  //       `attendance/${selectedAttendanceRecord?.employeeId}`,
+  //       undefined,
+  //       {
+  //         page: 1,
+  //         limit: 50,
+  //         sortOrder: "asc",
+  //         startDate: employeeAttendanceGetValues("Start Date"),
+  //         endDate: employeeAttendanceGetValues("End Date"),
+  //         attendanceStatus: employeeAttendanceGetValues("Attendance Status"),
+  //       }
+  //     ),
+  // });
+
+  const {
+    setStartDate,
+    setEndDate,
+    setDepartment,
+    setEmployeeId,
+    setAttendanceStatus,
+    setEmployeeName,
+  } = useAttendanceStore();
 
   useEffect(() => {
     if (attendanceRecordsData) {
@@ -117,6 +172,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
           ? attendanceRecordsData.data?.map((record) => ({
               id: record.attendanceId,
               employeeName: record.employeeName,
+              employeeId: record.employeeId,
               staffID: record.staffId,
               department: record.department.departmentName,
               jobTitle: record.jobTitle,
@@ -141,15 +197,47 @@ const HrAdminEmployeeAttendanceManagement = () => {
     }
   }, [attendanceRecordsData]);
 
+  const queryClient = useQueryClient();
+
+  const adjustAttendanceMutation = useMutation({
+    mutationFn: () =>
+      apiRequest("PATCH", `attendance/${selectedAttendanceRecord?.id}`, {
+        clockIn: dayjs(
+          adjustAttendanceGetValues("Check - in Time")
+        ).toISOString(),
+        clockOut: dayjs(
+          adjustAttendanceGetValues("Check - out Time")
+        ).toISOString(),
+      }),
+    onMutate: () => setMutationLoading(true),
+    onSuccess: (res) => {
+      setMutationLoading(false);
+      if (Object.keys(res).includes("error")) {
+        alert("Error");
+      } else {
+        queryClient.resetQueries({
+          queryKey: ["attendance-records", fetchParams],
+        });
+        setOpenAdjustAttendanceModal(false);
+        adjustAttendanceReset();
+        alert("Attedance record adjusted successfully");
+      }
+    },
+    onError: () => {
+      setMutationLoading(false);
+    },
+  });
+
   useEffect(() => {
     if (leaveRecordsData) {
       setLeaveRecords(
         leaveRecordsData.data
           ? leaveRecordsData.data?.map((record) => ({
-              employeeName: `${record.employee.personalInfo.firstName} ${record.employee.personalInfo.lastName}`,
-              staffID: record.employee.employmentInformation.staffId,
+              employeeName: `${record.employee.personalInfo?.firstName} ${record.employee.personalInfo?.lastName}`,
+              staffID: record.employee.employmentInformation?.staffId,
               department:
-                record.employee.employmentInformation.department.departmentName,
+                record.employee.employmentInformation?.department
+                  .departmentName,
               leaveType: record.leaveType.name,
               startDate: dayjs(record.startDate).format("DD-MM-YYYY"),
               endDate: dayjs(record.endDate).format("DD-MM-YYYY"),
@@ -168,6 +256,17 @@ const HrAdminEmployeeAttendanceManagement = () => {
     control: bulkReportControl,
     formState: { isValid, errors },
     getValues,
+  } = useForm();
+
+  const {
+    register: adjustAttendanceRegister,
+    control: adjustAttendanceControl,
+    formState: {
+      isValid: adjustAttendanceIsValid,
+      errors: adjustAttendanceErrors,
+    },
+    getValues: adjustAttendanceGetValues,
+    reset: adjustAttendanceReset,
   } = useForm();
 
   return (
@@ -284,12 +383,27 @@ const HrAdminEmployeeAttendanceManagement = () => {
                   {
                     name: "Adjust Attendance",
                     onClick: () => setOpenAdjustAttendanceModal(true),
+                    onDataReturned: (id) => {
+                      if (typeof id === "string") {
+                        setSelectedAttendanceRecord(
+                          attendanceRecords?.find((record) => record.id === id)
+                        );
+                      }
+                    },
                   },
                   {
                     name: "Generate Report",
                     onClick: () => setOpenIndividualGenerateReportModal(true),
+                    onDataReturned: (id) => {
+                      if (typeof id === "string") {
+                        setSelectedAttendanceRecord(
+                          attendanceRecords?.find((record) => record.id === id)
+                        );
+                      }
+                    },
                   },
                 ]}
+                fieldToReturnOnActionItemClick="id"
               />
             ),
           },
@@ -344,44 +458,57 @@ const HrAdminEmployeeAttendanceManagement = () => {
           subtitle="Make adjustments to the records for the selected employee"
           form={{
             gridSpacing: 3,
+            control: adjustAttendanceControl,
+            register: adjustAttendanceRegister,
+            errors: adjustAttendanceErrors,
             inputFields: [
               {
                 label: "Employee Name",
                 type: "text",
-                value: "John Emmanuel",
+                value: selectedAttendanceRecord?.employeeName,
                 disabled: true,
               },
               {
                 label: "Staff ID",
                 type: "text",
-                value: "CYN00117",
+                value: selectedAttendanceRecord?.staffID,
                 disabled: true,
               },
               {
                 label: "Department",
                 type: "text",
-                value: "Finance",
+                value: selectedAttendanceRecord?.department,
                 disabled: true,
               },
               {
                 label: "Date of Adjustment",
                 type: "text",
-                value: "November 12, 2024",
+                value: dayjs().format("MMM D, YYYY"),
                 disabled: true,
               },
               {
                 label: "Check - in Time",
                 type: "time",
+                required: true,
+                hookFormField: true,
+                controllerRules: {
+                  required: true,
+                },
               },
               {
                 label: "Check - out Time",
                 type: "time",
+                required: true,
+                hookFormField: true,
+                controllerRules: {
+                  required: true,
+                },
               },
-              {
-                label: "Adjusted By",
-                type: "text",
-                placeholder: "Enter name",
-              },
+              // {
+              //   label: "Adjusted By",
+              //   type: "text",
+              //   placeholder: "Enter name",
+              // },
             ],
             buttonGroup: {
               leftButton: {
@@ -390,9 +517,13 @@ const HrAdminEmployeeAttendanceManagement = () => {
                 onClick: () => setOpenAdjustAttendanceModal(false),
               },
               rightButton: {
-                type: ButtonType.contained,
-                text: "Save Changes",
-                onClick: () => setOpenAdjustAttendanceModal(false),
+                type: mutationLoading
+                  ? ButtonType.disabledLoading
+                  : adjustAttendanceIsValid
+                  ? ButtonType.contained
+                  : ButtonType.disabled,
+                text: mutationLoading ? "" : "Save Changes",
+                onClick: () => adjustAttendanceMutation.mutateAsync(),
               },
               position: "center",
             },
@@ -489,51 +620,95 @@ const HrAdminEmployeeAttendanceManagement = () => {
       {openIndividualGenerateReportModal && (
         <Modal
           open={openIndividualGenerateReportModal}
-          onClose={() => setOpenIndividualGenerateReportModal(false)}
+          onClose={() => {
+            employeeAttendanceReset();
+            setOpenIndividualGenerateReportModal(false);
+          }}
           title="Generate Attendance Report"
           subtitle="Customize the report details for Emmanuel Okpara"
-          forms={[
-            {
-              gridSpacing: 3,
-              inputFields: [
-                {
-                  label: "Start Date",
-                  type: "date",
+          form={{
+            gridSpacing: 3,
+            register: employeeAttendanceRegister,
+            control: employeeAttendanceControl,
+            errors: employeeAttendanceErrors,
+            inputFields: [
+              {
+                label: "Start Date",
+                type: "date",
+                required: true,
+                hookFormField: true,
+                controllerRules: {
                   required: true,
                 },
-                {
-                  label: "End Date",
-                  type: "date",
-                  required: true,
-                },
-                {
-                  label: "Attendance Status",
-                  type: "multi-select",
-                  placeholder: "Select",
-                  hookFormField: true,
-                  required: true,
-                },
-              ],
-              buttonGroup: {
-                leftButton: {
-                  type: ButtonType.outlined,
-                  text: "Cancel",
-                  onClick: () => setOpenIndividualGenerateReportModal(false),
-                },
-                rightButton: {
-                  type: ButtonType.contained,
-                  text: "Generate Report",
-                  isSubmit: true,
-                  onClick: () =>
-                    router.push(
-                      route.hrAdmin.employeeManagement.attendanceManagement
-                        .individualReport
-                    ),
-                },
-                position: "center",
               },
+              {
+                label: "End Date",
+                type: "date",
+                required: true,
+                hookFormField: true,
+                controllerRules: {
+                  required: true,
+                },
+              },
+              {
+                label: "Attendance Status",
+                type: "select",
+                placeholder: "All",
+                defaultValue: undefined,
+                options: [
+                  { label: "All", value: undefined },
+                  { label: "Present", value: "present" },
+                  { label: "Late", value: "late" },
+                  { label: "Absent", value: "absent" },
+                  { label: "On Leave", value: "on_leave" },
+                ],
+                required: true,
+                hookFormField: true,
+                controllerRules: {
+                  required: true,
+                },
+              },
+            ],
+            buttonGroup: {
+              leftButton: {
+                type: ButtonType.outlined,
+                text: "Cancel",
+                onClick: () => {
+                  employeeAttendanceReset();
+                  setOpenIndividualGenerateReportModal(false);
+                },
+              },
+              rightButton: {
+                type:
+                  employeeAttendanceGetValues("End Date") &&
+                  employeeAttendanceGetValues("Start Date")
+                    ? ButtonType.contained
+                    : ButtonType.disabled,
+                text: "Generate Report",
+                isSubmit: true,
+                onClick: async () => {
+                  setEmployeeId(selectedAttendanceRecord?.employeeId ?? "");
+                  setEmployeeName(selectedAttendanceRecord?.employeeName ?? "");
+                  setStartDate(
+                    dayjs(
+                      employeeAttendanceGetValues("Start Date")
+                    ).toISOString()
+                  );
+                  setEndDate(
+                    dayjs(employeeAttendanceGetValues("End Date")).toISOString()
+                  );
+                  setAttendanceStatus(
+                    employeeAttendanceGetValues("Attendance Status")
+                  );
+                  router.push(
+                    route.hrAdmin.employeeManagement.attendanceManagement
+                      .individualReport
+                  );
+                },
+              },
+              position: "center",
             },
-          ]}
+          }}
         />
       )}
     </Page>

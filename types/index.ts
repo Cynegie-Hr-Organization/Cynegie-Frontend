@@ -670,6 +670,7 @@ export type PayrollSettings = {
 
 export type AttendanceRecord = {
   attendanceId: string;
+  employeeId: string;
   employeeName: string;
   staffId: string;
   department: { departmentId: string; departmentName: string };
@@ -825,6 +826,31 @@ export interface PaginatedResponse8<T> {
 
 export type EmployeeDistribution = {
   [departmentName: string]: DepartmentStats;
+};
+
+type TurnoverBreakdownStats = {
+  totalEmployees: number;
+  employeesThatLeft: number;
+  turnoverPercentage: number;
+};
+
+export type TurnoverBreakdown = {
+  [departmentName: string]: TurnoverBreakdownStats;
+};
+
+export type TurnoverReport = {
+  turnoverReport: {
+    [department: string]: {
+      totalEmployees: number;
+      employeesThatLeft: number;
+      turnoverPercentage: number;
+    };
+  };
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalDepartments: number;
+  };
 };
 
 type GenderStats = {

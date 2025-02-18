@@ -7,25 +7,86 @@ import Page from "@/app/_components/shared/page";
 import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import SectionCardContainer from "@/app/_components/shared/section-with-cards/container";
 import { icon, route } from "@/constants";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { useParams, useRouter } from "next/navigation";
-import useApprovalConfirmationModal from "../hooks/useApprovalConfirmationModal";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import {
+  getLeaveRequest,
+  getMyEmployees,
+  post,
+} from "../../../payroll-management/pages/overview/api";
 
 const HrAdminEmployeeManagementApprovalRequestDetails = () => {
   const router = useRouter();
-  const {
-    openConfirmationModal,
-    setOpenConfirmationModal,
-    confirmationModalProps,
-  } = useApprovalConfirmationModal();
+
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [approveClicked, setApproveClicked] = useState(false);
+
+  const [openSuccessModal, setOpenSuccessModal] = useState(false);
 
   const { slug } = useParams();
 
-  // const { data } = useQuery({
-  //   queryKey: ["leave-request", slug],
-  //   queryFn: () => {
-  //     if (typeof slug === "string") getLeaveRequest(slug ?? "");
-  //   },
-  // });
+  const queryClient = useQueryClient();
+
+  const { data } = useQuery({
+    queryKey: ["leave-request", slug],
+    ...(typeof slug === "string" && { queryFn: () => getLeaveRequest(slug) }),
+  });
+
+  const { data: myEmployees, refetch } = useQuery({
+    queryKey: ["employees", { page: 1, limit: 50, sortOrder: "asc" }],
+    queryFn: () => getMyEmployees({ page: 1, limit: 50, sortOrder: "asc" }),
+  });
+
+  const [employees, setEmployees] =
+    useState<{ label: string; value: string }[]>();
+
+  const [mutationLoading, setMutationLoading] = useState(false);
+
+  useEffect(() => {
+    if (myEmployees) {
+      setEmployees(
+        myEmployees.data.map((employee) => ({
+          label: `${employee.personalInfo.firstName} ${employee.personalInfo.lastName}`,
+          value: employee.id,
+        }))
+      );
+    } else {
+    }
+  }, [myEmployees]);
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  const {
+    register,
+    control,
+    formState: { errors },
+    getValues,
+  } = useForm();
+
+  const approveRejectMutation = useMutation({
+    mutationFn: (endpoint: string) => post(endpoint),
+    onMutate: () => setMutationLoading(true),
+    onSuccess: (res) => {
+      if (Object.keys(res).includes("error")) {
+        setMutationLoading(false);
+        alert("An error occurred");
+      } else {
+        queryClient.resetQueries({ queryKey: ["leave-request", slug] });
+        setMutationLoading(false);
+        setOpenConfirmationModal(false);
+        setOpenSuccessModal(true);
+      }
+    },
+    onError: () => {
+      setMutationLoading(false);
+      alert("An error occured");
+    },
+  });
 
   return (
     <Page
@@ -37,88 +98,160 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
       <SectionCardContainer isCard title="Leave Request Details">
         <DetailGroup
           gridLayout="3-columns"
+          loading={data ? false : true}
           details={[
             {
               name: "Name",
-              value: "Emmanuel Jacob",
+              value: "N/A", //Inform the backend team to return the correct value
             },
             {
               name: "Staff ID",
-              value: "CYN0017",
+              value: "N/A", //Inform the backend team to return the correct value
             },
             {
               name: "Department",
-              value: "HR",
+              value: "N/A", //Inform the backend team to return the correct value
             },
             {
               name: "Job Title",
-              value: "Senior Manager",
+              value: "N/A", //Inform the backend team to return the correct value
             },
             {
               name: "Status",
-              value: "Pending",
+              value: data?.status,
               type: "status",
-              statusMap: { Pending: "warning" },
+              statusMap: {
+                approved: "success",
+                pending: "warning",
+                rejected: "error",
+              },
             },
             {
               name: "Leave Type",
-              value: "Annual Leave",
+              value: data?.leaveType.name,
             },
             {
               name: "Start Date",
-              value: "Oct 5, 2024",
+              value: dayjs(data?.startDate).format("MMM D, YYYY"),
             },
             {
               name: "End Date",
-              value: "Oct 15, 2024",
+              value: dayjs(data?.endDate).format("MMM D, YYYY"),
             },
             {
               name: "Total Days Requested",
-              value: "12",
+              value: `${data?.leaveType.numberOfDays}`,
             },
             {
               name: "Reason for Leave",
-              value: "Vacation with family",
+              value: "N/A", //Inform the backend team to return the correct value
             },
             {
               name: "Supporting Document",
               type: "document",
-              value: "Download medical certificate.pdf",
+              value: "N/A", //Inform the backend team to return the correct value
               icon: icon.download,
             },
           ]}
         />
-        <div className="mt-2"></div>
-        <Form
-          gridSpacing={4}
-          inputFields={[
-            {
-              label: "Assign Backup Employee",
-              type: "select",
-              placeholder: "Select Employee",
-            },
-            {
-              label: "Add Comments",
-              type: "message",
-            },
-          ]}
-        />
-        <div className="mb-2"></div>
+        {data?.status && data?.status === "pending" && (
+          <>
+            <div className="mt-2"></div>
+            <Form
+              gridSpacing={4}
+              register={register}
+              control={control}
+              errors={errors}
+              inputFields={[
+                {
+                  label: "Assign Backup Employee",
+                  type: "select",
+                  placeholder: "Select Employee",
+                  hookFormField: true,
+                  options: employees,
+                },
+                {
+                  label: "Add Comments",
+                  type: "text",
+                  isMessageField: true,
+                },
+              ]}
+            />
+            <div className="mb-2"></div>
+          </>
+        )}
       </SectionCardContainer>
-      <ButtonGroup
-        leftButton={{ type: ButtonType.outlined, text: "Reject" }}
-        rightButton={{
-          type: ButtonType.contained,
-          text: "Approve",
-          onClick: () => setOpenConfirmationModal(true),
-        }}
-        position="end"
-      />
+      {data?.status && data?.status === "pending" && (
+        <ButtonGroup
+          leftButton={{
+            type:
+              data && myEmployees ? ButtonType.outlined : ButtonType.disabled,
+            text: "Reject",
+            onClick: () => {
+              setOpenConfirmationModal(true);
+            },
+          }}
+          rightButton={{
+            type:
+              data && myEmployees ? ButtonType.contained : ButtonType.disabled,
+            text: "Approve",
+            onClick: () => {
+              /*console.log({
+              backupEmployee: getValues("Assign Backup Employee"),
+              comments: getValues("Add Comments"),
+            });*/
+              setApproveClicked(true);
+              setOpenConfirmationModal(true);
+            },
+          }}
+          position="end"
+        />
+      )}
       {openConfirmationModal && (
         <Modal
-          {...confirmationModalProps}
-          buttonTwo={{
-            ...confirmationModalProps.buttonTwo,
+          {...{
+            open: openConfirmationModal,
+            onClose: () => {
+              approveClicked && setApproveClicked(false);
+              setOpenConfirmationModal(false);
+            },
+            hasHeading: false,
+            centerTitle: approveClicked ? "Approve Request" : "Reject Request",
+            centerMessage: approveClicked
+              ? "Are you sure you want to approve the request"
+              : "Are you sure you want to reject the request",
+            buttonOne: {
+              type: mutationLoading ? ButtonType.disabled : ButtonType.outlined,
+              text: "Cancel",
+              onClick: () => {
+                approveClicked && setApproveClicked(false);
+                setOpenConfirmationModal(false);
+              },
+            },
+            buttonTwo: {
+              type: mutationLoading
+                ? ButtonType.disabledLoading
+                : ButtonType.contained,
+              text: mutationLoading ? "" : "Confirm",
+              onClick: () =>
+                approveRejectMutation.mutateAsync(
+                  `leave/${slug}/${approveClicked ? "approve" : "reject"}`
+                ),
+            },
+          }}
+        />
+      )}
+      {openSuccessModal && (
+        <Modal
+          open={openSuccessModal}
+          onClose={() => {}}
+          hasHeading={false}
+          centerImage={icon.successTick}
+          centerTitle="Successful!"
+          centerButton
+          buttonOne={{
+            text: "Return to Requests",
+            type: ButtonType.contained,
             onClick: () =>
               router.push(
                 route.hrAdmin.employeeManagement.approvalManagement.home

@@ -10,7 +10,7 @@ import { InputFieldProps } from "@/app/_components/employee/modal/types";
 import CustomDatePicker from "@/app/_components/ui/date-picker";
 import CustomTimePicker from "@/app/_components/ui/time-picker";
 import { Skeleton } from "@mui/material";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import AddItems from "../../custom-popover/content/add-items";
 import FieldLabel from "../../detail-group/detail/value";
 import DragUpload from "../../drag-upload";
@@ -143,10 +143,21 @@ const InputField: React.FC<InputFieldProps> = ({
           )}
           {type == "time" && (
             <CustomTimePicker
-              value={null}
-              onChange={function (newValue: Dayjs | null): void {
-                console.log(newValue?.toISOString());
-              }}
+              // value={dayjs(value)}
+              {...(value && { value: dayjs(value) })}
+              {...(defaultValue && {
+                defaultValue: dayjs(
+                  typeof defaultValue === "string" ? defaultValue : undefined
+                ),
+              })}
+              disabled={disabled}
+              // onChange={(newValue) => getDate?.(newValue)}
+              {...(getDate && { onChange: (newValue) => getDate?.(newValue) })}
+              hookFormField={hookFormField}
+              control={control}
+              controllerRules={controllerRules}
+              name={name}
+              errors={errors}
             />
           )}
           {type == "drag-upload" && (

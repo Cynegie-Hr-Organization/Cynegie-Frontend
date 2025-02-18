@@ -11,11 +11,12 @@ import TabFormat from "@/app/_components/shared/tab-format";
 import Table from "@/app/_components/shared/table";
 import { FieldType } from "@/app/_components/shared/table/types";
 import { color, icon } from "@/constants";
-import { EmployeeDistribution, FetchParams } from "@/types";
+import { EmployeeDistribution, FetchParams, TurnoverReport } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import {
+  apiRequest,
   getAllTasks,
   getDepartmentStats,
   getEmployeeDemographyCharts,
@@ -51,6 +52,13 @@ type MappedDepartmentStat = {
   female: number;
 };
 
+type MappedTurnoverBreakdown = {
+  department: string;
+  totalEmployeeNo: number;
+  employeesLeft: number;
+  turnover: number;
+};
+
 const HrAdminEmployeeComplianceReporting = () => {
   const [openExportModal, setOpenExportModal] = useState(false);
   const userGroupIcon = (
@@ -61,6 +69,9 @@ const HrAdminEmployeeComplianceReporting = () => {
 
   const [departmentStats, setDepartmentStats] =
     useState<MappedDepartmentStat[]>();
+
+  const [turnoverBreakdown, setTurnoverBreakdown] =
+    useState<MappedTurnoverBreakdown[]>();
 
   const [fetchParams] = useState<FetchParams>({
     page: 1,
@@ -86,6 +97,15 @@ const HrAdminEmployeeComplianceReporting = () => {
   const { data: departmentStatsData } = useQuery({
     queryKey: ["departmentStats", fetchParams],
     queryFn: () => getDepartmentStats(fetchParams),
+  });
+
+  const { data: turnoverBreakdownData } = useQuery({
+    queryKey: ["turnover-breakdown"],
+    queryFn: () =>
+      apiRequest(
+        "GET",
+        "employees/employee-turnover"
+      ) as Promise<TurnoverReport>,
   });
 
   useEffect(() => {
@@ -121,6 +141,23 @@ const HrAdminEmployeeComplianceReporting = () => {
       setTasks(undefined);
     }
   }, [departmentStatsData]);
+
+  useEffect(() => {
+    if (turnoverBreakdownData) {
+      const turnoverDepartments = Object.keys(
+        turnoverBreakdownData.turnoverReport
+      );
+      const values = Object.values(turnoverBreakdownData.turnoverReport);
+      setTurnoverBreakdown(
+        turnoverDepartments.map((department, index) => ({
+          department: department,
+          totalEmployeeNo: values[index].totalEmployees,
+          employeesLeft: values[index].employeesThatLeft,
+          turnover: values[index].turnoverPercentage,
+        }))
+      );
+    }
+  }, [turnoverBreakdownData]);
 
   const chart1 = {
     chartLabels: ["Male", "Female"],
@@ -174,6 +211,7 @@ const HrAdminEmployeeComplianceReporting = () => {
               <div className="flex flex-col gap-6">
                 <CardGroup
                   gridItemSize={{ xs: 12, sm: 4, md: 3 }}
+                  loading={data ? false : true}
                   cards={[
                     {
                       labelText: "Number of Tasks",
@@ -331,8 +369,8 @@ const HrAdminEmployeeComplianceReporting = () => {
                           headerRowData={[
                             "Department",
                             "Total Employee Number",
-                            "Male",
-                            "Female",
+                            "Employees that Left",
+                            "Turnover Percentage",
                           ]}
                           fieldTypes={[...Array(5).fill(FieldType.text)]}
                           // displayedFields={[
@@ -345,8 +383,8 @@ const HrAdminEmployeeComplianceReporting = () => {
                           displayedFields={[
                             "department",
                             "totalEmployeeNo",
-                            "male",
-                            "female",
+                            "employeesLeft",
+                            "turnover",
                           ]}
                           // bodyRowData={[
                           //   ...Array(5).fill({
@@ -364,7 +402,7 @@ const HrAdminEmployeeComplianceReporting = () => {
                           //     noOfFemales: 6,
                           //   },
                           // ]}
-                          bodyRowData={departmentStats}
+                          bodyRowData={turnoverBreakdown}
                           formFilter={{
                             inputFields: [
                               {

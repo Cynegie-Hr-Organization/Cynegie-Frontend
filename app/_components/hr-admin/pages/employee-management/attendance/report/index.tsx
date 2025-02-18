@@ -18,11 +18,12 @@ type HrAdminEmployeeAttendanceManagementReportProps = {
   cards: CardProps[];
   tableProps: Omit<TableProps, "statusMap">;
   barChart?: BarChartProps;
+  cardsLoading?: boolean;
 };
 
 const HrAdminEmployeeAttendanceManagementReport: React.FC<
   HrAdminEmployeeAttendanceManagementReportProps
-> = ({ title, cards, tableProps, barChart }) => {
+> = ({ title, cards, tableProps, barChart, cardsLoading }) => {
   const router = useRouter();
   // const [openDownloadModal, setOpenDownloadModal] = useState(false);
   return (
@@ -39,7 +40,11 @@ const HrAdminEmployeeAttendanceManagementReport: React.FC<
         // onClick: () => setOpenDownloadModal(true),
       }}
     >
-      <CardGroup cards={cards} gridItemSize={{ xs: 12, sm: 6, md: 3 }} />
+      <CardGroup
+        cards={cards}
+        loading={cardsLoading}
+        gridItemSize={{ xs: 12, sm: 6, md: 3 }}
+      />
       {barChart && (
         <div className="common-card">
           <BarChart {...barChart} />
