@@ -53,6 +53,7 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
           value: employee.id,
         }))
       );
+      console.log(myEmployees.data.map((employee) => employee.id));
     } else {
     }
   }, [myEmployees]);
@@ -65,16 +66,35 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
     register,
     control,
     formState: { errors },
+    getValues,
   } = useForm();
 
   const approveRejectMutation = useMutation({
-    mutationFn: (endpoint: string) => post(endpoint),
+    mutationFn: (endpoint: string) =>
+      post(
+        endpoint,
+        approveClicked
+          ? getValues("Assign Backup Employee") && getValues("Add Comments")
+            ? {
+                backupEmployee: getValues("Assign Backup Employee"),
+                remark: getValues("Add Comments"),
+              }
+            : getValues("Assign Backup Employee")
+            ? {
+                backupEmployee: getValues("Assign Backup Employee"),
+              }
+            : getValues("Add Comments")
+            ? { remark: getValues("Add Comments") }
+            : undefined
+          : undefined
+      ),
     onMutate: () => setMutationLoading(true),
     onSuccess: (res) => {
       if (Object.keys(res).includes("error")) {
         setMutationLoading(false);
         alert("An error occurred");
       } else {
+        queryClient.resetQueries({ queryKey: ["leave-records"] });
         queryClient.resetQueries({ queryKey: ["leave-request", slug] });
         setMutationLoading(false);
         setOpenConfirmationModal(false);

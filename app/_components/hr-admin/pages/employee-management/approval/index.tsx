@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   bulkApprove,
+  bulkReject,
   getAllLeaves,
   post,
 } from "../../payroll-management/pages/overview/api";
@@ -86,7 +87,11 @@ const HrAdminEmployeeManagementApproval = () => {
 
   const approveRejectMutation = useMutation({
     mutationFn: (endpoint: string) =>
-      isBulkApproval ? bulkApprove({ leaveIds: checkedIds }) : post(endpoint),
+      isBulkApproval
+        ? approveClicked
+          ? bulkApprove({ leaveIds: checkedIds })
+          : bulkReject({ leaveIds: checkedIds })
+        : post(endpoint),
     onMutate: () => setMutationLoading(true),
     onSuccess: (res) => {
       if (Object.keys(res).includes("error")) {
@@ -115,7 +120,10 @@ const HrAdminEmployeeManagementApproval = () => {
         type:
           checkedRows.length > 0 ? ButtonType.outlined : ButtonType.disabled,
         text: "Reject All",
-        onClick: () => setOpenConfirmationModal(true),
+        onClick: () => {
+          setIsBulkApproval(true);
+          setOpenConfirmationModal(true);
+        },
       }}
       rightButton={{
         type:

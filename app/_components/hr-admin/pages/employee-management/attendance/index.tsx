@@ -676,11 +676,11 @@ const HrAdminEmployeeAttendanceManagement = () => {
                 },
               },
               rightButton: {
-                type:
-                  employeeAttendanceGetValues("End Date") &&
-                  employeeAttendanceGetValues("Start Date")
-                    ? ButtonType.contained
-                    : ButtonType.disabled,
+                type: ButtonType.contained,
+                // employeeAttendanceGetValues("End Date") &&
+                // employeeAttendanceGetValues("Start Date")
+                //   ? ButtonType.contained
+                //   : ButtonType.disabled,
                 text: "Generate Report",
                 isSubmit: true,
                 onClick: async () => {

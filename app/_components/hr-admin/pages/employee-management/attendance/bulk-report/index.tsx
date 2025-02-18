@@ -52,6 +52,7 @@ const HrAdminEmployeeAttendanceManagementBulkReport = () => {
 
   useEffect(() => {
     if (data) {
+      console.log(data);
       setAttendanceRecords(
         data.data
           ? data.data?.map((record) => ({

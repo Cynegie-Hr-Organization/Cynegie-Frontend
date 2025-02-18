@@ -67,7 +67,7 @@ const SelectField: React.FC<SelectFieldProps> = (props) => {
               {placeholder}
             </MenuItem>
             {options?.map((option) => (
-              <MenuItem key={option.label} value={option.value}>
+              <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
             ))}

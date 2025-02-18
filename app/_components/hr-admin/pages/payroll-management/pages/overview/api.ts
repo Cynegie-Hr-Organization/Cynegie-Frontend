@@ -419,13 +419,14 @@ export const getLeaveRequest = async (id: string): Promise<LeaveRequest> => {
   }) as Promise<LeaveRequest>;
 };
 
-export const post = async (endpoint: string) => {
+export const post = async (endpoint: string, data?: any) => {
   const session = await getServerSession(authOptions);
   return request("POST", `${baseUrl}/v1/${endpoint}`, {
     headers: {
       "Content-type": "Application/json",
       Authorization: `Bearer ${session?.token}`,
     },
+    ...(data && { data: data }),
   });
 };
 
@@ -455,5 +456,28 @@ export const bulkApprove = async (payload: { leaveIds: string[] }) => {
       Authorization: `Bearer ${session?.token}`,
     },
     data: payload,
+  });
+};
+
+export const bulkReject = async (payload: { leaveIds: string[] }) => {
+  const session = await getServerSession(authOptions);
+
+  return request("POST", `${baseUrl}/v1/leave/bulk-reject`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: payload,
+  });
+};
+
+export const getTurnoverChartData = async () => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/employees/turnover`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
   });
 };
