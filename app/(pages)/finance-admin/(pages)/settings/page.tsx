@@ -16,7 +16,7 @@ const FinanceAdminSettings = () => {
   const { data: financeSettings, isLoading: isLoadingCurrentSettings } = useFinanceSettings()
   const { updateSettings } = useFinanceSettingsMutations()
   const mutating = useIsMutating();
-  const {apptoast} = useAppToast();
+  const { apptoast } = useAppToast();
   const isUpdating = mutating > 0;
 
 
@@ -25,14 +25,15 @@ const FinanceAdminSettings = () => {
   useEffect(() => {
     if (financeSettings) {
       setFormData({
-        bankAccountNumber: financeSettings.bankAccountNumber ?? '',
-        defaultCurrency: financeSettings.defaultCurrency ?? '',
-        taxSettings: financeSettings.taxSettings ?? '',
-        expenseCategories: financeSettings.expenseCategories ?? '',
-        paymentMethod: financeSettings.paymentMethod ?? '',
-        fiscalYearStart: financeSettings.fiscalYearStart ?? '',
-        notificationSettings: financeSettings.notificationSettings ?? [],
-        budgetAlerts: financeSettings.budgetAlerts ?? []
+        bankAccountNumber: financeSettings?.bankAccountNumber ?? '',
+        defaultCurrency: financeSettings?.defaultCurrency ?? '',
+        taxSettings: financeSettings?.taxSettings ?? '',
+        expenseCategories: financeSettings?.expenseCategories ?? '',
+        paymentMethod: financeSettings?.paymentMethod ?? '',
+        fiscalYearStart: financeSettings?.fiscalYearStart ?? '',
+        notificationSettings: financeSettings?.notificationSettings ?? {},
+        paymentConfirmation: financeSettings?.paymentConfirmation ?? {},
+        budgetAlerts: financeSettings?.budgetAlerts ?? {},
       });
     }
   }, [financeSettings]);
@@ -116,6 +117,7 @@ const FinanceAdminSettings = () => {
               }
               placeholder="Select Payment Method"
               onChange={(value) => setFormData({ ...formData, paymentMethod: value })}
+              // onChange={() => { }}
             />
           </div>
 
@@ -125,34 +127,28 @@ const FinanceAdminSettings = () => {
               <AppCheckbox
                 label="Email"
                 id="notification-email"
-                checked={formData.notificationSettings?.includes('email') ?? false}
+                checked={formData.notificationSettings?.email ?? false}
                 onChange={(e) => setFormData({
                   ...formData,
-                  notificationSettings: e.target.checked
-                    ? [...(formData.notificationSettings?.filter(setting => setting !== 'email') || []), 'email']
-                    : formData.notificationSettings?.filter(setting => setting !== 'email') || []
+                  notificationSettings: { ...formData.notificationSettings, email: e.target.checked }
                 })}
               />
               <AppCheckbox
                 label="SMS"
                 id="notification-sms"
-                checked={formData.notificationSettings?.includes('sms') ?? false}
+                checked={formData.notificationSettings?.sms ?? false}
                 onChange={(e) => setFormData({
                   ...formData,
-                  notificationSettings: e.target.checked
-                    ? [...(formData.notificationSettings?.filter(setting => setting !== 'sms') || []), 'sms']
-                    : formData.notificationSettings?.filter(setting => setting !== 'sms') || []
+                  notificationSettings: { ...formData.notificationSettings, sms: e.target.checked }
                 })}
               />
               <AppCheckbox
                 label="In-App"
                 id="notification-in-app"
-                checked={formData.notificationSettings?.includes('in-app') ?? false}
+                checked={formData.notificationSettings?.inApp ?? false}
                 onChange={(e) => setFormData({
                   ...formData,
-                  notificationSettings: e.target.checked
-                    ? [...(formData.notificationSettings?.filter(setting => setting !== 'in-app') || []), 'in-app']
-                    : formData.notificationSettings?.filter(setting => setting !== 'in-app') || []
+                  notificationSettings: { ...formData.notificationSettings, inApp: e.target.checked }
                 })}
               />
             </div>
@@ -166,14 +162,20 @@ const FinanceAdminSettings = () => {
               <AppCheckbox
                 label="Date picker"
                 id="date-picker"
-                checked={false}
-                onChange={() => {}}
+                checked={formData?.paymentConfirmation?.datePicker ?? false}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  paymentConfirmation: { ...formData.paymentConfirmation, datePicker: e.target.checked }
+                })}
               />
               <AppCheckbox
                 label="Time picker"
                 id="time-picker"
-                checked={false}
-                onChange={() => {}}
+                checked={formData?.paymentConfirmation?.timePicker ?? false}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  paymentConfirmation: { ...formData.paymentConfirmation, timePicker: e.target.checked }
+                })}
               />
             </div>
           </div>
@@ -184,34 +186,28 @@ const FinanceAdminSettings = () => {
               <AppCheckbox
                 label="Email"
                 id="budget-email"
-                checked={formData.budgetAlerts?.includes('email') ?? false}
+                checked={formData.budgetAlerts?.email ?? false}
                 onChange={(e) => setFormData({
                   ...formData,
-                  budgetAlerts: e.target.checked
-                    ? [...(formData.budgetAlerts?.filter(setting => setting !== 'email') || []), 'email']
-                    : formData.budgetAlerts?.filter(setting => setting !== 'email') || []
+                  budgetAlerts: { ...formData.budgetAlerts, email: e.target.checked }
                 })}
               />
               <AppCheckbox
                 label="SMS"
                 id="budget-sms"
-                checked={formData.budgetAlerts?.includes('sms') ?? false}
+                checked={formData.budgetAlerts?.sms ?? false}
                 onChange={(e) => setFormData({
                   ...formData,
-                  budgetAlerts: e.target.checked
-                    ? [...(formData.budgetAlerts?.filter(setting => setting !== 'sms') || []), 'sms']
-                    : formData.budgetAlerts?.filter(setting => setting !== 'sms') || []
+                  budgetAlerts: { ...formData.budgetAlerts, sms: e.target.checked }
                 })}
               />
               <AppCheckbox
                 label="In-App"
                 id="budget-in-app"
-                checked={formData.budgetAlerts?.includes('in-app') ?? false}
+                checked={formData.budgetAlerts?.inApp ?? false}
                 onChange={(e) => setFormData({
                   ...formData,
-                  budgetAlerts: e.target.checked
-                    ? [...(formData.budgetAlerts?.filter(setting => setting !== 'in-app') || []), 'in-app']
-                    : formData.budgetAlerts?.filter(setting => setting !== 'in-app') || []
+                  budgetAlerts: { ...formData.budgetAlerts, inApp: e.target.checked }
                 })}
               />
             </div>

@@ -2,7 +2,6 @@ import { handleError, Http } from "@/app/_core/utils/axios";
 import { headers } from "@/app/_core/utils/session";
 import { useMutation } from "@tanstack/react-query";
 import { getSession } from "next-auth/react";
-import { toast } from "react-toastify";
 
 
 export const getFinanceSettings = async () => {
@@ -28,9 +27,6 @@ export const useFinanceSettingsMutations = () => {
         headers: await headers(session?.token ?? ''),
       })
     },
-    onSuccess: async () => {
-      toast.success('Settings updated successfully', { className: 'bg-red-500' });
-    },
     onError: (error) => handleError(error)
   })
 
@@ -48,8 +44,16 @@ export const useFinanceSettingsMutations = () => {
 
 
 
+export interface NotificationMedia {
+  email?: boolean;
+  sms?: boolean;
+  inApp?: boolean;
+}
 
-
+export interface PaymentConfirmationSettings {
+  datePicker?: boolean;
+  timePicker?: boolean;
+}
 export interface IFinanceSettings {
   company: string;
   bankAccountNumber: string;
@@ -58,8 +62,9 @@ export interface IFinanceSettings {
   expenseCategories: string;
   paymentMethod: string;
   fiscalYearStart: string;
-  notificationSettings: string[];
-  budgetAlerts: string[];
+  notificationSettings: NotificationMedia;
+  paymentConfirmation: PaymentConfirmationSettings;
+  budgetAlerts: NotificationMedia;
   deletedAt: null | string;
   createdAt: string;
   updatedAt: string;
