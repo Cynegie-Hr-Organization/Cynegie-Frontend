@@ -9,14 +9,22 @@ export interface IBudgetBase {
   description: string;
   endDate: string;
   startDate: string;
+  spent: number;
+  remainingFunds: number;
 }
 
 export interface IBudget extends IBudgetBase {
   createdAt: string;
   deletedAt: string | null;
   id: string;
-  status: "PENDING" | "APPROVED" | "REJECTED";
+  status: "pending" | "approved" | "rejected";
   updatedAt: string;
+}
+
+export interface IBudgetSummary {
+  totalAllocated: number,
+  totalSpent: number,
+  remainingBudget: number
 }
 
 // export type IBudgetCreate = Omit<IBudgetBase, "company">;

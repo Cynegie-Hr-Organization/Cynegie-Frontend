@@ -3,7 +3,7 @@
 import EmptyTable from "@/app/_components/shared/empty-table";
 import { useAllBudget } from "@/app/_core/use-cases/finance/useBudget";
 import { Skeleton } from "@/components/ui/skeleton";
-import { localTime } from "@/lib/utils";
+import { getLocalCurrency, localTime } from "@/lib/utils";
 import { RiSearchLine } from "react-icons/ri";
 
 const BudgetsTable = () => {
@@ -46,36 +46,40 @@ const BudgetsTable = () => {
 
               <tbody>
                 {(budgets && budgets.length > 0) ? budgets.map((budget, idx) => {
-                  const { department, startDate, endDate, allocation, status } = budget ?? {};
+                  const { department, startDate, endDate, allocation, spent, remainingFunds, status } = budget ?? {};
                   const { departmentName } = department ?? {};
-
+                  console.log(spent)
                   return (
                     <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
                       <td className='px-4 py-4'>
-                        <p className='text-sm'>{departmentName}</p>
+                        <p className='text-sm'>{departmentName ?? 'NIIL'}</p>
                       </td>
                       <td className="px-4 py-4">
                         <p className="text-sm">
-                          {localTime(startDate, "Do MMM yyyy")}
+                          {startDate ? localTime(startDate, "Do MMM yyyy") : 'NIL'}
                         </p>
                       </td>
                       <td className="px-4 py-4">
                         <p className="text-sm">
-                          {localTime(endDate, "Do MMM yyyy")}
+                          {endDate ? localTime(endDate, "Do MMM yyyy") : 'NIL'}
                         </p>
                       </td>
                       <td className="px-4 py-4">
-                        <p className="text-sm">₦{allocation}</p>
+                        <p className="text-sm">{allocation ? getLocalCurrency(allocation) : 'NIL'}</p>
                       </td>
                       <td className="px-4 py-4">
-                        <p className="text-sm">₦{allocation}</p>
+                        <p className="text-sm">{(spent || spent === 0) ? getLocalCurrency(spent) : 'NIL'}</p>
                       </td>
                       <td className="px-4 py-4">
-                        <p className="text-sm">₦{allocation}</p>
+                        <p className="text-sm">{remainingFunds ? getLocalCurrency(remainingFunds) : 'NIL'}</p>
                       </td>
                       <td className="px-4 py-4">
-                        <p className="text-xs font-semibold text-amber-700 bg-amber-100 rounded-full px-2 py-1 w-fit text-nowrap lowercase">
-                          {status}
+                        <p className={`text-xs font-semibold rounded-full px-2 py-1 w-fit text-nowrap lowercase ${{
+                          'pending': 'text-amber-700 bg-amber-100',
+                          'approved': 'text-green-700 bg-green-100',
+                          'rejected': 'text-red-700 bg-red-100',
+                        }[status ?? 'pending']}`}>
+                          {status ? status.toLowerCase() : 'pending'}
                         </p>
                       </td>
                     </tr>
@@ -87,8 +91,9 @@ const BudgetsTable = () => {
             </table>
           </div>
         </>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 

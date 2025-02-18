@@ -1,4 +1,4 @@
-import { getAllBudget } from "@/app/_core/actions/finance/budget";
+import { getAllBudget, getBudgetSummary } from "@/app/_core/actions/finance/budget";
 import { IBudget, IBudgetCreate } from "@/app/_core/interfaces/budget";
 import { IRes } from "@/app/_core/interfaces/res";
 import { handleError, Http } from "@/app/_core/utils/axios";
@@ -98,4 +98,16 @@ export const useBudgetMutations = () => {
     updateBudget,
     deleteBudget,
   };
+};
+
+export const useBudgetSummary = () => {
+  return useQuery({
+    queryKey: ["budget-summary"],
+    queryFn: () => getBudgetSummary(),
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    initialData: undefined,
+    retry: false,
+  });
 };
