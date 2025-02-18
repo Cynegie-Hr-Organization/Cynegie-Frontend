@@ -270,8 +270,12 @@ const HrAdminEmployeeManagementApproval = () => {
               type: mutationLoading ? ButtonType.disabled : ButtonType.outlined,
               text: "Cancel",
               onClick: () => {
-                approveClicked && setApproveClicked(false);
-                isBulkApproval && setIsBulkApproval(false);
+                if (approveClicked) {
+                  setApproveClicked(false);
+                }
+                if (isBulkApproval) {
+                  setIsBulkApproval(false);
+                }
                 setOpenConfirmationModal(false);
               },
             },

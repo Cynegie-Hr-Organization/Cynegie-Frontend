@@ -118,10 +118,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
   const {
     register: employeeAttendanceRegister,
     control: employeeAttendanceControl,
-    formState: {
-      isValid: employeeAttendanceIsValid,
-      errors: employeeAttendanceErrors,
-    },
+    formState: { errors: employeeAttendanceErrors },
     getValues: employeeAttendanceGetValues,
     reset: employeeAttendanceReset,
   } = useForm();

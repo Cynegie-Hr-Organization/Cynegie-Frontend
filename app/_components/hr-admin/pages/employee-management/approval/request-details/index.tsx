@@ -59,13 +59,12 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
   const {
     register,
     control,
     formState: { errors },
-    getValues,
   } = useForm();
 
   const approveRejectMutation = useMutation({
@@ -212,7 +211,9 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
           {...{
             open: openConfirmationModal,
             onClose: () => {
-              approveClicked && setApproveClicked(false);
+              if (approveClicked) {
+                setApproveClicked(false);
+              }
               setOpenConfirmationModal(false);
             },
             hasHeading: false,
@@ -224,7 +225,9 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
               type: mutationLoading ? ButtonType.disabled : ButtonType.outlined,
               text: "Cancel",
               onClick: () => {
-                approveClicked && setApproveClicked(false);
+                if (approveClicked) {
+                  setApproveClicked(false);
+                }
                 setOpenConfirmationModal(false);
               },
             },
