@@ -18,6 +18,7 @@ import {
   FetchResponse,
   LeaveRequest,
   LeaveResponse,
+  MonthlyData,
   PaginatedDevices,
   PaginatedResponse2,
   PaginatedResponse4,
@@ -479,5 +480,5 @@ export const getTurnoverChartData = async () => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${session?.token}`,
     },
-  });
+  }) as Promise<MonthlyData>;
 };

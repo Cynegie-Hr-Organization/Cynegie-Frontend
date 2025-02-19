@@ -12,6 +12,7 @@ import Table from "@/app/_components/shared/table";
 import { FieldType } from "@/app/_components/shared/table/types";
 import { color, icon } from "@/constants";
 import { EmployeeDistribution, FetchParams, TurnoverReport } from "@/types";
+import { CircularProgress } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
@@ -21,22 +22,23 @@ import {
   getDepartmentStats,
   getEmployeeDemographyCharts,
   getTaskSummary,
+  getTurnoverChartData,
 } from "../../payroll-management/pages/overview/api";
 
-const employeeTurnoverChartData = [
-  { item: "Jan", value: 23 },
-  { item: "Feb", value: 27 },
-  { item: "Mar", value: 18 },
-  { item: "Apr", value: 18 },
-  { item: "May", value: 22 },
-  { item: "Jun", value: 13 },
-  { item: "Jul", value: 25 },
-  { item: "Aug", value: 17 },
-  { item: "Sep", value: 11 },
-  { item: "Oct", value: 17 },
-  { item: "Nov", value: 12 },
-  { item: "Dec", value: 25 },
-];
+// const employeeTurnoverChartData = [
+//   { item: "Jan", value: 23 },
+//   { item: "Feb", value: 27 },
+//   { item: "Mar", value: 18 },
+//   { item: "Apr", value: 18 },
+//   { item: "May", value: 22 },
+//   { item: "Jun", value: 13 },
+//   { item: "Jul", value: 25 },
+//   { item: "Aug", value: 17 },
+//   { item: "Sep", value: 11 },
+//   { item: "Oct", value: 17 },
+//   { item: "Nov", value: 12 },
+//   { item: "Dec", value: 25 },
+// ];
 
 type MappedTasks = {
   taskName: string;
@@ -73,6 +75,13 @@ const HrAdminEmployeeComplianceReporting = () => {
   const [turnoverBreakdown, setTurnoverBreakdown] =
     useState<MappedTurnoverBreakdown[]>();
 
+  const [turnoverChartData, setTurnoverChartData] = useState<
+    {
+      item: string;
+      value: number;
+    }[]
+  >([]);
+
   const [fetchParams] = useState<FetchParams>({
     page: 1,
     limit: 10,
@@ -108,6 +117,11 @@ const HrAdminEmployeeComplianceReporting = () => {
       ) as Promise<TurnoverReport>,
   });
 
+  const { data: _turnoverChartData } = useQuery({
+    queryKey: ["turnover-chart"],
+    queryFn: () => getTurnoverChartData(),
+  });
+
   useEffect(() => {
     if (tasksData) {
       setTasks(
@@ -122,6 +136,19 @@ const HrAdminEmployeeComplianceReporting = () => {
       setTasks(undefined);
     }
   }, [tasksData]);
+
+  useEffect(() => {
+    if (_turnoverChartData) {
+      const keys = Object.keys(_turnoverChartData);
+      const values = Object.values(_turnoverChartData);
+      setTurnoverChartData(
+        keys.map((key, index) => ({
+          item: key,
+          value: values[index],
+        }))
+      );
+    }
+  }, [_turnoverChartData]);
 
   function mapEmployeeDistribution(
     data: EmployeeDistribution
@@ -348,13 +375,19 @@ const HrAdminEmployeeComplianceReporting = () => {
                       <div className="flex flex-col gap-8">
                         <SectionCardContainer isCard title="Employee Turnover">
                           <div className="mt-4">
-                            <BarChart
-                              barSize={35}
-                              data={employeeTurnoverChartData}
-                              bars={[{ dataKey: "value" }]}
-                              yAxisLabel="(% of Employees)"
-                              isPercentage
-                            />
+                            {!_turnoverChartData ? (
+                              <div className="flex justify-center mb-10">
+                                <CircularProgress />
+                              </div>
+                            ) : (
+                              <BarChart
+                                barSize={35}
+                                data={turnoverChartData}
+                                bars={[{ dataKey: "value" }]}
+                                yAxisLabel="(% of Employees)"
+                                isPercentage
+                              />
+                            )}
                           </div>
                         </SectionCardContainer>
                         <Table
