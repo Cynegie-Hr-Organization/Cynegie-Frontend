@@ -40,8 +40,33 @@ export interface IBudgetSummary {
 export interface IBudgetCreate {
   budgetName: string;
   department: string;
-  allocation: number;
+  allocation: string | number;
   description: string;
   startDate: string;
   endDate: string;
+}
+
+
+export interface IDepartment {
+  data: [{
+    departmentName: string;
+    departmentManager: string;
+    employees: string[];
+    userLimit: number;
+    status: 'active' | 'inactive';
+    deletedAt: string | null;
+    company: string;
+    createdAt: string;
+    updatedAt: string;
+    id: string;
+  }],
+  meta: {
+    // total: number;
+    itemCount: 2,
+    page: number;
+    limit: number;
+    pageCount: 1,
+    hasPreviousPage: false,
+    hasNextPage: false
+  }
 }

@@ -1,4 +1,4 @@
-import { IBudget, IBudgetSummary } from "@/app/_core/interfaces/budget";
+import { IBudget, IBudgetSummary, IDepartment } from "@/app/_core/interfaces/budget";
 import { IPaginatedRes } from "@/app/_core/interfaces/res";
 import { handleError, Http } from "@/app/_core/utils/axios";
 import { headers } from "@/app/_core/utils/session";
@@ -40,6 +40,18 @@ export const getBudgetSummary = async () => {
   try {
     const session = await getSession();
     const { data } = await Http.get<IBudgetSummary>('budgets/summary', {
+      headers: await headers(session?.token ?? ''),
+    });
+    return data;
+  } catch (error) {
+    throw handleError(error);
+  }
+};
+
+export const getDepartments = async () => {
+  try {
+    const session = await getSession();
+    const { data } = await Http.get<IDepartment>('departments', {
       headers: await headers(session?.token ?? ''),
     });
     return data;

@@ -22,4 +22,5 @@ export const queryKeys = {
   CASH_FLOW_TRENDS: 'cash-flow-trends',
   USER_STATISTICS: 'user-statistics',
   HR_DASHBOARD_CARD_DATA: 'hr-dashboard-card-data',
+  DEPARTMENTS: 'departments',
 }

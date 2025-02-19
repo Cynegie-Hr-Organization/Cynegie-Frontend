@@ -5,20 +5,22 @@ import AppInputText, {
 } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import { IBudgetCreate } from "@/app/_core/interfaces/budget";
-import { useBudgetMutations } from "@/app/_core/use-cases/finance/useBudget";
+import { useBudgetMutations, useDepartment } from "@/app/_core/use-cases/finance/useBudget";
+import { useAppToast } from "@/app/_hooks/toast";
 import { AppModal } from "@/components/drawer/modal";
 import { useIsMutating } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { apptoast } = useAppToast();
   const isMutatingCreateBudget = useIsMutating({
     mutationKey: ["create-budget"],
   });
   const [formData, setFormData] = useState<IBudgetCreate>({
     budgetName: "",
     department: "",
-    allocation: 0,
+    allocation: "",
     description: "",
     startDate: "",
     endDate: ""
@@ -31,10 +33,35 @@ const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
     formData.startDate &&
     formData.endDate;
 
+  const { data: departmentsData, isLoading: isDepartmentsLoading } = useDepartment();
+
+  const departments = useMemo(() => {
+    return departmentsData?.data ?? [];
+  }, [departmentsData]);
+
+
+  const departmentOptions = useMemo(() => {
+    return departments?.map((department) => ({
+      label: department?.departmentName,
+      value: department?.id
+    }));
+  }, [departments]);
+
   const { createBudget } = useBudgetMutations();
 
+
   const handleCreateBudget = () => {
-    createBudget.mutate(formData)
+    const budgetData = {
+      ...formData,
+      allocation: formData.allocation === '' ? 0 : Number(formData.allocation)
+    };
+
+    createBudget.mutate(budgetData, {
+      onSuccess: () => {
+        apptoast.success({ title: 'Successful', message: 'Budget created successfully' })
+        setIsOpen(false)
+      }
+    })
   }
 
   return (
@@ -43,7 +70,7 @@ const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
       setOpen={setIsOpen}
       trigger={trigger}
       header={
-          <span className="font-roboto text-xl font-bold">New Budget</span>
+        <span className="font-roboto text-xl font-bold">New Budget</span>
       }
       footer={
         <div className="flex items-center justify-center gap-4">
@@ -68,32 +95,48 @@ const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
     >
       <form>
         <div className="space-y-4">
+          <AppInputText
+            label="Budget Name"
+            placeholder="Enter budget name"
+            onChange={(e) => {
+              setFormData({
+                ...formData,
+                budgetName: e.target.value,
+              });
+            }}
+            value={formData.budgetName}
+            id={"budget-name"}
+            requiredField
+          />
           <AppSelect
             label="Department"
             placeholder="Select department"
+            value={formData.department}
             onChange={(value) => {
               setFormData({ ...formData, department: value });
             }}
             requiredField
-            listItems={[
-              { label: "Finance Department", value: "Finance" },
-              { label: "HR Department", value: "HR" },
-              { label: "IT Department", value: "IT" },
-            ]}
+            listItems={departmentOptions}
           />
           <AppInputText
             label="Allocation"
-            placeholder="0"
+            placeholder="Enter budget allocation"
+            // type="number"
             onChange={(e) => {
-              setFormData({
-                ...formData,
-                allocation: parseInt(e.target.value),
-              });
+              const inputValue = e.target.value;
+              if (/^\d*$/.test(inputValue)) {
+                const truncatedValue = inputValue.slice(0, 15);
+                const parsedValue = truncatedValue === '' ? '' : parseInt(truncatedValue, 10);
+
+                setFormData({
+                  ...formData,
+                  allocation: parsedValue,
+                });
+              }
             }}
             value={formData.allocation}
             id={"allocation"}
             requiredField
-            type={"number"}
           />
           <AppInputTextArea
             label="Description"
