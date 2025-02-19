@@ -33,7 +33,7 @@ const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
     formData.startDate &&
     formData.endDate;
 
-  const { data: departmentsData, isLoading: isDepartmentsLoading } = useDepartment();
+  const { data: departmentsData } = useDepartment();
 
   const departments = useMemo(() => {
     return departmentsData?.data ?? [];
