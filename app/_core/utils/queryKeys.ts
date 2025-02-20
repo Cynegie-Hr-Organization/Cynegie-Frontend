@@ -23,4 +23,5 @@ export const queryKeys = {
   USER_STATISTICS: 'user-statistics',
   HR_DASHBOARD_CARD_DATA: 'hr-dashboard-card-data',
   DEPARTMENTS: 'departments',
+  PROFILE_UPDATE_APPROVALS: 'profile-update-approvals',
 }

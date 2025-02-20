@@ -2,8 +2,7 @@ import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppSelect } from "@/app/_components/shared/select";
 import AppTabs from "@/app/_components/shared/tabs";
-import { IUpdateRequest } from "@/app/_core/actions/super-admin/approvals";
-import { useApprovals } from "@/app/_core/use-cases/superadmin/useApprovals";
+import { useProfileUpdateApprovals } from "@/app/_core/use-cases/superadmin/useApprovals";
 import { AppModal } from "@/components/drawer/modal";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { localTime } from "@/lib/utils";
@@ -28,27 +27,6 @@ const ApprovalManagementTable = () => {
     },
   ];
 
-  const { data } = useApprovals();
-  const { updateRequests } = data ?? {}
-
-  console.log(updateRequests);
-
-  const financeTransactionsData = [
-    {
-      transactionType: "Payment",
-      category: "Salary",
-      date: "2023-06-30",
-      amount: "$1000",
-      status: "Completed",
-    },
-    {
-      transactionType: "Refund",
-      category: "Marketing",
-      date: "2023-07-15",
-      amount: "$500",
-      status: "Pending",
-    },
-  ];
 
   function convertToSlug(text: string) {
     return text
@@ -78,9 +56,9 @@ const ApprovalManagementTable = () => {
           }}
         />
       </div>
-      {currentTab === 'hr-approval' && <HRTable tableData={updateRequests} />}
-      {currentTab === 'it-approval' && <TableStructure tableData={financeTransactionsData} />}
-      {currentTab === 'finance-approval' && <TableStructure tableData={financeTransactionsData} />}
+      {currentTab === 'hr-approval' && <HRTable />}
+      {currentTab === 'it-approval' && <TableStructure />}
+      {currentTab === 'finance-approval' && <TableStructure />}
     </div>
   )
 }
@@ -89,9 +67,12 @@ const ApprovalManagementTable = () => {
 
 
 
-const HRTable = ({ tableData }: {
-  tableData?: IUpdateRequest[]
-}) => {
+const HRTable = () => {
+  const { data: hrData } = useProfileUpdateApprovals({
+    // filterParams: {
+    // }
+  })
+
   const tableHeader = [
     "Request Type",
     "Requested By",
@@ -99,6 +80,8 @@ const HRTable = ({ tableData }: {
     "Status",
     "Actions"
   ]
+
+  const { data: updateRequests } = hrData ?? {}
 
   return (
     <div className="common-card overflow-x-scroll space-y-4">
@@ -171,27 +154,29 @@ const HRTable = ({ tableData }: {
             </tr>
           </thead>
           <tbody>
-            {tableData?.map((data, idx) => {
-              const { company, approvalDate, createdAt, status } = data
+            {updateRequests?.map((request, idx) => {
+              const { createdAt, status, requestedBy, requestType } = request ?? {}
+              const { personalInfo } = requestedBy ?? {}
+
               return (
                 <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
-                  <td className='px-4 py-4'>
-                    <p className='text-sm'>{company}</p>
+                  <td className='px-4 py-3'>
+                    <p className='text-sm'>{requestType}</p>
                   </td>
-                  <td className='px-4 py-4'>
-                    <p className='text-sm'>{approvalDate ? localTime(approvalDate) : 'NIL'}</p>
+                  <td className='px-4 py-3'>
+                    <p className='text-sm'>{personalInfo ? `${personalInfo?.firstName} ${personalInfo?.lastName}` : 'NIL'}</p>
                   </td>
-                  <td className='px-4 py-4'>
-                    <p className='text-sm'>{createdAt}</p>
+                  <td className='px-4 py-3'>
+                    <p className='text-sm'>{createdAt ? localTime(createdAt, 'dd MMM, yyyy') : 'NIL'}</p>
                   </td>
-                  <td className='px-4 py-4'>
-                    <p className={`text-sm font-semibold capitalize rounded-full px-2 py-1 w-fit text-nowrap ${{
+                  <td className='px-4 py-3'>
+                    <p className={`text-sm font-semibold rounded-full px-2 py-1 w-fit text-nowrap ${{
                       'pending': 'text-amber-600 bg-amber-50',
                       'approved': 'text-green-600 bg-green-50',
-                      'rejected': 'text-red-500 bg-red-50'
+                      'rejected': 'text-red-600 bg-red-50'
                     }[status ?? 'pending']}`}>{status}</p>
                   </td>
-                  <td className='px-4 py-4'>
+                  <td className='px-4 py-3'>
                     <PopoverMenu />
                   </td>
                 </tr>
@@ -313,24 +298,28 @@ const TableStructure = <T extends Record<string, string>>({
                   key={idx}
                   className="border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]"
                 >
-                  <td className="px-4 py-4">
+                  <td className="px-4 py-3">
                     <p className="text-sm">{data?.transactionType}</p>
                   </td>
-                  <td className="px-4 py-4">
+                  <td className="px-4 py-3">
                     <p className="text-sm">{data?.category}</p>
                   </td>
-                  <td className="px-4 py-4">
+                  <td className="px-4 py-3">
                     <p className="text-sm">{data?.date}</p>
                   </td>
-                  <td className="px-4 py-4">
+                  <td className="px-4 py-3">
                     <p className="text-sm">{data?.amount}</p>
                   </td>
-                  <td className="px-4 py-4">
-                    <p className="text-sm font-semibold text-amber-600 bg-amber-50 rounded-full px-2 py-1 w-fit text-nowrap">
+                  <td className="px-4 py-3">
+                    <p className={`text-sm font-semibold rounded-full px-2 py-1 w-fit text-nowrap ${{
+                      'pending': 'text-amber-600 bg-amber-50',
+                      'approved': 'text-green-600 bg-green-50',
+                      'rejected': 'text-red-600 bg-red-50',
+                    }[data?.status ?? 'pending']}`}>
                       {data?.status}
                     </p>
                   </td>
-                  <td className="px-4 py-4">
+                  <td className="px-4 py-3">
                     <PopoverMenu />
                   </td>
                 </tr>
@@ -349,7 +338,7 @@ function PopoverMenu() {
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <button className="cursor-pointer outline-none p-1 border border-gray-300 rounded-lg">
+        <button className="cursor-pointer outline-none p-2 border border-gray-300 rounded-lg">
           <HiDotsVertical />
         </button>
       </PopoverTrigger>
