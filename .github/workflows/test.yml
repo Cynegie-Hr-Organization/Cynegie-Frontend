@@ -28,7 +28,7 @@ jobs:
 
       # Run tests (if you have tests)
       - name: Run tests
-        run: npm test
+        run: yarn test
 
       # Build the Next.js app
       - name: Build Next.js app
