@@ -15,20 +15,20 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-const chartData = [
-  { month: "Jan", pay: 150 },
-  { month: "Feb", pay: 200 },
-  { month: "Mar", pay: 200 },
-  { month: "Apr", pay: 135 },
-  { month: "May", pay: 209 },
-  { month: "Jun", pay: 214 },
-  { month: "Jul", pay: 300 },
-  { month: "Aug", pay: 350 },
-  { month: "Sep", pay: 250 },
-  { month: "Oct", pay: 200 },
-  { month: "Nov", pay: 200 },
-  { month: "Dec", pay: 200 },
-];
+// const chartData = [
+//   { month: "Jan", pay: 150 },
+//   { month: "Feb", pay: 200 },
+//   { month: "Mar", pay: 200 },
+//   { month: "Apr", pay: 135 },
+//   { month: "May", pay: 209 },
+//   { month: "Jun", pay: 214 },
+//   { month: "Jul", pay: 300 },
+//   { month: "Aug", pay: 350 },
+//   { month: "Sep", pay: 250 },
+//   { month: "Oct", pay: 200 },
+//   { month: "Nov", pay: 200 },
+//   { month: "Dec", pay: 200 },
+// ];
 
 const chartConfig = {
   total: {
@@ -64,7 +64,13 @@ const formatLargeNumber = (value: number) => {
   }
 };
 
-export function GradientLineChart() {
+export function GradientLineChart({ chartData }: {
+  chartData?: {
+    month: string;
+    pay: number
+  }[]
+}) {
+
   return (
     <ChartContainer
       className="h-[250px] w-full mt-6 -ml-6"

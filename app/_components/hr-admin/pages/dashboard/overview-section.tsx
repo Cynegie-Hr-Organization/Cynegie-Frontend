@@ -1,7 +1,13 @@
 import { AppSelect } from "@/app/_components/shared/select";
 import CardSkeleton from "@/app/_components/shared/skelentons/card";
 import Todo from "@/app/_components/todo";
-import { useDashboardOverviewData } from "@/app/_core/use-cases/hr-admin/useDashboard";
+import {
+  useDashboardChartData,
+  useDashboardOverviewData,
+  useEmployeeStatus,
+  usePriorityCards
+} from "@/app/_core/use-cases/hr-admin/useDashboard";
+import { Skeleton } from "@/components/ui/skeleton";
 import { newIndex } from "@/lib/utils";
 import { Box, Grid2, Stack } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
@@ -16,12 +22,7 @@ const colors = {
   yellow: "#FFAD33",
   green: "#0F973D",
 };
-const data = [
-  { value: 40, label: "A", color: colors.green },
-  { value: 40, label: "B", color: colors.yellow },
-  { value: 40, label: "C", color: colors.grey },
-  { value: 40, label: "D", color: colors.red },
-];
+
 
 const size = {
   width: 200,
@@ -42,7 +43,6 @@ const OverViewSection = () => {
 
 const OverViewCards = () => {
   const { data, isLoading } = useDashboardOverviewData();
-
   const { interviewsScheduled, pendingOffers, totalApplications, totalOpenPositions } = data ?? {}
 
 
@@ -104,6 +104,23 @@ const OverViewCards = () => {
 };
 
 const ChartsCard = () => {
+  const { data: chartData, isLoading } = useDashboardChartData();
+  const { data: employeeStatus, isLoading: isEmployeeStatusLoading } = useEmployeeStatus();
+
+  console.log('**********************', employeeStatus)
+  const { active, probation, resigned, onLeave } = employeeStatus?.statusDistribution ?? {}
+
+  const data = [
+    { value: (active ?? 0), label: "A", color: colors.green },
+    { value: (probation ?? 0), label: "B", color: colors.yellow },
+    { value: (resigned ?? 0), label: "C", color: colors.grey },
+    { value: (onLeave ?? 0), label: "D", color: colors.red },
+  ];
+
+
+  console.log(chartData, isLoading);
+
+
   const timeRanges = [
     { label: "Monthly", value: "monthly" },
     { label: "Yearly", value: "yearly" },
@@ -130,7 +147,7 @@ const ChartsCard = () => {
           </div>
         </div>
 
-        <GradientLineChart />
+        <GradientLineChart chartData={[]} />
       </div>
 
       <div className="common-card p-4 rounded-xl col-span-1 lg:col-span-4">
@@ -150,23 +167,35 @@ const ChartsCard = () => {
           </div>
 
           <div className="space-y-2">
-            {[
-              { color: colors.green, label: "Active", percentage: 75 },
-              { color: colors.yellow, label: "On Leave", percentage: 10 },
-              { color: colors.grey, label: "Probation", percentage: 5 },
-              { color: colors.red, label: "Resigned", percentage: 10 },
-            ].map((item, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between gap-1 text-base"
-              >
-                <div className="flex items-center gap-1">
-                  <GoDotFill color={item.color} size={18} />
-                  <p className="font-semibold text-xs">{item.label}</p>
+            {isEmployeeStatusLoading ? (
+              [...Array(4)].map((_, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="flex items-center gap-x-2">
+                    <Skeleton className="h-2.5 w-2.5 bg-neutral-300 " />
+                    <Skeleton className="h-4 w-32 bg-neutral-300" />
+                  </div>
+                  <Skeleton className="h-4 w-10 bg-neutral-300 " />
+                </div>))
+            ) : (<>
+              {[
+                { color: colors.green, label: "Active", percentage: active ?? 0 },
+                { color: colors.yellow, label: "On Leave", percentage: onLeave ?? 0 },
+                { color: colors.grey, label: "Probation", percentage: probation ?? 0 },
+                { color: colors.red, label: "Resigned", percentage: resigned ?? 0 },
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between gap-1 text-base"
+                >
+                  <div className="flex items-center gap-1">
+                    <GoDotFill color={item.color} size={18} />
+                    <p className="font-semibold text-xs">{item.label}</p>
+                  </div>
+                  <p className="font-semibold text-xs">{item.percentage}%</p>
                 </div>
-                <p className="font-semibold text-xs">{item.percentage}%</p>
-              </div>
-            ))}
+              ))}
+            </>
+            )}
           </div>
         </div>
       </div>
@@ -175,6 +204,8 @@ const ChartsCard = () => {
 };
 
 const PriorityCard = () => {
+  const { data: priorityData, isLoading } = usePriorityCards();
+
   const timeRanges = [
     { label: "Monthly", value: "monthly" },
     { label: "Yearly", value: "yearly" },
@@ -191,30 +222,45 @@ const PriorityCard = () => {
           <Box className="text-base font-semibold flex-grow">
             Priority Todos
           </Box>
-          <AppSelect
-            width="w-[120px]"
-            placeholder="Monthly"
-            listItems={timeRanges}
-            onChange={handleTimeRangeChange}
-          />
+          {isLoading ? (
+            <Skeleton className="w-[120px] h-5 bg-neutral-300" />
+          ) : (
+            <AppSelect
+              width="w-[120px]"
+              placeholder="Monthly"
+              listItems={timeRanges}
+              onChange={handleTimeRangeChange}
+            />
+          )}
         </Stack>
-        <Grid2 columnSpacing={2} rowSpacing={2} container>
-          {Array(3)
-            .fill(undefined)
-            .map((_, index) => {
-              return (
-                <Grid2 key={newIndex(index)} size={{ xs: 12, md: 4 }}>
-                  <Todo />
-                </Grid2>
-              );
-            })}
-        </Grid2>
-        <Link
-          href="/hr-admin/onboarding/overview"
-          className="underline text-[#0035C3] cursor-pointer"
-        >
-          View all tasks
-        </Link>
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <CardSkeleton numberOfCards={4} />
+          </div>
+        ) : (
+          <>
+            <Grid2 columnSpacing={2} rowSpacing={2} container>
+              {(priorityData && (priorityData?.tasks?.length ?? 0) > 0) ? priorityData?.tasks?.map((task, index) => {
+                return (
+                  <Grid2 key={newIndex(index)} size={{ xs: 12, md: 4 }}>
+                    <Todo />
+                  </Grid2>
+                );
+              }) : (
+                <p className="text-sm text-gray-500 border border-dashed border-gray-200 p-4 rounded-lg w-full text-center">
+                  You&apos;re all set. There is no existing task left.
+                </p>
+              )}
+            </Grid2>
+            <Link
+              href="/hr-admin/onboarding/overview"
+              className="underline text-[#0035C3] cursor-pointer hover:text-[#0035C3]/80 w-max"
+            >
+              View all tasks
+            </Link>
+          </>
+        )
+        }
       </Stack>
     </Grid2>
   );
