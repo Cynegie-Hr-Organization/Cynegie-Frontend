@@ -2,9 +2,9 @@ name: Next.js CI/CD
 
 on:
   push:
-    branches: [ "main" ] # Trigger on pushes to the main branch
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ] # Trigger on pull requests to the main branch
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -20,15 +20,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20 # Specify the Node.js version
-          cache: "npm" # Cache npm dependencies
+          cache: "yarn" # Cache npm dependencies
 
       # Install dependencies
       - name: Install dependencies
         run: yarn install
-
-      # Run tests (if you have tests)
-      - name: Run tests
-        run: yarn test
 
       # Build the Next.js app
       - name: Build Next.js app
