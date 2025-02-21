@@ -9,7 +9,7 @@ import SectionCardContainer from "@/app/_components/shared/section-with-cards/co
 import { icon, route } from "@/constants";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useParams, useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
