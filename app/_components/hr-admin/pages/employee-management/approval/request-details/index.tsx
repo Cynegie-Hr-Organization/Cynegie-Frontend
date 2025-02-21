@@ -9,7 +9,7 @@ import SectionCardContainer from "@/app/_components/shared/section-with-cards/co
 import { icon, route } from "@/constants";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import {  useRouter } from "next/navigation";
+import {  useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -30,6 +30,8 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
 
   const queryClient = useQueryClient();
 
+  const { slug } = useParams()
+  
   const { data } = useQuery({
     queryKey: ["leave-request", slug],
     ...(typeof slug === "string" && { queryFn: () => getLeaveRequest(slug) }),
