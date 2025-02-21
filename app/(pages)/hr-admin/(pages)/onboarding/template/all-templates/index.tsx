@@ -173,7 +173,7 @@ const PopoverMenu: React.FC<{ template: ITemplate }> = ({ template }) => {
     {
       slug: "edit-template",
       label: "Edit Template",
-      onSelect: () => router.push(`/hr-admin/onboarding/template/new-template/templateId`),
+      onSelect: () => router.push(`/hr-admin/onboarding/template/new-template/${template.id}`),
     },
     {
       slug: "preview-template",
