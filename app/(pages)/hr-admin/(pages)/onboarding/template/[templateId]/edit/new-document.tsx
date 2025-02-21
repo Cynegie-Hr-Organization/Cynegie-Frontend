@@ -99,10 +99,10 @@ function AddDocumentModal({ children }: { children: ReactNode }) {
     <AppModal
       trigger={children}
       header={
-        <DialogTitle className="">
-          <p className="font-semibold">Add Document</p>
-          <p className="font-normal text-sm">Add and create document</p>
-        </DialogTitle>
+        <span className="">
+          <span className="font-semibold">Add Document</span>
+          <span className="font-normal text-sm">Add and create document</span>
+        </span>
       }
       footer={
         <button className="capitalize w-full mt-5 gap-x-2 outline-none border border-gray-400 bg-gray-300 rounded-lg px-[12.33px] py-[9px] font-bold">

@@ -1,11 +1,11 @@
 "use client";
 
 import CardLayout from "@/app/_components/shared/cards";
-import NewTask from "./new-task";
-import NewDocument from "./new-document";
-import NewTrainingModule from "./new-training-module";
-import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import NewDocument from "./new-document";
+import NewTask from "./new-task";
+import NewTrainingModule from "./new-training-module";
 
 type CreateTemplateStep = "task" | "document" | "training-module";
 
@@ -66,7 +66,7 @@ const CreateNewTemplate = () => {
 
   return (
     <form className="mb-12">
-      <h3 className="text-lg font-semibold">Create New Template</h3>
+      <h3 className="text-lg font-semibold">Edit Template</h3>
 
       <CardLayout className="mt-6 space-y-6">
         <div className="flex flex-col">
