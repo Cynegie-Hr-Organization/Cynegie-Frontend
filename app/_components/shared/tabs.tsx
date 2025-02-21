@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 interface Tab {
   label: string;
@@ -7,18 +7,29 @@ interface Tab {
 
 interface TabsProps {
   tabs: Tab[];
+  activeTabLabel?: string;
   className?: string;
   tabHorizontalPadding?: string;
 }
 
 const AppTabs: React.FC<TabsProps> = ({
   tabs,
+  activeTabLabel,
   className,
   tabHorizontalPadding,
 }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [indicatorStyles, setIndicatorStyles] = useState({ width: 0, left: 0 });
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  useEffect(() => {
+    if (activeTabLabel) {
+      const index = tabs.findIndex(tab => tab.label === activeTabLabel);
+      if (index !== -1) {
+        setActiveTab(index);
+      }
+    }
+  }, [activeTabLabel, tabs]);
 
   useLayoutEffect(() => {
     if (tabRefs.current[activeTab]) {
@@ -37,11 +48,10 @@ const AppTabs: React.FC<TabsProps> = ({
             ref={(el) => {
               tabRefs.current[index] = el;
             }}
-            className={`transition-all duration-300 relative p-2 text-sm ${tabHorizontalPadding ?? "px-2"} ${
-              activeTab === index
+            className={`transition-all duration-300 relative p-2 text-sm ${tabHorizontalPadding ?? "px-2"} ${activeTab === index
                 ? "text-primary font-semibold"
                 : "text-gray-500"
-            }`}
+              }`}
             onClick={() => {
               setActiveTab(index);
               tab.onClick();

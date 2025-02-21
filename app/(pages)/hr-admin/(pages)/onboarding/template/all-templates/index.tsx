@@ -27,51 +27,9 @@ const TemplateTable = () => {
     if (selectedItems.size === templateLength) {
       clearSelection()
     } else {
-      selectAll(templates?.map(template => template.id) || [])
+      selectAll(templates?.map(template => template?.id) || [])
     }
   }
-
-
-  // const [templates, setTemplates] = useState([
-  //   {
-  //     id: 1,
-  //     name: "Ayomide Alibaba",
-  //     department: "Admin",
-  //     position: "Admin Officer",
-  //     startDate: "21st June, 2024",
-  //     template: "Standard Onboarding Template",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Ayomide Alibaba",
-  //     department: "Admin",
-  //     position: "Admin Officer",
-  //     startDate: "21st June, 2024",
-  //     template: "IT Department Template",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Oluwatobi Johnson",
-  //     department: "IT",
-  //     position: "Software Engineer",
-  //     startDate: "5th July, 2024",
-  //     template: "Software Onboarding Template",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Chiamaka Okoro",
-  //     department: "HR",
-  //     position: "HR Manager",
-  //     startDate: "12th July, 2024",
-  //     template: "HR Department Template",
-  //   },
-  // ]);
-
-  // const handleDelete = (id: number) => {
-  //   setTemplates((prevProspects) =>
-  //     prevProspects.filter((item) => item.id !== id),
-  //   );
-  // };
 
   return (
     <CardLayout
@@ -173,12 +131,12 @@ const PopoverMenu: React.FC<{ template: ITemplate }> = ({ template }) => {
     {
       slug: "edit-template",
       label: "Edit Template",
-      onSelect: () => router.push(`/hr-admin/onboarding/template/new-template/${template.id}`),
+      onSelect: () => router.push(`/hr-admin/onboarding/template/${template.id}/edit`),
     },
     {
       slug: "preview-template",
       label: "Preview Template",
-      onSelect: () => setModalState({ ...modalState, previewModal: true })
+      onSelect: () => router.push(`/hr-admin/onboarding/template/${template.id}`)
     },
     {
       slug: "delete-template",
