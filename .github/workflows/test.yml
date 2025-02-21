@@ -1,4 +1,4 @@
-name: Next.js CI/CD
+name: Next.js CI
 
 on:
   push:
@@ -19,8 +19,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20 # Specify the Node.js version
-          cache: "yarn" # Cache npm dependencies
+          node-version: 20 
+          cache: "yarn"
 
       # Install dependencies
       - name: Install dependencies
@@ -29,8 +29,7 @@ jobs:
       # Build the Next.js app
       - name: Build Next.js app
         run: yarn run build
-
-      # Optional: Run linting (if you have a linting setup)
+        
       - name: Run linting
         run: yarn run lint
 
