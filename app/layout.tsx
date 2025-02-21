@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import QueryClientProvider from "@/contexts/ReactQueryProvider";
 import "rsuite/dist/rsuite.min.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { NetworkStatusProvider } from "@/contexts/NetworkStatusProvider";
 
 export const metadata: Metadata = {
   title: "Cynegie",
@@ -19,8 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased font-sans">
-        <ToastContainer />
+        <NetworkStatusProvider>
+          <ToastContainer />
         <QueryClientProvider>{children}</QueryClientProvider>
+            </NetworkStatusProvider>
+
+        
       </body>
     </html>
   );
