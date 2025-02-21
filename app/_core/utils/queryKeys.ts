@@ -28,4 +28,5 @@ export const queryKeys = {
   EMPLOYEE_STATUS: 'employee-status',
   PRIORITY_TASKS: 'priority-tasks',
   CANDIDATES: 'candidates',
+  NEW_HIRE_LIST: 'new-hire-list',
 }
