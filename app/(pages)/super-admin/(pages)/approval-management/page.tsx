@@ -3,24 +3,27 @@
 import ApprovalManagementTable from "@/app/(pages)/super-admin/(pages)/approval-management/table";
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
+import { Suspense } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 
 const ApprovalManagementPage = () => {
   return (
-    <div className="space-y-8 py-6">
-      <div>
-        <PageHeader
-          title="Approval Management"
-          description="Access employee training summary in your organization"
-          button1Label="Reject All"
-          button2Label="Approve All"
-        />
-      </div>
+    <Suspense fallback={'Loading...'}>
+      <div className="space-y-8 py-6">
+        <div>
+          <PageHeader
+            title="Approval Management"
+            description="Access employee training summary in your organization"
+            button1Label="Reject All"
+            button2Label="Approve All"
+          />
+        </div>
 
-      <div>
-        <ApprovalManagementTable />
+        <div>
+          <ApprovalManagementTable />
+        </div>
       </div>
-    </div>
+    </Suspense>
   );
 };
 

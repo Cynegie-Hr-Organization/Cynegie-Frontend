@@ -1,4 +1,4 @@
-import { getAllBudget } from "@/app/_core/actions/finance/budget";
+import { getAllBudget, getBudgetSummary, getDepartments } from "@/app/_core/actions/finance/budget";
 import { IBudget, IBudgetCreate } from "@/app/_core/interfaces/budget";
 import { IRes } from "@/app/_core/interfaces/res";
 import { handleError, Http } from "@/app/_core/utils/axios";
@@ -6,12 +6,29 @@ import { queryKeys } from "@/app/_core/utils/queryKeys";
 import { headers } from "@/app/_core/utils/session";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getSession } from "next-auth/react";
-import { toast } from "react-toastify";
+import { useSearchParams } from "next/navigation";
 
-export const useAllBudget = () => {
+
+
+
+export const useAllBudget = ({ }) => {
+
+  const searchParams = useSearchParams();
+  const sortOrder = searchParams.get('sortOrder') ?? 'desc';
+  const page = searchParams.get('page');
+  const limit = searchParams.get('limit');
+  const status = searchParams.get('status');
+  const search = searchParams.get('search') ?? undefined;
+
   return useQuery({
     queryKey: [queryKeys.BUDGETS],
-    queryFn: () => getAllBudget(),
+    queryFn: () => getAllBudget({
+      sortOrder,
+      page: Number(page ?? 1),
+      limit: Number(limit ?? 5),
+      search: search ?? undefined,
+      status: status ?? undefined,
+    }),
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
@@ -33,14 +50,7 @@ export const useBudgetMutations = () => {
         headers: await headers(session?.token ?? ""),
       });
     },
-    onSuccess: async (data) => {
-      console.log(data);
-      toast.success(data.data.message);
-      if (!data.data.data?.status)
-        throw new Error(
-          data.data.message ?? `Unable to Create this budget, please try again`,
-        );
-
+    onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [BUDGETS] });
     },
     onError: (error) => handleError(error),
@@ -75,9 +85,34 @@ export const useBudgetMutations = () => {
     },
     onError: (error) => handleError(error),
   });
+
   return {
     createBudget,
     updateBudget,
     deleteBudget,
   };
+};
+
+export const useBudgetSummary = () => {
+  return useQuery({
+    queryKey: ["budget-summary"],
+    queryFn: () => getBudgetSummary(),
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    initialData: undefined,
+    retry: false,
+  });
+};
+
+export const useDepartment = () => {
+  return useQuery({
+    queryKey: [queryKeys.DEPARTMENTS],
+    queryFn: () => getDepartments(),
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    initialData: undefined,
+    retry: false,
+  });
 };

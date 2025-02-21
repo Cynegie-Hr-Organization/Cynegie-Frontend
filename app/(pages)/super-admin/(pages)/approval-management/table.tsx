@@ -2,22 +2,22 @@ import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppSelect } from "@/app/_components/shared/select";
 import AppTabs from "@/app/_components/shared/tabs";
-import { DrawerDialog } from "@/components/drawer/modal";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { useProfileUpdateApprovals } from "@/app/_core/use-cases/superadmin/useApprovals";
+import { AppModal } from "@/components/drawer/modal";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { localTime } from "@/lib/utils";
 import { useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 
+
+
+type ApprovalTabs = 'hr-approval' | 'it-approval' | 'finance-approval';
+
+
 const ApprovalManagementTable = () => {
-  type ApprovalTabs = "hr-approval" | "it-approval" | "finance-approval";
-
-  const [currentTab, setCurrentTab] = useState<ApprovalTabs>("hr-approval");
-
+  const [currentTab, setCurrentTab] = useState<ApprovalTabs>('hr-approval');
   const tabs = [
     { label: "HR Approval", onClick: () => setCurrentTab("hr-approval") },
     { label: "IT Approval", onClick: () => setCurrentTab("it-approval") },
@@ -27,22 +27,6 @@ const ApprovalManagementTable = () => {
     },
   ];
 
-  const financeTransactionsData = [
-    {
-      transactionType: "Payment",
-      category: "Salary",
-      date: "2023-06-30",
-      amount: "$1000",
-      status: "Completed",
-    },
-    {
-      transactionType: "Refund",
-      category: "Marketing",
-      date: "2023-07-15",
-      amount: "$500",
-      status: "Pending",
-    },
-  ];
 
   function convertToSlug(text: string) {
     return text
@@ -72,18 +56,142 @@ const ApprovalManagementTable = () => {
           }}
         />
       </div>
-      {currentTab === "hr-approval" && (
-        <TableStructure tableData={financeTransactionsData} />
-      )}
-      {currentTab === "it-approval" && (
-        <TableStructure tableData={financeTransactionsData} />
-      )}
-      {currentTab === "finance-approval" && (
-        <TableStructure tableData={financeTransactionsData} />
-      )}
+      {currentTab === 'hr-approval' && <HRTable />}
+      {currentTab === 'it-approval' && <TableStructure />}
+      {currentTab === 'finance-approval' && <TableStructure />}
+    </div>
+  )
+}
+
+
+
+
+
+const HRTable = () => {
+  const { data: hrData } = useProfileUpdateApprovals({
+    // filterParams: {
+    // }
+  })
+
+  const tableHeader = [
+    "Request Type",
+    "Requested By",
+    "Submission Date",
+    "Status",
+    "Actions"
+  ]
+
+  const { data: updateRequests } = hrData ?? {}
+
+  return (
+    <div className="common-card overflow-x-scroll space-y-4">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
+        <div className="flex-grow max-w-[300px] xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
+          <RiSearchLine className="text-gray-400" />
+          <input type="text" placeholder="Search here..." className="w-full h-9 px-2 outline-none" />
+        </div>
+
+        <AppDropdownMenu trigger={
+          <button type="button" className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
+            <LuListFilter /> Filter
+          </button>
+        }
+          menuItems={
+            <div className="p-4 space-y-10">
+              <div className="space-y-4">
+                <AppSelect listItems={[
+                  { label: "High", value: "high" },
+                  { label: "Medium", value: "medium" },
+                  { label: "Low", value: "low" },
+                ]}
+                  label="Date"
+                  placeholder="High"
+                  onChange={function (value: string): void {
+                    console.log(value)
+                  }} />
+
+                <AppSelect
+                  listItems={[
+                    { label: "Completed", value: "completed" },
+                    { label: "In Progress", value: "in-progress" },
+                    { label: "Not Started", value: "not-started" },
+                  ]}
+                  label="Category"
+                  placeholder="Revenue"
+                  onChange={function (value: string): void {
+                    console.log(value)
+                  }} />
+                <AppSelect
+                  listItems={[
+                    { label: "Completed", value: "completed" },
+                    { label: "In Progress", value: "in-progress" },
+                    { label: "Not Started", value: "not-started" },
+                  ]}
+                  label="Status"
+                  placeholder="Completed"
+                  onChange={function (value: string): void {
+                    console.log(value)
+                  }} />
+              </div>
+
+              <div className="flex items-center justify-between gap-4">
+                <AppButton label="Reset" className="btn-secondary w-[90px]" />
+                <AppButton label="Filter" className="btn-primary w-[90px]" />
+              </div>
+            </div>
+          } />
+      </div>
+
+      <div className='-mx-5 mt-4'>
+        <table className='w-full border-collapse'>
+          <thead className='bg-[#F7F9FC]'>
+            <tr>
+              {tableHeader.map((header, idx) => {
+                return (
+                  <th key={idx} className='px-4 py-3 text-left'>{header}</th>
+                )
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            {updateRequests?.map((request, idx) => {
+              const { createdAt, status, requestedBy, requestType } = request ?? {}
+              const { personalInfo } = requestedBy ?? {}
+
+              return (
+                <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
+                  <td className='px-4 py-3'>
+                    <p className='text-sm'>{requestType}</p>
+                  </td>
+                  <td className='px-4 py-3'>
+                    <p className='text-sm'>{personalInfo ? `${personalInfo?.firstName} ${personalInfo?.lastName}` : 'NIL'}</p>
+                  </td>
+                  <td className='px-4 py-3'>
+                    <p className='text-sm'>{createdAt ? localTime(createdAt, 'dd MMM, yyyy') : 'NIL'}</p>
+                  </td>
+                  <td className='px-4 py-3'>
+                    <p className={`text-sm font-semibold rounded-full px-2 py-1 w-fit text-nowrap ${{
+                      'pending': 'text-amber-600 bg-amber-50',
+                      'approved': 'text-green-600 bg-green-50',
+                      'rejected': 'text-red-600 bg-red-50'
+                    }[status ?? 'pending']}`}>{status}</p>
+                  </td>
+                  <td className='px-4 py-3'>
+                    <PopoverMenu />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
-};
+}
+
+
+
+
 
 const TableStructure = <T extends Record<string, string>>({
   tableData,
@@ -91,10 +199,9 @@ const TableStructure = <T extends Record<string, string>>({
   tableData?: T[];
 }) => {
   const tableHeader = [
-    "Transaction Type",
-    "Category",
-    "Date",
-    "Amount",
+    "Request Type",
+    "Requested By",
+    "Submission Date",
     "Status",
     "Actions",
   ];
@@ -191,24 +298,28 @@ const TableStructure = <T extends Record<string, string>>({
                   key={idx}
                   className="border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]"
                 >
-                  <td className="px-4 py-4">
+                  <td className="px-4 py-3">
                     <p className="text-sm">{data?.transactionType}</p>
                   </td>
-                  <td className="px-4 py-4">
+                  <td className="px-4 py-3">
                     <p className="text-sm">{data?.category}</p>
                   </td>
-                  <td className="px-4 py-4">
+                  <td className="px-4 py-3">
                     <p className="text-sm">{data?.date}</p>
                   </td>
-                  <td className="px-4 py-4">
+                  <td className="px-4 py-3">
                     <p className="text-sm">{data?.amount}</p>
                   </td>
-                  <td className="px-4 py-4">
-                    <p className="text-sm font-semibold text-amber-600 bg-amber-50 rounded-full px-2 py-1 w-fit text-nowrap">
+                  <td className="px-4 py-3">
+                    <p className={`text-sm font-semibold rounded-full px-2 py-1 w-fit text-nowrap ${{
+                      'pending': 'text-amber-600 bg-amber-50',
+                      'approved': 'text-green-600 bg-green-50',
+                      'rejected': 'text-red-600 bg-red-50',
+                    }[data?.status ?? 'pending']}`}>
                       {data?.status}
                     </p>
                   </td>
-                  <td className="px-4 py-4">
+                  <td className="px-4 py-3">
                     <PopoverMenu />
                   </td>
                 </tr>
@@ -227,7 +338,7 @@ function PopoverMenu() {
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <button className="cursor-pointer outline-none p-1 border border-gray-300 rounded-lg">
+        <button className="cursor-pointer outline-none p-2 border border-gray-300 rounded-lg">
           <HiDotsVertical />
         </button>
       </PopoverTrigger>
@@ -267,7 +378,7 @@ const PreviewModal = ({ trigger }: { trigger: React.ReactNode }) => {
   };
 
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <span className="text-lg font-bold pl-4">
@@ -296,9 +407,9 @@ const PreviewModal = ({ trigger }: { trigger: React.ReactNode }) => {
           );
         })}
       </div>
-    </DrawerDialog>
-  );
-};
+    </AppModal>
+  )
+}
 
 type TransactionDetail = {
   value: string;

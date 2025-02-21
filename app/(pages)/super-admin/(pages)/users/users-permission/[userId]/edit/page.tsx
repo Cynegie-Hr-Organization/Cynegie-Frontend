@@ -6,7 +6,8 @@ import { AppAlertDialog } from "@/app/_components/shared/alert";
 import AppButton from "@/app/_components/shared/button";
 import AppInputText from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
-import { useRouter } from "next/navigation";
+import { useAllPermissions } from "@/app/_core/use-cases/superadmin/useUserPermissions";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FinanceAdminOptions } from "./(options)/finance-admin-option";
 import { HRAdminOptions } from "./(options)/hr-admin-option";
@@ -15,11 +16,20 @@ import { ITAdminOptions } from "./(options)/it-admin-option";
 const EditUserPermission = () => {
   const router = useRouter();
   const [isFormValid, setIsFormValid] = useState(false);
+  const { data } = useAllPermissions({});
+  const { userId } = useParams();
+
+  // const userData = useMemo(() => {
+  //   return data?.data?.find((item) => item.id === userId)
+  // }, [data]);
+
+
+
   const [formData, setFormData] = useState<FormData>({
-    firstName: "John",
-    middleName: "Magnanimous",
-    lastName: "Doe",
-    staffEmail: "johndoe@example.com",
+    firstName: '',
+    middleName: "...",
+    lastName: '',
+    staffEmail: "",
     role: "",
     financeAdminSwitches: {
       accessType: {
@@ -56,6 +66,17 @@ const EditUserPermission = () => {
       itAdministration: false,
     },
   });
+
+  useEffect(() => {
+    const userData = data?.data?.find((item) => item.id === userId)
+    setFormData(formData => ({
+      ...formData,
+      firstName: userData?.firstName ?? '',
+      lastName: userData?.lastName ?? '',
+      staffEmail: userData?.email ?? '',
+    }));
+  }, [data, userId])
+
 
   const setAllSwitches = (
     prev: FormData,
@@ -156,10 +177,10 @@ const EditUserPermission = () => {
 
       return Boolean(
         formData.firstName &&
-          formData.middleName &&
-          formData.lastName &&
-          emailRegex.test(formData.staffEmail) &&
-          formData.role,
+        formData.middleName &&
+        formData.lastName &&
+        emailRegex.test(formData.staffEmail) &&
+        formData.role,
       );
     };
 
@@ -185,6 +206,7 @@ const EditUserPermission = () => {
               label="First Name"
               placeholder="Enter first name"
               value={formData.firstName}
+              disabled
               onChange={(e) =>
                 setFormData({ ...formData, firstName: e.target.value })
               }
@@ -193,7 +215,8 @@ const EditUserPermission = () => {
               id="middle-name"
               label="Middle Name"
               placeholder="Enter middle name"
-              value={formData.middleName}
+              value={'...'}
+              disabled
               onChange={(e) =>
                 setFormData({ ...formData, middleName: e.target.value })
               }
@@ -203,6 +226,7 @@ const EditUserPermission = () => {
               label="Last Name"
               placeholder="Enter last name"
               value={formData.lastName}
+              disabled
               onChange={(e) =>
                 setFormData({ ...formData, lastName: e.target.value })
               }
@@ -216,6 +240,7 @@ const EditUserPermission = () => {
               label="Staff Email"
               placeholder="Enter staff email"
               value={formData.staffEmail}
+              disabled
               onChange={(e) =>
                 setFormData({ ...formData, staffEmail: e.target.value })
               }
@@ -343,7 +368,7 @@ const EditUserPermission = () => {
         btn2Label="Grant Permission"
         disabledbtn2={!isFormValid}
         onBtn1Click={() => router.back()}
-        onBtn2Click={() => {}}
+        onBtn2Click={() => { }}
       />
     </div>
   );

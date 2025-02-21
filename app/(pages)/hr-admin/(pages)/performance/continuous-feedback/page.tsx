@@ -3,14 +3,13 @@
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppFileUpload } from "@/app/_components/shared/file-upload";
-import AppInputText, {
-  AppInputTextArea,
-} from "@/app/_components/shared/input-text";
-import { DrawerDialog } from "@/components/drawer/modal";
+import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-text";
+import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
+import { FaCirclePlus } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
-import { LuCirclePlus, LuTrash } from "react-icons/lu";
+import { LuTrash } from "react-icons/lu";
 import ContinuousFeedbackTable from "./table";
 
 const ContinuousFeedbackPage = () => {
@@ -75,7 +74,7 @@ const PageHeader = () => {
 
         <AppButton
           label="Give Feedback"
-          rightIcon={<LuCirclePlus />}
+          rightIcon={<FaCirclePlus />}
           className="bg-primary text-white border border-primary lg:flex hidden"
           onClick={() =>
             router.push("/hr-admin/performance/continuous-feedback/new")
@@ -92,7 +91,7 @@ const RecognizeAchievementModal = ({
   trigger: React.ReactNode;
 }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <DialogTitle className="text-lg font-bold text-center">
@@ -152,13 +151,13 @@ const RecognizeAchievementModal = ({
           <AppFileUpload label="Attachment" onChange={() => {}} />
         </div>
       </form>
-    </DrawerDialog>
+    </AppModal>
   );
 };
 
 const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <DialogTitle className="text-lg font-bold text-center">
@@ -189,7 +188,7 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
       }
     >
       <></>
-    </DrawerDialog>
+    </AppModal>
   );
 };
 

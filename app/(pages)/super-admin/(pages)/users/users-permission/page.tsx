@@ -4,20 +4,23 @@ import UsersPermissionTable from "@/app/(pages)/super-admin/(pages)/users/users-
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { useRouter } from "next/navigation";
+import { Suspense } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 
 const UserPermission = () => {
   return (
-    <div className="space-y-8 py-6">
-      <PageHeader
-        title="User Permission"
-        description="Grant permissions to users in your organization"
-        buttonLabel="Grant Permissions"
-        buttonLink="/super-admin/users/users-permission/manage"
-      />
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="space-y-8 py-6">
+        <PageHeader
+          title="User Permission"
+          description="Grant permissions to users in your organization"
+          buttonLabel="Grant Permissions"
+          buttonLink="/super-admin/users/users-permission/manage"
+        />
 
-      <UsersPermissionTable />
-    </div>
+        <UsersPermissionTable />
+      </div>
+    </Suspense>
   );
 };
 

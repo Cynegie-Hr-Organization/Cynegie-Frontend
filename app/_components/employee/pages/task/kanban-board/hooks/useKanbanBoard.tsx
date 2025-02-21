@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { DropResult } from "react-beautiful-dnd";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { debounce } from "lodash";
 import {
   getMyTasks,
   changeTaskStatusById,
@@ -12,11 +11,10 @@ import { BoardData } from "../types";
 const useKanbanBoard = (searchQuery: string) => {
   const queryClient = useQueryClient();
 
-  const debouncedFetchTasks = debounce((query: string) => getMyTasks(query), 300);
-
-  const { data: tasksData, isLoading } = useQuery({
+  const { data: tasksData, isLoading, error } = useQuery({
     queryKey: ["tasks", searchQuery],
-    queryFn: () => debouncedFetchTasks(searchQuery),
+    queryFn: () => getMyTasks(searchQuery),
+   
   });
 
   console.log("tasksData:", tasksData);
@@ -164,7 +162,7 @@ const useKanbanBoard = (searchQuery: string) => {
     mutation.mutate({ id: draggableId, status: finish.status });
   };
 
-  return { boardData, setBoardData, onDragEnd, isLoading };
+  return { boardData, setBoardData, onDragEnd, isLoading, error };
 };
 
 export default useKanbanBoard;

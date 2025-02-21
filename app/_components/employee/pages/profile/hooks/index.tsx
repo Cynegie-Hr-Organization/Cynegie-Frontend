@@ -61,16 +61,19 @@ const useEmployeeProfilePage = () => {
       const details = response?.employee;
       if (details) {
         setEmployeeId(details.id);
-        setUserDetails(details.personalInfo);
-        setFirstName(details.personalInfo.firstName);
-        setLastName(details.personalInfo.lastName);
-        setEmail(details.personalInfo.email);
-        setPhoneNumber(details.personalInfo.phoneNumber);
-        setDateOfBirth(details.personalInfo.dateOfBirth);
-        setState(details.personalInfo.state);
-        setNationality(details.personalInfo.nationality);
-        setState(details.personalInfo.state);
-        setHireDate(details.employmentInformation.hireDate);
+        if (details.personalInfo) {
+          setUserDetails(details.personalInfo);
+          setFirstName(details.personalInfo.firstName);
+          setLastName(details.personalInfo.lastName);
+          setEmail(details.personalInfo.email);
+          setPhoneNumber(details.personalInfo.phoneNumber);
+          setDateOfBirth(details.personalInfo.dateOfBirth);
+          setState(details.personalInfo.state);
+          setNationality(details.personalInfo.nationality);
+        }
+        if (details.employmentInformation) {
+          setHireDate(details.employmentInformation.hireDate);
+        }
       }
       console.log("Profile fetched successfully:", response);
     },

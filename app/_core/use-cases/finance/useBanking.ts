@@ -1,15 +1,15 @@
-import {
-  getMyBeneficiaries,
-  getMyTransfers,
-} from "@/app/_core/actions/finance/banking";
-import { IRes } from "@/app/_core/interfaces/res";
-import { handleError, Http } from "@/app/_core/utils/axios";
-import { queryKeys } from "@/app/_core/utils/queryKeys";
-import { headers } from "@/app/_core/utils/session";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getSession } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
-import { toast } from "react-toastify";
+import { getMyBeneficiaries, getMyTransfers, IAddBeneficiary, IBankAccount, IBankTransfer } from "@/app/_core/actions/finance/banking"
+import { IRes } from "@/app/_core/interfaces/res"
+import { handleError, Http } from "@/app/_core/utils/axios"
+import { queryKeys } from "@/app/_core/utils/queryKeys"
+import { headers } from "@/app/_core/utils/session"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { getSession } from "next-auth/react"
+import { useSearchParams } from "next/navigation"
+import { toast } from "react-toastify"
+
+
+
 
 export const useBankingMutations = () => {
   const queryClient = useQueryClient();
@@ -80,6 +80,7 @@ export const useBankingMutations = () => {
       );
     },
     onSuccess: async (data) => {
+      // console.log(data)
       toast.success(data.data.message);
       toast.success("beneficiary added successfully");
 
@@ -88,7 +89,7 @@ export const useBankingMutations = () => {
           data.data.message ?? `Unable to add beneficiary, please try again`,
         );
 
-      await queryClient.invalidateQueries({ queryKey: [queryKeys.BANKING] });
+      await queryClient.invalidateQueries({ queryKey: [queryKeys.BENEFICIARIES] });
     },
     onError: (error) => handleError(error),
   });
@@ -156,31 +157,5 @@ export const useMyTransfers = ({
     refetchOnReconnect: false,
     initialData: undefined,
     retry: false,
-  });
-};
-
-interface IBankAccount {
-  accountName: string;
-  businessType: string;
-  currency: string;
-  companyEmail: string;
-  companyRegistrationNumber: string;
-  companyAddress: string;
-  secondaryContact: string;
-  transactionPin: string;
-}
-
-export interface IBankTransfer {
-  beneficiary: string;
-  accountName: string;
-  accountNumber: string;
-  bankName: string;
-  sourceBank: string;
-  amount: number;
-}
-
-export interface IAddBeneficiary {
-  accountName: string;
-  accountNumber: string;
-  bankName: string;
+  })
 }

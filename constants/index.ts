@@ -163,9 +163,9 @@ export const defaultDonutChartOptions: ChartOptions<"doughnut"> = {
 };
 
 export const APRStatusMap: StatusMap = {
-  APPROVED: "success",
-  PENDING: "warning",
-  REJECTED: "error",
+  approved: "success",
+  pending: "warning",
+  rejected: "error",
 };
 
 export const CISStatusMap: StatusMap = {
