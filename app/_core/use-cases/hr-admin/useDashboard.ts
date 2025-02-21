@@ -1,4 +1,4 @@
-import { getEmployeeStatus, getHRAdminChartData, getHRAdminOverviewCardData, getPriorityData } from "@/app/_core/actions/hr-admin/dashboard"
+import { getCandidates, getEmployeeStatus, getHRAdminChartData, getHRAdminOverviewCardData, getPriorityData } from "@/app/_core/actions/hr-admin/dashboard"
 import { queryKeys } from "@/app/_core/utils/queryKeys"
 import { useQuery } from "@tanstack/react-query"
 
@@ -42,6 +42,18 @@ export const usePriorityCards = () => {
   return useQuery({
     queryKey: [queryKeys.PRIORITY_TASKS],
     queryFn: () => getPriorityData(),
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    initialData: undefined,
+    retry: false
+  })
+}
+
+export const useCandidates = () => {
+  return useQuery({
+    queryKey: [queryKeys.CANDIDATES],
+    queryFn: () => getCandidates(),
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,

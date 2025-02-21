@@ -107,7 +107,6 @@ const ChartsCard = () => {
   const { data: chartData, isLoading } = useDashboardChartData();
   const { data: employeeStatus, isLoading: isEmployeeStatusLoading } = useEmployeeStatus();
 
-  console.log('**********************', employeeStatus)
   const { active, probation, resigned, onLeave } = employeeStatus?.statusDistribution ?? {}
 
   const data = [
