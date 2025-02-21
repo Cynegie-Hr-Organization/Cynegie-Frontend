@@ -63,9 +63,11 @@ const SelectField: React.FC<SelectFieldProps> = (props) => {
         rules={controllerRules}
         render={({ field }) => (
           <Select {...field} displayEmpty className={classStyle}>
-            <MenuItem value="" disabled sx={{ display: "none" }}>
-              {placeholder}
-            </MenuItem>
+            {placeholder && (
+              <MenuItem value="" disabled sx={{ display: "none" }}>
+                {placeholder}
+              </MenuItem>
+            )}
             {options?.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}

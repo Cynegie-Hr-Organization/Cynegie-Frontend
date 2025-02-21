@@ -1,10 +1,11 @@
 "use client";
 import { FieldType } from "@/app/_components/shared/table/types";
-import { color } from "@/constants";
-import { useAttendanceStore } from "@/hooks/useBulkAttendanceParam";
+import { color, route } from "@/constants";
+import { useAttendanceReportParamsStore } from "@/hooks/useAttendanceReportParamsStore";
 import { formatHours } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getBulkAttendanceReport } from "../../../payroll-management/pages/overview/api";
 import HrAdminEmployeeAttendanceManagementReport from "../report";
@@ -33,7 +34,9 @@ type MappedAttendanceRecord = {
 };
 
 const HrAdminEmployeeAttendanceManagementBulkReport = () => {
-  const { startDate, endDate, department } = useAttendanceStore();
+  const { startDate, endDate, departments } = useAttendanceReportParamsStore();
+
+  const router = useRouter();
 
   const { data } = useQuery({
     queryKey: ["bulk-attendance-report"],
@@ -88,12 +91,26 @@ const HrAdminEmployeeAttendanceManagementBulkReport = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (startDate.length < 1) {
+      alert("No details provided to generate the report");
+      router.push(route.hrAdmin.employeeManagement.attendanceManagement.home);
+    }
+  }, []);
+
   return (
     <HrAdminEmployeeAttendanceManagementReport
-      title={`Attendance Report (${department} Department: ${startDate.slice(
-        0,
-        10
-      )} - ${endDate.slice(0, 10)})`}
+      title={`Attendance Report (${
+        departments.length < 1
+          ? "All Departments"
+          : departments.join(", ") + " Departments"
+      }: ${
+        startDate.length < 1 ? "" : dayjs(startDate).format("MMM D, YYYY")
+      } - ${endDate.length < 1 ? "" : dayjs(endDate).format("MMM D, YYYY")})`}
+      exportParams={{
+        startDate: startDate,
+        endDate: endDate,
+      }}
       barChart={{
         title: "Attendance Rate",
         inputFields: [
@@ -113,6 +130,7 @@ const HrAdminEmployeeAttendanceManagementBulkReport = () => {
           { dataKey: "absent", fill: color.barChart.midBlue },
         ],
       }}
+      cardsLoading={data ? false : true}
       cards={[
         {
           labelText: "Total Employees",

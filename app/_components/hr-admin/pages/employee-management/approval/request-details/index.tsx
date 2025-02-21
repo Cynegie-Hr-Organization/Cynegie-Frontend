@@ -86,6 +86,8 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
             : getValues("Add Comments")
             ? { remark: getValues("Add Comments") }
             : undefined
+          : getValues("Add Comments")
+          ? { remark: getValues("Add Comments") }
           : undefined
       ),
     onMutate: () => setMutationLoading(true),
@@ -121,15 +123,16 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
           details={[
             {
               name: "Name",
-              value: "N/A", //Inform the backend team to return the correct value
+              value: `${data?.employee.personalInfo.firstName} ${data?.employee.personalInfo.lastName}`, //Inform the backend team to return the correct value
             },
             {
               name: "Staff ID",
-              value: "N/A", //Inform the backend team to return the correct value
+              value: data?.employee.employmentInformation.staffId, //Inform the backend team to return the correct value
             },
             {
               name: "Department",
-              value: "N/A", //Inform the backend team to return the correct value
+              value:
+                data?.employee.employmentInformation.department.departmentName, //Inform the backend team to return the correct value
             },
             {
               name: "Job Title",
@@ -215,10 +218,6 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
               data && myEmployees ? ButtonType.contained : ButtonType.disabled,
             text: "Approve",
             onClick: () => {
-              /*console.log({
-              backupEmployee: getValues("Assign Backup Employee"),
-              comments: getValues("Add Comments"),
-            });*/
               setApproveClicked(true);
               setOpenConfirmationModal(true);
             },
@@ -273,12 +272,9 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
           centerTitle="Successful!"
           centerButton
           buttonOne={{
-            text: "Return to Requests",
+            text: "Return",
             type: ButtonType.contained,
-            onClick: () =>
-              router.push(
-                route.hrAdmin.employeeManagement.approvalManagement.home
-              ),
+            onClick: () => setOpenSuccessModal(false),
           }}
         />
       )}

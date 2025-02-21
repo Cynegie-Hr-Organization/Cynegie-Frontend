@@ -891,18 +891,48 @@ type LeaveType = {
 };
 
 export type LeaveRequest = {
-  employee: string;
+  employee: {
+    employmentInformation: {
+      department: {
+        departmentName: string;
+        id: string;
+      };
+      staffId: string;
+      id: string;
+    };
+    personalInfo: {
+      firstName: string;
+      lastName: string;
+      id: string;
+    };
+    id: string;
+  };
   leaveType: LeaveType;
-  startDate: string; // ISO date string
-  endDate: string; // ISO date string
+  startDate: string;
+  endDate: string;
   numberOfDays: number;
-  status: "approved" | "pending" | "rejected"; // Adjust as needed
+  status: "approved" | "pending" | "rejected";
   reliefOfficer: string;
   company: string;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
-  approvedAt?: string; // Optional because it might not exist for pending/rejected leaves
-  user: string;
+  createdAt: string;
+  updatedAt: string;
+  approvedAt?: string;
+  user: {
+    employmentInformation: {
+      department: {
+        departmentName: string;
+        id: string;
+      };
+      staffId: string;
+      id: string;
+    };
+    personalInfo: {
+      firstName: string;
+      lastName: string;
+      id: string;
+    };
+    id: string;
+  };
   id: string;
 };
 

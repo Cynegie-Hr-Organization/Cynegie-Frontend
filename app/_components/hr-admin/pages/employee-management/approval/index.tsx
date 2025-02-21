@@ -45,7 +45,7 @@ const HrAdminEmployeeManagementApproval = () => {
     setCheckedIds(_checkedRows.map((row) => row.id));
   }, [checkedRows]);
 
-  const [fetchParams] = useState<FetchParams>({
+  const [fetchParams, setFetchParams] = useState<FetchParams>({
     page: 1,
     limit: 10,
     sortOrder: "asc",
@@ -253,6 +253,21 @@ const HrAdminEmployeeManagementApproval = () => {
         fieldToReturnOnActionItemClick="id"
         getCheckedRows={setCheckedRows}
         clearChecks={clearChecks}
+        paginationMeta={{
+          page: leaveRequestsData?.currentPage,
+          limit: fetchParams.limit,
+          itemsOnPage: leaveRequestsData?.data.length,
+          itemCount: leaveRequestsData?.count,
+          loading: leaveRequestsData ? false : true,
+          onChangeLimit: (limit) =>
+            setFetchParams((prev) => {
+              return { ...prev, limit: limit };
+            }),
+          onPrevClick: () =>
+            setFetchParams({ ...fetchParams, page: fetchParams.page - 1 }),
+          onNextClick: () =>
+            setFetchParams({ ...fetchParams, page: fetchParams.page + 1 }),
+        }}
       />
       {openConfirmationModal && (
         <Modal

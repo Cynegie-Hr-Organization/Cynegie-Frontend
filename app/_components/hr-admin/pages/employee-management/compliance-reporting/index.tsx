@@ -25,21 +25,6 @@ import {
   getTurnoverChartData,
 } from "../../payroll-management/pages/overview/api";
 
-// const employeeTurnoverChartData = [
-//   { item: "Jan", value: 23 },
-//   { item: "Feb", value: 27 },
-//   { item: "Mar", value: 18 },
-//   { item: "Apr", value: 18 },
-//   { item: "May", value: 22 },
-//   { item: "Jun", value: 13 },
-//   { item: "Jul", value: 25 },
-//   { item: "Aug", value: 17 },
-//   { item: "Sep", value: 11 },
-//   { item: "Oct", value: 17 },
-//   { item: "Nov", value: 12 },
-//   { item: "Dec", value: 25 },
-// ];
-
 type MappedTasks = {
   taskName: string;
   assignedTo: string;
@@ -392,13 +377,6 @@ const HrAdminEmployeeComplianceReporting = () => {
                         </SectionCardContainer>
                         <Table
                           title="Turnover Breakdown"
-                          // headerRowData={[
-                          //   "S/N",
-                          //   "Department",
-                          //   "Total Employee Number",
-                          //   "Male",
-                          //   "Female",
-                          // ]}
                           headerRowData={[
                             "Department",
                             "Total Employee Number",
@@ -406,36 +384,35 @@ const HrAdminEmployeeComplianceReporting = () => {
                             "Turnover Percentage",
                           ]}
                           fieldTypes={[...Array(5).fill(FieldType.text)]}
-                          // displayedFields={[
-                          //   "sn",
-                          //   "department",
-                          //   "noOfEmployees",
-                          //   "noOfMales",
-                          //   "noOfFemales",
-                          // ]}
                           displayedFields={[
                             "department",
                             "totalEmployeeNo",
                             "employeesLeft",
                             "turnover",
                           ]}
-                          // bodyRowData={[
-                          //   ...Array(5).fill({
-                          //     sn: "01",
-                          //     department: "Product",
-                          //     noOfEmployees: "32",
-                          //     noOfMales: "20",
-                          //     noOfFemales: "12",
-                          //   }),
-                          //   {
-                          //     sn: undefined,
-                          //     department: "Total Number",
-                          //     noOfEmployees: 130,
-                          //     noOfMales: 11,
-                          //     noOfFemales: 6,
-                          //   },
-                          // ]}
-                          bodyRowData={turnoverBreakdown}
+                          bodyRowData={
+                            turnoverBreakdown && [
+                              ...turnoverBreakdown,
+                              {
+                                department: "Total Number",
+                                totalEmployeeNo: turnoverBreakdown
+                                  .map((turnover) => turnover.totalEmployeeNo)
+                                  .reduceRight(
+                                    (prev, current) => prev + current
+                                  ),
+                                employeesLeft: turnoverBreakdown
+                                  .map((turnover) => turnover.employeesLeft)
+                                  .reduceRight(
+                                    (prev, current) => prev + current
+                                  ),
+                                turnover: turnoverBreakdown
+                                  .map((turnover) => turnover.turnover)
+                                  .reduceRight(
+                                    (prev, current) => prev + current
+                                  ),
+                              },
+                            ]
+                          }
                           formFilter={{
                             inputFields: [
                               {

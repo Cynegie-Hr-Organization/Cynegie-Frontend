@@ -1,8 +1,10 @@
 "use client";
 import { FieldType } from "@/app/_components/shared/table/types";
-import { useAttendanceStore } from "@/hooks/useBulkAttendanceParam";
+import { route } from "@/constants";
+import { useAttendanceReportParamsStore } from "@/hooks/useAttendanceReportParamsStore";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { apiRequest } from "../../../payroll-management/pages/overview/api";
 import HrAdminEmployeeAttendanceManagementReport from "../report";
@@ -18,10 +20,12 @@ type MappedAttendanceRecord = {
 
 const HrAdminEmployeeAttendanceManagementIndividualReport = () => {
   const { startDate, endDate, attendanceStatus, employeeId, employeeName } =
-    useAttendanceStore();
+    useAttendanceReportParamsStore();
 
   const [attendanceRecords, setAttendanceRecords] =
     useState<MappedAttendanceRecord[]>();
+
+  const router = useRouter();
 
   const { data: employeeAttendanceData } = useQuery({
     queryKey: [
@@ -67,11 +71,18 @@ const HrAdminEmployeeAttendanceManagementIndividualReport = () => {
     }
   }, [employeeAttendanceData]);
 
+  useEffect(() => {
+    if (startDate.length < 1) {
+      alert("No details provided to generate the report");
+      router.push(route.hrAdmin.employeeManagement.attendanceManagement.home);
+    }
+  }, []);
+
   return (
     <HrAdminEmployeeAttendanceManagementReport
-      title={`Attendance Report for ${employeeName} (${dayjs(startDate).format(
-        "MMM D, YYYY"
-      )} - ${dayjs(endDate).format("MMM D, YYYY")})`}
+      title={`Attendance Report for ${employeeName} (${
+        startDate ? dayjs(startDate).format("MMM D, YYYY") : ""
+      } - ${endDate ? dayjs(endDate).format("MMM D, YYYY") : ""})`}
       cardsLoading={employeeAttendanceData ? false : true}
       cards={[
         {

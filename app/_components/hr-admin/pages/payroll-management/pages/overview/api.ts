@@ -482,3 +482,23 @@ export const getTurnoverChartData = async () => {
     },
   }) as Promise<MonthlyData>;
 };
+
+export const getToken = async () => {
+  const session = await getServerSession(authOptions);
+  return session?.token;
+};
+
+export const adjustAttendance = async (
+  id: string,
+  payload: { clockIn: string; clockOut: string }
+) => {
+  const session = await getServerSession(authOptions);
+
+  return request("PATCH", `${baseUrl}/v1/attendance/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: payload,
+  });
+};
