@@ -1,31 +1,113 @@
 "use client";
-import HrAdminEmployeeAttendanceManagementReport from "../report";
 import { FieldType } from "@/app/_components/shared/table/types";
+import { route } from "@/constants";
+import { useAttendanceReportParamsStore } from "@/hooks/useAttendanceReportParamsStore";
+import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { apiRequest } from "../../../payroll-management/pages/overview/api";
+import HrAdminEmployeeAttendanceManagementReport from "../report";
+
+type MappedAttendanceRecord = {
+  date: string;
+  checkInTime: string;
+  clockOutTime: string;
+  hoursWorked: string;
+  status: string;
+  overtimeHours: string;
+};
 
 const HrAdminEmployeeAttendanceManagementIndividualReport = () => {
+  const { startDate, endDate, attendanceStatus, employeeId, employeeName } =
+    useAttendanceReportParamsStore();
+
+  const [attendanceRecords, setAttendanceRecords] =
+    useState<MappedAttendanceRecord[]>();
+
+  const router = useRouter();
+
+  const { data: employeeAttendanceData } = useQuery({
+    queryKey: [
+      "employee-attendance",
+      {
+        page: 1,
+        limit: 50,
+        sortOrder: "asc",
+        startDate: startDate,
+        endDate: endDate,
+        attendanceStatus: attendanceStatus,
+      },
+    ],
+    queryFn: () =>
+      apiRequest("GET", `attendance/report/${employeeId}`, undefined, {
+        page: 1,
+        limit: 50,
+        sortOrder: "asc",
+        startDate: startDate,
+        endDate: endDate,
+        attendanceStatus: attendanceStatus,
+      }),
+  });
+
+  useEffect(() => {
+    if (employeeAttendanceData) {
+      setAttendanceRecords(
+        employeeAttendanceData.data.map((record: any) => ({
+          date: record.date,
+          checkInTime:
+            dayjs(record.clockIn).format("hh:mm A") !== "Invalid Date"
+              ? dayjs(record.clockIn).format("hh:mm A")
+              : "N/A",
+          clockOutTime:
+            dayjs(record.clockOut).format("hh:mm A") !== "Invalid Date"
+              ? dayjs(record.clockOut).format("hh:mm A")
+              : "N/A",
+          hoursWorked: "N/A",
+          status: "N/A",
+          overtimeHours: "N/A",
+        }))
+      );
+    }
+  }, [employeeAttendanceData]);
+
+  useEffect(() => {
+    if (startDate.length < 1) {
+      alert("No details provided to generate the report");
+      router.push(route.hrAdmin.employeeManagement.attendanceManagement.home);
+    }
+  }, []);
+
   return (
     <HrAdminEmployeeAttendanceManagementReport
-      title="Attendance Report for Emmanuel Okpara (Oct 15, 2024 - Oct 25, 2024)"
+      title={`Attendance Report for ${employeeName} (${
+        startDate ? dayjs(startDate).format("MMM D, YYYY") : ""
+      } - ${endDate ? dayjs(endDate).format("MMM D, YYYY") : ""})`}
+      cardsLoading={employeeAttendanceData ? false : true}
       cards={[
         {
           labelText: "Total Days Analyzed",
-          value: "15 Days",
+          value: `${employeeAttendanceData?.totalDays} Days`,
           valueBelow: true,
+          loading: employeeAttendanceData ? false : true,
         },
         {
           labelText: "On Leave",
-          value: "0 Days",
+          value: `${employeeAttendanceData?.statusCounts["on_leave"]} Days`,
           valueBelow: true,
+          loading: employeeAttendanceData ? false : true,
         },
         {
           labelText: "Present",
-          value: "10 Days",
+          value: "N/A", //TODO: Inform backend team to provide the correct value
           valueBelow: true,
+          loading: employeeAttendanceData ? false : true,
         },
         {
           labelText: "Absent",
-          value: "3 Days",
+          value: "N/A", //TODO: Inform backend team to provide the correct value,
           valueBelow: true,
+          loading: employeeAttendanceData ? false : true,
         },
       ]}
       tableProps={{
@@ -46,19 +128,12 @@ const HrAdminEmployeeAttendanceManagementIndividualReport = () => {
         displayedFields: [
           "date",
           "checkInTime",
-          "checkOutTime",
+          "clockOutTime",
           "hoursWorked",
           "status",
           "overtimeHours",
         ],
-        bodyRowData: Array(5).fill({
-          date: "Oct 1, 2024",
-          checkInTime: "9:02 AM",
-          checkOutTime: "4:56 PM",
-          hoursWorked: "8",
-          status: "Absent",
-          overtimeHours: "N/A",
-        }),
+        bodyRowData: attendanceRecords,
         filters: [{ name: "Status", items: ["Present"] }],
       }}
     />

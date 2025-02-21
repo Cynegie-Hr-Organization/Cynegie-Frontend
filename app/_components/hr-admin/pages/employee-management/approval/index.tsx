@@ -8,14 +8,19 @@ import { FieldType } from "@/app/_components/shared/table/types";
 import Toast from "@/app/_components/shared/toast";
 import { icon, route } from "@/constants";
 import { FetchParams } from "@/types";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getAllLeaves } from "../../payroll-management/pages/overview/api";
-import useApprovalConfirmationModal from "./hooks/useApprovalConfirmationModal";
+import {
+  bulkApprove,
+  bulkReject,
+  getAllLeaves,
+  post,
+} from "../../payroll-management/pages/overview/api";
 
 type MappedLeaveRequest = {
+  id: string;
   requestType: string;
   employeeName: string;
   staffId: string;
@@ -27,30 +32,20 @@ type MappedLeaveRequest = {
 
 const HrAdminEmployeeManagementApproval = () => {
   const router = useRouter();
-  const { checkedRows, setCheckedRows, clearChecks, resetChecks } =
-    useHandleRowChecks();
-  const {
-    openConfirmationModal,
-    setOpenConfirmationModal,
-    confirmationModalProps,
-  } = useApprovalConfirmationModal();
+  const { checkedRows, setCheckedRows, clearChecks } = useHandleRowChecks();
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [approveClicked, setApproveClicked] = useState(false);
   const [openToast, setOpenToast] = useState(false);
+  const [mutationLoading, setMutationLoading] = useState(false);
+  const [isBulkApproval, setIsBulkApproval] = useState(false);
+  const [checkedIds, setCheckedIds] = useState<string[]>([]);
 
-  // const [requests] = useState(
-  //   Array(5)
-  //     .fill({
-  //       requestType: "Leave Request",
-  //       employeeName: "Ayomide Alibaba",
-  //       staffID: "CYN0235",
-  //       department: "Product",
-  //       requestDetails: "Annual Leave (5 days)",
-  //       requestDate: "Oct 12, 2024",
-  //       status: "Pending",
-  //     })
-  //     .map((item, index) => ({ id: index + 1, ...item }))
-  // );
+  useEffect(() => {
+    const _checkedRows = checkedRows as MappedLeaveRequest[];
+    setCheckedIds(_checkedRows.map((row) => row.id));
+  }, [checkedRows]);
 
-  const [fetchParams] = useState<FetchParams>({
+  const [fetchParams, setFetchParams] = useState<FetchParams>({
     page: 1,
     limit: 10,
     sortOrder: "asc",
@@ -62,19 +57,23 @@ const HrAdminEmployeeManagementApproval = () => {
   });
 
   const [leaveRequests, setLeaveRequests] = useState<MappedLeaveRequest[]>();
+  const [selectedRequestId, setSelectedRequestId] = useState("");
 
   useEffect(() => {
     if (leaveRequestsData) {
       setLeaveRequests(
         leaveRequestsData.data
-          ? leaveRequestsData.data?.map((record) => ({
-              requestType: "Leave Request",
-              employeeName: `${record.employee.personalInfo.firstName} ${record.employee.personalInfo.lastName}`,
-              staffId: record.employee.employmentInformation.staffId,
+          ? leaveRequestsData.data.map((record) => ({
+              id: record.id,
+              requestType:
+                "Leave Request" /*Inform backend team to return the correct value*/,
+              employeeName: `${record.employee?.personalInfo?.firstName} ${record.employee?.personalInfo?.lastName}`,
+              staffId: record.employee.employmentInformation?.staffId,
               department:
-                record.employee.employmentInformation.department.departmentName,
-              requestDetails: record.leaveType.name,
-              requestDate: dayjs(record.createdAt).toISOString(),
+                record.employee.employmentInformation?.department
+                  .departmentName,
+              requestDetails: `${record.leaveType.name} (${record.leaveType.numberOfDays} days)`,
+              requestDate: dayjs(record.createdAt).format("MMM D, YYYY"),
               status: record.status,
             }))
           : []
@@ -83,6 +82,34 @@ const HrAdminEmployeeManagementApproval = () => {
       setLeaveRequests(undefined);
     }
   }, [leaveRequestsData]);
+
+  const queryClient = useQueryClient();
+
+  const approveRejectMutation = useMutation({
+    mutationFn: (endpoint: string) =>
+      isBulkApproval
+        ? approveClicked
+          ? bulkApprove({ leaveIds: checkedIds })
+          : bulkReject({ leaveIds: checkedIds })
+        : post(endpoint),
+    onMutate: () => setMutationLoading(true),
+    onSuccess: (res) => {
+      if (Object.keys(res).includes("error")) {
+        setMutationLoading(false);
+        alert("An error occurred");
+      } else {
+        queryClient.resetQueries({ queryKey: ["leave-records", fetchParams] });
+        setApproveClicked(false);
+        setMutationLoading(false);
+        setOpenConfirmationModal(false);
+        setOpenToast(true);
+      }
+    },
+    onError: () => {
+      setMutationLoading(false);
+      alert("An error occured");
+    },
+  });
 
   return (
     <Page
@@ -93,13 +120,20 @@ const HrAdminEmployeeManagementApproval = () => {
         type:
           checkedRows.length > 0 ? ButtonType.outlined : ButtonType.disabled,
         text: "Reject All",
-        onClick: () => resetChecks(),
+        onClick: () => {
+          setIsBulkApproval(true);
+          setOpenConfirmationModal(true);
+        },
       }}
       rightButton={{
         type:
           checkedRows.length > 0 ? ButtonType.contained : ButtonType.disabled,
         text: "Approve All",
-        onClick: () => setOpenConfirmationModal(true),
+        onClick: () => {
+          setIsBulkApproval(true);
+          setApproveClicked(true);
+          setOpenConfirmationModal(true);
+        },
       }}
     >
       <Table
@@ -164,45 +198,122 @@ const HrAdminEmployeeManagementApproval = () => {
           pending: [
             {
               name: "View Details",
-              onClick: () =>
+              onClick: () => {},
+              onDataReturned: (id) =>
                 router.push(
-                  route.hrAdmin.employeeManagement.approvalManagement
-                    .requestDetails
+                  `${route.hrAdmin.employeeManagement.approvalManagement.requestDetails}/${id}`
                 ),
             },
             {
               name: "Approve",
-              onClick: () => setOpenToast(true),
+              onClick: () => {
+                setApproveClicked(true);
+                setOpenConfirmationModal(true);
+              },
+              onDataReturned: (id) => {
+                if (typeof id === "string") {
+                  setSelectedRequestId(id);
+                }
+              },
             },
             {
               name: "Reject",
-              onClick: () => {},
+              onClick: () => {
+                setOpenConfirmationModal(true);
+              },
+              onDataReturned: (id) => {
+                if (typeof id === "string") {
+                  setSelectedRequestId(id);
+                }
+              },
             },
           ],
           approved: [
             {
               name: "View Details",
-              onClick: () =>
+              onClick: () => {},
+              onDataReturned: (id) =>
                 router.push(
-                  route.hrAdmin.employeeManagement.approvalManagement
-                    .requestDetails
+                  `${route.hrAdmin.employeeManagement.approvalManagement.requestDetails}/${id}`
+                ),
+            },
+          ],
+          rejected: [
+            {
+              name: "View Details",
+              onClick: () => {},
+              onDataReturned: (id) =>
+                router.push(
+                  `${route.hrAdmin.employeeManagement.approvalManagement.requestDetails}/${id}`
                 ),
             },
           ],
         }}
         fieldToGetAction="status"
+        fieldToReturnOnActionItemClick="id"
         getCheckedRows={setCheckedRows}
         clearChecks={clearChecks}
+        paginationMeta={{
+          page: leaveRequestsData?.currentPage,
+          limit: fetchParams.limit,
+          itemsOnPage: leaveRequestsData?.data.length,
+          itemCount: leaveRequestsData?.count,
+          loading: leaveRequestsData ? false : true,
+          onChangeLimit: (limit) =>
+            setFetchParams((prev) => {
+              return { ...prev, limit: limit };
+            }),
+          onPrevClick: () =>
+            setFetchParams({ ...fetchParams, page: fetchParams.page - 1 }),
+          onNextClick: () =>
+            setFetchParams({ ...fetchParams, page: fetchParams.page + 1 }),
+        }}
       />
       {openConfirmationModal && (
         <Modal
-          {...confirmationModalProps}
-          buttonTwo={{
-            ...confirmationModalProps.buttonTwo,
-            onClick: () => {
-              resetChecks();
-              setOpenConfirmationModal(false);
-              setOpenToast(true);
+          {...{
+            open: openConfirmationModal,
+            onClose: () => {
+              if (approveClicked) {
+                if (!mutationLoading) {
+                  setApproveClicked(false);
+                  setIsBulkApproval(false);
+                }
+              }
+              if (!mutationLoading) {
+                setOpenConfirmationModal(false);
+              }
+            },
+            hasHeading: false,
+            centerTitle: approveClicked ? "Approve Request" : "Reject Request",
+            centerMessage: approveClicked
+              ? "Are you sure you want to approve the request"
+              : "Are you sure you want to reject the request",
+            buttonOne: {
+              type: mutationLoading ? ButtonType.disabled : ButtonType.outlined,
+              text: "Cancel",
+              onClick: () => {
+                if (approveClicked) {
+                  setApproveClicked(false);
+                }
+                if (isBulkApproval) {
+                  setIsBulkApproval(false);
+                }
+                setOpenConfirmationModal(false);
+              },
+            },
+            buttonTwo: {
+              text: mutationLoading ? "" : "Confirm",
+              type: mutationLoading
+                ? ButtonType.disabledLoading
+                : ButtonType.contained,
+              onClick: () => {
+                approveRejectMutation.mutateAsync(
+                  `leave/${selectedRequestId}/${
+                    approveClicked ? "approve" : "reject"
+                  }`
+                );
+              },
             },
           }}
         />
@@ -214,7 +325,9 @@ const HrAdminEmployeeManagementApproval = () => {
           type="success"
           onClose={() => setOpenToast(false)}
           status="Successful"
-          message="Request(s) approved successfully!"
+          message={`Request(s) ${
+            approveClicked ? "approved" : "rejected"
+          } successfully!`}
         />
       )}
     </Page>

@@ -670,6 +670,7 @@ export type PayrollSettings = {
 
 export type AttendanceRecord = {
   attendanceId: string;
+  employeeId: string;
   employeeName: string;
   staffId: string;
   department: { departmentId: string; departmentName: string };
@@ -827,6 +828,31 @@ export type EmployeeDistribution = {
   [departmentName: string]: DepartmentStats;
 };
 
+type TurnoverBreakdownStats = {
+  totalEmployees: number;
+  employeesThatLeft: number;
+  turnoverPercentage: number;
+};
+
+export type TurnoverBreakdown = {
+  [departmentName: string]: TurnoverBreakdownStats;
+};
+
+export type TurnoverReport = {
+  turnoverReport: {
+    [department: string]: {
+      totalEmployees: number;
+      employeesThatLeft: number;
+      turnoverPercentage: number;
+    };
+  };
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalDepartments: number;
+  };
+};
+
 type GenderStats = {
   Male: number;
   Female: number;
@@ -865,17 +891,62 @@ type LeaveType = {
 };
 
 export type LeaveRequest = {
-  employee: string;
+  employee: {
+    employmentInformation: {
+      department: {
+        departmentName: string;
+        id: string;
+      };
+      staffId: string;
+      id: string;
+    };
+    personalInfo: {
+      firstName: string;
+      lastName: string;
+      id: string;
+    };
+    id: string;
+  };
   leaveType: LeaveType;
-  startDate: string; // ISO date string
-  endDate: string; // ISO date string
+  startDate: string;
+  endDate: string;
   numberOfDays: number;
-  status: "approved" | "pending" | "rejected"; // Adjust as needed
+  status: "approved" | "pending" | "rejected";
   reliefOfficer: string;
   company: string;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
-  approvedAt?: string; // Optional because it might not exist for pending/rejected leaves
-  user: string;
+  createdAt: string;
+  updatedAt: string;
+  approvedAt?: string;
+  user: {
+    employmentInformation: {
+      department: {
+        departmentName: string;
+        id: string;
+      };
+      staffId: string;
+      id: string;
+    };
+    personalInfo: {
+      firstName: string;
+      lastName: string;
+      id: string;
+    };
+    id: string;
+  };
   id: string;
+};
+
+export type MonthlyData = {
+  January: number;
+  February: number;
+  March: number;
+  April: number;
+  May: number;
+  June: number;
+  July: number;
+  August: number;
+  September: number;
+  October: number;
+  November: number;
+  December: number;
 };

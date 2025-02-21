@@ -2,7 +2,7 @@ import Button from "@/app/_components/shared/button-group/button";
 import DetailGroup from "@/app/_components/shared/detail-group";
 import Form from "@/app/_components/shared/form";
 import { icon } from "@/constants";
-import { Checkbox, Dialog, DialogContent, Stack } from "@mui/material";
+import { Dialog, DialogContent, Radio, RadioGroup, Stack } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import ButtonGroup from "../../shared/button-group";
@@ -44,6 +44,7 @@ const Modal: React.FC<ModalProps> = (props) => {
     formErrors,
     formControl,
     formButtonGroup,
+    getDoc,
   } = props;
 
   return (
@@ -79,20 +80,34 @@ const Modal: React.FC<ModalProps> = (props) => {
             )}
             {detailGroup && <DetailGroup {...detailGroup} />}
             {hasDocSelect && (
-              <div className="flex justify-center gap-10">
-                {[
-                  { name: "PDF", icon: icon.pdf },
-                  { name: "Excel", icon: icon.excel },
-                ].map((doc) => (
-                  <div key={doc.name} className="flex items-center gap-1">
-                    <Checkbox />
-                    <Image src={doc.icon} width={20} height={20} alt="" />
-                    <div className="text-[#475367] text-[14px] font-bold">
-                      {doc.name}
+              <RadioGroup>
+                <div className="flex justify-center gap-5">
+                  {[
+                    { name: "PDF", value: "pdf", icon: icon.pdf },
+                    { name: "Excel", value: "excel", icon: icon.excel },
+                  ].map((doc) => (
+                    <div
+                      key={doc.value}
+                      className="flex items-center gap-1 w-fit"
+                    >
+                      <Radio
+                        value={doc.value}
+                        onChange={(e) => {
+                          if (
+                            e.target.value === "pdf" ||
+                            e.target.value === "excel"
+                          )
+                            getDoc?.(e.target.value);
+                        }}
+                      />
+                      <Image src={doc.icon} width={20} height={20} alt="" />
+                      <div className="text-[#475367] text-[14px] font-bold">
+                        {doc.name}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </RadioGroup>
             )}
             {form && <Form {...form} />}
             {forms && (
