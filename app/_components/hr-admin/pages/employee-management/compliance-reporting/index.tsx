@@ -11,31 +11,19 @@ import TabFormat from "@/app/_components/shared/tab-format";
 import Table from "@/app/_components/shared/table";
 import { FieldType } from "@/app/_components/shared/table/types";
 import { color, icon } from "@/constants";
-import { EmployeeDistribution, FetchParams } from "@/types";
+import { EmployeeDistribution, FetchParams, TurnoverReport } from "@/types";
+import { CircularProgress } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import {
+  apiRequest,
   getAllTasks,
   getDepartmentStats,
   getEmployeeDemographyCharts,
   getTaskSummary,
+  getTurnoverChartData,
 } from "../../payroll-management/pages/overview/api";
-
-const employeeTurnoverChartData = [
-  { item: "Jan", value: 23 },
-  { item: "Feb", value: 27 },
-  { item: "Mar", value: 18 },
-  { item: "Apr", value: 18 },
-  { item: "May", value: 22 },
-  { item: "Jun", value: 13 },
-  { item: "Jul", value: 25 },
-  { item: "Aug", value: 17 },
-  { item: "Sep", value: 11 },
-  { item: "Oct", value: 17 },
-  { item: "Nov", value: 12 },
-  { item: "Dec", value: 25 },
-];
 
 type MappedTasks = {
   taskName: string;
@@ -51,6 +39,13 @@ type MappedDepartmentStat = {
   female: number;
 };
 
+type MappedTurnoverBreakdown = {
+  department: string;
+  totalEmployeeNo: number;
+  employeesLeft: number;
+  turnover: number;
+};
+
 const HrAdminEmployeeComplianceReporting = () => {
   const [openExportModal, setOpenExportModal] = useState(false);
   const userGroupIcon = (
@@ -61,6 +56,16 @@ const HrAdminEmployeeComplianceReporting = () => {
 
   const [departmentStats, setDepartmentStats] =
     useState<MappedDepartmentStat[]>();
+
+  const [turnoverBreakdown, setTurnoverBreakdown] =
+    useState<MappedTurnoverBreakdown[]>();
+
+  const [turnoverChartData, setTurnoverChartData] = useState<
+    {
+      item: string;
+      value: number;
+    }[]
+  >([]);
 
   const [fetchParams] = useState<FetchParams>({
     page: 1,
@@ -88,6 +93,20 @@ const HrAdminEmployeeComplianceReporting = () => {
     queryFn: () => getDepartmentStats(fetchParams),
   });
 
+  const { data: turnoverBreakdownData } = useQuery({
+    queryKey: ["turnover-breakdown"],
+    queryFn: () =>
+      apiRequest(
+        "GET",
+        "employees/employee-turnover"
+      ) as Promise<TurnoverReport>,
+  });
+
+  const { data: _turnoverChartData } = useQuery({
+    queryKey: ["turnover-chart"],
+    queryFn: () => getTurnoverChartData(),
+  });
+
   useEffect(() => {
     if (tasksData) {
       setTasks(
@@ -102,6 +121,19 @@ const HrAdminEmployeeComplianceReporting = () => {
       setTasks(undefined);
     }
   }, [tasksData]);
+
+  useEffect(() => {
+    if (_turnoverChartData) {
+      const keys = Object.keys(_turnoverChartData);
+      const values = Object.values(_turnoverChartData);
+      setTurnoverChartData(
+        keys.map((key, index) => ({
+          item: key,
+          value: values[index],
+        }))
+      );
+    }
+  }, [_turnoverChartData]);
 
   function mapEmployeeDistribution(
     data: EmployeeDistribution
@@ -121,6 +153,23 @@ const HrAdminEmployeeComplianceReporting = () => {
       setTasks(undefined);
     }
   }, [departmentStatsData]);
+
+  useEffect(() => {
+    if (turnoverBreakdownData) {
+      const turnoverDepartments = Object.keys(
+        turnoverBreakdownData.turnoverReport
+      );
+      const values = Object.values(turnoverBreakdownData.turnoverReport);
+      setTurnoverBreakdown(
+        turnoverDepartments.map((department, index) => ({
+          department: department,
+          totalEmployeeNo: values[index].totalEmployees,
+          employeesLeft: values[index].employeesThatLeft,
+          turnover: values[index].turnoverPercentage,
+        }))
+      );
+    }
+  }, [turnoverBreakdownData]);
 
   const chart1 = {
     chartLabels: ["Male", "Female"],
@@ -174,6 +223,7 @@ const HrAdminEmployeeComplianceReporting = () => {
               <div className="flex flex-col gap-6">
                 <CardGroup
                   gridItemSize={{ xs: 12, sm: 4, md: 3 }}
+                  loading={data ? false : true}
                   cards={[
                     {
                       labelText: "Number of Tasks",
@@ -310,61 +360,59 @@ const HrAdminEmployeeComplianceReporting = () => {
                       <div className="flex flex-col gap-8">
                         <SectionCardContainer isCard title="Employee Turnover">
                           <div className="mt-4">
-                            <BarChart
-                              barSize={35}
-                              data={employeeTurnoverChartData}
-                              bars={[{ dataKey: "value" }]}
-                              yAxisLabel="(% of Employees)"
-                              isPercentage
-                            />
+                            {!_turnoverChartData ? (
+                              <div className="flex justify-center mb-10">
+                                <CircularProgress />
+                              </div>
+                            ) : (
+                              <BarChart
+                                barSize={35}
+                                data={turnoverChartData}
+                                bars={[{ dataKey: "value" }]}
+                                yAxisLabel="(% of Employees)"
+                                isPercentage
+                              />
+                            )}
                           </div>
                         </SectionCardContainer>
                         <Table
                           title="Turnover Breakdown"
-                          // headerRowData={[
-                          //   "S/N",
-                          //   "Department",
-                          //   "Total Employee Number",
-                          //   "Male",
-                          //   "Female",
-                          // ]}
                           headerRowData={[
                             "Department",
                             "Total Employee Number",
-                            "Male",
-                            "Female",
+                            "Employees that Left",
+                            "Turnover Percentage",
                           ]}
                           fieldTypes={[...Array(5).fill(FieldType.text)]}
-                          // displayedFields={[
-                          //   "sn",
-                          //   "department",
-                          //   "noOfEmployees",
-                          //   "noOfMales",
-                          //   "noOfFemales",
-                          // ]}
                           displayedFields={[
                             "department",
                             "totalEmployeeNo",
-                            "male",
-                            "female",
+                            "employeesLeft",
+                            "turnover",
                           ]}
-                          // bodyRowData={[
-                          //   ...Array(5).fill({
-                          //     sn: "01",
-                          //     department: "Product",
-                          //     noOfEmployees: "32",
-                          //     noOfMales: "20",
-                          //     noOfFemales: "12",
-                          //   }),
-                          //   {
-                          //     sn: undefined,
-                          //     department: "Total Number",
-                          //     noOfEmployees: 130,
-                          //     noOfMales: 11,
-                          //     noOfFemales: 6,
-                          //   },
-                          // ]}
-                          bodyRowData={departmentStats}
+                          bodyRowData={
+                            turnoverBreakdown && [
+                              ...turnoverBreakdown,
+                              {
+                                department: "Total Number",
+                                totalEmployeeNo: turnoverBreakdown
+                                  .map((turnover) => turnover.totalEmployeeNo)
+                                  .reduceRight(
+                                    (prev, current) => prev + current
+                                  ),
+                                employeesLeft: turnoverBreakdown
+                                  .map((turnover) => turnover.employeesLeft)
+                                  .reduceRight(
+                                    (prev, current) => prev + current
+                                  ),
+                                turnover: turnoverBreakdown
+                                  .map((turnover) => turnover.turnover)
+                                  .reduceRight(
+                                    (prev, current) => prev + current
+                                  ),
+                              },
+                            ]
+                          }
                           formFilter={{
                             inputFields: [
                               {

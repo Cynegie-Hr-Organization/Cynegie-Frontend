@@ -71,9 +71,15 @@ const credentialsProviderOptions = {
 
       return loggedInUser;
     } catch (error) {
-      console.error("Login error:", error);
-      return null;
-    }
+  console.error("Login error:", error);
+
+  if (error instanceof TypeError && error.message.includes("fetch failed")) {
+    throw new Error("Network error. Please check your internet connection.");
+  }
+
+  return null;
+}
+
   },
 };
 

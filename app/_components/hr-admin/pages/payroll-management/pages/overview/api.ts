@@ -18,6 +18,7 @@ import {
   FetchResponse,
   LeaveRequest,
   LeaveResponse,
+  MonthlyData,
   PaginatedDevices,
   PaginatedResponse2,
   PaginatedResponse4,
@@ -417,4 +418,87 @@ export const getLeaveRequest = async (id: string): Promise<LeaveRequest> => {
       Authorization: `Bearer ${session?.token}`, // Add session token to Authorization header
     },
   }) as Promise<LeaveRequest>;
+};
+
+export const post = async (endpoint: string, data?: any) => {
+  const session = await getServerSession(authOptions);
+  return request("POST", `${baseUrl}/v1/${endpoint}`, {
+    headers: {
+      "Content-type": "Application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    ...(data && { data: data }),
+  });
+};
+
+export const apiRequest = async (
+  method: "GET" | "POST" | "PATCH" | "DELETE",
+  endpoint: string,
+  body?: any,
+  params?: any
+) => {
+  const session = await getServerSession(authOptions);
+  return request(method, `${baseUrl}/v1/${endpoint}`, {
+    headers: {
+      "Content-type": "Application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    ...(body !== undefined && { data: body }),
+    params: params,
+  });
+};
+
+export const bulkApprove = async (payload: { leaveIds: string[] }) => {
+  const session = await getServerSession(authOptions);
+
+  return request("POST", `${baseUrl}/v1/leave/bulk-approve`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: payload,
+  });
+};
+
+export const bulkReject = async (payload: { leaveIds: string[] }) => {
+  const session = await getServerSession(authOptions);
+
+  return request("POST", `${baseUrl}/v1/leave/bulk-reject`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: payload,
+  });
+};
+
+export const getTurnoverChartData = async () => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/employees/turnover`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+  }) as Promise<MonthlyData>;
+};
+
+export const getToken = async () => {
+  const session = await getServerSession(authOptions);
+  return session?.token;
+};
+
+export const adjustAttendance = async (
+  id: string,
+  payload: { clockIn: string; clockOut: string }
+) => {
+  const session = await getServerSession(authOptions);
+
+  return request("PATCH", `${baseUrl}/v1/attendance/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    data: payload,
+  });
 };

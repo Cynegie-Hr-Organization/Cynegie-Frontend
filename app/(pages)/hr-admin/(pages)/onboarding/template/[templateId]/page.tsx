@@ -1,59 +1,72 @@
 "use client";
 
-import Appbutton from "@/app/_components/shared/buttons";
+
+import { ReusableSelect } from "@/app/(pages)/hr-admin/(pages)/onboarding/template/[templateId]/edit/components/ReusableSelect";
+import Appbutton, { Spinner } from "@/app/_components/shared/buttons";
 import CardLayout from "@/app/_components/shared/cards";
+import { useTemplates } from "@/app/_core/use-cases/hr-admin/useOnboarding";
 import { Avatar } from "@mui/material";
-import { useState, useRef, useEffect } from "react";
-import { ReusableSelect } from "../components/ReusableSelect";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BsPerson } from "react-icons/bs";
 import { CiCalendarDate } from "react-icons/ci";
 import { LuClock } from "react-icons/lu";
 
 type TemplateDetailsStep = "task" | "document" | "training-module";
 
-const MOCK_TEMPLATE = {
-  name: "New Employee Onboarding Template",
-  description: "Comprehensive onboarding process for new employees",
-  tasks: [
-    {
-      id: 1,
-      title: "Complete HR Paperwork",
-      details:
-        "Analytics delivers actionable, industry-ready initiatives each time a business complete their full account. Phasellus vitae amet amet, mauris faucibus at sit. Pellentesque rhoncus adipiscing a enim, quis tortor, non etiam. Eget faucibus mattis consequat dui imperdiet scelerisque. Lorem placerat blandit ut lobortis volutpat convallis libero. Sed imperdiet dignissim ipsum quam.",
-    },
-    {
-      id: 2,
-      title: "IT Equipment Setup",
-      details: "Receive and set up company laptop and accessories",
-    },
-  ],
-  documents: [
-    {
-      id: 1,
-      title: "Employee Handbook",
-      details: "Review company policies and procedures",
-    },
-    {
-      id: 2,
-      title: "Benefits Guide",
-      details: "Understand company benefits and enrollment process",
-    },
-  ],
-  trainingModules: [
-    {
-      id: 1,
-      title: "Company Culture",
-      details: "Introduction to company values and culture",
-    },
-    {
-      id: 2,
-      title: "Role-Specific Training",
-      details: "Detailed training for specific job responsibilities",
-    },
-  ],
-};
+
 
 const TemplateDetailsPage = () => {
+  const { data, isLoading } = useTemplates();
+  const { data: templates } = data ?? {}
+  const { templateId } = useParams();
+  const router = useRouter();
+
+  const templateDetails = useMemo(() => templates?.find((template) => template.id === templateId), [templates, templateId])
+  console.log(templateDetails)
+
+  const MOCK_TEMPLATE = {
+    name: "New Employee Onboarding Template",
+    description: "Comprehensive onboarding process for new employees",
+    tasks: [
+      {
+        id: 1,
+        title: "Complete HR Paperwork",
+        details:
+          "Analytics delivers actionable, industry-ready initiatives each time a business complete their full account. Phasellus vitae amet amet, mauris faucibus at sit. Pellentesque rhoncus adipiscing a enim, quis tortor, non etiam. Eget faucibus mattis consequat dui imperdiet scelerisque. Lorem placerat blandit ut lobortis volutpat convallis libero. Sed imperdiet dignissim ipsum quam.",
+      },
+      {
+        id: 2,
+        title: "IT Equipment Setup",
+        details: "Receive and set up company laptop and accessories",
+      },
+    ],
+    documents: [
+      {
+        id: 1,
+        title: "Employee Handbook",
+        details: "Review company policies and procedures",
+      },
+      {
+        id: 2,
+        title: "Benefits Guide",
+        details: "Understand company benefits and enrollment process",
+      },
+    ],
+    trainingModules: [
+      {
+        id: 1,
+        title: "Company Culture",
+        details: "Introduction to company values and culture",
+      },
+      {
+        id: 2,
+        title: "Role-Specific Training",
+        details: "Detailed training for specific job responsibilities",
+      },
+    ],
+  };
+
   const [activeStep, setActiveStep] = useState<TemplateDetailsStep>("task");
 
   const taskRef = useRef<HTMLButtonElement>(null);
@@ -97,89 +110,76 @@ const TemplateDetailsPage = () => {
         <Appbutton
           buttonText="Edit Template details"
           className="bg-primary hidden md:block"
-          onClick={() => {}}
+          onClick={() => router.push(`/hr-admin/onboarding/template/${templateId}/edit`)}
         />
       </div>
 
-      {/* <EditTaskModal triggers={<Appbutton
-        buttonText='Edit Template details'
-        className='bg-primary hidden md:block'
-        onClick={() => { }}
-      />} />
-
-      <EditDocumentModal triggers={
-        <Appbutton
-          buttonText='Edit Template details'
-          className='bg-primary hidden md:block'
-          onClick={() => { }}
-        />} />
-
-      <EditTrainingModuleModal children={
-        <Appbutton
-          buttonText='Edit Template details'
-          className='bg-primary hidden md:block'
-          onClick={() => router.push(`/hr-admin/onboarding/template/edit-template`)}
-        />} /> */}
-
-      <CardLayout className="mt-6 space-y-6">
-        <div className="flex flex-col">
-          <label className="text-sm font-semibold mb-1">Template Name</label>
-          <div className="border rounded-lg p-2 bg-gray-50">
-            {MOCK_TEMPLATE.name}
-          </div>
+      {isLoading ? (
+        <div className="common-card flex items-center justify-center mt-12">
+          <Spinner />
         </div>
-        <div className="flex flex-col">
-          <label className="text-sm font-semibold mb-1">Description</label>
-          <div className="border rounded-lg p-2 bg-gray-50">
-            {MOCK_TEMPLATE.description}
-          </div>
-        </div>
-      </CardLayout>
+      ) : (
+        <>
+          <CardLayout className="mt-6 space-y-6">
+            <div className="flex flex-col">
+              <label className="text-sm font-semibold mb-1">Template Name</label>
+              <div className="border rounded-lg p-2 bg-gray-50">
+                {MOCK_TEMPLATE.name}
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <label className="text-sm font-semibold mb-1">Description</label>
+              <div className="border rounded-lg p-2 bg-gray-50">
+                {MOCK_TEMPLATE.description}
+              </div>
+            </div>
+          </CardLayout>
 
-      <CardLayout
-        className="mt-8 space-y-6 lg:p-6"
-        bg="bg-none lg:bg-white border-none p-0"
-      >
-        <div
-          ref={containerRef}
-          className="flex gap-4 text-sm mb-4 pl-4 relative w-max"
-        >
-          <div className="absolute bottom-0 w-full h-[1px] bg-gray-200" />
-          <div
-            ref={sliderRef}
-            className={`absolute bottom-0 h-[2px] bg-primary transition-all duration-300 ease-in-out`}
-          />
-          <button
-            ref={taskRef}
-            type="button"
-            data-step="task"
-            className={`p-4 ${activeStep === "task" ? "text-primary" : "text-gray-500"}`}
-            onClick={() => setActiveStep("task")}
+          <CardLayout
+            className="mt-8 space-y-6 lg:p-6"
+            bg="bg-none lg:bg-white border-none p-0"
           >
-            Tasks
-          </button>
-          <button
-            ref={documentRef}
-            type="button"
-            data-step="document"
-            className={`p-4 ${activeStep === "document" ? "text-primary" : "text-gray-500"}`}
-            onClick={() => setActiveStep("document")}
-          >
-            Documents
-          </button>
-          <button
-            ref={trainingModuleRef}
-            type="button"
-            data-step="training-module"
-            className={`p-4 ${activeStep === "training-module" ? "text-primary" : "text-gray-500"}`}
-            onClick={() => setActiveStep("training-module")}
-          >
-            Training Modules
-          </button>
-        </div>
+            <div
+              ref={containerRef}
+              className="flex gap-4 text-sm mb-4 pl-4 relative w-max"
+            >
+              <div className="absolute bottom-0 w-full h-[1px] bg-gray-200" />
+              <div
+                ref={sliderRef}
+                className={`absolute bottom-0 h-[2px] bg-primary transition-all duration-300 ease-in-out`}
+              />
+              <button
+                ref={taskRef}
+                type="button"
+                data-step="task"
+                className={`p-4 ${activeStep === "task" ? "text-primary" : "text-gray-500"}`}
+                onClick={() => setActiveStep("task")}
+              >
+                Tasks
+              </button>
+              <button
+                ref={documentRef}
+                type="button"
+                data-step="document"
+                className={`p-4 ${activeStep === "document" ? "text-primary" : "text-gray-500"}`}
+                onClick={() => setActiveStep("document")}
+              >
+                Documents
+              </button>
+              <button
+                ref={trainingModuleRef}
+                type="button"
+                data-step="training-module"
+                className={`p-4 ${activeStep === "training-module" ? "text-primary" : "text-gray-500"}`}
+                onClick={() => setActiveStep("training-module")}
+              >
+                Training Modules
+              </button>
+            </div>
 
-        <div className="mt-6">{renderActiveComponent()}</div>
-      </CardLayout>
+            <div className="mt-6">{renderActiveComponent()}</div>
+          </CardLayout>
+        </>)}
     </div>
   );
 };

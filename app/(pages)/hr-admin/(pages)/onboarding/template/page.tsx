@@ -1,10 +1,9 @@
 "use client";
 
-import Appbutton from "@/app/_components/shared/buttons";
-import TemplateTable from "./new-hire-list";
+import Appbutton, { Spinner } from "@/app/_components/shared/buttons";
 import { useRouter } from "next/navigation";
 import { Suspense } from "react";
-import { Spinner } from "@/app/_components/shared/buttons";
+import TemplateTable from "./all-templates";
 
 const TemplatePage = () => {
   const route = useRouter();

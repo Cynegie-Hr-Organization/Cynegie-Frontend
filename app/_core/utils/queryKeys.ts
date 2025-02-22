@@ -24,4 +24,10 @@ export const queryKeys = {
   HR_DASHBOARD_CARD_DATA: 'hr-dashboard-card-data',
   DEPARTMENTS: 'departments',
   PROFILE_UPDATE_APPROVALS: 'profile-update-approvals',
+  HR_DASHBOARD_CHART_DATA: 'hr-dashboard-chart-data',
+  EMPLOYEE_STATUS: 'employee-status',
+  PRIORITY_TASKS: 'priority-tasks',
+  CANDIDATES: 'candidates',
+  NEW_HIRE_LIST: 'new-hire-list',
+  TEMPLATES: 'templates',
 }

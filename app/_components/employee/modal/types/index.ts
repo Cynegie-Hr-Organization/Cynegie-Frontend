@@ -51,6 +51,7 @@ export type ModalProps = {
   formErrors?: FieldErrors<FieldValues>;
   formControl?: Control<FieldValues, any>;
   formButtonGroup?: ButtonGroupProps;
+  getDoc?: (doc?: "pdf" | "excel") => void;
 };
 
 export type ModalData = Omit<ModalProps, "open" | "onClose">;

@@ -56,12 +56,12 @@ const BudgetsTable = () => {
                       </td>
                       <td className="px-4 py-4">
                         <p className="text-sm">
-                          {startDate ? localTime(startDate, "Do MMM yyyy") : 'NIL'}
+                          {startDate ? localTime(startDate, "do MMM yyyy") : 'NIL'}
                         </p>
                       </td>
                       <td className="px-4 py-4">
                         <p className="text-sm">
-                          {endDate ? localTime(endDate, "Do MMM yyyy") : 'NIL'}
+                          {endDate ? localTime(endDate, "do MMM yyyy") : 'NIL'}
                         </p>
                       </td>
                       <td className="px-4 py-4">
