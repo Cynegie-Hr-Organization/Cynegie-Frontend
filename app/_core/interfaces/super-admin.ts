@@ -1,11 +1,15 @@
-export type TimeFrequency = 'daily' | 'weekly' | 'monthly' | 'quarterly';
-export type ErrorLevel = 'debug' | 'info' | 'warn' | 'error';
-export type PasswordComplexity = 'low' | 'medium' | 'high';
-export type AppThemeType = 'light' | 'dark' | 'system';
-export type DashboardLayout = 'default' | 'compact' | 'detailed';
+export type TimeFrequency = "daily" | "weekly" | "monthly" | "quarterly";
+export type ErrorLevel = "debug" | "info" | "warn" | "error";
+export type PasswordComplexity = "low" | "medium" | "high";
+export type AppThemeType = "light" | "dark" | "system";
+export type DashboardLayout = "default" | "compact" | "detailed";
 // export type NotificationType = 'email' | 'sms' | 'push' | 'none';
-export type NotificationType = 'hr-approval' | 'it-request' | 'finance-update' | 'compliance-alert';
-export type SuperAdminStatus = 'active' | 'inactive' | 'suspended';
+export type NotificationType =
+  | "hr-approval"
+  | "it-request"
+  | "finance-update"
+  | "compliance-alert";
+export type SuperAdminStatus = "active" | "inactive" | "suspended";
 
 export type ApprovalStage = {
   stageName: string;
@@ -65,7 +69,7 @@ export interface ISuperAdminSettings {
   settings?: SystemSettings;
 }
 
-export type IPermissionStatus = 'active' | 'inactive' | 'suspended'
+export type IPermissionStatus = "active" | "inactive" | "suspended";
 
 export interface IUserRole {
   name: string;
@@ -74,7 +78,7 @@ export interface IUserRole {
 
 export interface IUserPermission {
   AccessModules?: string[];
-  type: 'full_access' | 'limited_access' | 'no_access';
+  type: "full_access" | "limited_access" | "no_access";
   limitedAccessModules?: string[];
   viewModules?: string[];
   company: string;

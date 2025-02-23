@@ -207,8 +207,8 @@ const RejectModal = ({ trigger }: { trigger: React.ReactNode }) => {
         />
       </div>
     </AppModal>
-  )
-}
+  );
+};
 
 const FilterPills = ({ filterType }: { filterType: string }) => {
   return (

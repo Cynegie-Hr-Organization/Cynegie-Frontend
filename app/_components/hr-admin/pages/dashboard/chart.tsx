@@ -64,13 +64,14 @@ const formatLargeNumber = (value: number) => {
   }
 };
 
-export function GradientLineChart({ chartData }: {
+export function GradientLineChart({
+  chartData,
+}: {
   chartData?: {
     month: string;
-    pay: number
-  }[]
+    pay: number;
+  }[];
 }) {
-
   return (
     <ChartContainer
       className="h-[250px] w-full mt-6 -ml-6"

@@ -24,7 +24,7 @@ const AppTabs: React.FC<TabsProps> = ({
 
   useEffect(() => {
     if (activeTabLabel) {
-      const index = tabs.findIndex(tab => tab.label === activeTabLabel);
+      const index = tabs.findIndex((tab) => tab.label === activeTabLabel);
       if (index !== -1) {
         setActiveTab(index);
       }
@@ -48,10 +48,11 @@ const AppTabs: React.FC<TabsProps> = ({
             ref={(el) => {
               tabRefs.current[index] = el;
             }}
-            className={`transition-all duration-300 relative p-2 text-sm ${tabHorizontalPadding ?? "px-2"} ${activeTab === index
+            className={`transition-all duration-300 relative p-2 text-sm ${tabHorizontalPadding ?? "px-2"} ${
+              activeTab === index
                 ? "text-primary font-semibold"
                 : "text-gray-500"
-              }`}
+            }`}
             onClick={() => {
               setActiveTab(index);
               tab.onClick();

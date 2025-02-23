@@ -8,7 +8,11 @@ import { AppInputTextArea } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import { useNewHireList } from "@/app/_core/use-cases/hr-admin/useOnboarding";
 import { AppModal } from "@/components/drawer/modal";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
@@ -18,7 +22,7 @@ import { RiSearchLine } from "react-icons/ri";
 const NewHireList = () => {
   const { data } = useNewHireList();
   // const { totalNewHires } = data ?? {}
-  console.log(data)
+  console.log(data);
   return (
     <CardLayout className="bg-white overflow-x-scroll space-y-8">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-0">
@@ -186,7 +190,10 @@ const SetReminderModal: React.FC<{ trigger: React.ReactNode }> = ({
   });
 
   return (
-    <AppModal open={isOpen} setOpen={setIsOPen} trigger={trigger}
+    <AppModal
+      open={isOpen}
+      setOpen={setIsOPen}
+      trigger={trigger}
       header={
         <span className="flex flex-col">
           <span className="font-roboto text-sm font-bold">Set Reminder</span>
@@ -245,12 +252,7 @@ const SetReminderModal: React.FC<{ trigger: React.ReactNode }> = ({
         </div>
       </form>
     </AppModal>
-  )
-}
-
-
-
-
-
+  );
+};
 
 export default NewHireList;

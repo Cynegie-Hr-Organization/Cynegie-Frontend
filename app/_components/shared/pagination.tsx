@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { AppSelect } from '@/app/_components/shared/select';
+import { AppSelect } from "@/app/_components/shared/select";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 interface PaginationProps {
@@ -18,16 +18,16 @@ export const AppPagination: React.FC<PaginationProps> = ({
   itemsPerPage = 5,
   currentPage = 1,
   onPageChange,
-  onItemsPerPageChange
+  onItemsPerPageChange,
 }) => {
-  const startItem = (currentPage - 1) * itemsPerPage + 1
-  const endItem = Math.min(startItem + itemsPerPage - 1, totalItems)
+  const startItem = (currentPage - 1) * itemsPerPage + 1;
+  const endItem = Math.min(startItem + itemsPerPage - 1, totalItems);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages && onPageChange) {
-      onPageChange(newPage)
+      onPageChange(newPage);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-y-2 md:gap-y-0 items-center justify-between">
@@ -35,21 +35,21 @@ export const AppPagination: React.FC<PaginationProps> = ({
         <p>Show rows per page</p>
         <AppSelect
           value={`${itemsPerPage}`}
-          width={'w-16'}
+          width={"w-16"}
           listItems={[
-            { label: '5', value: '5' },
-            { label: '10', value: '10' },
-            { label: '20', value: '20' },
+            { label: "5", value: "5" },
+            { label: "10", value: "10" },
+            { label: "20", value: "20" },
           ]}
           onChange={(value) => {
             if (onItemsPerPageChange) {
-              onItemsPerPageChange(Number(value))
+              onItemsPerPageChange(Number(value));
             }
           }}
         />
       </div>
 
-      <div className='flex items-center gap-x-2'>
+      <div className="flex items-center gap-x-2">
         <p>{`${startItem} to ${endItem} of ${totalItems}`}</p>
         <button
           disabled={currentPage === 1}
@@ -67,5 +67,5 @@ export const AppPagination: React.FC<PaginationProps> = ({
         </button>
       </div>
     </div>
-  )
-}
+  );
+};

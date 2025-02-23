@@ -38,7 +38,7 @@ const HrAdminEmployeeRole = () => {
           name: role.name,
           description: role.description,
           permissions: role.permissions.length,
-        }))
+        })),
       );
     } else {
       setRoles(undefined);

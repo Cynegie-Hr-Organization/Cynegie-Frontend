@@ -95,7 +95,7 @@ const HrAdminEmployeeDirectory = () => {
             name: permission.tool,
             value: permission.id,
           })),
-        }))
+        })),
       );
     } else {
       setEmployees(undefined);
@@ -195,7 +195,7 @@ const HrAdminEmployeeDirectory = () => {
           period="See all"
           periodClick={() =>
             router.push(
-              route.hrAdmin.employeeManagement.attendanceManagement.home
+              route.hrAdmin.employeeManagement.attendanceManagement.home,
             )
           }
           selectFilterProps={{
@@ -240,7 +240,7 @@ const HrAdminEmployeeDirectory = () => {
             period="View all"
             periodClick={() =>
               router.push(
-                route.hrAdmin.employeeManagement.approvalManagement.home
+                route.hrAdmin.employeeManagement.approvalManagement.home,
               )
             }
           >
@@ -306,7 +306,7 @@ const HrAdminEmployeeDirectory = () => {
             onClick: () => {},
             onDataReturned: (id) =>
               router.push(
-                `${route.hrAdmin.employeeManagement.directory.editEmployee}/${id}`
+                `${route.hrAdmin.employeeManagement.directory.editEmployee}/${id}`,
               ),
           },
           {
@@ -314,7 +314,7 @@ const HrAdminEmployeeDirectory = () => {
             onClick: () => {},
             onDataReturned: (id) =>
               router.push(
-                `${route.hrAdmin.employeeManagement.directory.home}/${id}`
+                `${route.hrAdmin.employeeManagement.directory.home}/${id}`,
               ),
           },
           {
@@ -325,7 +325,7 @@ const HrAdminEmployeeDirectory = () => {
         fieldToReturnOnActionItemClick="id"
         onPermissionsClick={(permissions, id) => {
           const foundEmployee = employees?.filter(
-            (employee) => employee.id === id
+            (employee) => employee.id === id,
           )?.[0];
           setSelectedEmployee(foundEmployee);
           setOpenPermissionsModal(true);

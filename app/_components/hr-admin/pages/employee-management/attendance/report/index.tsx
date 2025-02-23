@@ -97,8 +97,8 @@ const HrAdminEmployeeAttendanceManagementReport: React.FC<
               type: mutationLoading
                 ? ButtonType.disabledLoading
                 : selectedDoc
-                ? ButtonType.download
-                : ButtonType.disabled,
+                  ? ButtonType.download
+                  : ButtonType.disabled,
               text: mutationLoading ? "" : "Download",
               onClick: async () => {
                 if (selectedDoc && exportParams) {
@@ -106,7 +106,7 @@ const HrAdminEmployeeAttendanceManagementReport: React.FC<
                   downloadFile(
                     "attendance/export",
                     `attendance_${dayjs(exportParams.startDate).format(
-                      "DD-MM-YYYY"
+                      "DD-MM-YYYY",
                     )}_${dayjs(exportParams.endDate).format("DD-MM-YYYY")}.${
                       selectedDoc === "pdf" ? "pdf" : "xlsx"
                     }`,
@@ -117,7 +117,7 @@ const HrAdminEmployeeAttendanceManagementReport: React.FC<
                       sortOrder: "asc",
                       ...exportParams,
                       format: selectedDoc,
-                    }
+                    },
                   )
                     .then(() => setOpenDownloadModal(false))
                     .catch(() => {

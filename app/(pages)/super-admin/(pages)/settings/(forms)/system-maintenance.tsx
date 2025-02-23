@@ -12,12 +12,11 @@ const SystemMaintenanceSettingsForm = () => {
         ...data?.settings,
         integrationSettings: {
           ...(data?.settings?.integrationSettings ?? {}),
-          scheduleDataBackups: value as TimeFrequency
-        }
-      }
-    })
-  }
-
+          scheduleDataBackups: value as TimeFrequency,
+        },
+      },
+    });
+  };
 
   const handleErrorLevelChange = (value: string) => {
     setData({
@@ -26,12 +25,11 @@ const SystemMaintenanceSettingsForm = () => {
         ...data?.settings,
         integrationSettings: {
           ...(data?.settings?.integrationSettings ?? {}),
-          errorLogLevel: value as ErrorLevel
-        }
-      }
-    })
-  }
-
+          errorLogLevel: value as ErrorLevel,
+        },
+      },
+    });
+  };
 
   return (
     <form className="p-4 md:p-6 space-y-4">

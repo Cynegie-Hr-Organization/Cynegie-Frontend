@@ -6,7 +6,7 @@ export const downloadFile = async (
   endpoint: string,
   filename: string,
   fileType: "pdf" | "excel",
-  params: any
+  params: any,
 ) => {
   const url = `${baseUrl}/v1/${endpoint}`;
   const token = await getToken();

@@ -14,7 +14,12 @@ import { InputFieldValue, ModalProps } from "../../../modal/types";
 import { FetchParams } from "@/types";
 import { debounce } from "lodash";
 import { formatDate } from "@/lib/utils";
-import { getAllBenefits, getAllMyBenefitsRequests, getBenefitRequestById, requestBenefit } from "@/app/api/services/employee/benefits";
+import {
+  getAllBenefits,
+  getAllMyBenefitsRequests,
+  getBenefitRequestById,
+  requestBenefit,
+} from "@/app/api/services/employee/benefits";
 
 const INIT_FETCH_PARAMS: FetchParams = {
   page: 1,
@@ -39,8 +44,9 @@ const useBenefitsPage = () => {
   const [benefitDetails, setBenefitDetails] = useState<any>(null);
   const [statusFilter, setStatusFilter] = useState<InputFieldValue>();
 
-  const [fetchParams, setFetchParams] =
-    useState<FetchParams & { status? : InputFieldValue} >(INIT_FETCH_PARAMS);
+  const [fetchParams, setFetchParams] = useState<
+    FetchParams & { status?: InputFieldValue }
+  >(INIT_FETCH_PARAMS);
 
   // Debounced search
   const debouncedSearch = debounce((value: string) => {
@@ -222,28 +228,26 @@ const useBenefitsPage = () => {
     formFilter: {
       gridSpacing: 2,
       inputFields: [
-            {
-              label: "Status",
-              type: "select",
-              options: [
-                { label: "Approved", value: "approved" },
-                { label: "Pending", value: "pending" },
-                { label: "Rejected", value: "rejected" },
-              ],
-              value: statusFilter,
-              setValue: setStatusFilter,
-              selectValControlledFromOutside: true,
-            },
+        {
+          label: "Status",
+          type: "select",
+          options: [
+            { label: "Approved", value: "approved" },
+            { label: "Pending", value: "pending" },
+            { label: "Rejected", value: "rejected" },
           ],
+          value: statusFilter,
+          setValue: setStatusFilter,
+          selectValControlledFromOutside: true,
+        },
+      ],
     },
-   onResetClick: () => {
+    onResetClick: () => {
       setStatusFilter(undefined);
       setFetchParams({ ...fetchParams, status: undefined });
     },
     onFilterClick: () =>
       setFetchParams((prev) => ({ ...prev, status: statusFilter })),
-
-    
   };
 
   const requestModalProps: ModalProps = {

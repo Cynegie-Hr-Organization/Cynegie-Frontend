@@ -102,11 +102,11 @@ const HrAdminPayrollBenefitsManagementPage = () => {
             .toUpperCase()
             .slice(0, 1)}${benefitData.benefitType.slice(
             1,
-            benefitData.benefitType.length
+            benefitData.benefitType.length,
           )}`,
           employeesEnrolled: benefitData.employees.length,
           pendingApprovals: 0,
-        }))
+        })),
       );
     } else {
       setBenefits(undefined);
@@ -119,7 +119,7 @@ const HrAdminPayrollBenefitsManagementPage = () => {
         departmentsData.data.map((department) => ({
           label: department.departmentName,
           value: department.id,
-        }))
+        })),
       );
     }
   }, [departmentsData]);
@@ -269,7 +269,7 @@ const HrAdminPayrollBenefitsManagementPage = () => {
               benefitType: values["Benefit Type"],
               departments: values["Department"].map(
                 (department: { label: string; value: string }) =>
-                  department.value
+                  department.value,
               ),
               employmentType: values["Employment Type"],
               jobLevel: values["Job Level"],

@@ -1,7 +1,10 @@
 import useFormStore from "@/app/(pages)/super-admin/(pages)/settings/(forms)/form-state";
 import { AppAccordion } from "@/app/(pages)/super-admin/(pages)/settings/accordion";
 import AppButton from "@/app/_components/shared/button";
-import { useSuperAdminSettings, useSuperAdminSettingsMutations } from "@/app/_core/use-cases/superadmin/useSuperAdminSettings";
+import {
+  useSuperAdminSettings,
+  useSuperAdminSettingsMutations,
+} from "@/app/_core/use-cases/superadmin/useSuperAdminSettings";
 import { useAppToast } from "@/app/_hooks/toast";
 import { useEffect } from "react";
 import ApprovalAndWorkflowSettingsForm from "./(forms)/approval-and-workflow";
@@ -33,27 +36,35 @@ const SettingsForm = () => {
 
   useEffect(() => {
     if (generalSettings) {
-      setData(generalSettings)
+      setData(generalSettings);
     }
   }, [generalSettings]);
 
   const handleSave = () => {
     const { id, status, createdAt, updatedAt, ...editedSettings } = data ?? {};
-    console.log({ id, status, createdAt, updatedAt })
+    console.log({ id, status, createdAt, updatedAt });
 
-    console.log(editedSettings)
+    console.log(editedSettings);
 
     updateSettings.mutate(editedSettings, {
-      onSuccess: () => apptoast.success({ title: 'Successful', message: 'Settings updated successfully' }),
-      onError: (error) => apptoast.error({ title: `${error.name ?? 'Error'}`, message: `${error.message ?? 'Something went wrong'}` })
-    })
-  }
+      onSuccess: () =>
+        apptoast.success({
+          title: "Successful",
+          message: "Settings updated successfully",
+        }),
+      onError: (error) =>
+        apptoast.error({
+          title: `${error.name ?? "Error"}`,
+          message: `${error.message ?? "Something went wrong"}`,
+        }),
+    });
+  };
 
   const handleCancel = () => {
     // if (isUpdating) {
     //   updateSettings.cancel();
     // }
-  }
+  };
 
   return (
     <div className="space-y-8">
@@ -127,26 +138,30 @@ const SettingsForm = () => {
         btn2Disabled={isUpdating}
       />
     </div>
-  )
-}
+  );
+};
 
-const FooterButtons = ({ btn1Label,
-  btn2Label, onBtn1Click, onBtn2Click,
+const FooterButtons = ({
+  btn1Label,
+  btn2Label,
+  onBtn1Click,
+  onBtn2Click,
   className,
   btn1Disabled,
   btn2Disabled,
   isBtn1Loading,
-  isBtn2Loading }: {
-    btn1Label: string,
-    btn2Label: string,
-    onBtn1Click: () => void,
-    onBtn2Click: () => void,
-    className?: string,
-    btn1Disabled?: boolean,
-    btn2Disabled?: boolean,
-    isBtn1Loading?: boolean,
-    isBtn2Loading?: boolean
-  }) => {
+  isBtn2Loading,
+}: {
+  btn1Label: string;
+  btn2Label: string;
+  onBtn1Click: () => void;
+  onBtn2Click: () => void;
+  className?: string;
+  btn1Disabled?: boolean;
+  btn2Disabled?: boolean;
+  isBtn1Loading?: boolean;
+  isBtn2Loading?: boolean;
+}) => {
   return (
     <div
       className={`flex flex-col md:flex-row justify-end gap-4 ${className ?? ""}`}
@@ -158,14 +173,15 @@ const FooterButtons = ({ btn1Label,
         isLoading={isBtn1Loading}
         onClick={onBtn1Click}
       />
-      <AppButton label={btn2Label}
+      <AppButton
+        label={btn2Label}
         className="btn-primary"
         disabled={btn2Disabled}
         isLoading={isBtn2Loading}
         onClick={onBtn2Click}
       />
     </div>
-  )
-}
+  );
+};
 
 export default SettingsForm;

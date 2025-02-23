@@ -32,7 +32,8 @@ const EditJobSuccessModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           Your information has been save successfully !{" "}
         </h2>
         <p className="text-sm text-gray-600 mb-6">
-          Your job creation information has been save and you can continue later{" "}
+          Your job creation information has been save and you can continue
+          later{" "}
         </p>
 
         {/* Button */}

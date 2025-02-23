@@ -64,7 +64,7 @@ const HrAdminEmployeeManagementViewEmployee = () => {
                       {
                         name: "Date of Birth",
                         value: dayjs(
-                          employeeData?.personalInfo.dateOfBirth
+                          employeeData?.personalInfo.dateOfBirth,
                         ).format("DD-MMM-YYYY"),
                       },
                       {
@@ -93,7 +93,7 @@ const HrAdminEmployeeManagementViewEmployee = () => {
                         value: `${employeeData?.personalInfo.maritalStatus
                           .slice(0, 1)
                           .toUpperCase()}${employeeData?.personalInfo.maritalStatus.slice(
-                          1
+                          1,
                         )}`,
                       },
                       {
@@ -127,7 +127,7 @@ const HrAdminEmployeeManagementViewEmployee = () => {
                         value: `${employeeData?.nextOfKin[0].gender
                           .slice(0, 1)
                           .toUpperCase()}${employeeData?.nextOfKin[0].gender.slice(
-                          1
+                          1,
                         )}`,
                       },
                       {
@@ -143,7 +143,7 @@ const HrAdminEmployeeManagementViewEmployee = () => {
                         value: `${employeeData?.nextOfKin[0].relationship
                           .slice(0, 1)
                           .toUpperCase()}${employeeData?.nextOfKin[0].relationship.slice(
-                          1
+                          1,
                         )}`,
                       },
                     ]}
@@ -186,7 +186,7 @@ const HrAdminEmployeeManagementViewEmployee = () => {
                       {
                         name: "Hire Date",
                         value: dayjs(
-                          employeeData?.employmentInformation.hireDate
+                          employeeData?.employmentInformation.hireDate,
                         ).format("DD-MMM-YYYY"),
                       },
                       {
@@ -206,7 +206,7 @@ const HrAdminEmployeeManagementViewEmployee = () => {
                       {
                         name: "Contract End Date",
                         value: dayjs(
-                          employeeData?.employmentInformation.contractEndDate
+                          employeeData?.employmentInformation.contractEndDate,
                         ).format("DD-MMM-YYYY"),
                       },
                       {
@@ -263,7 +263,8 @@ const HrAdminEmployeeManagementViewEmployee = () => {
                       {
                         name: "Effective Date of Compensation",
                         value: dayjs(
-                          employeeData?.compensation.effectiveDateOfCompensation
+                          employeeData?.compensation
+                            .effectiveDateOfCompensation,
                         ).format("DD-MMM-YYYY"),
                       },
                       {
@@ -314,7 +315,7 @@ const HrAdminEmployeeManagementViewEmployee = () => {
                       (allowance) => ({
                         name: allowance.allowanceName,
                         value: allowance.allowanceAmount.toString(),
-                      })
+                      }),
                     )}
                   />
                 </SectionCardContainer>
@@ -325,7 +326,7 @@ const HrAdminEmployeeManagementViewEmployee = () => {
                       (deduction) => ({
                         name: deduction.deductionName,
                         value: deduction.deductionAmount.toString(),
-                      })
+                      }),
                     )}
                   />
                 </SectionCardContainer>
@@ -363,7 +364,7 @@ const HrAdminEmployeeManagementViewEmployee = () => {
                       (device, index) => ({
                         name: `Device ${index + 1}`,
                         value: device.deviceName,
-                      })
+                      }),
                     )}
                   />
                 </SectionCardContainer>
@@ -375,7 +376,7 @@ const HrAdminEmployeeManagementViewEmployee = () => {
                       (permission) => ({
                         name: permission.tool,
                         value: permission.id,
-                      })
+                      }),
                     )}
                   />
                 </SectionCardContainer>

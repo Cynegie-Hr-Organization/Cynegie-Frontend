@@ -71,7 +71,7 @@ export const requestApp = async (payload: any) => {
 };
 
 export const getAllMyAppRequest = async (
-  fetchParams : FetchParams
+  fetchParams: FetchParams,
 ): Promise<AppRequestsResponse> => {
   const session = await getServerSession(authOptions);
 

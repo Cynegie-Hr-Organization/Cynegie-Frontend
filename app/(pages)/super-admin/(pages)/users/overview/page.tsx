@@ -12,15 +12,20 @@ import { Suspense } from "react";
 
 const UserManagement = () => {
   const { data: userStatistics } = useUserStatistics();
-  const { engagementRate, totalActiveUsers, totalInactiveUsers, retentionRate } = userStatistics ?? {}
-  const totalUsers = (totalActiveUsers ?? 0) + (totalInactiveUsers ?? 0)
+  const {
+    engagementRate,
+    totalActiveUsers,
+    totalInactiveUsers,
+    retentionRate,
+  } = userStatistics ?? {};
+  const totalUsers = (totalActiveUsers ?? 0) + (totalInactiveUsers ?? 0);
 
   const calculatePercentage = (value: number) => {
     if (value) {
-      return `${(value / totalUsers) * 100}`
+      return `${(value / totalUsers) * 100}`;
     }
-    return '...'
-  }
+    return "...";
+  };
 
   const managementCards = [
     {
@@ -47,8 +52,8 @@ const UserManagement = () => {
       color: "#F9FAFB",
       textColor: "#344054",
       title: "User Retention Rate",
-      value: `${retentionRate ?? 0}`
-    }
+      value: `${retentionRate ?? 0}`,
+    },
   ];
 
   return (
@@ -71,15 +76,24 @@ const UserManagement = () => {
                 <p className="text-sm font-bold">{card.value}</p>
                 {card?.percentage ? (
                   <p className="text-xs">
-                    <span className={(card?.percentage?.includes("-")) ? "text-red-500" : "text-green-500"}>{card.percentage}% </span>
+                    <span
+                      className={
+                        card?.percentage?.includes("-")
+                          ? "text-red-500"
+                          : "text-green-500"
+                      }
+                    >
+                      {card.percentage}%{" "}
+                    </span>
                     Last Month
                   </p>
                 ) : (
                   <p className="text-xs">
-                    {(card?.percentage?.includes("-")) ?
-                      (<FaArrowTrendDown className="text-red-500" />)
-                      : (<FaArrowTrendUp className="text-green-500" />)
-                    }
+                    {card?.percentage?.includes("-") ? (
+                      <FaArrowTrendDown className="text-red-500" />
+                    ) : (
+                      <FaArrowTrendUp className="text-green-500" />
+                    )}
                   </p>
                 )}
               </div>

@@ -35,7 +35,7 @@ import {
 import { Employee } from "@/types/api-index";
 
 export const getPayrolls = async (
-  params: FetchParams
+  params: FetchParams,
 ): Promise<PaginatedResponse2<Payroll>> => {
   const session = await getServerSession(authOptions);
 
@@ -49,7 +49,7 @@ export const getPayrolls = async (
 };
 
 export const getPayroll = async (
-  id: string
+  id: string,
 ): Promise<FetchResponse<Payroll>> => {
   const session = await getServerSession(authOptions);
 
@@ -62,7 +62,7 @@ export const getPayroll = async (
 };
 
 export const getMyEmployees = async (
-  params: FetchParams
+  params: FetchParams,
 ): Promise<PaginatedResponse2<Employee>> => {
   const session = await getServerSession(authOptions);
 
@@ -97,7 +97,7 @@ export const createPayroll = async (payload: CreatePayrollPayload) => {
 
 export const editPayroll = async (
   id: string,
-  payload: CreatePayrollPayload
+  payload: CreatePayrollPayload,
 ) => {
   const session = await getServerSession(authOptions);
   return request("PUT", `${baseUrl}/v1/payroll/${id}`, {
@@ -120,7 +120,7 @@ export const deletePayroll = async (id: string) => {
 };
 
 export const viewPayroll = async (
-  id: string
+  id: string,
 ): Promise<FetchResponse<Payroll & { totalEmployees: number }>> => {
   const session = await getServerSession(authOptions);
   return request("GET", `${baseUrl}/v1/payroll/${id}`, {
@@ -157,7 +157,7 @@ export const getSalaryAdvanceSummary =
   };
 
 export const getAllSalaryAdvanceRequests = async (
-  params: FetchParams & { status: string }
+  params: FetchParams & { status: string },
 ): Promise<PaginatedResponse5<SalaryAdvanceRequest>> => {
   const session = await getServerSession(authOptions);
 
@@ -181,7 +181,7 @@ export const approveAdvanceRequest = async (id: string) => {
         "Content-type": "Application/json",
         Authorization: `Bearer ${session?.token}`,
       },
-    }
+    },
   );
 };
 
@@ -196,7 +196,7 @@ export const rejectAdvanceRequest = async (id: string) => {
         "Content-type": "Application/json",
         Authorization: `Bearer ${session?.token}`,
       },
-    }
+    },
   );
 };
 
@@ -234,7 +234,7 @@ export const editDepartment = async (
     departmentManager: string;
     employees: string[];
     userLimit: number;
-  }
+  },
 ) => {
   const session = await getServerSession(authOptions);
   return request("PUT", `${baseUrl}/v1/departments/${id}`, {
@@ -267,7 +267,7 @@ export const getPayrollSettings = async () => {
 };
 
 export const getAttendanceRecords = async (
-  params: FetchParams
+  params: FetchParams,
 ): Promise<PaginatedResponse6<AttendanceRecord>> => {
   const session = await getServerSession(authOptions);
 
@@ -305,7 +305,7 @@ export const requestEmployeeUpdate = async (payload: EmployeeUpdateRequest) => {
 };
 
 export const getDevices = async (
-  params: FetchParams
+  params: FetchParams,
 ): Promise<PaginatedDevices<Device>> => {
   const session = await getServerSession(authOptions);
 
@@ -322,7 +322,7 @@ export const getBulkAttendanceReport = async (
   params: FetchParams & {
     startDate?: string;
     endDate?: string;
-  }
+  },
 ): Promise<AttendanceResponse> => {
   const session = await getServerSession(authOptions);
 
@@ -336,7 +336,7 @@ export const getBulkAttendanceReport = async (
 };
 
 export const getAllLeaves = async (
-  params: FetchParams
+  params: FetchParams,
 ): Promise<LeaveResponse> => {
   const session = await getServerSession(authOptions);
 
@@ -382,7 +382,7 @@ export const getEmployeeDemographyCharts = async (): Promise<EmployeeStats> => {
 };
 
 export const getAllTasks = async (
-  params: FetchParams
+  params: FetchParams,
 ): Promise<PaginatedResponse4<Task>> => {
   const session = await getServerSession(authOptions);
 
@@ -396,7 +396,7 @@ export const getAllTasks = async (
 };
 
 export const getDepartmentStats = async (
-  params: FetchParams
+  params: FetchParams,
 ): Promise<PaginatedResponse8<EmployeeDistribution>> => {
   const session = await getServerSession(authOptions);
 
@@ -435,7 +435,7 @@ export const apiRequest = async (
   method: "GET" | "POST" | "PATCH" | "DELETE",
   endpoint: string,
   body?: any,
-  params?: any
+  params?: any,
 ) => {
   const session = await getServerSession(authOptions);
   return request(method, `${baseUrl}/v1/${endpoint}`, {
@@ -490,7 +490,7 @@ export const getToken = async () => {
 
 export const adjustAttendance = async (
   id: string,
-  payload: { clockIn: string; clockOut: string }
+  payload: { clockIn: string; clockOut: string },
 ) => {
   const session = await getServerSession(authOptions);
 

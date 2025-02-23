@@ -8,7 +8,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/options";
 import { FetchParams } from "@/types";
 
-
 export interface Department {
   departmentName: string;
   id: string;
@@ -65,9 +64,6 @@ export interface LeaveRequestResponse {
   totalDaysOnLeave: number;
 }
 
-
-
-
 export const getLeaveType = async () => {
   const session = await getServerSession(authOptions);
 
@@ -106,7 +102,7 @@ export const requestLeave = async (payload: any) => {
 };
 
 export const getAllLeaveRequest = async (
-  fetchParams : FetchParams
+  fetchParams: FetchParams,
 ): Promise<LeaveRequestResponse> => {
   const session = await getServerSession(authOptions);
 

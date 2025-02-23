@@ -23,12 +23,10 @@ const EditUserPermission = () => {
   //   return data?.data?.find((item) => item.id === userId)
   // }, [data]);
 
-
-
   const [formData, setFormData] = useState<FormData>({
-    firstName: '',
+    firstName: "",
     middleName: "...",
-    lastName: '',
+    lastName: "",
     staffEmail: "",
     role: "",
     financeAdminSwitches: {
@@ -68,15 +66,14 @@ const EditUserPermission = () => {
   });
 
   useEffect(() => {
-    const userData = data?.data?.find((item) => item.id === userId)
-    setFormData(formData => ({
+    const userData = data?.data?.find((item) => item.id === userId);
+    setFormData((formData) => ({
       ...formData,
-      firstName: userData?.firstName ?? '',
-      lastName: userData?.lastName ?? '',
-      staffEmail: userData?.email ?? '',
+      firstName: userData?.firstName ?? "",
+      lastName: userData?.lastName ?? "",
+      staffEmail: userData?.email ?? "",
     }));
-  }, [data, userId])
-
+  }, [data, userId]);
 
   const setAllSwitches = (
     prev: FormData,
@@ -177,10 +174,10 @@ const EditUserPermission = () => {
 
       return Boolean(
         formData.firstName &&
-        formData.middleName &&
-        formData.lastName &&
-        emailRegex.test(formData.staffEmail) &&
-        formData.role,
+          formData.middleName &&
+          formData.lastName &&
+          emailRegex.test(formData.staffEmail) &&
+          formData.role,
       );
     };
 
@@ -215,7 +212,7 @@ const EditUserPermission = () => {
               id="middle-name"
               label="Middle Name"
               placeholder="Enter middle name"
-              value={'...'}
+              value={"..."}
               disabled
               onChange={(e) =>
                 setFormData({ ...formData, middleName: e.target.value })
@@ -368,7 +365,7 @@ const EditUserPermission = () => {
         btn2Label="Grant Permission"
         disabledbtn2={!isFormValid}
         onBtn1Click={() => router.back()}
-        onBtn2Click={() => { }}
+        onBtn2Click={() => {}}
       />
     </div>
   );

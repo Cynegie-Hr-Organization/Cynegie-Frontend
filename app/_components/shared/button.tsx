@@ -30,7 +30,7 @@ const AppButton: React.FC<AppButtonProps> = ({
       onClick={onClick}
       disabled={disabled}
       // className={`capitalize flex items-center justify-center gap-x-2 outline-none rounded-lg px-[12.33px] py-[9px] font-bold w-full md:w-[230px] disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-400 transition duration-300 ${className || ''}`}
-      className={`capitalize flex items-center justify-center gap-x-2 outline-none rounded-lg px-[12.33px] py-[9px] font-bold w-full md:w-[230px] disabled:btn-inactive transition duration-300 ${className || ''}`}
+      className={`capitalize flex items-center justify-center gap-x-2 outline-none rounded-lg px-[12.33px] py-[9px] font-bold w-full md:w-[230px] disabled:btn-inactive transition duration-300 ${className || ""}`}
     >
       {isLoading ? (
         <AiOutlineLoading3Quarters className="animate-spin" />

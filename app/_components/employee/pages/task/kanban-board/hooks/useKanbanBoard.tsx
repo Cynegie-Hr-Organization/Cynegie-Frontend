@@ -11,10 +11,13 @@ import { BoardData } from "../types";
 const useKanbanBoard = (searchQuery: string) => {
   const queryClient = useQueryClient();
 
-  const { data: tasksData, isLoading, error } = useQuery({
+  const {
+    data: tasksData,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["tasks", searchQuery],
     queryFn: () => getMyTasks(searchQuery),
-   
   });
 
   console.log("tasksData:", tasksData);

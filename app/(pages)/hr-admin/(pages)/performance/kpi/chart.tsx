@@ -1,142 +1,94 @@
 "use client";
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
+import { AppSelect } from "@/app/_components/shared/select";
 import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
-const formatLargeNumber = (value: number) => {
-  if (value >= 1_000_000_000) {
+const data = [
+  { month: "Jan", performance: 35 },
+  { month: "Feb", performance: 40 },
+  { month: "Mar", performance: 38 },
+  { month: "Apr", performance: 32 },
+  { month: "May", performance: 36 },
+  { month: "Jun", performance: 45 },
+  { month: "Jul", performance: 50 },
+  { month: "Aug", performance: 53 },
+  { month: "Sept", performance: 55 },
+  { month: "Oct", performance: 48 },
+  { month: "Nov", performance: 40 },
+  { month: "Dec", performance: 80 },
+];
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
     return (
-      new Intl.NumberFormat("en-US", {
-        style: "decimal",
-        maximumFractionDigits: 1,
-      }).format(value / 1_000_000_000) + "B"
+      <div className="bg-white shadow-md px-3 py-2 rounded-md border border-gray-200">
+        <p className="text-sm font-semibold">
+          {label} {payload[0].value}%
+        </p>
+      </div>
     );
-  } else if (value >= 1_000_000) {
-    return (
-      new Intl.NumberFormat("en-US", {
-        style: "decimal",
-        maximumFractionDigits: 1,
-      }).format(value / 1_000_000) + "M"
-    );
-  } else if (value >= 1_000) {
-    return (
-      new Intl.NumberFormat("en-US", {
-        style: "decimal",
-        maximumFractionDigits: 1,
-      }).format(value / 1_000) + "k"
-    );
-  } else {
-    return new Intl.NumberFormat("en-US").format(value);
   }
+  return null;
 };
 
-interface ChartData {
-  completed: number;
-  inProgress?: number;
-  month?: string;
-}
-
-export function GradientLineChart<T extends ChartData>({
-  chartConfig,
-  chartData,
-  gradient = {
-    id: "chartGradient",
-    stops: [
-      { offset: "0%", stopColor: "#0035C3", stopOpacity: 0.4 },
-      { offset: "100%", stopColor: "#ffffff", stopOpacity: 0 },
-    ],
-  },
-  areas = [
-    {
-      dataKey: "completed",
-      stroke: "#0035C3",
-    },
-  ],
-}: {
-  chartConfig: ChartConfig;
-  chartData: T[];
-  gradient?: {
-    id: string;
-    stops: { offset: string; stopColor: string; stopOpacity: number }[];
-  };
-  areas?: { dataKey: string; stroke: string }[];
-}) {
+export default function PerformanceChart() {
   return (
-    <ChartContainer
-      className="h-[300px] w-full mt-6 -ml-6"
-      config={chartConfig}
-    >
-      <AreaChart
-        accessibilityLayer
-        data={chartData}
-        margin={{
-          top: 0,
-          right: 5,
-          bottom: 0,
-          left: 0,
-        }}
-      >
-        <defs>
-          <linearGradient id={gradient.id} x1="0%" y1="0%" x2="0%" y2="100%">
-            {gradient.stops.map((stop) => (
-              <stop
-                key={stop.offset}
-                offset={stop.offset}
-                stopColor={stop.stopColor}
-                stopOpacity={stop.stopOpacity}
-              />
-            ))}
-          </linearGradient>
-        </defs>
-
-        <CartesianGrid
-          vertical={false}
-          stroke="#E0E0E0"
-          strokeDasharray="3 3"
-        />
-        <XAxis
-          dataKey="month"
-          tickLine={false}
-          axisLine={false}
-          tickMargin={8}
-          tickFormatter={(value) => value.slice(0, 3)}
-        />
-        <YAxis
-          type="number"
-          domain={["auto", "auto"]}
-          tickLine={false}
-          axisLine={false}
-          tickFormatter={formatLargeNumber}
-          interval="preserveStartEnd"
-        />
-
-        <ChartTooltip
-          cursor={false}
-          content={
-            <ChartTooltipContent
-              indicator="dot"
-              className="bg-white border-none outline-none shadow-primary/25 shadow-2xl p-2 rounded-lg"
-            />
-          }
-        />
-
-        {areas.map((area) => (
-          <Area
-            key={area.dataKey}
-            dataKey={area.dataKey}
-            type="natural"
-            fill={`url(#${gradient.id})`}
-            fillOpacity={0.4}
-            stroke={area.stroke}
-            stackId="a"
+    <div className="w-full h-[500px] flex flex-col items-center gap-4">
+      <div className="w-full flex  justify-between">
+        <div className="flex justify-start gap-2 w-full">
+          <AppSelect
+            width="w-[144.34px]"
+            placeholder="Monthly"
+            listItems={[
+              { label: "January", value: "January" },
+              { label: "February", value: "Febraury" },
+              { label: "March", value: "March" },
+              { label: "April", value: "April" },
+            ]}
+            onChange={() => {}}
           />
-        ))}
-      </AreaChart>
-    </ChartContainer>
+          <AppSelect
+            width="w-[144.34px]"
+            placeholder="Assessment Type "
+            listItems={[
+              { label: "Self", value: "self" },
+              { label: "Team", value: "team" },
+            ]}
+            onChange={() => {}}
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 bg-[#0030B1] rounded-full"></span>
+          <h2 className="text-gray-700 whitespace-nowrap text-base font-light">
+            Employee Performance Rating
+          </h2>
+        </div>
+      </div>
+      <ResponsiveContainer className="p-2 m-2" width="100%" height="100%">
+        <LineChart data={data}>
+          <XAxis dataKey="month" stroke="#94a3b8" />
+          <YAxis
+            domain={[10, 100]}
+            stroke="#94a3b8"
+            tickFormatter={(value) => `${value}%`}
+          />
+          <Tooltip content={<CustomTooltip />} />
+          <Line
+            type="monotone"
+            dataKey="performance"
+            stroke="#2563eb"
+            strokeWidth={2}
+            dot={{ r: 5 }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
   );
 }

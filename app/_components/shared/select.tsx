@@ -10,17 +10,26 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-
-export function AppSelect({ listLabel, label, requiredField = false, listItems, placeholder, value, onChange, width = 'w-full', triggerStyle = 'border-gray-300' }: {
-  listLabel?: string,
-  label?: string,
-  requiredField?: boolean,
-  listItems: { label: string, value: string }[],
-  placeholder?: string,
-  value?: string
-  onChange: (value: string) => void,
-  width?: string,
-  triggerStyle?: string
+export function AppSelect({
+  listLabel,
+  label,
+  requiredField = false,
+  listItems,
+  placeholder,
+  value,
+  onChange,
+  width = "w-full",
+  triggerStyle = "border-gray-300",
+}: {
+  listLabel?: string;
+  label?: string;
+  requiredField?: boolean;
+  listItems: { label: string; value: string }[];
+  placeholder?: string;
+  value?: string;
+  onChange: (value: string) => void;
+  width?: string;
+  triggerStyle?: string;
 }) {
   return (
     <Select value={value} onValueChange={(value) => onChange(value)}>

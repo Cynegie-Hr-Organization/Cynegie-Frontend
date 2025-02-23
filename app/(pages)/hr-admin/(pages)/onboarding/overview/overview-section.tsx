@@ -11,14 +11,14 @@ import { PiChartLineUp } from "react-icons/pi";
 
 const OverViewSection = () => {
   const { data, isLoading } = useOnboardingData();
-  const { totalNewHires } = data ?? {}
+  const { totalNewHires } = data ?? {};
   const router = useRouter();
 
   const overviewContents = [
     {
       color: "#DEE3FF",
       title: "Total New Hire",
-      count: totalNewHires ?? '...',
+      count: totalNewHires ?? "...",
       icon: <HiOutlineUserGroup />,
     },
     {

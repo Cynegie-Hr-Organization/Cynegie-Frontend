@@ -47,10 +47,10 @@ const HrAdminCreatePayrollPage = ({
           startDate: dayjs().toISOString(),
           endDate: dayjs().toISOString(),
         }
-      : { startDate: "", endDate: "" }
+      : { startDate: "", endDate: "" },
   );
   const [paymentDate, setPaymentDate] = useState(
-    editPayrollId ? "0000-00-00" : ""
+    editPayrollId ? "0000-00-00" : "",
   );
 
   const [fetchParams, setFetchParams] = useState<FetchParams>({
@@ -87,20 +87,20 @@ const HrAdminCreatePayrollPage = ({
       setPayrollName(selectedPayrollData.data.payrollName);
       setPayrollPeriod({
         startDate: dayjs(selectedPayrollData.data.startDate).format(
-          "YYYY-MM-DD"
+          "YYYY-MM-DD",
         ),
         endDate: dayjs(selectedPayrollData.data.endDate).format("YYYY-MM-DD"),
       });
       setPaymentDate(
-        dayjs(selectedPayrollData.data.paymentDate).format("YYYY-MM-DD")
+        dayjs(selectedPayrollData.data.paymentDate).format("YYYY-MM-DD"),
       );
       if (employees) {
         setEditEmployees(employees);
         const employeeIds = selectedPayrollData.data.employees as string[];
         setCheckedRows(
           employees.filter((employee) =>
-            employeeIds.includes(employee.id ?? "")
-          )
+            employeeIds.includes(employee.id ?? ""),
+          ),
         );
       }
     }
@@ -122,7 +122,7 @@ const HrAdminCreatePayrollPage = ({
             grossPay: employee.grossPay,
             deduction: employee.totalDeductions,
             netPay: employee.netPay,
-          }))
+          })),
         );
       }
     }
@@ -303,7 +303,7 @@ const HrAdminCreatePayrollPage = ({
                     endDate: dayjs(range.endDate).format("YYYY-MM-DD"),
                   }),
                 placeholder: `${dayjs(payrollPeriod.startDate).format(
-                  "DD MMM"
+                  "DD MMM",
                 )} - ${dayjs(payrollPeriod.endDate).format("DD MMM YYYY")}`,
               },
               {
@@ -356,15 +356,15 @@ const HrAdminCreatePayrollPage = ({
                 overtime: employee.compensation.overtime,
               }))
               .filter((employee) =>
-                checkedRows?.map((row) => row.id).includes(employee.id)
+                checkedRows?.map((row) => row.id).includes(employee.id),
               )
               .filter((employee) =>
-                employee.name.toLowerCase().includes(searchQuery.toLowerCase())
+                employee.name.toLowerCase().includes(searchQuery.toLowerCase()),
               )
               .filter((employee) =>
                 employee.departmentName
                   .toLowerCase()
-                  .includes(usedDepartmentFilter?.toLowerCase() ?? "")
+                  .includes(usedDepartmentFilter?.toLowerCase() ?? ""),
               )}
             displayedFields={[
               "name",
@@ -410,7 +410,7 @@ const HrAdminCreatePayrollPage = ({
                 onClick: () => {},
                 onDataReturned: (id) =>
                   setCheckedRows(
-                    checkedRows.filter((checkedRow) => checkedRow.id !== id)
+                    checkedRows.filter((checkedRow) => checkedRow.id !== id),
                   ),
               },
             ]}
@@ -521,10 +521,10 @@ const HrAdminCreatePayrollPage = ({
               activeTab < 2
                 ? "Continue"
                 : createLoading
-                ? ""
-                : editPayrollId
-                ? "Edit Payroll"
-                : "Finalize Payroll"
+                  ? ""
+                  : editPayrollId
+                    ? "Edit Payroll"
+                    : "Finalize Payroll"
             }
             onClick={() => {
               if (activeTab < 2) {
@@ -567,9 +567,9 @@ const HrAdminCreatePayrollPage = ({
           editPayrollId
             ? "The payroll has been"
             : `Payroll ${dayjs(payrollPeriod.startDate).format(
-                "DD MMM"
+                "DD MMM",
               )} - ${dayjs(payrollPeriod.endDate).format(
-                "DD MMM YYYY"
+                "DD MMM YYYY",
               )} has been`
         } ${editPayrollId ? " edited successfully" : "sent for approval"}`}
         centerButton

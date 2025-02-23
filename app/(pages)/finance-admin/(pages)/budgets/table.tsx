@@ -8,10 +8,9 @@ import { RiSearchLine } from "react-icons/ri";
 
 const BudgetsTable = () => {
   const { data, isLoading } = useAllBudget({});
-  const { items: budgets } = data?.data ?? {}
+  const { items: budgets } = data?.data ?? {};
 
   // console.log(budgets)
-
 
   return (
     <div className="common-card space-y-4 overflow-x-auto">
@@ -34,66 +33,102 @@ const BudgetsTable = () => {
             <table className="w-full border-collapse">
               <thead className="bg-[#F7F9FC]">
                 <tr>
-                  <th className='px-4 py-3 text-left text-nowrap'>Department</th>
-                  <th className='px-4 py-3 text-left text-nowrap'>Start date</th>
-                  <th className='px-4 py-3 text-left text-nowrap'>End date</th>
-                  <th className='px-4 py-3 text-left text-nowrap'>Total Allocation</th>
-                  <th className='px-4 py-3 text-left text-nowrap'>Spent</th>
-                  <th className='px-4 py-3 text-left text-nowrap'>Remaining</th>
-                  <th className='px-4 py-3 text-left text-nowrap'>Status</th>
+                  <th className="px-4 py-3 text-left text-nowrap">
+                    Department
+                  </th>
+                  <th className="px-4 py-3 text-left text-nowrap">
+                    Start date
+                  </th>
+                  <th className="px-4 py-3 text-left text-nowrap">End date</th>
+                  <th className="px-4 py-3 text-left text-nowrap">
+                    Total Allocation
+                  </th>
+                  <th className="px-4 py-3 text-left text-nowrap">Spent</th>
+                  <th className="px-4 py-3 text-left text-nowrap">Remaining</th>
+                  <th className="px-4 py-3 text-left text-nowrap">Status</th>
                 </tr>
               </thead>
 
               <tbody>
-                {(budgets && budgets.length > 0) ? budgets.map((budget, idx) => {
-                  const { department, startDate, endDate, allocation, spent, remainingFunds, status } = budget ?? {};
-                  const { departmentName } = department ?? {};
-                  console.log(spent)
-                  return (
-                    <tr key={idx} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
-                      <td className='px-4 py-4'>
-                        <p className='text-sm'>{departmentName ?? 'NIIL'}</p>
-                      </td>
-                      <td className="px-4 py-4">
-                        <p className="text-sm">
-                          {startDate ? localTime(startDate, "do MMM yyyy") : 'NIL'}
-                        </p>
-                      </td>
-                      <td className="px-4 py-4">
-                        <p className="text-sm">
-                          {endDate ? localTime(endDate, "do MMM yyyy") : 'NIL'}
-                        </p>
-                      </td>
-                      <td className="px-4 py-4">
-                        <p className="text-sm">{allocation ? getLocalCurrency(allocation) : 'NIL'}</p>
-                      </td>
-                      <td className="px-4 py-4">
-                        <p className="text-sm">{(spent || spent === 0) ? getLocalCurrency(spent) : 'NIL'}</p>
-                      </td>
-                      <td className="px-4 py-4">
-                        <p className="text-sm">{remainingFunds ? getLocalCurrency(remainingFunds) : 'NIL'}</p>
-                      </td>
-                      <td className="px-4 py-4">
-                        <p className={`text-xs font-semibold rounded-full px-2 py-1 w-fit text-nowrap lowercase ${{
-                          'pending': 'text-amber-700 bg-amber-100',
-                          'approved': 'text-green-700 bg-green-100',
-                          'rejected': 'text-red-700 bg-red-100',
-                        }[status ?? 'pending']}`}>
-                          {status ? status.toLowerCase() : 'pending'}
-                        </p>
-                      </td>
-                    </tr>
-                  );
-                }) : (
+                {budgets && budgets.length > 0 ? (
+                  budgets.map((budget, idx) => {
+                    const {
+                      department,
+                      startDate,
+                      endDate,
+                      allocation,
+                      spent,
+                      remainingFunds,
+                      status,
+                    } = budget ?? {};
+                    const { departmentName } = department ?? {};
+                    console.log(spent);
+                    return (
+                      <tr
+                        key={idx}
+                        className="border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]"
+                      >
+                        <td className="px-4 py-4">
+                          <p className="text-sm">{departmentName ?? "NIIL"}</p>
+                        </td>
+                        <td className="px-4 py-4">
+                          <p className="text-sm">
+                            {startDate
+                              ? localTime(startDate, "do MMM yyyy")
+                              : "NIL"}
+                          </p>
+                        </td>
+                        <td className="px-4 py-4">
+                          <p className="text-sm">
+                            {endDate
+                              ? localTime(endDate, "do MMM yyyy")
+                              : "NIL"}
+                          </p>
+                        </td>
+                        <td className="px-4 py-4">
+                          <p className="text-sm">
+                            {allocation ? getLocalCurrency(allocation) : "NIL"}
+                          </p>
+                        </td>
+                        <td className="px-4 py-4">
+                          <p className="text-sm">
+                            {spent || spent === 0
+                              ? getLocalCurrency(spent)
+                              : "NIL"}
+                          </p>
+                        </td>
+                        <td className="px-4 py-4">
+                          <p className="text-sm">
+                            {remainingFunds
+                              ? getLocalCurrency(remainingFunds)
+                              : "NIL"}
+                          </p>
+                        </td>
+                        <td className="px-4 py-4">
+                          <p
+                            className={`text-xs font-semibold rounded-full px-2 py-1 w-fit text-nowrap lowercase ${
+                              {
+                                pending: "text-amber-700 bg-amber-100",
+                                approved: "text-green-700 bg-green-100",
+                                rejected: "text-red-700 bg-red-100",
+                              }[status ?? "pending"]
+                            }`}
+                          >
+                            {status ? status.toLowerCase() : "pending"}
+                          </p>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
                   <EmptyTable message="No budgets found" />
                 )}
               </tbody>
             </table>
           </div>
         </>
-      )
-      }
-    </div >
+      )}
+    </div>
   );
 };
 

@@ -78,7 +78,7 @@ const HrAdminEmployeeAttendanceManagementBulkReport = () => {
               overtimeHours:
                 record.overtime !== null ? formatHours(record.overtime) : "N/A",
             }))
-          : []
+          : [],
       );
     } else {
       setAttendanceRecords(undefined);

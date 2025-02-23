@@ -8,7 +8,7 @@ import { IoIosArrowDown } from "react-icons/io";
 
 const ApprovalManagementPage = () => {
   return (
-    <Suspense fallback={'Loading...'}>
+    <Suspense fallback={"Loading..."}>
       <div className="space-y-8 py-6">
         <div>
           <PageHeader

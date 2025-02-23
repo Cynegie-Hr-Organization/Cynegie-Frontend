@@ -4,6 +4,7 @@ import Form from "@/app/_components/shared/form";
 import Page from "@/app/_components/shared/page";
 import { ChevronRight } from "@mui/icons-material";
 import { useState } from "react";
+import PerformanceSettingComponent from "./performance-settings";
 
 const HrAdminSettings = () => {
   const dropdownComponents = [
@@ -81,8 +82,14 @@ const HrAdminSettings = () => {
         },
       ]}
     />,
+    <PerformanceSettingComponent key={3} />, // Add the PerformanceWeighting component
   ];
-  const dropdowns = [useState(false), useState(false), useState(false)];
+  const dropdowns = [
+    useState(false),
+    useState(false),
+    useState(false),
+    useState(false),
+  ]; // Add a new state for the fourth dropdown
 
   const dropdownComponents2 = [
     <div key={0}>
@@ -119,33 +126,35 @@ const HrAdminSettings = () => {
       <div className="common-card p-[30px]">
         <div className="card-title-large mb-4">Company Settings</div>
         <div className="flex flex-col gap-4">
-          {["Leave", "Hiring", "Attendance"].map((item, index) => {
-            const [isOpen, setIsOpen] = dropdowns[index];
-            const DropdownComponent = dropdownComponents[index];
+          {["Leave", "Hiring", "Attendance", "Performance Management"].map(
+            (item, index) => {
+              const [isOpen, setIsOpen] = dropdowns[index];
+              const DropdownComponent = dropdownComponents[index];
 
-            return (
-              <div
-                className="p-[20px]"
-                style={{
-                  border: "1px solid #D0D5DD",
-                  borderRadius: "6px",
-                }}
-                key={index}
-              >
-                <div className={`flex items-center mb-${isOpen ? 6 : 0}`}>
-                  <div className="flex-grow">{`${item} Settings`}</div>
-                  <ChevronRight
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="cursor-pointer"
-                    sx={{
-                      transform: isOpen ? "rotate(270deg)" : "rotate(90deg)",
-                    }}
-                  />
+              return (
+                <div
+                  className="p-[20px]"
+                  style={{
+                    border: "1px solid #D0D5DD",
+                    borderRadius: "6px",
+                  }}
+                  key={index}
+                >
+                  <div className={`flex items-center mb-${isOpen ? 6 : 0}`}>
+                    <div className="flex-grow">{`${item} Settings`}</div>
+                    <ChevronRight
+                      onClick={() => setIsOpen(!isOpen)}
+                      className="cursor-pointer"
+                      sx={{
+                        transform: isOpen ? "rotate(270deg)" : "rotate(90deg)",
+                      }}
+                    />
+                  </div>
+                  {isOpen && DropdownComponent}
                 </div>
-                {isOpen && DropdownComponent}
-              </div>
-            );
-          })}
+              );
+            },
+          )}
         </div>
 
         <div className="card-title-large mb-4 mt-8">

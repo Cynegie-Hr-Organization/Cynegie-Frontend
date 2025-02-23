@@ -36,9 +36,9 @@ export const truncateText = (text: string, length: number = 100): string => {
   return text;
 };
 
-export const getLocalCurrency = (amount: number, currency: string = 'NGN') => {
-  return new Intl.NumberFormat('en-NG', {
-    style: 'currency',
-    currency: currency
+export const getLocalCurrency = (amount: number, currency: string = "NGN") => {
+  return new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: currency,
   }).format(amount);
-}
+};

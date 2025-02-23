@@ -22,9 +22,9 @@ export interface IBudget extends IBudgetBase {
 }
 
 export interface IBudgetSummary {
-  totalAllocated: number,
-  totalSpent: number,
-  remainingBudget: number
+  totalAllocated: number;
+  totalSpent: number;
+  remainingBudget: number;
 }
 
 // export type IBudgetCreate = Omit<IBudgetBase, "company">;
@@ -46,27 +46,28 @@ export interface IBudgetCreate {
   endDate: string;
 }
 
-
 export interface IDepartment {
-  data: [{
-    departmentName: string;
-    departmentManager: string;
-    employees: string[];
-    userLimit: number;
-    status: 'active' | 'inactive';
-    deletedAt: string | null;
-    company: string;
-    createdAt: string;
-    updatedAt: string;
-    id: string;
-  }],
+  data: [
+    {
+      departmentName: string;
+      departmentManager: string;
+      employees: string[];
+      userLimit: number;
+      status: "active" | "inactive";
+      deletedAt: string | null;
+      company: string;
+      createdAt: string;
+      updatedAt: string;
+      id: string;
+    },
+  ];
   meta: {
     // total: number;
-    itemCount: 2,
+    itemCount: 2;
     page: number;
     limit: number;
-    pageCount: 1,
-    hasPreviousPage: false,
-    hasNextPage: false
-  }
+    pageCount: 1;
+    hasPreviousPage: false;
+    hasNextPage: false;
+  };
 }

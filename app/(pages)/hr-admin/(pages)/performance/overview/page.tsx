@@ -275,7 +275,7 @@ const OverviewCards = ({ className }: { className?: string }) => {
         const { color, title, count } = content;
 
         return (
-          <div className="common-card w-full flex flex-col" key={title}>
+          <div className="common-card text-sm space-y-8" key={title}>
             <div className="flex items-center gap-4">
               <div
                 className="w-10 h-10 rounded-full flex items-center justify-center"
@@ -283,9 +283,9 @@ const OverviewCards = ({ className }: { className?: string }) => {
               >
                 <PiListChecksFill />
               </div>
-              <h3 className="text-base font-semibold text-black">{title}</h3>
+              <h3 className="text-sm font-semibold text-gray-500">{title}</h3>
             </div>
-            <p className="text-3xl font-bold text-black mt-[27px]">{count}</p>
+            <p className="font-bold text-lg ">{count}</p>
           </div>
         );
       })}
@@ -376,7 +376,7 @@ const PieChartCard = ({
               percentage: getPercentage(chartData[0]?.notStarted ?? 0),
             },
           ].map((item, index) => (
-            <div key={index} className="flex items-center gap-2 text-lg">
+            <div key={index} className="flex text-sm items-center gap-2 ">
               <div
                 className="rounded-full w-[15px] h-[15px]"
                 style={{ backgroundColor: item.color }}

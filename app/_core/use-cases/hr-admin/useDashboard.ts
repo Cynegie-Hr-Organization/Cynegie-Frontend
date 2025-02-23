@@ -1,6 +1,12 @@
-import { getCandidates, getEmployeeStatus, getHRAdminChartData, getHRAdminOverviewCardData, getPriorityData } from "@/app/_core/actions/hr-admin/dashboard"
-import { queryKeys } from "@/app/_core/utils/queryKeys"
-import { useQuery } from "@tanstack/react-query"
+import {
+  getCandidates,
+  getEmployeeStatus,
+  getHRAdminChartData,
+  getHRAdminOverviewCardData,
+  getPriorityData,
+} from "@/app/_core/actions/hr-admin/dashboard";
+import { queryKeys } from "@/app/_core/utils/queryKeys";
+import { useQuery } from "@tanstack/react-query";
 
 export const useDashboardOverviewData = () => {
   return useQuery({
@@ -10,9 +16,9 @@ export const useDashboardOverviewData = () => {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     initialData: undefined,
-    retry: false
-  })
-}
+    retry: false,
+  });
+};
 
 export const useDashboardChartData = () => {
   return useQuery({
@@ -22,9 +28,9 @@ export const useDashboardChartData = () => {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     initialData: undefined,
-    retry: false
-  })
-}
+    retry: false,
+  });
+};
 
 export const useEmployeeStatus = () => {
   return useQuery({
@@ -34,9 +40,9 @@ export const useEmployeeStatus = () => {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     initialData: undefined,
-    retry: false
-  })
-}
+    retry: false,
+  });
+};
 
 export const usePriorityCards = () => {
   return useQuery({
@@ -46,9 +52,9 @@ export const usePriorityCards = () => {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     initialData: undefined,
-    retry: false
-  })
-}
+    retry: false,
+  });
+};
 
 export const useCandidates = () => {
   return useQuery({
@@ -58,6 +64,6 @@ export const useCandidates = () => {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     initialData: undefined,
-    retry: false
-  })
-}
+    retry: false,
+  });
+};

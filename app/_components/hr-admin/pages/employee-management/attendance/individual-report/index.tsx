@@ -66,7 +66,7 @@ const HrAdminEmployeeAttendanceManagementIndividualReport = () => {
           hoursWorked: "N/A",
           status: "N/A",
           overtimeHours: "N/A",
-        }))
+        })),
       );
     }
   }, [employeeAttendanceData]);

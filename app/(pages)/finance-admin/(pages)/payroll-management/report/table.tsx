@@ -200,12 +200,7 @@ const RejectModal = ({ trigger }: { trigger: React.ReactNode }) => {
         />
       </div>
     </AppModal>
-  )
-}
-
-
-
-
-
+  );
+};
 
 export default PayrollReportTable;

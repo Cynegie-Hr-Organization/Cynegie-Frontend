@@ -32,7 +32,7 @@ const PerformanceReviewTable = () => {
         itemsPerPage,
         "desc",
         filter,
-        search
+        search,
       );
       console.log(data);
       setReviews(data || []);
@@ -200,7 +200,7 @@ const PerformanceReviewTable = () => {
                           label: "Edit",
                           onClick: () =>
                             router.push(
-                              `/hr-admin/performance/review-cycle/edit/${review.id}`
+                              `/hr-admin/performance/review-cycle/edit/${review.id}`,
                             ),
                         },
                         {
@@ -208,7 +208,7 @@ const PerformanceReviewTable = () => {
                           label: "View Details",
                           onClick: () =>
                             router.push(
-                              `/hr-admin/performance/review/${review.id}`
+                              `/hr-admin/performance/review/${review.id}`,
                             ),
                         },
                         {

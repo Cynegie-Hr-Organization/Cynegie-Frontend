@@ -1,7 +1,9 @@
 "use client";
 
 import { Spinner } from "@/app/_components/shared/buttons";
-import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-text";
+import AppInputText, {
+  AppInputTextArea,
+} from "@/app/_components/shared/input-text";
 import AppTabs from "@/app/_components/shared/tabs";
 import { ITemplate } from "@/app/_core/actions/hr-admin/onboarding";
 import { useTemplates } from "@/app/_core/use-cases/hr-admin/useOnboarding";
@@ -13,33 +15,40 @@ import NewTrainingModule from "./new-training-module";
 
 type CreateTemplateStep = "Task" | "Document" | "Training Module";
 
-
-
-
 const CreateNewTemplate = () => {
   const router = useRouter();
   const { templateId } = useParams();
   const { data, isLoading } = useTemplates();
-  const { data: templates } = data ?? {}
+  const { data: templates } = data ?? {};
 
-  const template = useMemo(() => templates?.find(template => template.id === templateId), [templates, templateId])
-  const [formData, setFormData] = useState<Partial<ITemplate | undefined>>(template);
+  const template = useMemo(
+    () => templates?.find((template) => template.id === templateId),
+    [templates, templateId],
+  );
+  const [formData, setFormData] =
+    useState<Partial<ITemplate | undefined>>(template);
 
   useEffect(() => {
-    setFormData(template ?? undefined)
-  }, [template])
+    setFormData(template ?? undefined);
+  }, [template]);
 
   const [activeTab, setActiveTab] = useState<CreateTemplateStep>("Task");
   const TEMPLATE_STEPS = [
-    { label: "Task", onClick: () => setActiveTab('Task') },
-    { label: "Document", onClick: () => setActiveTab('Document') },
-    { label: "Training Module", onClick: () => setActiveTab('Training Module') }
+    { label: "Task", onClick: () => setActiveTab("Task") },
+    { label: "Document", onClick: () => setActiveTab("Document") },
+    {
+      label: "Training Module",
+      onClick: () => setActiveTab("Training Module"),
+    },
   ];
 
-  const isLastStep = activeTab === TEMPLATE_STEPS[TEMPLATE_STEPS.length - 1].label;
+  const isLastStep =
+    activeTab === TEMPLATE_STEPS[TEMPLATE_STEPS.length - 1].label;
 
   const handleNextStep = () => {
-    const currentIndex = TEMPLATE_STEPS.findIndex(step => step.label === activeTab);
+    const currentIndex = TEMPLATE_STEPS.findIndex(
+      (step) => step.label === activeTab,
+    );
 
     if (currentIndex !== -1 && currentIndex < TEMPLATE_STEPS.length - 1) {
       const nextStep = TEMPLATE_STEPS[currentIndex + 1];
@@ -50,8 +59,8 @@ const CreateNewTemplate = () => {
   };
 
   const renderActiveComponents = {
-    "Task": <NewTask />,
-    "Document": <NewDocument />,
+    Task: <NewTask />,
+    Document: <NewDocument />,
     "Training Module": <NewTrainingModule />,
   };
 
@@ -59,10 +68,10 @@ const CreateNewTemplate = () => {
     <form className="mb-12 space-y-6">
       <h3 className="text-lg font-semibold">Edit Template</h3>
 
-
       {isLoading ? (
         <div className="flex flex-col md:flex-row items-center gap-x-2">
-          <Spinner className="text-primary" /> <p>Please hold while we fetch your initial content</p>
+          <Spinner className="text-primary" />{" "}
+          <p>Please hold while we fetch your initial content</p>
         </div>
       ) : (
         <>
@@ -74,8 +83,10 @@ const CreateNewTemplate = () => {
                 label="Template Name"
                 placeholder="Template Name"
                 requiredField
-                value={formData?.templateName ?? ''}
-                onChange={(e) => setFormData({ ...formData, templateName: e.target.value })}
+                value={formData?.templateName ?? ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, templateName: e.target.value })
+                }
                 isLoadingContent={isLoading}
               />
             </div>
@@ -86,9 +97,9 @@ const CreateNewTemplate = () => {
                 placeholder="Description"
                 label="Description"
                 requiredField
-                value={formData?.instructions ?? ''}
-                onChange={() => { }}
-              // isLoadingContent={isLoading}
+                value={formData?.instructions ?? ""}
+                onChange={() => {}}
+                // isLoadingContent={isLoading}
               />
             </div>
           </div>

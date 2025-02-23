@@ -13,7 +13,9 @@ const ComplianceSettingsForm = () => {
         <AppSelect
           label="Compliance reminder frequency"
           placeholder="Select compliance reminder frequency"
-          value={data?.settings?.complianceSettings?.complianceReminderFrequency}
+          value={
+            data?.settings?.complianceSettings?.complianceReminderFrequency
+          }
           listItems={[
             { label: "Weekly", value: "weekly" },
             { label: "Bi Weekly", value: "bi-weekly" },
@@ -26,19 +28,20 @@ const ComplianceSettingsForm = () => {
                 ...data?.settings,
                 complianceSettings: {
                   ...(data?.settings?.complianceSettings ?? {}),
-                  complianceReminderFrequency: value as TimeFrequency
-                }
-              }
-            })
-          }} />
+                  complianceReminderFrequency: value as TimeFrequency,
+                },
+              },
+            });
+          }}
+        />
         <AppSelect
           label="Data Retention Duration"
           placeholder="Select data retention duration"
           value={`${data?.settings?.complianceSettings?.dataRetentionDuration}`}
           listItems={[
-            { label: "6 months", value: '6-months' },
-            { label: "1 year", value: '1-year' },
-            { label: "2 years", value: '2-years' }
+            { label: "6 months", value: "6-months" },
+            { label: "1 year", value: "1-year" },
+            { label: "2 years", value: "2-years" },
           ]}
           onChange={(value) => {
             setData({
@@ -48,9 +51,9 @@ const ComplianceSettingsForm = () => {
                 complianceSettings: {
                   ...(data?.settings?.complianceSettings ?? {}),
                   // dataRetentionDuration: parseInt(value, 10)
-                  dataRetentionDuration: (value ?? '')
-                }
-              }
+                  dataRetentionDuration: value ?? "",
+                },
+              },
             });
           }}
         />

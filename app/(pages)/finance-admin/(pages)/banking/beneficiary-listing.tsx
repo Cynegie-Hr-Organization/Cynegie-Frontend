@@ -23,7 +23,6 @@ const BeneficiaryListing = () => {
     <div className="space-y-3 max-h-[460px] h-max lg:h-full">
       <p className="text-base font-semibold">Beneficiary Listing</p>
 
-
       <div className="common-card space-y-4 h-full overflow-x-auto">
         {isLoading ? (
           <div className="flex justify-center items-center h-full">
@@ -40,26 +39,30 @@ const BeneficiaryListing = () => {
                   className="w-full h-9 px-2 outline-none"
                 />
               </div>
-              <AppDropdownMenu trigger={
-                <button
-                  type="button"
-                  className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2">
-                  <LuListFilter /> Filter
-                </button>
-              }
+              <AppDropdownMenu
+                trigger={
+                  <button
+                    type="button"
+                    className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2"
+                  >
+                    <LuListFilter /> Filter
+                  </button>
+                }
                 menuItems={
                   <div className="p-4 space-y-10">
                     <div className="space-y-4">
-                      <AppSelect listItems={[
-                        { label: "High", value: "high" },
-                        { label: "Medium", value: "medium" },
-                        { label: "Low", value: "low" }
-                      ]}
+                      <AppSelect
+                        listItems={[
+                          { label: "High", value: "high" },
+                          { label: "Medium", value: "medium" },
+                          { label: "Low", value: "low" },
+                        ]}
                         label="Priority"
                         placeholder="High"
                         onChange={(value) => {
-                          console.log(value)
-                        }} />
+                          console.log(value);
+                        }}
+                      />
 
                       <AppSelect
                         listItems={[
@@ -70,64 +73,81 @@ const BeneficiaryListing = () => {
                         label="Status"
                         placeholder="Pending"
                         onChange={function (value: string): void {
-                          console.log(value)
-                        }} />
+                          console.log(value);
+                        }}
+                      />
                     </div>
 
                     <div className="flex items-center justify-between gap-4">
-                      <AppButton label="Reset" className="btn-secondary w-[90px]" />
-                      <AppButton label="Filter" className="btn-primary w-[90px]" />
+                      <AppButton
+                        label="Reset"
+                        className="btn-secondary w-[90px]"
+                      />
+                      <AppButton
+                        label="Filter"
+                        className="btn-primary w-[90px]"
+                      />
                     </div>
                   </div>
-                } />
+                }
+              />
             </div>
 
-
-            <div className='-mx-5 mt-4 overflow-x-scroll'>
-              <table className='w-full border-collapse'>
-                <thead className='bg-[#F7F9FC]'>
+            <div className="-mx-5 mt-4 overflow-x-scroll">
+              <table className="w-full border-collapse">
+                <thead className="bg-[#F7F9FC]">
                   <tr>
-                    <th className='px-5 py-3 text-left'>Name</th>
-                    <th className='px-5 py-3 text-left'>Account Number</th>
-                    <th className='px-5 py-3 text-left'>Bank Name</th>
-                    <th className='px-5 py-3 text-left'>Date Added</th>
-                    <th className='px-5 py-3 text-left'>Actions</th>
+                    <th className="px-5 py-3 text-left">Name</th>
+                    <th className="px-5 py-3 text-left">Account Number</th>
+                    <th className="px-5 py-3 text-left">Bank Name</th>
+                    <th className="px-5 py-3 text-left">Date Added</th>
+                    <th className="px-5 py-3 text-left">Actions</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {(beneficiaries && beneficiaries.length > 0) ? beneficiaries?.map((beneficiary) => {
-                    return (
-                      <tr key={beneficiary.id} className='border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]'>
-                        <td className='px-5 py-4'>{beneficiary?.accountName}</td>
-                        <td className='px-5 py-4'>{beneficiary?.accountNumber}</td>
-                        <td className='px-5 py-4'>{beneficiary?.ownedBy}</td>
-                        <td className='px-5 py-4'>{localTime(beneficiary?.dateAdded, 'Do MMM, yyyy')}</td>
-                        <td className='px-5 py-4'>
-                          <AppDropdownMenu
-                            width="w-max"
-                            trigger={
-                              <button className="border border-gray-300 rounded-lg p-2 w-max hover:ring-1 hover:ring-gray-400 outline-none">
-                                <HiDotsVertical />
-                              </button>
-                            }
-                            menuItems={
-                              <DeleteModal
-                                beneficiary={beneficiary}
-                                trigger={
-                                  <button
-                                    className="w-full p-2 text-left hover:bg-gray-50 text-red-500 text-sm">
-                                    Delete Beneficiary
-                                  </button>
-                                }
-                                handleDelete={() => { }}
-                              />
-                            }
-                          />
-                        </td>
-                      </tr>
-                    )
-                  }) : (
+                  {beneficiaries && beneficiaries.length > 0 ? (
+                    beneficiaries?.map((beneficiary) => {
+                      return (
+                        <tr
+                          key={beneficiary.id}
+                          className="border-b border-[#E4E7EC] hover:bg-gray-50 text-[#344054]"
+                        >
+                          <td className="px-5 py-4">
+                            {beneficiary?.accountName}
+                          </td>
+                          <td className="px-5 py-4">
+                            {beneficiary?.accountNumber}
+                          </td>
+                          <td className="px-5 py-4">{beneficiary?.ownedBy}</td>
+                          <td className="px-5 py-4">
+                            {localTime(beneficiary?.dateAdded, "Do MMM, yyyy")}
+                          </td>
+                          <td className="px-5 py-4">
+                            <AppDropdownMenu
+                              width="w-max"
+                              trigger={
+                                <button className="border border-gray-300 rounded-lg p-2 w-max hover:ring-1 hover:ring-gray-400 outline-none">
+                                  <HiDotsVertical />
+                                </button>
+                              }
+                              menuItems={
+                                <DeleteModal
+                                  beneficiary={beneficiary}
+                                  trigger={
+                                    <button className="w-full p-2 text-left hover:bg-gray-50 text-red-500 text-sm">
+                                      Delete Beneficiary
+                                    </button>
+                                  }
+                                  handleDelete={() => {}}
+                                />
+                              }
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })
+                  ) : (
                     <EmptyTable message="No beneficiaries found" />
                   )}
                 </tbody>
@@ -136,7 +156,6 @@ const BeneficiaryListing = () => {
           </>
         )}
       </div>
-
     </div>
   );
 };

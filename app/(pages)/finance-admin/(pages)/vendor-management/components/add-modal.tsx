@@ -1,10 +1,10 @@
-import AppButton from "@/app/_components/shared/button"
-import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu"
-import AppInputText from "@/app/_components/shared/input-text"
-import { useVendorMutations } from "@/app/_core/use-cases/finance/useVendors"
-import { AppModal } from "@/components/drawer/modal"
-import { useState } from "react"
-import { toast } from "react-toastify"
+import AppButton from "@/app/_components/shared/button";
+import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
+import AppInputText from "@/app/_components/shared/input-text";
+import { useVendorMutations } from "@/app/_core/use-cases/finance/useVendors";
+import { AppModal } from "@/components/drawer/modal";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({
   trigger,
@@ -19,21 +19,19 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({
     vendorAddress: "",
     paymentTerms: "",
     contactPerson: "",
-  })
-
+  });
 
   const handleSubmit = () => {
     return addVendor.mutate(formData, {
       onSuccess: () => {
-        setIsOpenAddVendorModal(false)
-        toast.success('Vendor created successfully');
+        setIsOpenAddVendorModal(false);
+        toast.success("Vendor created successfully");
       },
       onError: () => {
-        setIsOpenAddVendorModal(false)
-      }
-    })
-  }
-
+        setIsOpenAddVendorModal(false);
+      },
+    });
+  };
 
   return (
     <AppModal
@@ -144,13 +142,14 @@ const AddVendorModal: React.FC<{ trigger: React.ReactNode }> = ({
             label="Vendor Address"
             placeholder="Enter vendor name"
             value={formData.vendorAddress}
-            onChange={(e) => { setFormData({ ...formData, vendorAddress: e.target.value }) }}
+            onChange={(e) => {
+              setFormData({ ...formData, vendorAddress: e.target.value });
+            }}
           />
         </div>
       </form>
     </AppModal>
-  )
-}
-
+  );
+};
 
 export default AddVendorModal;

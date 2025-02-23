@@ -3,9 +3,15 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { toast } from "react-toastify";
 
-const NetworkStatusContext = createContext<{ isOffline: boolean }>({ isOffline: false });
+const NetworkStatusContext = createContext<{ isOffline: boolean }>({
+  isOffline: false,
+});
 
-export const NetworkStatusProvider = ({ children }: { children: React.ReactNode }) => {
+export const NetworkStatusProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [isOffline, setIsOffline] = useState(false);
 
   useEffect(() => {
@@ -14,7 +20,9 @@ export const NetworkStatusProvider = ({ children }: { children: React.ReactNode 
       setIsOffline(!navigator.onLine);
 
       if (!navigator.onLine) {
-        toast.error("You are currently offline. Some features may not be available.");
+        toast.error(
+          "You are currently offline. Some features may not be available.",
+        );
       }
 
       const updateOnlineStatus = () => {
@@ -22,7 +30,9 @@ export const NetworkStatusProvider = ({ children }: { children: React.ReactNode 
         setIsOffline(offline);
 
         if (offline) {
-          toast.error("You are currently offline. Some features may not be available.");
+          toast.error(
+            "You are currently offline. Some features may not be available.",
+          );
         } else {
           toast.success("Your internet connection has been restored.");
         }

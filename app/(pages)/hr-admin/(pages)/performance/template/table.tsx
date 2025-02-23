@@ -17,7 +17,7 @@ const PerformanceTemplateTable = () => {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false); // Modal state
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(
-    null
+    null,
   ); // Selected template ID
   const router = useRouter();
 

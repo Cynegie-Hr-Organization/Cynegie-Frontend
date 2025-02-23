@@ -18,8 +18,7 @@ export type TaskLayout = "kanban" | "list";
 const EmployeeTask = () => {
   const [taskLayout, setTaskLayout] = useState<TaskLayout>("kanban");
   const isVerticalLayout = taskLayout === "kanban";
-    const [searchQuery, setSearchQuery] = useState<string>("");
-
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const getActiveLayoutStyle = (index: number) => {
     const activeStyle = "bg-[blue] fill-white p-2 rounded-full";
@@ -46,7 +45,7 @@ const EmployeeTask = () => {
     if (taskDetails) {
       setOpenViewTask(true);
     }
-  }, [selectedTaskId , taskDetails]);
+  }, [selectedTaskId, taskDetails]);
 
   const handleTaskClick = (taskId: string) => {
     setSelectedTaskId(taskId);
@@ -151,4 +150,3 @@ const EmployeeTask = () => {
 };
 
 export default EmployeeTask;
-

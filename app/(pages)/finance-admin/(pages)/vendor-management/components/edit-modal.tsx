@@ -1,20 +1,22 @@
 import AppButton from "@/app/_components/shared/button";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import AppInputText from "@/app/_components/shared/input-text";
-import { useGetVendor, useVendorMutations } from "@/app/_core/use-cases/finance/useVendors";
+import {
+  useGetVendor,
+  useVendorMutations,
+} from "@/app/_core/use-cases/finance/useVendors";
 import { AppModal2 } from "@/components/drawer/modal";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-
-
 const EditVendorModal: React.FC<{
-  vendorId: string,
-  isOpen?: boolean,
-  onClose: () => void
+  vendorId: string;
+  isOpen?: boolean;
+  onClose: () => void;
 }> = ({ isOpen, onClose, vendorId }) => {
-
-  const { data: vendor, isLoading: isLoadingVendor } = useGetVendor({ id: vendorId });
+  const { data: vendor, isLoading: isLoadingVendor } = useGetVendor({
+    id: vendorId,
+  });
   const { updateVendor } = useVendorMutations({ id: vendorId });
 
   const isUpdatingVendor = updateVendor.isPending;
@@ -27,9 +29,8 @@ const EditVendorModal: React.FC<{
     contactPerson: "",
     // city: '',
     // state: '',
-    paymentTerms: '',
-  })
-
+    paymentTerms: "",
+  });
 
   useEffect(() => {
     if (vendor) {
@@ -47,20 +48,25 @@ const EditVendorModal: React.FC<{
   }, [vendor]);
 
   const handleSubmit = () => {
-    updateVendor.mutate({ id: vendorId, body: formData }, {
-      onSuccess: () => {
-        onClose();
-        toast.success('Vendor details edited successfully');
+    updateVendor.mutate(
+      { id: vendorId, body: formData },
+      {
+        onSuccess: () => {
+          onClose();
+          toast.success("Vendor details edited successfully");
+        },
+        onError: (error) => console.log(error),
       },
-      onError: (error) => console.log(error)
-    })
-  }
+    );
+  };
 
   return (
     <AppModal2
       open={isOpen}
       onClose={() => onClose?.()}
-      header={<span className="font-roboto text-xl font-bold">Edit Vendor</span>}
+      header={
+        <span className="font-roboto text-xl font-bold">Edit Vendor</span>
+      }
       footer={
         <div className="flex items-center justify-center gap-4">
           <AppButton
@@ -176,7 +182,7 @@ const EditVendorModal: React.FC<{
         </div>
       </form>
     </AppModal2>
-  )
-}
+  );
+};
 
 export default EditVendorModal;

@@ -1,6 +1,10 @@
-import { getNewHireList, getOnboadingOverviewData, getTemplates } from "@/app/_core/actions/hr-admin/onboarding"
-import { queryKeys } from "@/app/_core/utils/queryKeys"
-import { useQuery } from "@tanstack/react-query"
+import {
+  getNewHireList,
+  getOnboadingOverviewData,
+  getTemplates,
+} from "@/app/_core/actions/hr-admin/onboarding";
+import { queryKeys } from "@/app/_core/utils/queryKeys";
+import { useQuery } from "@tanstack/react-query";
 
 export const useOnboardingData = () => {
   return useQuery({
@@ -10,9 +14,9 @@ export const useOnboardingData = () => {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     initialData: undefined,
-    retry: false
-  })
-}
+    retry: false,
+  });
+};
 
 export const useNewHireList = () => {
   return useQuery({
@@ -22,11 +26,11 @@ export const useNewHireList = () => {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     initialData: undefined,
-    retry: false
-  })
-}
+    retry: false,
+  });
+};
 
-export const useTemplates = ()=>{
+export const useTemplates = () => {
   return useQuery({
     queryKey: [queryKeys.TEMPLATES],
     queryFn: () => getTemplates(),
@@ -34,6 +38,6 @@ export const useTemplates = ()=>{
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     initialData: undefined,
-    retry: false
-  })
-}
+    retry: false,
+  });
+};

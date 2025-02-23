@@ -8,14 +8,15 @@ export const useSharedState = <T>(key: string, initialState?: T) => {
     // refetchOnWindowFocus: false,
     // refetchOnReconnect: false,
     // retry: false,
-    initialData: initialState
+    initialData: initialState,
   });
   const update = (newState: T | null | undefined) => {
     queryClient.setQueryData<T | null | undefined>([key], newState);
   };
 
-  type SetFunction<T> = (set: (prevState: T | null | undefined) => T | null | undefined) => void;
-
+  type SetFunction<T> = (
+    set: (prevState: T | null | undefined) => T | null | undefined,
+  ) => void;
 
   const set: SetFunction<T> = (updateFn) => {
     queryClient.setQueryData<T | null | undefined>([key], (prevState) => {
@@ -23,9 +24,8 @@ export const useSharedState = <T>(key: string, initialState?: T) => {
     });
   };
 
-
   const invalidate = () => {
-    queryClient.invalidateQueries({ queryKey: [key] })
+    queryClient.invalidateQueries({ queryKey: [key] });
   };
   return { data, update, invalidate, set } as const;
 };

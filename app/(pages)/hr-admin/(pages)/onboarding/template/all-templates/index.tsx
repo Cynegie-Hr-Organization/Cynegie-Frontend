@@ -8,7 +8,12 @@ import TableSkeleton from "@/app/_components/shared/skelentons/table";
 import { ITemplate } from "@/app/_core/actions/hr-admin/onboarding";
 import { useTemplates } from "@/app/_core/use-cases/hr-admin/useOnboarding";
 import useSelection from "@/app/_hooks/useSelection";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { localTime } from "@/lib/utils";
 
 import { useRouter } from "next/dist/client/components/navigation";
@@ -18,18 +23,19 @@ import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 
 const TemplateTable = () => {
-  const { selectedItems, toggleSelection, selectAll, clearSelection } = useSelection<string>()
+  const { selectedItems, toggleSelection, selectAll, clearSelection } =
+    useSelection<string>();
   const { data, isLoading } = useTemplates();
-  const { data: templates } = data ?? {}
+  const { data: templates } = data ?? {};
   const templateLength = templates?.length ?? 0;
 
   const handleSelectAll = () => {
     if (selectedItems.size === templateLength) {
-      clearSelection()
+      clearSelection();
     } else {
-      selectAll(templates?.map(template => template?.id) || [])
+      selectAll(templates?.map((template) => template?.id) || []);
     }
-  }
+  };
 
   return (
     <CardLayout
@@ -66,7 +72,7 @@ const TemplateTable = () => {
                     <AppCheckbox
                       id="templates-select-all"
                       name="templates-select-all"
-                      checked={selectedItems.size === (templateLength)}
+                      checked={selectedItems.size === templateLength}
                       onChange={handleSelectAll}
                     />
                   </th>
@@ -78,7 +84,7 @@ const TemplateTable = () => {
               </thead>
 
               <tbody>
-                {(templates && (templates?.length ?? 0) > 0) ? (
+                {templates && (templates?.length ?? 0) > 0 ? (
                   templates.map((item) => (
                     <tr
                       key={item.id}
@@ -92,13 +98,19 @@ const TemplateTable = () => {
                         />
                       </td>
                       <td className="px-4 py-3">
-                        <p className="text-sm">{item?.templateName ?? 'NIL'}</p>
+                        <p className="text-sm">{item?.templateName ?? "NIL"}</p>
                       </td>
                       <td className="px-4 py-3">
-                        <p className="text-sm">{item?.createdBy ? `${item?.createdBy?.firstName} ${item?.createdBy?.lastName}` : 'NIL'}</p>
+                        <p className="text-sm">
+                          {item?.createdBy
+                            ? `${item?.createdBy?.firstName} ${item?.createdBy?.lastName}`
+                            : "NIL"}
+                        </p>
                       </td>
                       <td className="px-4 py-3">
-                        <p className="text-sm">{item?.createdAt ? localTime(item.createdAt) : 'NIL'}</p>
+                        <p className="text-sm">
+                          {item?.createdAt ? localTime(item.createdAt) : "NIL"}
+                        </p>
                       </td>
                       <td className="px-4 py-3">
                         <PopoverMenu template={item} />
@@ -122,7 +134,7 @@ const PopoverMenu: React.FC<{ template: ITemplate }> = ({ template }) => {
     popOver: false,
     editModal: false,
     previewModal: false,
-    deleteModal: false
+    deleteModal: false,
   });
 
   const router = useRouter();
@@ -131,25 +143,32 @@ const PopoverMenu: React.FC<{ template: ITemplate }> = ({ template }) => {
     {
       slug: "edit-template",
       label: "Edit Template",
-      onSelect: () => router.push(`/hr-admin/onboarding/template/${template.id}/edit`),
+      onSelect: () =>
+        router.push(`/hr-admin/onboarding/template/${template.id}/edit`),
     },
     {
       slug: "preview-template",
       label: "Preview Template",
-      onSelect: () => router.push(`/hr-admin/onboarding/template/${template.id}`)
+      onSelect: () =>
+        router.push(`/hr-admin/onboarding/template/${template.id}`),
     },
     {
       slug: "delete-template",
       label: "Delete Template",
       onSelect: () => setModalState({ ...modalState, deleteModal: true }),
-      className: "hover:!bg-red-50 text-red-700 hover:!text-red-700 rounded-lg"
-    }
-  ]
+      className: "hover:!bg-red-50 text-red-700 hover:!text-red-700 rounded-lg",
+    },
+  ];
   return (
     <>
-      <DropdownMenu open={modalState.popOver} onOpenChange={() => setModalState({ ...modalState, popOver: !modalState.popOver })}>
+      <DropdownMenu
+        open={modalState.popOver}
+        onOpenChange={() =>
+          setModalState({ ...modalState, popOver: !modalState.popOver })
+        }
+      >
         <DropdownMenuTrigger asChild>
-          <button className='cursor-pointer outline-none p-2 border border-gray-300 rounded-lg w-max'>
+          <button className="cursor-pointer outline-none p-2 border border-gray-300 rounded-lg w-max">
             <HiDotsVertical />
           </button>
         </DropdownMenuTrigger>
@@ -158,8 +177,9 @@ const PopoverMenu: React.FC<{ template: ITemplate }> = ({ template }) => {
           {menuActions.map((action) => (
             <DropdownMenuItem
               key={action.slug}
-              className={`cursor-pointer ${action.className ?? ''}`}
-              onSelect={action.onSelect}>
+              className={`cursor-pointer ${action.className ?? ""}`}
+              onSelect={action.onSelect}
+            >
               <span>{action.label}</span>
             </DropdownMenuItem>
           ))}

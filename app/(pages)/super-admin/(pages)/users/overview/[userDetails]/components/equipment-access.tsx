@@ -1,16 +1,19 @@
 import { AccessRights } from "@/app/_core/actions/user/employee";
 import DetailBlock from "./details-block";
 
-
-
-export const EquipmentAccessInformation = ({ userData }: { userData?: AccessRights[] }) => {
+export const EquipmentAccessInformation = ({
+  userData,
+}: {
+  userData?: AccessRights[];
+}) => {
   // const { } = userData ?? {}
-
 
   return (
     <div className="space-y-11">
       <div className="space-y-5">
-        <h3 className="text-base font-semibold text-primary">Employee Equipment</h3>
+        <h3 className="text-base font-semibold text-primary">
+          Employee Equipment
+        </h3>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {/* {userData?.map((item) => (
@@ -22,18 +25,23 @@ export const EquipmentAccessInformation = ({ userData }: { userData?: AccessRigh
         </div>
       </div>
 
-
       <div className="space-y-5">
-        <h3 className="text-base font-semibold text-primary">Employee Access</h3>
+        <h3 className="text-base font-semibold text-primary">
+          Employee Access
+        </h3>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {userData?.map((item) => (
+          {userData?.map((item) =>
             item.permissions.map((permission) => (
-              <DetailBlock key={permission?.id} label="Tool" value={permission.tool ?? 'NIL'} />
-            ))
-          ))}
+              <DetailBlock
+                key={permission?.id}
+                label="Tool"
+                value={permission.tool ?? "NIL"}
+              />
+            )),
+          )}
         </div>
       </div>
     </div>
   );
-}
+};

@@ -100,7 +100,9 @@ const FinanceAdminDashboard = () => {
 
       <div className="common-card space-y-5">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-y-2 md:gap-y-0">
-          <h3 className="font-semibold text-lg font-roboto">Overall Budget Utilization </h3>
+          <h3 className="font-semibold text-lg font-roboto">
+            Overall Budget Utilization{" "}
+          </h3>
           <ChartDropdownFilters />
         </div>
 

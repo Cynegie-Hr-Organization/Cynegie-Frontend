@@ -88,7 +88,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
               label: department.departmentName,
               value: department.id,
             }))
-          : []
+          : [],
       );
     } else {
       setAttendanceRecords(undefined);
@@ -149,7 +149,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
               overtimeHours:
                 record.overtime !== null ? formatHours(record.overtime) : "N/A",
             }))
-          : []
+          : [],
       );
     } else {
       setAttendanceRecords(undefined);
@@ -196,7 +196,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
               daysOnLeave: record.numberOfDays.toString(),
               backupEmployee: "N/A",
             }))
-          : []
+          : [],
       );
     } else {
       setLeaveRecords(undefined);
@@ -351,7 +351,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
                     onDataReturned: (id) => {
                       if (typeof id === "string") {
                         setSelectedAttendanceRecord(
-                          attendanceRecords?.find((record) => record.id === id)
+                          attendanceRecords?.find((record) => record.id === id),
                         );
                       }
                     },
@@ -362,7 +362,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
                     onDataReturned: (id) => {
                       if (typeof id === "string") {
                         setSelectedAttendanceRecord(
-                          attendanceRecords?.find((record) => record.id === id)
+                          attendanceRecords?.find((record) => record.id === id),
                         );
                       }
                     },
@@ -485,16 +485,16 @@ const HrAdminEmployeeAttendanceManagement = () => {
                 type: mutationLoading
                   ? ButtonType.disabledLoading
                   : adjustAttendanceIsValid
-                  ? ButtonType.contained
-                  : ButtonType.disabled,
+                    ? ButtonType.contained
+                    : ButtonType.disabled,
                 text: mutationLoading ? "" : "Save Changes",
                 onClick: () =>
                   adjustAttendanceMutation.mutateAsync({
                     clockIn: dayjs(
-                      adjustAttendanceGetValues("Check - in Time")
+                      adjustAttendanceGetValues("Check - in Time"),
                     ).toISOString(),
                     clockOut: dayjs(
-                      adjustAttendanceGetValues("Check - out Time")
+                      adjustAttendanceGetValues("Check - out Time"),
                     ).toISOString(),
                   }),
               },
@@ -575,13 +575,13 @@ const HrAdminEmployeeAttendanceManagement = () => {
                     setDepartment(
                       getValues("Department").map(
                         (department: { label: string; value: string }) =>
-                          department.label
-                      )
+                          department.label,
+                      ),
                     );
                   }
                   router.push(
                     route.hrAdmin.employeeManagement.attendanceManagement
-                      .bulkReport
+                      .bulkReport,
                   );
                 },
               },
@@ -657,18 +657,20 @@ const HrAdminEmployeeAttendanceManagement = () => {
                   setEmployeeName(selectedAttendanceRecord?.employeeName ?? "");
                   setStartDate(
                     dayjs(
-                      employeeAttendanceGetValues("Start Date")
-                    ).toISOString()
+                      employeeAttendanceGetValues("Start Date"),
+                    ).toISOString(),
                   );
                   setEndDate(
-                    dayjs(employeeAttendanceGetValues("End Date")).toISOString()
+                    dayjs(
+                      employeeAttendanceGetValues("End Date"),
+                    ).toISOString(),
                   );
                   setAttendanceStatus(
-                    employeeAttendanceGetValues("Attendance Status")
+                    employeeAttendanceGetValues("Attendance Status"),
                   );
                   router.push(
                     route.hrAdmin.employeeManagement.attendanceManagement
-                      .individualReport
+                      .individualReport,
                   );
                 },
               },

@@ -177,8 +177,6 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-
-
 @layer base {
   * {
     @apply border-border;

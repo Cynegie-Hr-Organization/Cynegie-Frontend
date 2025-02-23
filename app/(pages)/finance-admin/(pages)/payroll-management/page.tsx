@@ -10,7 +10,7 @@ import PayrollManagementTable from "./table";
 
 const PayrollManagement = () => {
   const { data, isLoading } = usePayrollCount();
-  const { pending, processed, rejected } = data ?? {}
+  const { pending, processed, rejected } = data ?? {};
 
   const pageCards = [
     {
@@ -24,21 +24,21 @@ const PayrollManagement = () => {
       color: "#FFF5E6",
       textColor: "#FFAD33",
       title: "Pending Payrolls",
-      description: `${pending ?? '...'}`,
+      description: `${pending ?? "..."}`,
     },
     {
       icon: <TiMediaStop />,
       color: "#E7F6EC",
       textColor: "#0F973D",
       title: "Completed Payrolls",
-      description: `${processed ?? '...'}`,
+      description: `${processed ?? "..."}`,
     },
     {
       icon: <TiMediaStop />,
       color: "#FBEAE9",
       textColor: "#D42620",
       title: "Rejected Payrolls",
-      description: `${rejected ?? '...'}`,
+      description: `${rejected ?? "..."}`,
     },
   ];
 
@@ -55,24 +55,31 @@ const PayrollManagement = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {isLoading ? (
             <CardSkeleton numberOfCards={pageCards.length} />
-          ) : pageCards.map((card, index) => (
-            <div className="common-card space-y-5" key={index}>
-              <div className="flex items-center gap-2">
-                {card.icon && (
-                  <div
-                    className="rounded-full p-2"
-                    style={{ backgroundColor: card.color, color: card.textColor }}
-                  >
-                    {card.icon}
-                  </div>
-                )}
-                <h3 className="font-roboto lg:text-xs text-sm text-[#848897] font-medium">
-                  {card.title}
-                </h3>
+          ) : (
+            pageCards.map((card, index) => (
+              <div className="common-card space-y-5" key={index}>
+                <div className="flex items-center gap-2">
+                  {card.icon && (
+                    <div
+                      className="rounded-full p-2"
+                      style={{
+                        backgroundColor: card.color,
+                        color: card.textColor,
+                      }}
+                    >
+                      {card.icon}
+                    </div>
+                  )}
+                  <h3 className="font-roboto lg:text-xs text-sm text-[#848897] font-medium">
+                    {card.title}
+                  </h3>
+                </div>
+                <p className="font-roboto text-xl font-bold">
+                  {card.description}
+                </p>
               </div>
-              <p className="font-roboto text-xl font-bold">{card.description}</p>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
         <div className="space-y-4">

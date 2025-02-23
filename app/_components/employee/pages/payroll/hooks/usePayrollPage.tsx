@@ -83,7 +83,7 @@ const usePayrollPage = () => {
     },
     {
       labelText: "Time in Company",
-      value: `${payrollData?.data[0]?.timeInCompany} months ` ,
+      value: `${payrollData?.data[0]?.timeInCompany} months `,
     },
   ];
 

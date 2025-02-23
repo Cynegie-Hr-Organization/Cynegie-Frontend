@@ -8,9 +8,9 @@ interface FormState {
 
 const useFormStore = create<FormState>((set) => ({
   data: undefined,
-  setData: (newDate: Partial<ISuperAdminSettings>) => set((state) => ({ data: { ...state, ...newDate} }))
+  setData: (newDate: Partial<ISuperAdminSettings>) =>
+    set((state) => ({ data: { ...state, ...newDate } })),
   // flatten: () => set((state) => ({ data: removeNull}))
-})
-);
+}));
 
 export default useFormStore;

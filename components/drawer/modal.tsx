@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useMediaQuery } from "@/app/_hooks/use-media-query";
 // import { Button } from "@/components/ui/button"
 import {
@@ -21,12 +20,6 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { ReactNode } from "react";
-
-
-
-
-
-
 
 export function AppModal({
   children,
@@ -84,9 +77,6 @@ export function AppModal({
   );
 }
 
-
-
-
 export function AppModal2({
   children,
   trigger,
@@ -95,27 +85,23 @@ export function AppModal2({
   footer,
   open,
   setOpen,
-  onClose
+  onClose,
 }: {
-  children?: ReactNode
-  trigger?: ReactNode
-  header: ReactNode
-  description?: ReactNode
-  footer?: ReactNode
-  open?: boolean
-  setOpen?: (open: boolean) => void
-  onClose?: () => void
+  children?: ReactNode;
+  trigger?: ReactNode;
+  header: ReactNode;
+  description?: ReactNode;
+  footer?: ReactNode;
+  open?: boolean;
+  setOpen?: (open: boolean) => void;
+  onClose?: () => void;
 }) {
-  const isDesktop = useMediaQuery("(min-width: 768px)")
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={() => onClose?.()}>
-        {trigger && (
-          <DrawerTrigger asChild>
-            {trigger}
-          </DrawerTrigger>
-        )}
+        {trigger && <DrawerTrigger asChild>{trigger}</DrawerTrigger>}
         <DialogContent className="sm:max-w-[600px] bg-white max-h-[600px] px-4 overflow-y-scroll">
           {/* <DialogClose
             onClick={() => onClose?.()}
@@ -141,13 +127,8 @@ export function AppModal2({
   }
 
   return (
-    <Drawer
-      open={open}
-      onOpenChange={setOpen}
-    >
-      <DrawerTrigger asChild>
-        {trigger}
-      </DrawerTrigger>
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent className="bg-white max-h-max px-4">
         <DrawerHeader className="text-left">
           <DrawerTitle className="text-base">{header}</DrawerTitle>
