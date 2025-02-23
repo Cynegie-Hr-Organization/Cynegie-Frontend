@@ -4,17 +4,17 @@ export const transformToArray = (
   keyMatch2: string,
   finalKey1: string,
   finalKey2: string,
-  toNumber?: boolean
+  toNumber?: boolean,
 ) => {
   const allKeys = Object.keys(object);
   const allValues = Object.values(object);
 
   const keySet1 = Object.keys(object).filter(
-    (key) => key.match(keyMatch1) && key
+    (key) => key.match(keyMatch1) && key,
   );
 
   const keySet2 = Object.keys(object).filter(
-    (key) => key.match(keyMatch2) && key
+    (key) => key.match(keyMatch2) && key,
   );
 
   const indexSet1 = keySet1.map((key) => allKeys.indexOf(key));

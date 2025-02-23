@@ -9,21 +9,28 @@ import { LuPlus } from "react-icons/lu";
 import BudgetsTable from "./table";
 
 const BudgetsPage = () => {
-  const { data: budgetSummary, isLoading } = useBudgetSummary()
-  const { remainingBudget, totalAllocated, totalSpent } = budgetSummary ?? {}
+  const { data: budgetSummary, isLoading } = useBudgetSummary();
+  const { remainingBudget, totalAllocated, totalSpent } = budgetSummary ?? {};
 
   const pageCards = [
     {
       title: "Total Budget Allocated ",
-      description: (totalAllocated || totalAllocated === 0) ? getLocalCurrency(totalAllocated) : '...',
+      description:
+        totalAllocated || totalAllocated === 0
+          ? getLocalCurrency(totalAllocated)
+          : "...",
     },
     {
       title: "Total Budget Spent",
-      description: (totalSpent || totalSpent === 0) ? getLocalCurrency(totalSpent) : '...',
+      description:
+        totalSpent || totalSpent === 0 ? getLocalCurrency(totalSpent) : "...",
     },
     {
       title: "Remaining Funds",
-      description: (remainingBudget || remainingBudget === 0) ? getLocalCurrency(remainingBudget) : '...',
+      description:
+        remainingBudget || remainingBudget === 0
+          ? getLocalCurrency(remainingBudget)
+          : "...",
     },
   ];
 
@@ -65,7 +72,9 @@ const BudgetsPage = () => {
                   {card.title}
                 </h3>
               </div>
-              <p className="font-roboto text-xl font-bold">{card.description}</p>
+              <p className="font-roboto text-xl font-bold">
+                {card.description}
+              </p>
             </div>
           ))
         )}

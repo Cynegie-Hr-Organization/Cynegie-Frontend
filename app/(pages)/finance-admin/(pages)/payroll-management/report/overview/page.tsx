@@ -17,10 +17,6 @@ import { BarChartComponent } from "./bar-chart";
 import { AppPieChart } from "./piechart";
 import PayrollReportOverviewTable from "./table";
 
-
-
-
-
 const PayrollReportOverview = () => {
   const [chartType, setChartType] = useState("bar");
 
@@ -238,42 +234,58 @@ const DownloadModal = ({ trigger }: { trigger: React.ReactNode }) => {
     excel: false,
   });
 
-    return (
-        <AppModal
-            trigger={trigger}
-            header={<DialogTitle className="text-lg font-bold text-center">Download Report</DialogTitle>}
-            footer={
-                <div className="flex flex-col md:flex-row items-center justify-center gap-2">
-                    <AppButton label="Cancel" className="bg-white border-2 border-gray-400 text-gray-500 md:w-[150px] w-full" />
-                    <AppButton label="Download" className="bg-primary text-white md:w-[150px] w-full border border-primary" leftIcon={<LuDownload />} />
-                </div>
-            }
-        >
-            <div className="space-y-4">
-                <p className="text-sm text-gray-500 text-center">Select the format you would like to download your report</p>
-                <div className="flex items-center justify-center gap-10">
-                    <AppCheckbox
-                        id="pdf"
-                        checked={filterType.pdf}
-                        label={"PDF"}
-                        name="format"
-                        className=""
-                        onChange={(e) => { setFileType({ ...filterType, pdf: Boolean(e.target.checked) }) }}
-                    />
-                    <AppCheckbox
-                        id="excel"
-                        checked={filterType.excel}
-                        label={"Excel"}
-                        name="format"
-                        className=""
-                        onChange={(e) => { setFileType({ ...filterType, excel: Boolean(e.target.checked) }) }}
-                    />
-                </div>
-            </div>
-        </AppModal>
-    )
-}
-
+  return (
+    <AppModal
+      trigger={trigger}
+      header={
+        <DialogTitle className="text-lg font-bold text-center">
+          Download Report
+        </DialogTitle>
+      }
+      footer={
+        <div className="flex flex-col md:flex-row items-center justify-center gap-2">
+          <AppButton
+            label="Cancel"
+            className="bg-white border-2 border-gray-400 text-gray-500 md:w-[150px] w-full"
+          />
+          <AppButton
+            label="Download"
+            className="bg-primary text-white md:w-[150px] w-full border border-primary"
+            leftIcon={<LuDownload />}
+          />
+        </div>
+      }
+    >
+      <div className="space-y-4">
+        <p className="text-sm text-gray-500 text-center">
+          Select the format you would like to download your report
+        </p>
+        <div className="flex items-center justify-center gap-10">
+          <AppCheckbox
+            id="pdf"
+            checked={filterType.pdf}
+            label={"PDF"}
+            name="format"
+            className=""
+            onChange={(e) => {
+              setFileType({ ...filterType, pdf: Boolean(e.target.checked) });
+            }}
+          />
+          <AppCheckbox
+            id="excel"
+            checked={filterType.excel}
+            label={"Excel"}
+            name="format"
+            className=""
+            onChange={(e) => {
+              setFileType({ ...filterType, excel: Boolean(e.target.checked) });
+            }}
+          />
+        </div>
+      </div>
+    </AppModal>
+  );
+};
 
 const ChartDataLabel = ({
   title,

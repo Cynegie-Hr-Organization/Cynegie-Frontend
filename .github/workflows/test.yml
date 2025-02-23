@@ -2,9 +2,9 @@ name: Next.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20 
+          node-version: 20
           cache: "yarn"
 
       # Install dependencies
@@ -29,8 +29,6 @@ jobs:
       # Build the Next.js app
       - name: Build Next.js app
         run: yarn run build
-        
+
       - name: Run linting
         run: yarn run lint
-
-

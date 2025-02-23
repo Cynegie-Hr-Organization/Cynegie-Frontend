@@ -40,8 +40,9 @@ const useSalaryAdvancePage = () => {
   >("");
   const [statusFilter, setStatusFilter] = useState<InputFieldValue>();
 
-  const [fetchParams, setFetchParams] =
-    useState<FetchParams & { status?: InputFieldValue }>(INIT_FETCH_PARAMS);
+  const [fetchParams, setFetchParams] = useState<
+    FetchParams & { status?: InputFieldValue }
+  >(INIT_FETCH_PARAMS);
 
   // Debounced search
   const debouncedSearch = debounce((value: string) => {
@@ -164,16 +165,16 @@ const useSalaryAdvancePage = () => {
           nextPaymentDate: <Skeleton />,
         })
       : Array.isArray(data?.data)
-      ? data.data.map((item: any) => ({
-          id: item._id,
-          advanceTaken: `₦${item.advanceTaken.toLocaleString()}`,
-          status: `${item.status}`,
-          amountRepaid: `₦${item.amountRepaid.toLocaleString()}`,
-          nextPaymentDate: new Date(
-            item.nextPaymentDate,
-          ).toLocaleDateString(),
-        }))
-      : [],
+        ? data.data.map((item: any) => ({
+            id: item._id,
+            advanceTaken: `₦${item.advanceTaken.toLocaleString()}`,
+            status: `${item.status}`,
+            amountRepaid: `₦${item.amountRepaid.toLocaleString()}`,
+            nextPaymentDate: new Date(
+              item.nextPaymentDate,
+            ).toLocaleDateString(),
+          }))
+        : [],
     fieldTypes: [
       FieldType.text,
       FieldType.status,

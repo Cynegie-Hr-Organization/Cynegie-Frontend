@@ -2,7 +2,11 @@
 
 import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Avatar } from "@mui/material";
 import { ReactNode, useState } from "react";
 import { BsPerson } from "react-icons/bs";
@@ -91,7 +95,7 @@ function AddDocumentModal({ children }: { children: ReactNode }) {
 
   const handleFileRemove = (fileToRemove: File) => {
     setSelectedFiles((prevFiles) =>
-      prevFiles.filter((file) => file !== fileToRemove)
+      prevFiles.filter((file) => file !== fileToRemove),
     );
   };
 
@@ -220,7 +224,7 @@ export function EditDocumentModal({ triggers }: { triggers: ReactNode }) {
 
   const handleFileRemove = (fileToRemove: File) => {
     setSelectedFiles((prevFiles) =>
-      prevFiles.filter((file) => file !== fileToRemove)
+      prevFiles.filter((file) => file !== fileToRemove),
     );
   };
   return (
@@ -298,9 +302,7 @@ export function EditDocumentModal({ triggers }: { triggers: ReactNode }) {
               }
             >
               {selectedFiles.length === 0 ? (
-                <p className='text-sm text-gray-500'>
-                  click to upload
-                </p>
+                <p className="text-sm text-gray-500">click to upload</p>
               ) : (
                 <p className="text-sm text-primary mt-2">+ Add more files</p>
               )}

@@ -335,18 +335,18 @@ const BankCards = () => {
   const cards = [
     <BankingCard key="card1" className="absolute top-0 left-0 w-full" />,
     <BankingCard key="card2" className="absolute top-0 left-0 w-full" />,
-    <BankingCard key="card3" className="absolute top-0 left-0 w-full" />
+    <BankingCard key="card3" className="absolute top-0 left-0 w-full" />,
   ];
 
   const handlePrevCard = () => {
     setCurrentCardIndex((prevIndex) =>
-      prevIndex > 0 ? prevIndex - 1 : prevIndex
+      prevIndex > 0 ? prevIndex - 1 : prevIndex,
     );
   };
 
   const handleNextCard = () => {
     setCurrentCardIndex((prevIndex) =>
-      prevIndex < cards.length - 1 ? prevIndex + 1 : prevIndex
+      prevIndex < cards.length - 1 ? prevIndex + 1 : prevIndex,
     );
   };
 
@@ -357,7 +357,7 @@ const BankCards = () => {
           onClick={handlePrevCard}
           disabled={currentCardIndex === 0}
           className={`rounded-full bg-white/30 text-white p-2 hover:bg-white/50 transition-all 
-						${currentCardIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+						${currentCardIndex === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           <IoIosArrowBack size={20} />
         </button>
@@ -365,7 +365,7 @@ const BankCards = () => {
           onClick={handleNextCard}
           disabled={currentCardIndex === cards.length - 1}
           className={`rounded-full bg-white/30 text-white p-2 hover:bg-white/50 transition-all 
-						${currentCardIndex === cards.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+						${currentCardIndex === cards.length - 1 ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           <IoIosArrowForward size={20} />
         </button>
@@ -376,14 +376,17 @@ const BankCards = () => {
           <div
             key={index}
             className="absolute top-0 left-0 w-full h-full transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(${(index - currentCardIndex) * 105}%)` }}>
+            style={{
+              transform: `translateX(${(index - currentCardIndex) * 105}%)`,
+            }}
+          >
             {card}
           </div>
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
 const BankingCard = ({ className, ...props }: { className?: string }) => {
   const [isHidden, setIsHidden] = useState(false);
@@ -467,11 +470,12 @@ const PageHeader = ({
   );
 };
 
-const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => {
-  const [isOpenModal, setIsOpenModal] = useState(false)
+const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({
+  trigger,
+}) => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const { createBankAccount } = useBankingMutations();
   const isMutating = useIsMutating();
-
 
   const [formData, setFormData] = useState({
     accountName: "",
@@ -480,8 +484,8 @@ const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger })
     companyEmail: "",
     companyRegistrationNumber: "",
     companyAddress: "",
-    secondaryContact: '',
-    transactionPin: '',
+    secondaryContact: "",
+    transactionPin: "",
     // companyName: "Food Network",
     // companyPhoneNumber: "0022142345",
   });
@@ -489,15 +493,13 @@ const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger })
   const handleSubmit = () => {
     createBankAccount.mutate(formData, {
       onSuccess: () => {
-        setIsOpenModal(false)
+        setIsOpenModal(false);
       },
       onError: (error) => {
-        console.log(error)
-      }
+        console.log(error);
+      },
     });
   };
-
-
 
   return (
     <AppModal
@@ -507,7 +509,9 @@ const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger })
       header={
         <span className="flex flex-col gap-y-1">
           <span className="font-roboto text-xl font-bold">New Account</span>
-          <span className="font-roboto text-sm font-normal text-gray-500">Add details</span>
+          <span className="font-roboto text-sm font-normal text-gray-500">
+            Add details
+          </span>
         </span>
       }
       footer={
@@ -518,16 +522,19 @@ const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger })
             disabled={isMutating > 0}
             isLoading={isMutating > 0}
             className="btn-primary w-[296px]"
-            onClick={handleSubmit} />
+            onClick={handleSubmit}
+          />
         </div>
-      }>
-
+      }
+    >
       <form>
         <div className="space-y-6">
           <AppInputText
             label="Account Name"
             placeholder="Enter account name"
-            onChange={(e) => { setFormData({ ...formData, accountName: e.target.value }) }}
+            onChange={(e) => {
+              setFormData({ ...formData, accountName: e.target.value });
+            }}
             value={formData.accountName}
             id={"account-name"}
             requiredField
@@ -537,14 +544,14 @@ const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger })
             label="Currency"
             placeholder={"Enter currency"}
             value={formData.currency}
-            onChange={(value) => { setFormData({ ...formData, currency: value }) }}
+            onChange={(value) => {
+              setFormData({ ...formData, currency: value });
+            }}
             requiredField
-            listItems={
-              [
-                { label: "NGN", value: "ngn" },
-                { label: "AUS", value: "aus" }
-              ]
-            }
+            listItems={[
+              { label: "NGN", value: "ngn" },
+              { label: "AUS", value: "aus" },
+            ]}
           />
           {/* <AppInputText
 						label="Company Name"
@@ -589,7 +596,12 @@ const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger })
           <AppInputText
             label="Company Registration Number"
             placeholder="Enter company registration number"
-            onChange={(e) => { setFormData({ ...formData, companyRegistrationNumber: e.target.value }) }}
+            onChange={(e) => {
+              setFormData({
+                ...formData,
+                companyRegistrationNumber: e.target.value,
+              });
+            }}
             value={formData.companyRegistrationNumber}
             id={"company-registration-number"}
             requiredField
@@ -598,7 +610,9 @@ const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger })
           <AppInputText
             label="Company Address"
             placeholder="Enter company address"
-            onChange={(e) => { setFormData({ ...formData, companyAddress: e.target.value }) }}
+            onChange={(e) => {
+              setFormData({ ...formData, companyAddress: e.target.value });
+            }}
             value={formData.companyAddress}
             id={"company-address"}
             requiredField
@@ -607,7 +621,9 @@ const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger })
           <AppInputText
             label="Secondary Contact"
             placeholder="Enter secondary contact"
-            onChange={(e) => { setFormData({ ...formData, secondaryContact: e.target.value }) }}
+            onChange={(e) => {
+              setFormData({ ...formData, secondaryContact: e.target.value });
+            }}
             value={formData.secondaryContact}
             id={"secondary-contact"}
             type={"text"}
@@ -615,7 +631,9 @@ const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger })
           <AppInputText
             label="Transaction Pin"
             placeholder="Enter transaction pin"
-            onChange={(e) => { setFormData({ ...formData, transactionPin: e.target.value }) }}
+            onChange={(e) => {
+              setFormData({ ...formData, transactionPin: e.target.value });
+            }}
             value={formData.transactionPin}
             id={"transaction-pin"}
             requiredField
@@ -624,7 +642,7 @@ const CreateAccountModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger })
         </div>
       </form>
     </AppModal>
-  )
-}
+  );
+};
 
 export default BankingPage;

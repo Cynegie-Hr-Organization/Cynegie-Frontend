@@ -4,15 +4,15 @@ import Header from "@/app/_components/shared/section-with-cards/header";
 import { useEffect, useState } from "react";
 import { getTotalHoursWorked } from "@/app/api/services/employee/attendance";
 
-
-
 const TotalHoursWorked = () => {
-  const [chartData, setChartData] = useState<Record<string, string | number>[]>([]);
+  const [chartData, setChartData] = useState<Record<string, string | number>[]>(
+    [],
+  );
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await getTotalHoursWorked();
-      const dates = Object.keys(data).sort(); 
+      const dates = Object.keys(data).sort();
       const formattedData = dates.map((date, index) => ({
         item: `Day ${index + 1}`,
         value: data[date],

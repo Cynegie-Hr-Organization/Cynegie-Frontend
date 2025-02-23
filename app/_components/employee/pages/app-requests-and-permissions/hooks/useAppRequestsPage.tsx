@@ -37,8 +37,9 @@ const useAppRequestsPage = () => {
   const [detailsData, setDetailsData] = useState<any | null>(null);
   const [statusFilter, setStatusFilter] = useState<InputFieldValue>();
 
-  const [fetchParams, setFetchParams] =
-    useState<FetchParams & { status?: InputFieldValue }>(INIT_FETCH_PARAMS);
+  const [fetchParams, setFetchParams] = useState<
+    FetchParams & { status?: InputFieldValue }
+  >(INIT_FETCH_PARAMS);
 
   // Debounced search
   const debouncedSearch = debounce((value: string) => {

@@ -18,17 +18,9 @@ import {
 import { LuListFilter } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 
-
-
-
-
-
-
-
-
 const CandidatesSection = () => {
-  const { data, isLoading } = useCandidates()
-  const { data: candidates } = data?.data ?? {}
+  const { data, isLoading } = useCandidates();
+  const { data: candidates } = data?.data ?? {};
 
   // console.log('************* - candidates', data)
 
@@ -39,7 +31,7 @@ const CandidatesSection = () => {
       <Stack gap={2} className="common-card">
         {isLoading ? (
           <TableSkeleton />
-        ) : ((
+        ) : (
           <>
             <Stack
               sx={{
@@ -86,7 +78,7 @@ const CandidatesSection = () => {
                         ]}
                         label="Status"
                         placeholder="Pending"
-                        onChange={() => { }}
+                        onChange={() => {}}
                       />
                     </div>
                   </div>
@@ -111,22 +103,33 @@ const CandidatesSection = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {(candidates && (candidates?.length ?? 0) > 0) ? (
+                  {candidates && (candidates?.length ?? 0) > 0 ? (
                     candidates?.map((candidate) => (
                       <TableRow key={candidate?.id}>
                         {candidates?.map((field, columnIndex) =>
                           columnIndex == 0 ? (
                             <TableCell key={field.id}>
-                              <Stack direction="row" alignItems="center" gap={2}>
-                                <Box>{field.firstName} {field.lastName}</Box>
+                              <Stack
+                                direction="row"
+                                alignItems="center"
+                                gap={2}
+                              >
+                                <Box>
+                                  {field.firstName} {field.lastName}
+                                </Box>
                               </Stack>
                             </TableCell>
                           ) : columnIndex == 5 ? (
                             <TableCell key={columnIndex}>
-                              <StatusPill variant="success" text={field.status} />
+                              <StatusPill
+                                variant="success"
+                                text={field.status}
+                              />
                             </TableCell>
                           ) : (
-                            <TableCell key={columnIndex}>{field.status}</TableCell>
+                            <TableCell key={columnIndex}>
+                              {field.status}
+                            </TableCell>
                           ),
                         )}
                       </TableRow>
@@ -140,9 +143,9 @@ const CandidatesSection = () => {
               </Table>
             </TableContainer>
           </>
-        ))}
-      </Stack >
-    </Stack >
+        )}
+      </Stack>
+    </Stack>
   );
 };
 

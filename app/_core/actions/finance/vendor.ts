@@ -2,20 +2,19 @@ import { handleError, Http } from "@/app/_core/utils/axios";
 import { headers } from "@/app/_core/utils/session";
 import { getSession } from "next-auth/react";
 
-
-
-
-export const getVendors = async (query?: {
-  page: number;
-  limit: number;
-  search: string | undefined;
-  sortOrder: string;
-  status: IVendorStatus;
-}, endpoint: string = 'vendors/all-vendor') => {
-
-  const sortOrder = query?.sortOrder ?? 'desc';
-  const page = query?.page ?? '1';
-  const limit = query?.limit ?? '5';
+export const getVendors = async (
+  query?: {
+    page: number;
+    limit: number;
+    search: string | undefined;
+    sortOrder: string;
+    status: IVendorStatus;
+  },
+  endpoint: string = "vendors/all-vendor",
+) => {
+  const sortOrder = query?.sortOrder ?? "desc";
+  const page = query?.page ?? "1";
+  const limit = query?.limit ?? "5";
   const search = query?.search;
   const status = query?.status;
 
@@ -27,11 +26,10 @@ export const getVendors = async (query?: {
   if (status) queryStr += `&status=${status}`;
   if (search) queryStr += `&search=${search}`;
 
-
   try {
     const session = await getSession();
     const { data } = await Http.get<IVendorRes>(endpoint + queryStr, {
-      headers: await headers(session?.token ?? ''),
+      headers: await headers(session?.token ?? ""),
     });
 
     return data;
@@ -53,17 +51,9 @@ export const getVendor = async ({ id }: { id: string }) => {
   } catch (error) {
     throw handleError(error);
   }
-}
+};
 
-
-
-
-
-
-
-
-
-export type IVendorStatus = 'active' | 'inactive' | 'pending'
+export type IVendorStatus = "active" | "inactive" | "pending";
 
 export interface IVendor {
   vendorName: string;

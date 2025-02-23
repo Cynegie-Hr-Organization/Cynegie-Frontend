@@ -1,6 +1,5 @@
 "use client";
 
-
 import { ReusableSelect } from "@/app/(pages)/hr-admin/(pages)/onboarding/template/[templateId]/edit/components/ReusableSelect";
 import Appbutton, { Spinner } from "@/app/_components/shared/buttons";
 import CardLayout from "@/app/_components/shared/cards";
@@ -14,16 +13,17 @@ import { LuClock } from "react-icons/lu";
 
 type TemplateDetailsStep = "task" | "document" | "training-module";
 
-
-
 const TemplateDetailsPage = () => {
   const { data, isLoading } = useTemplates();
-  const { data: templates } = data ?? {}
+  const { data: templates } = data ?? {};
   const { templateId } = useParams();
   const router = useRouter();
 
-  const templateDetails = useMemo(() => templates?.find((template) => template.id === templateId), [templates, templateId])
-  console.log(templateDetails)
+  const templateDetails = useMemo(
+    () => templates?.find((template) => template.id === templateId),
+    [templates, templateId],
+  );
+  console.log(templateDetails);
 
   const MOCK_TEMPLATE = {
     name: "New Employee Onboarding Template",
@@ -110,7 +110,9 @@ const TemplateDetailsPage = () => {
         <Appbutton
           buttonText="Edit Template details"
           className="bg-primary hidden md:block"
-          onClick={() => router.push(`/hr-admin/onboarding/template/${templateId}/edit`)}
+          onClick={() =>
+            router.push(`/hr-admin/onboarding/template/${templateId}/edit`)
+          }
         />
       </div>
 
@@ -122,7 +124,9 @@ const TemplateDetailsPage = () => {
         <>
           <CardLayout className="mt-6 space-y-6">
             <div className="flex flex-col">
-              <label className="text-sm font-semibold mb-1">Template Name</label>
+              <label className="text-sm font-semibold mb-1">
+                Template Name
+              </label>
               <div className="border rounded-lg p-2 bg-gray-50">
                 {MOCK_TEMPLATE.name}
               </div>
@@ -179,7 +183,8 @@ const TemplateDetailsPage = () => {
 
             <div className="mt-6">{renderActiveComponent()}</div>
           </CardLayout>
-        </>)}
+        </>
+      )}
     </div>
   );
 };

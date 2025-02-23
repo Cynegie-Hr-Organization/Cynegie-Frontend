@@ -30,7 +30,7 @@ export type AddBenefitPayload = {
 };
 
 export const getBenefits = async (
-  params: FetchParams
+  params: FetchParams,
 ): Promise<PaginatedResponse3<Benefit>> => {
   const session = await getServerSession(authOptions);
   return request("GET", `${baseUrl}/v1/benefits`, {
@@ -65,7 +65,7 @@ export const getBenefit = async (id: string): Promise<BenefitResponse> => {
 
 export const enrollToBenefit = async (
   id: string,
-  payload: { employeeIds: string[] }
+  payload: { employeeIds: string[] },
 ) => {
   const session = await getServerSession(authOptions);
   return request("POST", `${baseUrl}/v1/benefits/${id}/enroll`, {
@@ -78,7 +78,7 @@ export const enrollToBenefit = async (
 };
 
 export const getDepartments = async (
-  params: FetchParams
+  params: FetchParams,
 ): Promise<PaginatedResponse4<Department>> => {
   const session = await getServerSession(authOptions);
 

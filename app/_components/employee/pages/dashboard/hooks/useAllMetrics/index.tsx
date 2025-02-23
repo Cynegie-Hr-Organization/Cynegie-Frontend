@@ -34,7 +34,12 @@ const useRequests = () => {
   const [fetchParams] = useState<FetchParams>(INIT_FETCH_PARAMS);
 
   const fetchDeviceRequestsMutation = useMutation({
-    mutationFn: () => getAllDeviceRequest(fetchParams.sortOrder, fetchParams.page, fetchParams.limit),
+    mutationFn: () =>
+      getAllDeviceRequest(
+        fetchParams.sortOrder,
+        fetchParams.page,
+        fetchParams.limit,
+      ),
     onSuccess: (response) => {
       console.log("Device requests fetched successfully:", response);
       if (response?.requests) {

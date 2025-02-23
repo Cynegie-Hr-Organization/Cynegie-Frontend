@@ -30,15 +30,18 @@ const useMyCoursesTable = () => {
     staleTime: 30000,
   });
 
-  const completedCourses = courses?.filter(course => course.status === "COMPLETED").map(course => ({
-    name: course.courseTitle,
-    datePhrase: "Completed On",
-    date: new Date(course.updatedAt).toLocaleDateString("en-US", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    }),
-  })) || [];
+  const completedCourses =
+    courses
+      ?.filter((course) => course.status === "COMPLETED")
+      .map((course) => ({
+        name: course.courseTitle,
+        datePhrase: "Completed On",
+        date: new Date(course.updatedAt).toLocaleDateString("en-US", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }),
+      })) || [];
 
   const tableProps: TableProps = {
     title: "My Courses",
@@ -51,12 +54,12 @@ const useMyCoursesTable = () => {
           status: <Skeleton width={100} />,
         })
       : Array.isArray(courses)
-      ? courses.map((course) => ({
-          id: course.id,
-          title: course.courseTitle,
-          status: course.status,
-        }))
-      : [],
+        ? courses.map((course) => ({
+            id: course.id,
+            title: course.courseTitle,
+            status: course.status,
+          }))
+        : [],
     displayedFields: ["title", "status"],
     fieldTypes: [FieldType.text, FieldType.status],
     statusMap: CourseStatusMap,

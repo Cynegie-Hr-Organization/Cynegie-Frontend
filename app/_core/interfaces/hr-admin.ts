@@ -25,8 +25,8 @@ export interface IPriorityTaskRes {
 export interface IPriorityTask {
   id?: string;
   title?: string;
-  priority?: 'low' | 'medium' | 'high';
-  status?: 'pending' | 'in_progress' | 'completed';
+  priority?: "low" | "medium" | "high";
+  status?: "pending" | "in_progress" | "completed";
   assignedTo?: string;
   dueDate?: string;
 }
@@ -42,7 +42,7 @@ export interface ICandidateRes {
   };
 }
 
-export type ICandidateStatus = 'pending' | 'interviewed' | 'rejected' | 'hired';
+export type ICandidateStatus = "pending" | "interviewed" | "rejected" | "hired";
 
 export interface ICandidate {
   id: string;

@@ -1,6 +1,10 @@
 import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Avatar } from "@mui/material";
 import { ReactNode } from "react";
 import { BsPerson } from "react-icons/bs";

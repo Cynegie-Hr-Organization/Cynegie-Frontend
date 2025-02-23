@@ -5,7 +5,10 @@ import AppInputText, {
 } from "@/app/_components/shared/input-text";
 import { AppSelect } from "@/app/_components/shared/select";
 import { IBudgetCreate } from "@/app/_core/interfaces/budget";
-import { useBudgetMutations, useDepartment } from "@/app/_core/use-cases/finance/useBudget";
+import {
+  useBudgetMutations,
+  useDepartment,
+} from "@/app/_core/use-cases/finance/useBudget";
 import { useAppToast } from "@/app/_hooks/toast";
 import { AppModal } from "@/components/drawer/modal";
 import { useIsMutating } from "@tanstack/react-query";
@@ -23,8 +26,8 @@ const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
     allocation: "",
     description: "",
     startDate: "",
-    endDate: ""
-  })
+    endDate: "",
+  });
 
   const isFormValidated =
     formData.department &&
@@ -39,39 +42,38 @@ const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
     return departmentsData?.data ?? [];
   }, [departmentsData]);
 
-
   const departmentOptions = useMemo(() => {
     return departments?.map((department) => ({
       label: department?.departmentName,
-      value: department?.id
+      value: department?.id,
     }));
   }, [departments]);
 
   const { createBudget } = useBudgetMutations();
 
-
   const handleCreateBudget = () => {
     const budgetData = {
       ...formData,
-      allocation: formData.allocation === '' ? 0 : Number(formData.allocation)
+      allocation: formData.allocation === "" ? 0 : Number(formData.allocation),
     };
 
     createBudget.mutate(budgetData, {
       onSuccess: () => {
-        apptoast.success({ title: 'Successful', message: 'Budget created successfully' })
-        setIsOpen(false)
-      }
-    })
-  }
+        apptoast.success({
+          title: "Successful",
+          message: "Budget created successfully",
+        });
+        setIsOpen(false);
+      },
+    });
+  };
 
   return (
     <AppModal
       open={isOpen}
       setOpen={setIsOpen}
       trigger={trigger}
-      header={
-        <span className="font-roboto text-xl font-bold">New Budget</span>
-      }
+      header={<span className="font-roboto text-xl font-bold">New Budget</span>}
       footer={
         <div className="flex items-center justify-center gap-4">
           <AppButton
@@ -126,7 +128,8 @@ const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
               const inputValue = e.target.value;
               if (/^\d*$/.test(inputValue)) {
                 const truncatedValue = inputValue.slice(0, 15);
-                const parsedValue = truncatedValue === '' ? '' : parseInt(truncatedValue, 10);
+                const parsedValue =
+                  truncatedValue === "" ? "" : parseInt(truncatedValue, 10);
 
                 setFormData({
                   ...formData,
@@ -176,8 +179,7 @@ const AddBudgetModal = ({ trigger }: { trigger: React.ReactNode }) => {
         </div>
       </form>
     </AppModal>
-  )
-}
-
+  );
+};
 
 export default AddBudgetModal;

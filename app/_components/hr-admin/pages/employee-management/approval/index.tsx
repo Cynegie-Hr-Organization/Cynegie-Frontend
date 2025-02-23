@@ -76,7 +76,7 @@ const HrAdminEmployeeManagementApproval = () => {
               requestDate: dayjs(record.createdAt).format("MMM D, YYYY"),
               status: record.status,
             }))
-          : []
+          : [],
       );
     } else {
       setLeaveRequests(undefined);
@@ -201,7 +201,7 @@ const HrAdminEmployeeManagementApproval = () => {
               onClick: () => {},
               onDataReturned: (id) =>
                 router.push(
-                  `${route.hrAdmin.employeeManagement.approvalManagement.requestDetails}/${id}`
+                  `${route.hrAdmin.employeeManagement.approvalManagement.requestDetails}/${id}`,
                 ),
             },
             {
@@ -234,7 +234,7 @@ const HrAdminEmployeeManagementApproval = () => {
               onClick: () => {},
               onDataReturned: (id) =>
                 router.push(
-                  `${route.hrAdmin.employeeManagement.approvalManagement.requestDetails}/${id}`
+                  `${route.hrAdmin.employeeManagement.approvalManagement.requestDetails}/${id}`,
                 ),
             },
           ],
@@ -244,7 +244,7 @@ const HrAdminEmployeeManagementApproval = () => {
               onClick: () => {},
               onDataReturned: (id) =>
                 router.push(
-                  `${route.hrAdmin.employeeManagement.approvalManagement.requestDetails}/${id}`
+                  `${route.hrAdmin.employeeManagement.approvalManagement.requestDetails}/${id}`,
                 ),
             },
           ],
@@ -311,7 +311,7 @@ const HrAdminEmployeeManagementApproval = () => {
                 approveRejectMutation.mutateAsync(
                   `leave/${selectedRequestId}/${
                     approveClicked ? "approve" : "reject"
-                  }`
+                  }`,
                 );
               },
             },

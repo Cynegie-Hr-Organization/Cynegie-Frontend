@@ -415,8 +415,8 @@ const PreviewModal = ({ trigger }: { trigger: React.ReactNode }) => {
         })}
       </div>
     </AppModal>
-  )
-}
+  );
+};
 
 type TransactionDetail = {
   value: string;

@@ -2,11 +2,10 @@ import { getSession } from "next-auth/react";
 import { getProfile } from "@/app/api/services/employee/profile";
 
 export const getUserDetails = async () => {
-  try
-  {
-        const sessionData = await getSession();
+  try {
+    const sessionData = await getSession();
     const profileResponse = await getProfile();
-    const roles = sessionData?.user.role
+    const roles = sessionData?.user.role;
 
     if (
       profileResponse &&
@@ -14,7 +13,8 @@ export const getUserDetails = async () => {
       profileResponse.employee.personalInfo &&
       profileResponse.employee.personalInfo.firstName
     ) {
-      const fullName = `${profileResponse.employee.personalInfo.firstName || ""} ${profileResponse.employee.personalInfo.lastName || ""}`.trim();
+      const fullName =
+        `${profileResponse.employee.personalInfo.firstName || ""} ${profileResponse.employee.personalInfo.lastName || ""}`.trim();
       const email = profileResponse.employee.personalInfo.email || "Email";
       return {
         name: fullName || "User",
@@ -25,7 +25,8 @@ export const getUserDetails = async () => {
 
     // If profile data is not available, fall back to session data
     if (sessionData && sessionData.user) {
-      const fullName = `${sessionData.user.firstName || ""} ${sessionData.user.lastName || ""}`.trim();
+      const fullName =
+        `${sessionData.user.firstName || ""} ${sessionData.user.lastName || ""}`.trim();
       return {
         name: fullName || "User",
         email: sessionData.user.email || "Email",

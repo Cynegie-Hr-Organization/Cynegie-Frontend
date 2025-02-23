@@ -22,10 +22,8 @@ export default function RootLayout({
       <body className="antialiased font-sans">
         <NetworkStatusProvider>
           <ToastContainer />
-        <QueryClientProvider>{children}</QueryClientProvider>
-            </NetworkStatusProvider>
-
-        
+          <QueryClientProvider>{children}</QueryClientProvider>
+        </NetworkStatusProvider>
       </body>
     </html>
   );

@@ -182,7 +182,7 @@ const GoalTable = () => {
                               type="button"
                               onClick={() =>
                                 router.push(
-                                  `/hr-admin/performance/goals/goal-detail/${goal.id}`
+                                  `/hr-admin/performance/goals/goal-detail/${goal.id}`,
                                 )
                               }
                               className="hover:text-blue-600 cursor-pointer text-blue-500"

@@ -7,7 +7,7 @@ export type TabFormatProps = {
   customTabValue?: number;
   customHandleChange?: (
     event?: React.SyntheticEvent,
-    newValue?: number
+    newValue?: number,
   ) => void;
   hasButtons?: boolean;
 };

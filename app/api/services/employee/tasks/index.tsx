@@ -7,7 +7,6 @@ import { baseUrl } from "@/constants/config";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/options";
 
-
 export interface Task {
   taskName: string;
   status: string;
@@ -36,10 +35,9 @@ export interface GetMyTasksResponse {
   meta: Meta;
 }
 
-
 export const getMyTasks = async (
-  search : string
-) : Promise<GetMyTasksResponse> => {
+  search: string,
+): Promise<GetMyTasksResponse> => {
   const session = await getServerSession(authOptions);
 
   const response = await request("GET", `${baseUrl}/v1/task/mine`, {

@@ -32,16 +32,16 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
   const isEdit = type === "edit";
   const [currentTab, setCurrentTab] = useState(0);
   const [tabOneInitCompletion, setTabOneInitCompletion] = useState(
-    isEdit ? true : false
+    isEdit ? true : false,
   );
   const [tabTwoInitCompletion, setTabTwoInitCompletion] = useState(
-    isEdit ? true : false
+    isEdit ? true : false,
   );
   const [tabThreeInitCompletion, setTabThreeInitCompletion] = useState(
-    isEdit ? true : false
+    isEdit ? true : false,
   );
   const [tabFourInitCompletion, setTabFourInitCompletion] = useState(
-    isEdit ? true : false
+    isEdit ? true : false,
   );
 
   const [tabOneVisits, setTabOneVisits] = useState(0);
@@ -231,7 +231,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
       : [
           { name: "ID Upload", value: "" },
           { name: "Proof of Contract", value: "" },
-        ]
+        ],
   );
 
   const {
@@ -258,7 +258,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
   const availableTools = ["Behance", "Figma", "Mailchimp", "Slack"];
 
   const [employeeTools, setEmployeeTools] = useState<AddedItem[]>(
-    isEdit ? [{ name: "Tool", value: "" }] : [{ name: "Tool", value: "" }]
+    isEdit ? [{ name: "Tool", value: "" }] : [{ name: "Tool", value: "" }],
   );
 
   const {
@@ -485,7 +485,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
 
   const getFieldValue = (
     field: string,
-    value: string | FileList | number | Date
+    value: string | FileList | number | Date,
   ) => {
     switch (labelToFieldMap[field].type) {
       case "text":
@@ -508,12 +508,12 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
   const getCompensationUpdates = () => {
     const allowanceUpdated =
       Object.keys(compensationDirtyFields).filter(
-        (key) => key.match("allowancename") || (key.match("amount") && key)
+        (key) => key.match("allowancename") || (key.match("amount") && key),
       ).length > 0;
     const deductionUpdated =
       Object.keys(compensationDirtyFields).filter(
         (key) =>
-          key.match("deductionname") || (key.match("deductionamount") && key)
+          key.match("deductionname") || (key.match("deductionamount") && key),
       ).length > 0;
     const simpleKeys = Object.keys(compensationDirtyFields).filter(
       (key) =>
@@ -522,7 +522,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
           key.match("amount") ||
           key.match("deductionname") ||
           key.match("deductionamount")
-        ) && key
+        ) && key,
     );
     const updatedSimpleKeyFields = simpleKeys.map((field) => ({
       field: labelToFieldMap[field].field,
@@ -534,7 +534,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
       "amount",
       "allowanceName",
       "allowanceAmount",
-      true
+      true,
     );
     const transformedDeduction = transformToArray(
       compensationGetValues(),
@@ -542,7 +542,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
       "deductionamount",
       "deductionName",
       "deductionAmount",
-      true
+      true,
     );
     return [
       ...updatedSimpleKeyFields,
@@ -569,7 +569,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
     /*async*/ (/*doc*/ _, index) => ({
       documentName: addedDocs[index]?.name,
       documentUrl: `link_for_${addedDocs[index]?.name}`, //TODO: Get link from the backend using an upload function. For example: await upload(doc),
-    })
+    }),
   );
 
   const getDocumentsUpdates = () => {
@@ -597,10 +597,10 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
                 "id",
                 "tool",
                 "id",
-                false
+                false,
               ).map((permission) => ({
                 tool: availableTools.filter(
-                  (availableTool) => availableTool === permission.tool
+                  (availableTool) => availableTool === permission.tool,
                 )[0],
                 id: permission.id,
               })),
@@ -743,15 +743,15 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
   };
 
   const [allowances, setAllowances] = useState<AddedItem[]>(
-    isEdit ? [] : [{ name: "", value: "" }]
+    isEdit ? [] : [{ name: "", value: "" }],
   );
 
   const [deductions, setDeductions] = useState<AddedItem[]>(
-    isEdit ? [] : [{ name: "", value: "" }]
+    isEdit ? [] : [{ name: "", value: "" }],
   );
 
   const documentsRightButtonEditType = !Object.values(documents).includes(
-    undefined
+    undefined,
   )
     ? Object.values(documents).filter((val) => val.length < 1).length === 0 &&
       getUpdatedFields().length > 0
@@ -880,7 +880,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
           "amount",
           "allowanceName",
           "allowanceAmount",
-          true
+          true,
         ),
         deduction: transformToArray(
           compensationGetValues(),
@@ -888,7 +888,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
           "deductionamount",
           "deductionName",
           "deductionAmount",
-          true
+          true,
         ),
       },
       nextOfKin: {
@@ -909,10 +909,10 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
             "id",
             "tool",
             "id",
-            false
+            false,
           ).map((permission) => ({
             tool: availableTools.filter(
-              (availableTool) => availableTool === permission.tool
+              (availableTool) => availableTool === permission.tool,
             )[0],
             id: permission.id,
           })),
@@ -964,7 +964,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
         countriesWithStates[country].map((state) => ({
           label: state,
           value: state,
-        }))
+        })),
       );
     }
   }, [country]);
@@ -975,7 +975,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
         departmentsData.data.map((department) => ({
           label: department.departmentName,
           value: department.id,
-        }))
+        })),
       );
     }
   }, [departmentsData]);
@@ -986,7 +986,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
         devicesData.devices.map((device) => ({
           label: device.deviceName,
           value: device.id,
-        }))
+        })),
       );
     }
   }, [devicesData]);
@@ -997,25 +997,25 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
         employeeData?.compensation.allowance.map((allowance) => ({
           name: allowance.allowanceName,
           value: allowance.allowanceAmount.toString(),
-        }))
+        })),
       );
       setDeductions(
         employeeData?.compensation.deduction.map((deduction) => ({
           name: deduction.deductionName,
           value: deduction.deductionAmount.toString(),
-        }))
+        })),
       );
       setAddedDocs(
         employeeData?.documents.map((document) => ({
           name: document.documentName,
           value: document.documentUrl,
-        }))
+        })),
       );
       setEmployeeTools(
         employeeData?.accessRights[0].permissions.map((permission) => ({
           name: permission.tool,
           value: permission.id,
-        }))
+        })),
       );
     }
   }, [employeeData, isEdit]);
@@ -2041,7 +2041,7 @@ const HrAdminEmployeeDirectoryAddEmployee: React.FC<{ type?: "edit" }> = ({
                   isEmployeeRequest: false,
                   isHrRequest: true,
                   reasonForUpdate: editGetValues(
-                    "Why are you requesting this edit?"
+                    "Why are you requesting this edit?",
                   ),
                   supportingDocuments: [
                     editGetValues("Supporting Document")[0].name,

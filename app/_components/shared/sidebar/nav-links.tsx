@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
-import { icon, route } from '@/constants';
-import { usePathname, useRouter } from 'next/navigation';
-import { FaChevronDown } from 'react-icons/fa6';
-import { HiOutlineChartBar, HiOutlineUserPlus } from 'react-icons/hi2';
-import { LiaMoneyBillWaveSolid } from 'react-icons/lia';
-import { RxDashboard } from 'react-icons/rx';
-import { TbFileUpload } from 'react-icons/tb';
-import SvgIcon from '../../icons/container';
+import { icon, route } from "@/constants";
+import { usePathname, useRouter } from "next/navigation";
+import { FaChevronDown } from "react-icons/fa6";
+import { HiOutlineChartBar, HiOutlineUserPlus } from "react-icons/hi2";
+import { LiaMoneyBillWaveSolid } from "react-icons/lia";
+import { RxDashboard } from "react-icons/rx";
+import { TbFileUpload } from "react-icons/tb";
+import SvgIcon from "../../icons/container";
 
 const NavLinks = ({
   onNavLinkClick,
@@ -181,7 +181,7 @@ const NavLinks = ({
 
   const isPathActive = (
     path: string,
-    subMenu?: { name: string; path: string }[]
+    subMenu?: { name: string; path: string }[],
   ) => {
     if (path === "/hr-admin") {
       return /^\/hr-admin$/.test(pathname);
@@ -195,7 +195,7 @@ const NavLinks = ({
       pathParts.every((part, index) => currentPathParts[index] === part);
 
     const isSubPathActive = subMenu?.some((subItem) =>
-      pathname.startsWith(subItem.path)
+      pathname.startsWith(subItem.path),
     );
 
     return isMainPathActive || isSubPathActive;
@@ -226,14 +226,16 @@ const NavLinks = ({
             <li key={item.path}>
               <div
                 className={`flex items-center justify-between cursor-pointer p-3 py-2 w-full rounded-[4px] outline-none border-none focus-within:ring-1 focus-within:border-primary focus-within:ring-primary 
-                  ${isActive ? 'bg-primary text-white focus-within:ring-amber-500' : 'text-black'} transition duration-100`}
+                  ${isActive ? "bg-primary text-white focus-within:ring-amber-500" : "text-black"} transition duration-100`}
               >
                 <button
                   className="flex items-center gap-x-2 flex-grow outline-none border-none"
                   onClick={() => handleNavLinkClick(item.path)}
                 >
                   <span>{item.icon}</span>
-                  <span className={`text-[14px] font-sans ${isActive ? 'font-semibold' : 'font-normal'}`}>
+                  <span
+                    className={`text-[14px] font-sans ${isActive ? "font-semibold" : "font-normal"}`}
+                  >
                     {item.name}
                   </span>
                 </button>
@@ -260,9 +262,12 @@ const NavLinks = ({
                       <li key={subItem.path}>
                         <button
                           onClick={() => handleNavLinkClick(subItem.path)}
-                          className={`flex items-center p-2 text-[14px] font-sans pl-5 ${isSubActive ?
-                            'text-primary font-semibold' : 'text-gray-700 font-normal'
-                            }`}>
+                          className={`flex items-center p-2 text-[14px] font-sans pl-5 ${
+                            isSubActive
+                              ? "text-primary font-semibold"
+                              : "text-gray-700 font-normal"
+                          }`}
+                        >
                           {subItem.name}
                         </button>
                       </li>

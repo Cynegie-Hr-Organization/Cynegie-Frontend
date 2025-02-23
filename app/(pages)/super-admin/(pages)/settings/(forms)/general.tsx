@@ -20,21 +20,21 @@ const GeneralSettingsForm = () => {
           label="Company Name"
           id="company-name"
           placeholder="Enter company name"
-          value={data?.name ?? ''}
+          value={data?.name ?? ""}
           onChange={(e) => setData({ ...data, name: e.target.value })}
         />
         <AppInputText
           label="Company Address"
           id="company-address"
           placeholder="Enter company address"
-          value={data?.address ?? ''}
+          value={data?.address ?? ""}
           onChange={(e) => setData({ ...data, address: e.target.value })}
         />
         <AppInputText
           label="Company Email Address"
           id="company-email-address"
           placeholder="Enter company email address"
-          value={data?.email ?? ''}
+          value={data?.email ?? ""}
           onChange={(e) => setData({ ...data, email: e.target.value })}
         />
       </div>
@@ -56,18 +56,23 @@ const GeneralSettingsForm = () => {
             { label: "PST", value: "pst" },
             { label: "EST", value: "est" },
             { label: "GMT", value: "gmt" },
-            { label: "CET", value: "cet" }
+            { label: "CET", value: "cet" },
           ]}
-          onSelectionChange={(values) => setData({ ...data, timeZone: values.map((value) => value).join(", ") })}
+          onSelectionChange={(values) =>
+            setData({
+              ...data,
+              timeZone: values.map((value) => value).join(", "),
+            })
+          }
         />
         <AppSelect
           label="Date Format"
           placeholder="Select date format"
-          value={data?.dateFormat ?? 'DD/MM/YYYY'}
+          value={data?.dateFormat ?? "DD/MM/YYYY"}
           listItems={[
             { label: "DD/MM/YYYY", value: "dd-/mm/yyyy" },
             { label: "MM/DD/YYYY", value: "MM/DD/YYYY" },
-            { label: "YYYY-MM-DD", value: "YYYY-MM-DD" }
+            { label: "YYYY-MM-DD", value: "YYYY-MM-DD" },
           ]}
           onChange={(value) => setData({ ...data, dateFormat: value })}
         />
@@ -77,7 +82,6 @@ const GeneralSettingsForm = () => {
           selectedDate={generalSettings?.dateFormat ? new Date(generalSettings.dateFormat) : undefined}
           setSelectedDate={(value) => { setGeneralSettings({ ...generalSettings, dateFormat: value?.toISOString() }) }}
         /> */}
-
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -93,7 +97,9 @@ const GeneralSettingsForm = () => {
             { label: "Arabic", value: "arabic" },
             { label: "Russian", value: "russian" },
           ]}
-          onSelectionChange={(values) => setData({ ...data, supportedLanguages: values })}
+          onSelectionChange={(values) =>
+            setData({ ...data, supportedLanguages: values })
+          }
         />
         <AppMultipleSelect
           label="Notification Type"
@@ -106,16 +112,19 @@ const GeneralSettingsForm = () => {
             { label: "Finance Update", value: "finance-update" },
             { label: "Compliance Alert", value: "compliance-alert" },
           ]}
-          onSelectionChange={(values) => setData({
-            ...data, notificationType: values as NotificationType[]
-          })}
+          onSelectionChange={(values) =>
+            setData({
+              ...data,
+              notificationType: values as NotificationType[],
+            })
+          }
         />
         <AppFileUpload
           label="Company Logo"
           bottomInfo="Supported file types: PDF. Max file size allowed is 3MB."
           onChange={(files) => {
             // const logoValue = files.map((file) => file.name).join(", ");
-            console.log(files)
+            console.log(files);
           }}
         />
       </div>

@@ -80,9 +80,9 @@ const HrAdminEmployeeDepartmental = () => {
               employees?.find((employee) => employee.value === employeeId) ?? {
                 label: "",
                 value: "",
-              }
+              },
           ),
-        }))
+        })),
       );
     } else {
       setDepartments(undefined);
@@ -150,7 +150,7 @@ const HrAdminEmployeeDepartmental = () => {
         employeesData.data.map((employee) => ({
           label: employee.personalInfo.firstName,
           value: employee.id ? employee.id : "",
-        }))
+        })),
       );
     } else {
       setEmployees(undefined);
@@ -211,7 +211,7 @@ const HrAdminEmployeeDepartmental = () => {
             onDataReturned: (id) => {
               reset();
               const foundDepartment = departments?.find(
-                (department) => department.id === id
+                (department) => department.id === id,
               );
               setSelectedDepartment(foundDepartment);
               if (typeof id === "string") setSelectedId(id);
@@ -258,7 +258,7 @@ const HrAdminEmployeeDepartmental = () => {
             departmentName: values["Department Name"],
             departmentManager: values["Department Manager"],
             employees: values["Add Employees"].map(
-              (employee: { label: string; value: string }) => employee.value
+              (employee: { label: string; value: string }) => employee.value,
             ),
             userLimit: Number(values["Total Departmental No"]),
           });

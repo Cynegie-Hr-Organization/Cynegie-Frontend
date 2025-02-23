@@ -323,13 +323,13 @@ const HrAdminPayrollSettingsPage = () => {
       deductionAndContributions: {
         tax: Number(getValues(fieldLabels.deductionAndContributions.tax)),
         pension: Number(
-          getValues(fieldLabels.deductionAndContributions.pension)
+          getValues(fieldLabels.deductionAndContributions.pension),
         ),
         healthInsurance: Number(
-          getValues(fieldLabels.deductionAndContributions.healthInsurance)
+          getValues(fieldLabels.deductionAndContributions.healthInsurance),
         ),
         transportation: Number(
-          getValues(fieldLabels.deductionAndContributions.transportation)
+          getValues(fieldLabels.deductionAndContributions.transportation),
         ),
       },
       leave: {
@@ -338,7 +338,7 @@ const HrAdminPayrollSettingsPage = () => {
       },
       approval: {
         levels: getValues(fieldLabels.approval.levels).map(
-          (levels: { label: string; value: string }) => levels.value
+          (levels: { label: string; value: string }) => levels.value,
         ),
         notifyApprovers: getValues(fieldLabels.approval.notifyApprovers),
       },
@@ -358,10 +358,10 @@ const HrAdminPayrollSettingsPage = () => {
     type: queryLoading
       ? ButtonType.disabled
       : isValid
-      ? mutationLoading
-        ? ButtonType.disabledLoading
-        : ButtonType.contained
-      : ButtonType.disabled,
+        ? mutationLoading
+          ? ButtonType.disabledLoading
+          : ButtonType.contained
+        : ButtonType.disabled,
     text: mutationLoading ? "" : "Save",
     onClick: onSave,
   };

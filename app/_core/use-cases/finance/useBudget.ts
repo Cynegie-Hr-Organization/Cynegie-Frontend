@@ -1,4 +1,8 @@
-import { getAllBudget, getBudgetSummary, getDepartments } from "@/app/_core/actions/finance/budget";
+import {
+  getAllBudget,
+  getBudgetSummary,
+  getDepartments,
+} from "@/app/_core/actions/finance/budget";
 import { IBudget, IBudgetCreate } from "@/app/_core/interfaces/budget";
 import { IRes } from "@/app/_core/interfaces/res";
 import { handleError, Http } from "@/app/_core/utils/axios";
@@ -8,27 +12,24 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 
-
-
-
-export const useAllBudget = ({ }) => {
-
+export const useAllBudget = ({}) => {
   const searchParams = useSearchParams();
-  const sortOrder = searchParams.get('sortOrder') ?? 'desc';
-  const page = searchParams.get('page');
-  const limit = searchParams.get('limit');
-  const status = searchParams.get('status');
-  const search = searchParams.get('search') ?? undefined;
+  const sortOrder = searchParams.get("sortOrder") ?? "desc";
+  const page = searchParams.get("page");
+  const limit = searchParams.get("limit");
+  const status = searchParams.get("status");
+  const search = searchParams.get("search") ?? undefined;
 
   return useQuery({
     queryKey: [queryKeys.BUDGETS],
-    queryFn: () => getAllBudget({
-      sortOrder,
-      page: Number(page ?? 1),
-      limit: Number(limit ?? 5),
-      search: search ?? undefined,
-      status: status ?? undefined,
-    }),
+    queryFn: () =>
+      getAllBudget({
+        sortOrder,
+        page: Number(page ?? 1),
+        limit: Number(limit ?? 5),
+        search: search ?? undefined,
+        status: status ?? undefined,
+      }),
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,

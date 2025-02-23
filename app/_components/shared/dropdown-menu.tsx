@@ -11,18 +11,22 @@ import { Check } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 
-export function AppDropdownMenu({ trigger, menuItems, width = "w-56", isOpen, setIsOpen }: {
-  trigger: ReactNode,
-  menuItems: ReactNode,
-  width?: string,
-  isOpen?: boolean,
-  setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>
+export function AppDropdownMenu({
+  trigger,
+  menuItems,
+  width = "w-56",
+  isOpen,
+  setIsOpen,
+}: {
+  trigger: ReactNode;
+  menuItems: ReactNode;
+  width?: string;
+  isOpen?: boolean;
+  setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger asChild>
-        {trigger}
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
       <DropdownMenuContent className={cn("bg-white rounded-lg", width)}>
         <DropdownMenuGroup>{menuItems}</DropdownMenuGroup>
       </DropdownMenuContent>

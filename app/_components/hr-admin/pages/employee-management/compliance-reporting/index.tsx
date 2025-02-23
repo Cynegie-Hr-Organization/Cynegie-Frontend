@@ -98,7 +98,7 @@ const HrAdminEmployeeComplianceReporting = () => {
     queryFn: () =>
       apiRequest(
         "GET",
-        "employees/employee-turnover"
+        "employees/employee-turnover",
       ) as Promise<TurnoverReport>,
   });
 
@@ -115,7 +115,7 @@ const HrAdminEmployeeComplianceReporting = () => {
           assignedTo: `${task.employees[0].personalInfo?.firstName} ${task.employees[0].personalInfo?.lastName}`,
           date: dayjs(task.dueDate).format("DD-MM-YYYY"),
           status: task.status,
-        }))
+        })),
       );
     } else {
       setTasks(undefined);
@@ -130,13 +130,13 @@ const HrAdminEmployeeComplianceReporting = () => {
         keys.map((key, index) => ({
           item: key,
           value: values[index],
-        }))
+        })),
       );
     }
   }, [_turnoverChartData]);
 
   function mapEmployeeDistribution(
-    data: EmployeeDistribution
+    data: EmployeeDistribution,
   ): MappedDepartmentStat[] {
     return Object.entries(data).map(([department, stats]) => ({
       department,
@@ -157,7 +157,7 @@ const HrAdminEmployeeComplianceReporting = () => {
   useEffect(() => {
     if (turnoverBreakdownData) {
       const turnoverDepartments = Object.keys(
-        turnoverBreakdownData.turnoverReport
+        turnoverBreakdownData.turnoverReport,
       );
       const values = Object.values(turnoverBreakdownData.turnoverReport);
       setTurnoverBreakdown(
@@ -166,7 +166,7 @@ const HrAdminEmployeeComplianceReporting = () => {
           totalEmployeeNo: values[index].totalEmployees,
           employeesLeft: values[index].employeesThatLeft,
           turnover: values[index].turnoverPercentage,
-        }))
+        })),
       );
     }
   }, [turnoverBreakdownData]);
@@ -398,17 +398,17 @@ const HrAdminEmployeeComplianceReporting = () => {
                                 totalEmployeeNo: turnoverBreakdown
                                   .map((turnover) => turnover.totalEmployeeNo)
                                   .reduceRight(
-                                    (prev, current) => prev + current
+                                    (prev, current) => prev + current,
                                   ),
                                 employeesLeft: turnoverBreakdown
                                   .map((turnover) => turnover.employeesLeft)
                                   .reduceRight(
-                                    (prev, current) => prev + current
+                                    (prev, current) => prev + current,
                                   ),
                                 turnover: turnoverBreakdown
                                   .map((turnover) => turnover.turnover)
                                   .reduceRight(
-                                    (prev, current) => prev + current
+                                    (prev, current) => prev + current,
                                   ),
                               },
                             ]

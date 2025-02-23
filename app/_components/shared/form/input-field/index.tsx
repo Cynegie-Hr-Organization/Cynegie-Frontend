@@ -119,7 +119,7 @@ const InputField: React.FC<InputFieldProps> = ({
               {...(value && { value: dayjs(value) })}
               {...(defaultValue && {
                 defaultValue: dayjs(
-                  typeof defaultValue === "string" ? defaultValue : undefined
+                  typeof defaultValue === "string" ? defaultValue : undefined,
                 ),
               })}
               disabled={disabled}
@@ -147,7 +147,7 @@ const InputField: React.FC<InputFieldProps> = ({
               {...(value && { value: dayjs(value) })}
               {...(defaultValue && {
                 defaultValue: dayjs(
-                  typeof defaultValue === "string" ? defaultValue : undefined
+                  typeof defaultValue === "string" ? defaultValue : undefined,
                 ),
               })}
               disabled={disabled}

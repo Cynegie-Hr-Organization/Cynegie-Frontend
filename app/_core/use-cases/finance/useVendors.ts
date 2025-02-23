@@ -1,43 +1,42 @@
-import { getVendor, getVendors, IVendor, IVendorStatus } from "@/app/_core/actions/finance/vendor"
-import { handleError, Http } from "@/app/_core/utils/axios"
-import { queryKeys } from "@/app/_core/utils/queryKeys"
-import { headers } from "@/app/_core/utils/session"
+import {
+  getVendor,
+  getVendors,
+  IVendor,
+  IVendorStatus,
+} from "@/app/_core/actions/finance/vendor";
+import { handleError, Http } from "@/app/_core/utils/axios";
+import { queryKeys } from "@/app/_core/utils/queryKeys";
+import { headers } from "@/app/_core/utils/session";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { getSession } from "next-auth/react"
-import { useParams, useSearchParams } from "next/navigation"
-import { toast } from "react-toastify"
-
-
-
-
-
-
-
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getSession } from "next-auth/react";
+import { useParams, useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 export const useVendors = ({
   queryKey = [queryKeys.VENDORS],
   searchQuery,
   overrideStatus,
-  overridePagination
+  overridePagination,
 }: {
-  queryKey?: string | string[]
-  searchQuery?: string
-  overrideStatus?: IVendorStatus,
-  overridePagination?: { page?: number, limit?: number }
+  queryKey?: string | string[];
+  searchQuery?: string;
+  overrideStatus?: IVendorStatus;
+  overridePagination?: { page?: number; limit?: number };
 }) => {
-
   const searchParams = useSearchParams();
   const params = useParams();
 
-  const filteredQueryKey = (key: string | string[]) => Array.isArray(key) ? key : [key]
+  const filteredQueryKey = (key: string | string[]) =>
+    Array.isArray(key) ? key : [key];
 
   const vendorId = params.id as string | undefined;
-  const sortOrder = searchParams.get('sortOrder') ?? 'desc';
-  const page = overridePagination?.page ?? searchParams.get('page') ?? '1';
-  const limit = overridePagination?.limit ?? searchParams.get('limit') ?? '5';
-  const search = searchQuery ?? searchParams.get('search') ?? undefined;
-  const status = (overrideStatus ?? searchParams.get('status')) as IVendorStatus;
+  const sortOrder = searchParams.get("sortOrder") ?? "desc";
+  const page = overridePagination?.page ?? searchParams.get("page") ?? "1";
+  const limit = overridePagination?.limit ?? searchParams.get("limit") ?? "5";
+  const search = searchQuery ?? searchParams.get("search") ?? undefined;
+  const status = (overrideStatus ??
+    searchParams.get("status")) as IVendorStatus;
 
   // let queryStr = `?`;
 
@@ -48,15 +47,25 @@ export const useVendors = ({
   // if (search) queryStr += `&search=${search}`;
 
   return useQuery({
-    queryKey: vendorId ? [...filteredQueryKey(queryKey), vendorId, status, search, sortOrder, page, limit]
+    queryKey: vendorId
+      ? [
+          ...filteredQueryKey(queryKey),
+          vendorId,
+          status,
+          search,
+          sortOrder,
+          page,
+          limit,
+        ]
       : [...filteredQueryKey(queryKey), status, search, sortOrder, page, limit],
-    queryFn: () => getVendors({
-      page: Number(page),
-      limit: Number(limit),
-      status,
-      sortOrder,
-      search,
-    },),
+    queryFn: () =>
+      getVendors({
+        page: Number(page),
+        limit: Number(limit),
+        status,
+        sortOrder,
+        search,
+      }),
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
@@ -97,8 +106,10 @@ export const useVendorMutations = ({ id }: { id?: string }) => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDORS] });
     },
-    onError: (error) => { throw handleError(error) }
-  })
+    onError: (error) => {
+      throw handleError(error);
+    },
+  });
 
   const updateVendor = useMutation({
     mutationKey: ["update-vendor"],
@@ -116,46 +127,58 @@ export const useVendorMutations = ({ id }: { id?: string }) => {
       });
     },
     onSuccess: async (data) => {
-      if (Object.prototype.hasOwnProperty.call(data, 'message')) {
-        toast.success('successful' as string);
+      if (Object.prototype.hasOwnProperty.call(data, "message")) {
+        toast.success("successful" as string);
       }
       await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDORS] });
       await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDOR, id] });
     },
-    onError: (error) => { throw handleError(error) }
-  })
+    onError: (error) => {
+      throw handleError(error);
+    },
+  });
 
   const activateVendor = useMutation({
-    mutationKey: ['activate-vendor'],
+    mutationKey: ["activate-vendor"],
     mutationFn: async ({ id }: { id: string }) => {
       const session = await getSession();
 
-
-      return Http.patch<IVendor>(`vendors/${id}/activate`, {}, {
-        headers: await headers(session?.token ?? '')
-      })
+      return Http.patch<IVendor>(
+        `vendors/${id}/activate`,
+        {},
+        {
+          headers: await headers(session?.token ?? ""),
+        },
+      );
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDORS] });
     },
-    onError: (error) => { throw handleError(error) }
-  })
+    onError: (error) => {
+      throw handleError(error);
+    },
+  });
 
   const deactivateVendor = useMutation({
     mutationKey: ["deactivate-vendor"],
     mutationFn: async ({ id }: { id: string }) => {
       const session = await getSession();
 
-      return Http.patch<IVendor>(`vendors/${id}/deactivate`, {}, {
-        headers: await headers(session?.token ?? '')
-      })
+      return Http.patch<IVendor>(
+        `vendors/${id}/deactivate`,
+        {},
+        {
+          headers: await headers(session?.token ?? ""),
+        },
+      );
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [queryKeys.VENDORS] });
     },
-    onError: (error) => { throw handleError(error) }
-  })
-
+    onError: (error) => {
+      throw handleError(error);
+    },
+  });
 
   return {
     addVendor,

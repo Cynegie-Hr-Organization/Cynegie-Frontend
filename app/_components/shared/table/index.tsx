@@ -124,7 +124,7 @@ const Table: React.FC<TableProps> = ({
                 onClick={(permissions) =>
                   onPermissionsClick?.(
                     permissions,
-                    row[fieldToReturnOnActionItemClick ?? ""]
+                    row[fieldToReturnOnActionItemClick ?? ""],
                   )
                 }
               />
@@ -151,7 +151,7 @@ const Table: React.FC<TableProps> = ({
       debounce((query: string) => {
         onSearch?.(query);
       }, 500),
-    [onSearch]
+    [onSearch],
   );
 
   const _clearChecks = clearChecks;

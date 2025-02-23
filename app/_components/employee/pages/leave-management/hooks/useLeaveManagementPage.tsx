@@ -35,17 +35,26 @@ const useLeaveManagementPage = () => {
   const [openLeaveDetailsModal, setOpenLeaveDetailsModal] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [leaveTypes, setLeaveTypes] = useState<any[]>([]);
-  const [deleteRequestId, setDeleteRequestId] = useState<string | number | null>(null);
+  const [deleteRequestId, setDeleteRequestId] = useState<
+    string | number | null
+  >(null);
   const [numberOfDays, setNumberOfDays] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [detailsData, setDetailsData] = useState<any | null>(null);
   const [leaveType, setLeaveType] = useState<string | number | undefined>("");
-  const [leavePeriod, setLeavePeriod] = useState({ startDate: "", endDate: "" });
-  const [reliefOfficer, setReliefOfficer] = useState<string | number | undefined>("");
+  const [leavePeriod, setLeavePeriod] = useState({
+    startDate: "",
+    endDate: "",
+  });
+  const [reliefOfficer, setReliefOfficer] = useState<
+    string | number | undefined
+  >("");
   const [statusFilter, setStatusFilter] = useState<InputFieldValue>();
   const [employees, setEmployees] = useState<any[]>([]);
 
-  const [fetchParams, setFetchParams] = useState<FetchParams & { status?: InputFieldValue }>(INIT_FETCH_PARAMS);
+  const [fetchParams, setFetchParams] = useState<
+    FetchParams & { status?: InputFieldValue }
+  >(INIT_FETCH_PARAMS);
 
   // Debounced search
   const debouncedSearch = debounce((value: string) => {
@@ -57,7 +66,9 @@ const useLeaveManagementPage = () => {
   };
 
   const isFormComplete = () => {
-    return leaveType && leavePeriod.endDate && leavePeriod.startDate && reliefOfficer;
+    return (
+      leaveType && leavePeriod.endDate && leavePeriod.startDate && reliefOfficer
+    );
   };
 
   const clearForm = () => {
@@ -90,7 +101,7 @@ const useLeaveManagementPage = () => {
     const fetchEmployees = async () => {
       const response = await getEmployee(1, 50, SortOrder.Asc, undefined, "");
       setEmployees(response.data);
-       console.log("Fetched employees data:", response);
+      console.log("Fetched employees data:", response);
     };
     fetchEmployees();
   }, []);
@@ -147,16 +158,17 @@ const useLeaveManagementPage = () => {
         refetch(); // Refresh the data
         setOpenDeleteModal(false);
       } else {
-        console.error("Failed to delete leave request:", response?.message || "Unknown error");
+        console.error(
+          "Failed to delete leave request:",
+          response?.message || "Unknown error",
+        );
       }
     } catch (error) {
       console.error("Error during deletion:", error);
     }
   };
 
-  const {
-    data: leaveMetrics,
-  } = useQuery({
+  const { data: leaveMetrics } = useQuery({
     queryKey: ["leave-metrics"],
     queryFn: getAllLeaveMetrics,
     staleTime: 60000, // Cache for 1 minute
@@ -202,11 +214,14 @@ const useLeaveManagementPage = () => {
         })
       : leaveRequest?.data?.map((request: any) => ({
           requestId: request?.id,
-          requestDate: new Date(request?.startDate).toLocaleDateString("en-US", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-          }),
+          requestDate: new Date(request?.startDate).toLocaleDateString(
+            "en-US",
+            {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            },
+          ),
           leaveType: request.leaveType?.name,
           duration: `${request?.numberOfDays} days`,
           status: request?.status,
@@ -447,19 +462,25 @@ const useLeaveManagementPage = () => {
             { name: "Status", value: detailsData?.status || "N/A" },
             {
               name: "Start Date",
-              value: new Date(detailsData?.startDate).toLocaleDateString("en-US", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric",
-              }),
+              value: new Date(detailsData?.startDate).toLocaleDateString(
+                "en-US",
+                {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                },
+              ),
             },
             {
               name: "End Date",
-              value: new Date(detailsData?.endDate).toLocaleDateString("en-US", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric",
-              }),
+              value: new Date(detailsData?.endDate).toLocaleDateString(
+                "en-US",
+                {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                },
+              ),
             },
           ]
         : [],

@@ -2,18 +2,19 @@ import { handleError, Http } from "@/app/_core/utils/axios";
 import { headers } from "@/app/_core/utils/session";
 import { getSession } from "next-auth/react";
 
-
-export const getAllEmployees = async (query?: {
-  page: number;
-  limit: number;
-  search: string | undefined;
-  sortOrder: string;
-  status: string;
-}, endpoint: string = 'employees/mine') => {
-
-  const sortOrder = query?.sortOrder ?? 'desc';
-  const page = query?.page ?? '1';
-  const limit = query?.limit ?? '5';
+export const getAllEmployees = async (
+  query?: {
+    page: number;
+    limit: number;
+    search: string | undefined;
+    sortOrder: string;
+    status: string;
+  },
+  endpoint: string = "employees/mine",
+) => {
+  const sortOrder = query?.sortOrder ?? "desc";
+  const page = query?.page ?? "1";
+  const limit = query?.limit ?? "5";
   const search = query?.search;
   const status = query?.status;
 
@@ -25,46 +26,38 @@ export const getAllEmployees = async (query?: {
   if (status) queryStr += `&status=${status}`;
   if (search) queryStr += `&search=${search}`;
 
-  console.log(endpoint + queryStr)
+  console.log(endpoint + queryStr);
 
   try {
     const session = await getSession();
     const { data } = await Http.get<IEmployeeRes>(endpoint + queryStr, {
-      headers: await headers(session?.token ?? ''),
+      headers: await headers(session?.token ?? ""),
     });
 
     return data;
   } catch (error) {
     throw handleError(error);
   }
-}
-
+};
 
 export const getEmployee = async (id: string) => {
-  if (!id) throw new Error('id is required')
+  if (!id) throw new Error("id is required");
 
   try {
     const session = await getSession();
     const { data } = await Http.get<IEmployee>(`employees/${id}`, {
-      headers: await headers(session?.token ?? ''),
+      headers: await headers(session?.token ?? ""),
     });
 
     // console.log(data);
-    return data
+    return data;
+  } catch (error) {
+    throw handleError(error);
+  }
+};
 
-  } catch (error) { throw handleError(error) }
-}
-
-
-
-
-
-
-
-
-
-export type IEmployeeStatus = 'active' | 'on_leave' | 'terminated';
-export type EmploymentType = 'full_time' | 'part_time' | 'contract';
+export type IEmployeeStatus = "active" | "on_leave" | "terminated";
+export type EmploymentType = "full_time" | "part_time" | "contract";
 
 export interface Allowance {
   allowanceName: string;
@@ -129,7 +122,7 @@ export interface PersonalInfo {
   phoneNumber: string;
   dateOfBirth: string;
   country: string;
-  gender: 'male' | 'female' | 'other';
+  gender: "male" | "female" | "other";
   state: string;
   city: string;
   streetAddress: string;
@@ -143,7 +136,7 @@ export interface PersonalInfo {
 
 export interface Compensation {
   baseSalary: number;
-  salaryFrequency: 'annual' | 'monthly' | 'weekly';
+  salaryFrequency: "annual" | "monthly" | "weekly";
   overtime: string;
   taxFilingStatus: string;
   paymentMethod: string;
@@ -158,7 +151,6 @@ export interface Compensation {
   updatedAt: string;
   id: string;
 }
-
 
 export interface AccessRightsPermissions {
   tool: string;
@@ -198,7 +190,7 @@ export interface IEmployeeMetaRes {
 }
 
 export interface IEmployeeRes {
-  status: 'success' | 'error';
+  status: "success" | "error";
   message: string;
   data: IEmployee[];
   meta: IEmployeeMetaRes;

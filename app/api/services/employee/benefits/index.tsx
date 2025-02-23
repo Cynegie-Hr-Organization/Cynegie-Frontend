@@ -103,7 +103,7 @@ export const requestSalaryAdvance = async (payload: any) => {
 
 // Function to get all salary advance requests
 export const getAllMySalaryAdvanceRequests = async (
-  fetchParams : FetchParams
+  fetchParams: FetchParams,
 ): Promise<GetAllMyRequestResponse> => {
   const session = await getServerSession(authOptions);
 
@@ -117,7 +117,9 @@ export const getAllMySalaryAdvanceRequests = async (
 };
 
 // Function to get all benefits
-export const getAllBenefits = async (): Promise<{ label: string; value: string }[]> => {
+export const getAllBenefits = async (): Promise<
+  { label: string; value: string }[]
+> => {
   const session = await getServerSession(authOptions);
 
   const response = await request("GET", `${baseUrl}/v1/benefits`, {
@@ -131,10 +133,12 @@ export const getAllBenefits = async (): Promise<{ label: string; value: string }
     throw new Error("Failed to fetch benefits data");
   }
 
-  return response.data.map((item: any) => ({
-    label: item.benefitType,
-    value: item.id,
-  })) || [];
+  return (
+    response.data.map((item: any) => ({
+      label: item.benefitType,
+      value: item.id,
+    })) || []
+  );
 };
 
 // Function to request a benefit
@@ -176,7 +180,7 @@ export const getBenefitRequestById = async (id: string | number) => {
 
 // Function to get all my benefits requests
 export const getAllMyBenefitsRequests = async (
-  fetchParams: FetchParams 
+  fetchParams: FetchParams,
 ): Promise<GetAllMyAppResponse> => {
   const session = await getServerSession(authOptions);
 

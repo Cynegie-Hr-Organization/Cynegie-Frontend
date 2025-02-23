@@ -5,7 +5,7 @@ import {
   useDashboardChartData,
   useDashboardOverviewData,
   useEmployeeStatus,
-  usePriorityCards
+  usePriorityCards,
 } from "@/app/_core/use-cases/hr-admin/useDashboard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { newIndex } from "@/lib/utils";
@@ -23,15 +23,12 @@ const colors = {
   green: "#0F973D",
 };
 
-
 const size = {
   width: 200,
   height: 200,
 };
 
-
 const OverViewSection = () => {
-
   return (
     <>
       <OverViewCards />
@@ -43,33 +40,35 @@ const OverViewSection = () => {
 
 const OverViewCards = () => {
   const { data, isLoading } = useDashboardOverviewData();
-  const { interviewsScheduled, pendingOffers, totalApplications, totalOpenPositions } = data ?? {}
-
-
+  const {
+    interviewsScheduled,
+    pendingOffers,
+    totalApplications,
+    totalOpenPositions,
+  } = data ?? {};
 
   const overviewContents = [
     {
       color: "#EADAFF",
       title: "Total Open Positions",
-      count: totalOpenPositions ?? '...',
+      count: totalOpenPositions ?? "...",
     },
     {
       color: "#D2F1DE",
       title: "Total Applications",
-      count: totalApplications ?? '...',
+      count: totalApplications ?? "...",
     },
     {
       color: "#DEE3FF",
       title: "Pending Offer",
-      count: pendingOffers ?? '...',
+      count: pendingOffers ?? "...",
     },
     {
       color: "#DEE3FF",
       title: "Interview Scheduled",
-      count: interviewsScheduled ?? '...',
+      count: interviewsScheduled ?? "...",
     },
   ];
-
 
   return (
     <div className="space-y-8">
@@ -78,26 +77,31 @@ const OverViewCards = () => {
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {isLoading ? (
           <CardSkeleton numberOfCards={overviewContents.length} />
-        ) : overviewContents.map((content) => (
-          <div
-            key={content.title}
-            className="common-card p-3 md:p-5 rounded-[12.56px] space-y-4"
-          >
-            <div className="flex items-center gap-2">
-              <div
-                className="p-1 rounded-full text-center flex justify-center w-fit"
-                style={{ backgroundColor: content.color }}
-              >
-                <PiListChecksFill />
+        ) : (
+          overviewContents.map((content) => (
+            <div
+              key={content.title}
+              className="common-card p-3 md:p-5 rounded-[12.56px] space-y-4"
+            >
+              <div className="flex items-center gap-2">
+                <div
+                  className="p-1 rounded-full text-center flex justify-center w-fit"
+                  style={{ backgroundColor: content.color }}
+                >
+                  <PiListChecksFill />
+                </div>
+                <p className="font-semibold text-[#1B1B1B] text-xs">
+                  {content.title}
+                </p>
               </div>
-              <p className="font-semibold text-[#1B1B1B] text-xs">
-                {content.title}
+
+              <p className="text-lg font-bold text-[#1B1B1B]">
+                {" "}
+                {content.count}
               </p>
             </div>
-
-            <p className="text-lg font-bold text-[#1B1B1B]"> {content.count}</p>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );
@@ -105,20 +109,20 @@ const OverViewCards = () => {
 
 const ChartsCard = () => {
   const { data: chartData, isLoading } = useDashboardChartData();
-  const { data: employeeStatus, isLoading: isEmployeeStatusLoading } = useEmployeeStatus();
+  const { data: employeeStatus, isLoading: isEmployeeStatusLoading } =
+    useEmployeeStatus();
 
-  const { active, probation, resigned, onLeave } = employeeStatus?.statusDistribution ?? {}
+  const { active, probation, resigned, onLeave } =
+    employeeStatus?.statusDistribution ?? {};
 
   const data = [
-    { value: (active ?? 0), label: "A", color: colors.green },
-    { value: (probation ?? 0), label: "B", color: colors.yellow },
-    { value: (resigned ?? 0), label: "C", color: colors.grey },
-    { value: (onLeave ?? 0), label: "D", color: colors.red },
+    { value: active ?? 0, label: "A", color: colors.green },
+    { value: probation ?? 0, label: "B", color: colors.yellow },
+    { value: resigned ?? 0, label: "C", color: colors.grey },
+    { value: onLeave ?? 0, label: "D", color: colors.red },
   ];
 
-
   console.log(chartData, isLoading);
-
 
   const timeRanges = [
     { label: "Monthly", value: "monthly" },
@@ -174,26 +178,44 @@ const ChartsCard = () => {
                     <Skeleton className="h-4 w-32 bg-neutral-300" />
                   </div>
                   <Skeleton className="h-4 w-10 bg-neutral-300 " />
-                </div>))
-            ) : (<>
-              {[
-                { color: colors.green, label: "Active", percentage: active ?? 0 },
-                { color: colors.yellow, label: "On Leave", percentage: onLeave ?? 0 },
-                { color: colors.grey, label: "Probation", percentage: probation ?? 0 },
-                { color: colors.red, label: "Resigned", percentage: resigned ?? 0 },
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between gap-1 text-base"
-                >
-                  <div className="flex items-center gap-1">
-                    <GoDotFill color={item.color} size={18} />
-                    <p className="font-semibold text-xs">{item.label}</p>
-                  </div>
-                  <p className="font-semibold text-xs">{item.percentage}%</p>
                 </div>
-              ))}
-            </>
+              ))
+            ) : (
+              <>
+                {[
+                  {
+                    color: colors.green,
+                    label: "Active",
+                    percentage: active ?? 0,
+                  },
+                  {
+                    color: colors.yellow,
+                    label: "On Leave",
+                    percentage: onLeave ?? 0,
+                  },
+                  {
+                    color: colors.grey,
+                    label: "Probation",
+                    percentage: probation ?? 0,
+                  },
+                  {
+                    color: colors.red,
+                    label: "Resigned",
+                    percentage: resigned ?? 0,
+                  },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between gap-1 text-base"
+                  >
+                    <div className="flex items-center gap-1">
+                      <GoDotFill color={item.color} size={18} />
+                      <p className="font-semibold text-xs">{item.label}</p>
+                    </div>
+                    <p className="font-semibold text-xs">{item.percentage}%</p>
+                  </div>
+                ))}
+              </>
             )}
           </div>
         </div>
@@ -239,13 +261,15 @@ const PriorityCard = () => {
         ) : (
           <>
             <Grid2 columnSpacing={2} rowSpacing={2} container>
-              {(priorityData && (priorityData?.tasks?.length ?? 0) > 0) ? priorityData?.tasks?.map((task, index) => {
-                return (
-                  <Grid2 key={newIndex(index)} size={{ xs: 12, md: 4 }}>
-                    <Todo />
-                  </Grid2>
-                );
-              }) : (
+              {priorityData && (priorityData?.tasks?.length ?? 0) > 0 ? (
+                priorityData?.tasks?.map((task, index) => {
+                  return (
+                    <Grid2 key={newIndex(index)} size={{ xs: 12, md: 4 }}>
+                      <Todo />
+                    </Grid2>
+                  );
+                })
+              ) : (
                 <p className="text-sm text-gray-500 border border-dashed border-gray-200 p-4 rounded-lg w-full text-center">
                   You&apos;re all set. There is no existing task left.
                 </p>
@@ -258,8 +282,7 @@ const PriorityCard = () => {
               View all tasks
             </Link>
           </>
-        )
-        }
+        )}
       </Stack>
     </Grid2>
   );

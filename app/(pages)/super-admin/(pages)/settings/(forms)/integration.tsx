@@ -13,11 +13,11 @@ const IntegrationSettingsForm = () => {
         ...data?.settings,
         integrationSettings: {
           ...(data?.settings?.integrationSettings ?? {}),
-          api: event.target.value
-        }
-      }
-    })
-  }
+          api: event.target.value,
+        },
+      },
+    });
+  };
 
   const handleThirdPartyIntegrationChange = (values: string[]) => {
     setData({
@@ -26,11 +26,11 @@ const IntegrationSettingsForm = () => {
         ...data?.settings,
         integrationSettings: {
           ...(data?.settings?.integrationSettings ?? {}),
-          thirdPartyIntegrations: values
-        }
-      }
-    })
-  }
+          thirdPartyIntegrations: values,
+        },
+      },
+    });
+  };
   return (
     <form className="p-4 md:p-6 space-y-4">
       <h3 className="text-base font-bold">Integration Settings</h3>
@@ -42,7 +42,7 @@ const IntegrationSettingsForm = () => {
           id="api"
           value={data?.settings?.integrationSettings?.api ?? ""}
           onChange={handleAPIChange}
-        // disabled
+          // disabled
         />
 
         <AppMultipleSelect
@@ -53,7 +53,9 @@ const IntegrationSettingsForm = () => {
             { label: "Accounting tool", value: "accounting-tool" },
             { label: "CRM", value: "crm" },
           ]}
-          selectedValues={data?.settings?.integrationSettings?.thirdPartyIntegrations ?? []}
+          selectedValues={
+            data?.settings?.integrationSettings?.thirdPartyIntegrations ?? []
+          }
           onSelectionChange={handleThirdPartyIntegrationChange}
         />
       </div>

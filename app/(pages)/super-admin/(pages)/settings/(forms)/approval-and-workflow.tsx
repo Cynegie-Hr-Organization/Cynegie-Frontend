@@ -2,7 +2,7 @@ import useFormStore from "@/app/(pages)/super-admin/(pages)/settings/(forms)/for
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import AppInputText from "@/app/_components/shared/input-text";
 import { ApprovalStage } from "@/app/_core/interfaces/super-admin";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FaCirclePlus } from "react-icons/fa6";
 
@@ -10,17 +10,16 @@ const ApprovalAndWorkflowSettingsForm = () => {
   const { data, setData } = useFormStore();
   const [stages, setStages] = useState<ApprovalStage[]>([]);
 
-
-
   useEffect(() => {
-    const initialStages = data?.settings?.approvalWorkflowSettings?.stages ?? [];
+    const initialStages =
+      data?.settings?.approvalWorkflowSettings?.stages ?? [];
     setStages(initialStages.length > 0 ? initialStages : []);
   }, [data]);
 
   const handleAddStage = () => {
     // const newStageNumber = stages.length + 1;
     const newStage = {
-      stageName: '',
+      stageName: "",
       approvers: [],
     };
 
@@ -33,9 +32,9 @@ const ApprovalAndWorkflowSettingsForm = () => {
         ...data?.settings,
         approvalWorkflowSettings: {
           ...data?.settings?.approvalWorkflowSettings,
-          stages: updatedStages
-        }
-      }
+          stages: updatedStages,
+        },
+      },
     });
   };
 
@@ -49,15 +48,15 @@ const ApprovalAndWorkflowSettingsForm = () => {
         ...data?.settings,
         approvalWorkflowSettings: {
           ...data?.settings?.approvalWorkflowSettings,
-          stages: updatedStages
-        }
-      }
+          stages: updatedStages,
+        },
+      },
     });
   };
 
   const handleStageNameChange = (index: number, newName: string) => {
     const updatedStages = stages.map((stage, idx) =>
-      idx === index ? { ...stage, stageName: newName } : stage
+      idx === index ? { ...stage, stageName: newName } : stage,
     );
 
     setStages(updatedStages);
@@ -69,15 +68,15 @@ const ApprovalAndWorkflowSettingsForm = () => {
         ...data?.settings,
         approvalWorkflowSettings: {
           ...data?.settings?.approvalWorkflowSettings,
-          stages: updatedStages
-        }
-      }
+          stages: updatedStages,
+        },
+      },
     });
   };
 
   const handleApproversChange = (index: number, approvers: string[]) => {
     const updatedStages = stages.map((stage, idx) =>
-      idx === index ? { ...stage, approvers } : stage
+      idx === index ? { ...stage, approvers } : stage,
     );
     setStages(updatedStages);
 
@@ -88,9 +87,9 @@ const ApprovalAndWorkflowSettingsForm = () => {
         ...data?.settings,
         approvalWorkflowSettings: {
           ...data?.settings?.approvalWorkflowSettings,
-          stages: updatedStages
-        }
-      }
+          stages: updatedStages,
+        },
+      },
     });
   };
 
@@ -126,7 +125,10 @@ const ApprovalAndWorkflowSettingsForm = () => {
       <h3 className="text-base font-bold">Approval And Workflow Settings</h3>
 
       {stages.map((stage, index) => (
-        <div key={`stage-${index + 1}`} className="flex items-center justify-between flex-grow space-x-4">
+        <div
+          key={`stage-${index + 1}`}
+          className="flex items-center justify-between flex-grow space-x-4"
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
             <AppInputText
               label="Stage"

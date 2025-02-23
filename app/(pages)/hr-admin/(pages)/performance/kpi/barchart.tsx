@@ -9,7 +9,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { MonthlyCompletionRate } from "@/types";
 
 interface GradientChart {
   completed: number;

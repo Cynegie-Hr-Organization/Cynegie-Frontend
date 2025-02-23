@@ -13,6 +13,7 @@ import { DialogTitle } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface Question {
   question: string;
@@ -23,45 +24,45 @@ interface Question {
 
 const PerformanceTemplateNewPage = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const [templateName, setTemplateName] = useState<string>("");
   const [templateDescription, setTemplateDescription] = useState<string>("");
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const mutation = useMutation({
+    mutationFn: (payload: any) => createTemplate(payload),
+    onSuccess: (response) => {
+      console.log(response);
+      if (response.status === 201) {
+        toast.success(response.message || "Template created successfully!");
+        queryClient.invalidateQueries({ queryKey: ["templates"] });
+        router.push("/hr-admin/performance/template");
+      } else if (response.statusCode === 401) {
+        toast.error("Unauthorized. Please log in and try again.");
+      } else {
+        toast.error("Failed to create template. Please try again.");
+      }
+    },
+    onError: (error: any) => {
+      const errorMessage =
+        error?.response?.data?.message ||
+        "An unexpected error occurred. Please try again.";
+      toast.error(errorMessage);
+    },
+  });
 
   const handleAddQuestion = (newQuestion: Question) => {
     setQuestions((prevQuestions) => [...prevQuestions, newQuestion]);
   };
 
-  const handleSubmit = async () => {
-    setIsSubmitting(true);
+  const handleSubmit = () => {
     const payload = {
       templateName,
       instructions: templateDescription,
       questions,
     };
-
-    try {
-      console.log(payload);
-      const response = await createTemplate(payload);
-
-      if (response.status === 201) {
-        console.log("Template created successfully:", response.data);
-        toast.success("Template created successfully!");
-        router.push("/hr-admin/performance/template");
-      } else {
-        console.error("Failed to create template:", response);
-        toast.error("Failed to create template. Please try again.");
-      }
-    } catch (error: any) {
-      console.error("Error creating template:", error);
-      const errorMessage =
-        error?.response?.data?.message ||
-        "An unexpected error occurred. Please try again.";
-      toast.error(errorMessage);
-    } finally {
-      setIsSubmitting(false);
-    }
+    mutation.mutate(payload);
   };
 
   return (
@@ -101,7 +102,7 @@ const PerformanceTemplateNewPage = () => {
         btn2Label="Submit"
         onBtn1Click={() => console.log("Save & Continue Later")}
         onBtn2Click={handleSubmit}
-        isSubmitting={isSubmitting}
+        isSubmitting={mutation.isPending}
       />
     </div>
   );
@@ -126,12 +127,14 @@ const FooterButtons = ({
   onBtn1Click,
   onBtn2Click,
   isSubmitting,
+  isDisabled,
 }: {
   btn1Label: string;
   btn2Label: string;
   onBtn1Click: () => void;
   onBtn2Click: () => void;
   isSubmitting?: boolean;
+  isDisabled?: boolean;
 }) => (
   <div className="flex flex-col md:flex-row justify-end gap-4">
     <AppButton
@@ -143,7 +146,7 @@ const FooterButtons = ({
       label={btn2Label}
       className="btn-primary"
       onClick={onBtn2Click}
-      disabled={isSubmitting}
+      disabled={isDisabled}
       isLoading={isSubmitting}
     />
   </div>
@@ -157,6 +160,7 @@ const AddQuestionModal = ({
   const [question, setQuestion] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [allowComments, setAllowComments] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handleAdd = () => {
     onAddQuestion({
@@ -170,8 +174,12 @@ const AddQuestionModal = ({
     setAllowComments(false);
   };
 
+  const isAddDisabled = !question || !description;
+
   return (
     <AppModal
+      open={isModalOpen}
+      setOpen={setIsModalOpen}
       trigger={
         <button
           type="button"
@@ -190,8 +198,9 @@ const AddQuestionModal = ({
         <FooterButtons
           btn1Label="Cancel"
           btn2Label="Add Question"
-          onBtn1Click={() => {}}
+          onBtn1Click={() => setIsModalOpen(false)}
           onBtn2Click={handleAdd}
+          isDisabled={isAddDisabled}
         />
       }
     >
@@ -217,6 +226,9 @@ const AddQuestionModal = ({
         <div className="flex flex-col gap-4">
           <p className="font-semibold">Response Criteria</p>
           <div className="space-y-6">
+            <div className="common-card flex justify-between items-center gap-4">
+              <p className="font-semibold">Ratings</p>
+            </div>
             <div className="common-card flex justify-between items-center gap-4">
               <p className="font-semibold">Allow Comments</p>
               <AppSwitch

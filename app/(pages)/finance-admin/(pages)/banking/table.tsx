@@ -175,8 +175,8 @@ const PreviewModal = ({ trigger }: { trigger: React.ReactNode }) => {
         <TransactionDetailItem label="Status" pillValue="Completed" />
       </div>
     </AppModal>
-  )
-}
+  );
+};
 
 const TransactionDetailItem = ({
   label,

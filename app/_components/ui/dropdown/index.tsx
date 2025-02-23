@@ -49,7 +49,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         className="border border-gray-300 justify-between flex items-center rounded-md py-2 px-1 md:px-3 bg-white text-xs md:text-sm cursor-pointer"
         onClick={toggleDropdown}
       >
-        {selected || `Select ${label}`}
+        {selected || `${label}`}
         <svg
           className="ml-2"
           width="10"

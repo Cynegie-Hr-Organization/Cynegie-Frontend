@@ -1,15 +1,15 @@
-import { AppToast } from '@/app/_hooks/toast';
-import { rolesMap } from '@/types/form';
-import { getUserDetails } from '@/utils/getUserDetails';
-import { Avatar } from '@mui/material';
-import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { IoMenu } from 'react-icons/io5';
-import { PiBell } from 'react-icons/pi';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
-import RecentActivities from '../../it-admin/pages/it-admin/recent-activities';
-import { AppSelect } from '@/app/_components/shared/select';
+import { AppToast } from "@/app/_hooks/toast";
+import { rolesMap } from "@/types/form";
+import { getUserDetails } from "@/utils/getUserDetails";
+import { Avatar } from "@mui/material";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { IoMenu } from "react-icons/io5";
+import { PiBell } from "react-icons/pi";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import RecentActivities from "../../it-admin/pages/it-admin/recent-activities";
+import { AppSelect } from "@/app/_components/shared/select";
 
 const reverseRolesMap: Record<string, string> = Object.entries(rolesMap).reduce(
   (acc: Record<string, string>, [role, path]) => {
@@ -69,7 +69,7 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
     } else if (roles.length > 0) {
       setCurrentRole(roles[0]);
     } else {
-      AppToast.error({ title: 'Error', message: 'No valid role found' });
+      AppToast.error({ title: "Error", message: "No valid role found" });
     }
   }, [pathname, roles]);
 

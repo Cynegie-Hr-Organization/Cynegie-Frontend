@@ -11,5 +11,5 @@ export const useFinanceSettings = () => {
     refetchOnReconnect: false,
     initialData: undefined,
     retry: false,
-  })
-}
+  });
+};

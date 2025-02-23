@@ -135,8 +135,8 @@ const DragUploadHookForm = ({
                     ? _defaultValue.length === 0
                       ? hookFormGetValues?.(name ?? "")?.[0]?.name
                       : _defaultValue
-                    : _defaultValue ??
-                      hookFormGetValues?.(name ?? "")?.[0]?.name
+                    : (_defaultValue ??
+                      hookFormGetValues?.(name ?? "")?.[0]?.name)
                 }
                 onRemoveClick={handleRemoveFile}
               />

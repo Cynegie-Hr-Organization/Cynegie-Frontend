@@ -41,7 +41,7 @@ export const getMyTransfers = async (
     const session = await getSession();
 
     const { data } = await Http.get<IPaginatedTransfers>(endpoint + queryKey, {
-      headers: await headers(session?.token ?? ''),
+      headers: await headers(session?.token ?? ""),
     });
 
     console.log("wierd-data", data);
@@ -89,9 +89,6 @@ export interface IPaginatedTransfers {
   transfers: ITransfer[];
 }
 
-
-
-
 export interface IBankAccount {
   accountName: string;
   businessType: string;
@@ -102,7 +99,6 @@ export interface IBankAccount {
   secondaryContact: string;
   transactionPin: string;
 }
-
 
 export interface IBankTransfer {
   beneficiary: string;

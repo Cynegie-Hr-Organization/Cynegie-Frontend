@@ -19,7 +19,7 @@ export interface ICompanyUser {
   company: string;
   employee: string;
   role: string[];
-  status: 'active' | 'inactive' | 'pending';
+  status: "active" | "inactive" | "pending";
   isActive: boolean;
   isEmailVerified: boolean;
   createdAt: string;

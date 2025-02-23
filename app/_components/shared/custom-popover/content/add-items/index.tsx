@@ -158,7 +158,7 @@ const AddItems: React.FC<AddItemsProps> = ({
   const { checkedItems, checkBoxProps, removeChecks } = useCheckboxes<string>( // Record<string, any> |
     // availableItems.map((item) => ({ name: item })), // p0
     availableItems.map((item) => item),
-    undefined // getCheckedRows
+    undefined, // getCheckedRows
     // undefined, // defaultCheckedRows
     // availableItems.map((item) => ({ name: item })) // rows
   );
@@ -170,7 +170,7 @@ const AddItems: React.FC<AddItemsProps> = ({
     hookFormUnregister?.(`${secondaryHookFormName}${index}`);
     //Remove deleted item from local added items
     getLocalAddedItems?.(
-      localAddedItems.filter((localItem) => localItem !== item)
+      localAddedItems.filter((localItem) => localItem !== item),
     );
     setLocalAddedItems(
       localAddedItems.filter((localItem) => localItem !== item),
@@ -265,7 +265,7 @@ const AddItems: React.FC<AddItemsProps> = ({
             <InputField
               type={inputFieldType}
               label={
-                hookFormName ?? inputFieldName ?? showFieldLabels
+                (hookFormName ?? inputFieldName ?? showFieldLabels)
                   ? forceInputFieldNameAsLabel
                     ? inputFieldName
                     : item.name
@@ -288,10 +288,10 @@ const AddItems: React.FC<AddItemsProps> = ({
                 hasSecondaryField && inputFieldType !== "select"
                   ? item.name
                   : disabled
-                  ? `${disabledValue} ${index + 1}`
-                  : useNameAsDefaultValue
-                  ? item.name
-                  : item.value
+                    ? `${disabledValue} ${index + 1}`
+                    : useNameAsDefaultValue
+                      ? item.name
+                      : item.value
               }
               {...(inputFieldPlacehdoler && {
                 placeholder: inputFieldPlacehdoler,

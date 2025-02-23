@@ -13,8 +13,7 @@ const CardSkeleton = ({ numberOfCards = 1 }: { numberOfCards?: number }) => {
         </div>
       ))}
     </>
-  )
-}
-
+  );
+};
 
 export default CardSkeleton;

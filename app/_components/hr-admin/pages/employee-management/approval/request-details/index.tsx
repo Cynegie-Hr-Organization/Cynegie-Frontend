@@ -9,7 +9,7 @@ import SectionCardContainer from "@/app/_components/shared/section-with-cards/co
 import { icon, route } from "@/constants";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import {  useParams, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -30,8 +30,8 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
 
   const queryClient = useQueryClient();
 
-  const { slug } = useParams()
-  
+  const { slug } = useParams();
+
   const { data } = useQuery({
     queryKey: ["leave-request", slug],
     ...(typeof slug === "string" && { queryFn: () => getLeaveRequest(slug) }),
@@ -53,7 +53,7 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
         myEmployees.data.map((employee) => ({
           label: `${employee.personalInfo.firstName} ${employee.personalInfo.lastName}`,
           value: employee.id,
-        }))
+        })),
       );
       console.log(myEmployees.data.map((employee) => employee.id));
     } else {
@@ -82,15 +82,15 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
                 remark: getValues("Add Comments"),
               }
             : getValues("Assign Backup Employee")
-            ? {
-                backupEmployee: getValues("Assign Backup Employee"),
-              }
-            : getValues("Add Comments")
-            ? { remark: getValues("Add Comments") }
-            : undefined
+              ? {
+                  backupEmployee: getValues("Assign Backup Employee"),
+                }
+              : getValues("Add Comments")
+                ? { remark: getValues("Add Comments") }
+                : undefined
           : getValues("Add Comments")
-          ? { remark: getValues("Add Comments") }
-          : undefined
+            ? { remark: getValues("Add Comments") }
+            : undefined,
       ),
     onMutate: () => setMutationLoading(true),
     onSuccess: (res) => {
@@ -259,7 +259,7 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
               text: mutationLoading ? "" : "Confirm",
               onClick: () =>
                 approveRejectMutation.mutateAsync(
-                  `leave/${slug}/${approveClicked ? "approve" : "reject"}`
+                  `leave/${slug}/${approveClicked ? "approve" : "reject"}`,
                 ),
             },
           }}
