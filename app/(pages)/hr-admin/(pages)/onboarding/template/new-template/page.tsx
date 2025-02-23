@@ -1,11 +1,11 @@
 "use client";
 
 import CardLayout from "@/app/_components/shared/cards";
-import NewTask from "./new-task";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import NewDocument from "./new-document";
+import NewTask from "./new-task";
 import NewTrainingModule from "./new-training-module";
-import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 type CreateTemplateStep = "task" | "document" | "training-module";
 
@@ -16,6 +16,7 @@ const TEMPLATE_STEPS: CreateTemplateStep[] = [
 ];
 
 const CreateNewTemplate = () => {
+  const { templateId } = useParams();
   const router = useRouter();
   const [activeStep, setActiveStep] = useState<CreateTemplateStep>("task");
 
@@ -58,7 +59,7 @@ const CreateNewTemplate = () => {
     if (currentIndex < TEMPLATE_STEPS.length - 1) {
       setActiveStep(TEMPLATE_STEPS[currentIndex + 1]);
     } else {
-      router.push(`/hr-admin/onboarding/template/new-template/templateId`);
+      router.push(`/hr-admin/onboarding/template/${templateId}`);
     }
   };
 

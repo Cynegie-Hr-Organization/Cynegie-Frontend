@@ -1,3 +1,4 @@
+import { ReusableSelect } from "@/app/(pages)/hr-admin/(pages)/onboarding/template/components/ReusableSelect";
 import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -9,7 +10,7 @@ import { GoPlus } from "react-icons/go";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { LuCirclePlus } from "react-icons/lu";
 import { PiCalendar } from "react-icons/pi";
-import { ReusableSelect } from "./components/ReusableSelect";
+
 
 const NewTrainingModule = () => {
   return (

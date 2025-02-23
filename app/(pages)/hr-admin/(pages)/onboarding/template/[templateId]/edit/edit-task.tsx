@@ -9,7 +9,7 @@ import { GoDotFill, GoPlus } from "react-icons/go";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { LuCirclePlus, LuListFilter } from "react-icons/lu";
 import { PiCalendar } from "react-icons/pi";
-import { ReusableSelect } from "./components/ReusableSelect";
+import { ReusableSelect } from "../../components/ReusableSelect";
 
 const NewTask = () => {
   return (
