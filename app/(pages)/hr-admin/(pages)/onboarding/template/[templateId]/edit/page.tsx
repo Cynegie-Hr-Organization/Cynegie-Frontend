@@ -48,7 +48,9 @@ const CreateNewTemplate = () => {
 
   const handleSave = () => {
     const { company, id, createdAt, deleted, updatedAt, createdBy, questions, ...updatedDetails } = formData ?? {}
-    console.log(updatedDetails)
+
+    console.log(company, id, createdAt, deleted, updatedAt, createdBy, questions);
+
     updateTemplate.mutate({ id: `${templateId}`, body: updatedDetails }, {
       onSuccess: (data) => {
         AppToast.success({ title: 'Successful', message: data.message })
