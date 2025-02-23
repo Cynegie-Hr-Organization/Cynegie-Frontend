@@ -1,5 +1,5 @@
 import Pagination from "@/app/_components/hr-admin/pages/hiring/shared/pagination";
-import DeleteReviewModal from "@/app/_components/hr-admin/performance/review-cycle/delete-modal";
+import DeleteReviewModal from "@/app/_components/hr-admin/pages/performance/review-cycle/delete-modal";
 import AppMenubar from "@/app/_components/shared/menubar";
 import { getReviewCycles } from "@/app/api/services/performance/review cycle";
 import { Checkbox } from "@/components/ui/checkbox";

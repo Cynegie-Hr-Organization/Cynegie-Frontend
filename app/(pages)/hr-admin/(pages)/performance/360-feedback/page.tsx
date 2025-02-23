@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader } from "@/app/_components/hr-admin/performance/page-header";
+import { PageHeader } from "@/app/_components/hr-admin/pages/performance/page-header";
 import FeedbackTable from "./table";
 
 const FeedbackPage = () => {

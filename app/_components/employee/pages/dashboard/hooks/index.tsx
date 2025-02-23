@@ -100,24 +100,31 @@ const useEmployeeDashboardPage = () => {
         children: (
           <DetailGroup
             loading={isDeviceLoading}
-            details={[
-              {
-                name: "Device Name",
-                value: deviceRequests[0]?.deviceId.deviceName,
-              },
-              {
-                name: "Description",
-                value: deviceRequests[0]?.deviceId.description,
-              },
-              { name: "Location", value: deviceRequests[0]?.deviceId.location },
-              { name: "Status", value: deviceRequests[0]?.status },
-              {
-                name: "Requested Date",
-                value: new Date(
-                  deviceRequests[0]?.requestedDate,
-                ).toLocaleDateString(),
-              },
-            ]}
+            details={
+              deviceRequests && deviceRequests.length > 0
+                ? [
+                    {
+                      name: "Device Name",
+                      value: deviceRequests[0]?.deviceId.deviceName,
+                    },
+                    {
+                      name: "Description",
+                      value: deviceRequests[0]?.deviceId.description,
+                    },
+                    {
+                      name: "Location",
+                      value: deviceRequests[0]?.deviceId.location,
+                    },
+                    { name: "Status", value: deviceRequests[0]?.status },
+                    {
+                      name: "Requested Date",
+                      value: new Date(
+                        deviceRequests[0]?.requestedDate,
+                      ).toLocaleDateString(),
+                    },
+                  ]
+                : []
+            }
           />
         ),
       },
@@ -134,17 +141,21 @@ const useEmployeeDashboardPage = () => {
         children: (
           <DetailGroup
             loading={isAppLoading}
-            details={[
-              { name: "App Name", value: appRequests[0]?.appId.appName },
-              { name: "App ID", value: appRequests[0]?._id },
-              { name: "Status", value: appRequests[0]?.status },
-              {
-                name: "Request Date",
-                value: new Date(
-                  appRequests[0]?.requestDate,
-                ).toLocaleDateString(),
-              },
-            ]}
+            details={
+              appRequests && appRequests.length > 0
+                ? [
+                    { name: "App Name", value: appRequests[0]?.appId.appName },
+                    { name: "App ID", value: appRequests[0]?._id },
+                    { name: "Status", value: appRequests[0]?.status },
+                    {
+                      name: "Request Date",
+                      value: new Date(
+                        appRequests[0]?.requestDate,
+                      ).toLocaleDateString(),
+                    },
+                  ]
+                : []
+            }
           />
         ),
       },

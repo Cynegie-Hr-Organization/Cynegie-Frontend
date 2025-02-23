@@ -1,7 +1,7 @@
 "use client";
 
 import SelfAssessmentTable from "./table";
-import { PageHeader } from "@/app/_components/hr-admin/performance/page-header";
+import { PageHeader } from "@/app/_components/hr-admin/pages/performance/page-header";
 
 const SelfAssessmentPage = () => {
   return (
