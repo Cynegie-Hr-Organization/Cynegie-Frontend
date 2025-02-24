@@ -10,6 +10,7 @@ export type TabFormatProps = {
     newValue?: number
   ) => void;
   hasButtons?: boolean;
+  getTab?: (arg: number) => void;
 };
 
 export type Tab = {

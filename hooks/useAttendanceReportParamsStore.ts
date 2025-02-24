@@ -5,7 +5,7 @@ interface AttendanceReportParamsStore {
   endDate: string;
   departments: string[];
   attendanceStatus: string;
-  employeeId: string;
+  employeeId?: string;
   employeeName: string;
   setStartDate: (date: string) => void;
   setEndDate: (date: string) => void;
@@ -21,7 +21,7 @@ export const useAttendanceReportParamsStore =
     endDate: "",
     departments: [],
     attendanceStatus: "",
-    employeeId: "",
+    employeeId: undefined,
     employeeName: "",
     setStartDate: (date) => set({ startDate: date }),
     setEndDate: (date) => set({ endDate: date }),

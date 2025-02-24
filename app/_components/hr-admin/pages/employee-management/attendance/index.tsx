@@ -10,6 +10,7 @@ import { color, route } from "@/constants";
 import { useAttendanceReportParamsStore } from "@/hooks/useAttendanceReportParamsStore";
 import { FetchParams } from "@/types";
 import { formatHours } from "@/utils";
+import { CircularProgress } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
@@ -19,18 +20,9 @@ import { getDepartments } from "../../payroll-management/pages/benefits-manageme
 import {
   adjustAttendance,
   getAllLeaves,
+  getAttendanceRateChart,
   getAttendanceRecords,
 } from "../../payroll-management/pages/overview/api";
-
-const attendanceRateChartData = [
-  { item: "Monday", present: 580, absent: 750, "on leave": 500 },
-  { item: "Tuesday", present: 300, absent: 400, "on leave": 350 },
-  { item: "Wednesday", present: 630, absent: 200, "on leave": 380 },
-  { item: "Thursday", present: 450, absent: 300, "on leave": 400 },
-  { item: "Friday", present: 580, absent: 400, "on leave": 600 },
-  { item: "Saturday", present: 450, absent: 400, "on leave": 420 },
-  { item: "Sunday", present: 400, absent: 500, "on leave": 800 },
-];
 
 type MappedAttendanceRecord = {
   id: string;
@@ -70,6 +62,11 @@ const HrAdminEmployeeAttendanceManagement = () => {
 
   const [mutationLoading, setMutationLoading] = useState(false);
 
+  const [chartParams, setChartParams] = useState<{
+    filter?: "weekly" | "monthly";
+    departmentId?: string;
+  }>({ filter: "weekly" });
+
   const [departments, setDepartments] =
     useState<{ label: string; value: string }[]>();
   const { data: departmentsData } = useQuery({
@@ -91,7 +88,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
           : []
       );
     } else {
-      setAttendanceRecords(undefined);
+      setDepartment([]);
     }
   }, [departmentsData]);
 
@@ -114,6 +111,53 @@ const HrAdminEmployeeAttendanceManagement = () => {
     queryKey: ["leave-records", fetchParams],
     queryFn: () => getAllLeaves(fetchParams),
   });
+
+  const { data: _attendanceRateChartData } = useQuery({
+    queryKey: ["attendance-rate-chart", chartParams],
+    queryFn: () => getAttendanceRateChart(chartParams),
+  });
+
+  // const attendanceRateChartData = [
+  //   { item: "Monday", present: 580, absent: 750, "on leave": 500 },
+  //   { item: "Tuesday", present: 300, absent: 400, "on leave": 350 },
+  //   { item: "Wednesday", present: 630, absent: 200, "on leave": 380 },
+  //   { item: "Thursday", present: 450, absent: 300, "on leave": 400 },
+  //   { item: "Friday", present: 580, absent: 400, "on leave": 600 },
+  //   { item: "Saturday", present: 450, absent: 400, "on leave": 420 },
+  //   { item: "Sunday", present: 400, absent: 500, "on leave": 800 },
+  // ];
+
+  const [mappedChartData, setMappedChartData] = useState<
+    {
+      item: string;
+      present: number;
+      absent: number;
+      on_leave: number;
+    }[]
+  >();
+
+  useEffect(() => {
+    if (_attendanceRateChartData) {
+      const days = Object.keys(_attendanceRateChartData);
+      const present = Object.values(_attendanceRateChartData).map(
+        (data) => data.undefined ?? 0
+      );
+      const late = Object.values(_attendanceRateChartData).map(
+        (data) => data.late ?? 0
+      );
+      const onLeave = Object.values(_attendanceRateChartData).map(
+        (data) => data.on_leave ?? 0
+      );
+      const mappedData = days.map((_, index) => ({
+        item: days[index],
+        present: late[index],
+        absent: present[index],
+        on_leave: onLeave[index],
+      }));
+      console.log(mappedData);
+      setMappedChartData(mappedData);
+    }
+  }, [_attendanceRateChartData]);
 
   const {
     setStartDate,
@@ -244,31 +288,60 @@ const HrAdminEmployeeAttendanceManagement = () => {
         onClick: () => setOpenBulkGenerateReportModal(true),
       }}
     >
-      <BarChart
-        title="Attendance Rate"
-        hasLegend
-        data={attendanceRateChartData}
-        yAxisLabel="(Num of Employees)"
-        xAxisLabel="Days"
-        barSize={40}
-        bars={[
-          { dataKey: "present" },
-          { dataKey: "absent", fill: color.barChart.midBlue },
-          { dataKey: "on leave", fill: color.barChart.lightBlue },
-        ]}
-        inputFields={[
-          {
-            type: "select",
-            defaultValue: 0,
-            options: [{ label: "Weekly", value: 0 }],
-          },
-          {
-            type: "select",
-            defaultValue: 0,
-            options: [{ label: "All Departments", value: 0 }],
-          },
-        ]}
-      />
+      {!_attendanceRateChartData ? (
+        <div className="flex justify-center py-48">
+          <CircularProgress />
+        </div>
+      ) : (
+        <BarChart
+          title="Attendance Rate"
+          hasLegend
+          data={mappedChartData ?? []}
+          yAxisLabel="(Num of Employees)"
+          xAxisLabel="Days"
+          barSize={40}
+          bars={[
+            { dataKey: "present" },
+            { dataKey: "absent", fill: color.barChart.midBlue },
+            { dataKey: "on leave", fill: color.barChart.lightBlue },
+          ]}
+          inputFields={[
+            {
+              type: "select",
+              defaultValue: "weekly",
+              value: chartParams.filter,
+              setValue: (val) => {
+                if (typeof val === "string") {
+                  if (val === "weekly" || val === "monthly")
+                    setChartParams({ ...chartParams, filter: val });
+                }
+              },
+              options: [
+                { label: "Weekly", value: "weekly" },
+                { label: "Monthly", value: "monthly" },
+              ],
+            },
+            {
+              type: "select",
+              placeholder: "All Departments",
+              defaultValue: undefined,
+              selectValControlledFromOutside: true,
+              value: chartParams.departmentId,
+              setValue: (val) => {
+                if (typeof val === "string") {
+                  setChartParams({ ...chartParams, departmentId: val });
+                } else {
+                  setChartParams({ ...chartParams, departmentId: undefined });
+                }
+              },
+              options: [
+                { label: "All", value: undefined },
+                ...(departments ?? []),
+              ],
+            },
+          ]}
+        />
+      )}
       <TabFormat
         tabs={[
           {
@@ -664,7 +737,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
                     dayjs(employeeAttendanceGetValues("End Date")).toISOString()
                   );
                   setAttendanceStatus(
-                    employeeAttendanceGetValues("Attendance Status")
+                    employeeAttendanceGetValues("Attendance Status")?.value
                   );
                   router.push(
                     route.hrAdmin.employeeManagement.attendanceManagement

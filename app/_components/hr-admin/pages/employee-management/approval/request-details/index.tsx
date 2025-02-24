@@ -49,7 +49,7 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
     if (myEmployees) {
       setEmployees(
         myEmployees.data.map((employee) => ({
-          label: `${employee.personalInfo.firstName} ${employee.personalInfo.lastName}`,
+          label: `${employee.personalInfo?.firstName} ${employee.personalInfo?.lastName}`,
           value: employee.id,
         }))
       );
@@ -123,16 +123,16 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
           details={[
             {
               name: "Name",
-              value: `${data?.employee.personalInfo.firstName} ${data?.employee.personalInfo.lastName}`, //Inform the backend team to return the correct value
+              value: `${data?.employee.personalInfo?.firstName} ${data?.employee.personalInfo?.lastName}`, //Inform the backend team to return the correct value
             },
             {
               name: "Staff ID",
-              value: data?.employee.employmentInformation.staffId, //Inform the backend team to return the correct value
+              value: data?.employee.employmentInformation?.staffId, //Inform the backend team to return the correct value
             },
             {
               name: "Department",
               value:
-                data?.employee.employmentInformation.department.departmentName, //Inform the backend team to return the correct value
+                data?.employee.employmentInformation?.department.departmentName, //Inform the backend team to return the correct value
             },
             {
               name: "Job Title",
@@ -162,7 +162,9 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
             },
             {
               name: "Total Days Requested",
-              value: `${data?.leaveType.numberOfDays}`,
+              value: `${
+                dayjs(data?.endDate).date() - dayjs(data?.startDate).date() + 1
+              }`,
             },
             {
               name: "Reason for Leave",

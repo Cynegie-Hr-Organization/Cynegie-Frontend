@@ -84,6 +84,11 @@ const HrAdminEmployeeAttendanceManagementIndividualReport = () => {
         startDate ? dayjs(startDate).format("MMM D, YYYY") : ""
       } - ${endDate ? dayjs(endDate).format("MMM D, YYYY") : ""})`}
       cardsLoading={employeeAttendanceData ? false : true}
+      exportParams={{
+        employeeId: employeeId,
+        startDate: startDate,
+        endDate: endDate,
+      }}
       cards={[
         {
           labelText: "Total Days Analyzed",
@@ -93,7 +98,8 @@ const HrAdminEmployeeAttendanceManagementIndividualReport = () => {
         },
         {
           labelText: "On Leave",
-          value: `${employeeAttendanceData?.statusCounts["on_leave"]} Days`,
+          // value: `${employeeAttendanceData?.statusCounts["on_leave"]} Days`,
+          value: "",
           valueBelow: true,
           loading: employeeAttendanceData ? false : true,
         },

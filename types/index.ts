@@ -714,6 +714,7 @@ export type AttendanceResponse = {
   total: number;
   totalEmployees: number;
   totalDaysAnalyzed: number;
+  attendanceRate: WeeklyAttendance;
   statusCounts: {
     null?: number;
     late?: number;
@@ -949,4 +950,19 @@ export type MonthlyData = {
   October: number;
   November: number;
   December: number;
+};
+
+export type WeeklyAttendance = {
+  [day in
+    | "Monday"
+    | "Tuesday"
+    | "Wednesday"
+    | "Thursday"
+    | "Friday"
+    | "Saturday"
+    | "Sunday"]?: {
+    on_leave?: number;
+    late?: number;
+    undefined?: number;
+  };
 };
