@@ -11,7 +11,7 @@ import { GoPlus } from "react-icons/go";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { IoCloseCircle } from "react-icons/io5";
 import { LuCirclePlus, LuListFilter } from "react-icons/lu";
-import { ReusableSelect } from "./components/ReusableSelect";
+import { ReusableSelect } from "../../components/ReusableSelect";
 
 const NewDocument = () => {
   return (

@@ -30,4 +30,5 @@ export const queryKeys = {
   CANDIDATES: 'candidates',
   NEW_HIRE_LIST: 'new-hire-list',
   TEMPLATES: 'templates',
+  TEMPLATE: 'template',
 }

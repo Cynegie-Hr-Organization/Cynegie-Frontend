@@ -3,7 +3,7 @@
 import Appbutton, { Spinner } from "@/app/_components/shared/buttons";
 import { useRouter } from "next/navigation";
 import { Suspense } from "react";
-import TemplateTable from "./all-templates";
+import TemplateTable from "./table";
 
 const TemplatePage = () => {
   const route = useRouter();
@@ -12,7 +12,7 @@ const TemplatePage = () => {
     <div>
       <div className=" flex items-center justify-between mb-11">
         <div>
-          <h3 className="text-[18px] font-semibold">Onboarding Templates</h3>
+          <h3 className="text-lg font-semibold">Onboarding Templates</h3>
           <p className="text-sm">Create and use templates</p>
         </div>
 

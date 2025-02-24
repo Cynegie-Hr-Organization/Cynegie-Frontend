@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import CardLayout from "@/app/_components/shared/cards";
 import AppCheckbox from "@/app/_components/shared/checkbox";
 import EmptyTable from "@/app/_components/shared/empty-table";
 import TableSkeleton from "@/app/_components/shared/skelentons/table";
@@ -32,10 +31,7 @@ const TemplateTable = () => {
   }
 
   return (
-    <CardLayout
-      className="bg-white overflow-x-scroll space-y-8"
-      bg="p-4 md:p-6"
-    >
+    <div className="common-card bg-white overflow-x-scroll space-y-8">
       {isLoading ? (
         <TableSkeleton />
       ) : (
@@ -113,7 +109,7 @@ const TemplateTable = () => {
           </div>
         </>
       )}
-    </CardLayout>
+    </div>
   );
 };
 

@@ -1,5 +1,5 @@
 import Pagination from "@/app/_components/hr-admin/pages/hiring/shared/pagination";
-import DeleteGoalModal from "@/app/_components/hr-admin/performance/goal/delete-modal";
+import DeleteGoalModal from "@/app/_components/hr-admin/pages/performance/goal/delete-modal";
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import AppMenubar from "@/app/_components/shared/menubar";
@@ -182,7 +182,7 @@ const GoalTable = () => {
                               type="button"
                               onClick={() =>
                                 router.push(
-                                  `/hr-admin/performance/goals/goal-detail/${goal.id}`
+                                  `/hr-admin/performance/goals/goal-detail/${goal.id}`,
                                 )
                               }
                               className="hover:text-blue-600 cursor-pointer text-blue-500"

@@ -8,13 +8,15 @@ import { IoIosArrowDown } from "react-icons/io";
 import { LuCirclePlus, LuTrash } from "react-icons/lu";
 import AppButton from "../../../../../_components/shared/button";
 import { AppDropdownMenu } from "../../../../../_components/shared/dropdown-menu";
-import ReviewTable from "./table";
+import GoalTable from "./table";
+import GoalReportCards from "./goals-report-cards";
 
 const PerformanceGoalsPage = () => {
   return (
     <div className="space-y-8">
       <PageHeader />
-      <ReviewTable />
+      <GoalReportCards />
+      <GoalTable />
     </div>
   );
 };
@@ -24,8 +26,10 @@ const PageHeader = () => {
   return (
     <div className="flex items-center justify-between gap-y-4">
       <div>
-        <h3 className="text-xl font-bold text-black">Goals Management </h3>
-        <p className="text-sm text-gray-500">
+        <h3 className="text-sm md:text-xl  font-bold text-black">
+          Goals Management{" "}
+        </h3>
+        <p className="text-xs md:text-sm text-gray-500">
           Manage and track goals in your organization
         </p>
       </div>

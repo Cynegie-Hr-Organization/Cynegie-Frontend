@@ -1,17 +1,18 @@
 "use client";
 
+import { CreateTemplateStep } from "@/app/(pages)/hr-admin/(pages)/onboarding/template/[templateId]/page";
+import AppButton from "@/app/_components/shared/button";
 import { Spinner } from "@/app/_components/shared/buttons";
 import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-text";
 import AppTabs from "@/app/_components/shared/tabs";
 import { ITemplate } from "@/app/_core/actions/hr-admin/onboarding";
-import { useTemplates } from "@/app/_core/use-cases/hr-admin/useOnboarding";
+import { useGetTemplate, useTemplateMutations } from "@/app/_core/use-cases/hr-admin/useOnboarding";
+import { AppToast } from "@/app/_hooks/toast";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
-import NewDocument from "./new-document";
-import NewTask from "./new-task";
-import NewTrainingModule from "./new-training-module";
-
-type CreateTemplateStep = "Task" | "Document" | "Training Module";
+import { useEffect, useState } from "react";
+import NewDocument from "./edit-document";
+import NewTask from "./edit-task";
+import NewTrainingModule from "./edit-training-module";
 
 
 
@@ -19,14 +20,14 @@ type CreateTemplateStep = "Task" | "Document" | "Training Module";
 const CreateNewTemplate = () => {
   const router = useRouter();
   const { templateId } = useParams();
-  const { data, isLoading } = useTemplates();
-  const { data: templates } = data ?? {}
+  const { updateTemplate, isLoading } = useTemplateMutations()
+  const { data, isLoading: isFetching } = useGetTemplate(templateId as string);
+  const { data: template } = data ?? {}
 
-  const template = useMemo(() => templates?.find(template => template.id === templateId), [templates, templateId])
-  const [formData, setFormData] = useState<Partial<ITemplate | undefined>>(template);
+  const [formData, setFormData] = useState<Partial<ITemplate>>(template as Partial<ITemplate>);
 
   useEffect(() => {
-    setFormData(template ?? undefined)
+    setFormData(template as Partial<ITemplate>)
   }, [template])
 
   const [activeTab, setActiveTab] = useState<CreateTemplateStep>("Task");
@@ -38,6 +39,26 @@ const CreateNewTemplate = () => {
 
   const isLastStep = activeTab === TEMPLATE_STEPS[TEMPLATE_STEPS.length - 1].label;
 
+  const renderActiveComponents = {
+    "Task": <NewTask />,
+    "Document": <NewDocument />,
+    "Training Module": <NewTrainingModule />,
+  };
+
+
+  const handleSave = () => {
+    const { company, id, createdAt, deleted, updatedAt, createdBy, questions, ...updatedDetails } = formData ?? {}
+
+    console.log(company, id, createdAt, deleted, updatedAt, createdBy, questions);
+
+    updateTemplate.mutate({ id: `${templateId}`, body: updatedDetails }, {
+      onSuccess: (data) => {
+        AppToast.success({ title: 'Successful', message: data.message })
+        router.push(`/hr-admin/onboarding/template/${templateId}`)
+      },
+    })
+  }
+
   const handleNextStep = () => {
     const currentIndex = TEMPLATE_STEPS.findIndex(step => step.label === activeTab);
 
@@ -45,22 +66,17 @@ const CreateNewTemplate = () => {
       const nextStep = TEMPLATE_STEPS[currentIndex + 1];
       setActiveTab(nextStep.label as CreateTemplateStep);
     } else {
-      router.push(`/hr-admin/onboarding/template/${templateId}`);
+      handleSave()
     }
   };
 
-  const renderActiveComponents = {
-    "Task": <NewTask />,
-    "Document": <NewDocument />,
-    "Training Module": <NewTrainingModule />,
-  };
 
   return (
     <form className="mb-12 space-y-6">
-      <h3 className="text-lg font-semibold">Edit Template</h3>
+      <h3 className="text-lg font-semibold">Template Editor</h3>
 
 
-      {isLoading ? (
+      {isFetching ? (
         <div className="flex flex-col md:flex-row items-center gap-x-2">
           <Spinner className="text-primary" /> <p>Please hold while we fetch your initial content</p>
         </div>
@@ -109,13 +125,13 @@ const CreateNewTemplate = () => {
               Save & Continue Later
             </button>
 
-            <button
+            <AppButton
               type="button"
               onClick={handleNextStep}
-              className="capitalize w-full md:w-[230px] gap-x-2 outline-none border border-gray-400 bg-gray-300 rounded-lg px-[12.33px] py-[9px] font-bold"
-            >
-              {isLastStep ? "Publish" : "Next"}
-            </button>
+              isLoading={isLoading}
+              label={isLastStep ? "Publish" : "Next"}
+              className="bg-primary text-white"
+            />
           </div>
         </>
       )}
