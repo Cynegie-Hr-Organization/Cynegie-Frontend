@@ -88,7 +88,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
           : []
       );
     } else {
-      setDepartment([]);
+      setDepartments([]);
     }
   }, [departmentsData]);
 

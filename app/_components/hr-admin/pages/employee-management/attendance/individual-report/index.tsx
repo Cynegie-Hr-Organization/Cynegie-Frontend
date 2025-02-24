@@ -78,7 +78,7 @@ const HrAdminEmployeeAttendanceManagementIndividualReport = () => {
       alert("No details provided to generate the report");
       router.push(route.hrAdmin.employeeManagement.attendanceManagement.home);
     }
-  }, []);
+  }, [router, startDate.length]);
 
   return (
     <HrAdminEmployeeAttendanceManagementReport
