@@ -4,18 +4,16 @@ import AppButton from "@/app/_components/shared/button";
 import { AppDatePicker } from "@/app/_components/shared/date-picker";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
 import { AppFileUpload } from "@/app/_components/shared/file-upload";
+import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-text";
 import AppRadio from "@/app/_components/shared/radio";
 import { assignCourse } from "@/app/api/services/performance/learning";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 import useFetchEmployees from "@/utils/usefetchEmployees";
 import { ReactNode, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LearningManagementTable from "./table";
-import AppInputText, {
-  AppInputTextArea,
-} from "@/app/_components/shared/input-text";
 
 const SelfAssessmentPage = () => {
   return (
@@ -111,7 +109,7 @@ const AssignCourseModal = ({ trigger }: { trigger: ReactNode }) => {
   };
 
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <DialogTitle>
@@ -255,7 +253,7 @@ const AssignCourseModal = ({ trigger }: { trigger: ReactNode }) => {
           />
         </div>
       </div>
-    </DrawerDialog>
+    </AppModal>
   );
 };
 

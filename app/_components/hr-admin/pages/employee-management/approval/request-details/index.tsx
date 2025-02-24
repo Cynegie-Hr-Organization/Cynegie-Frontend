@@ -26,7 +26,7 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
 
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
 
-  const { slug } = useParams();
+  // const { slug } = useParams();
 
   const queryClient = useQueryClient();
 

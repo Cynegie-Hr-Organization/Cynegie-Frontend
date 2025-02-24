@@ -10,27 +10,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export function AppSelect({
-  listLabel,
-  label,
-  requiredField = false,
-  listItems,
-  placeholder,
-  onChange,
-  width = "w-full",
-  triggerStyle = "border-gray-300",
-}: {
-  listLabel?: string;
-  label?: string;
-  requiredField?: boolean;
-  listItems: { label: string; value: string }[];
-  placeholder?: string;
-  onChange: (value: string) => void;
-  width?: string;
-  triggerStyle?: string;
+
+export function AppSelect({ listLabel, label, requiredField = false, listItems, placeholder, value, onChange, width = 'w-full', triggerStyle = 'border-gray-300' }: {
+  listLabel?: string,
+  label?: string,
+  requiredField?: boolean,
+  listItems: { label: string, value: string }[],
+  placeholder?: string,
+  value?: string
+  onChange: (value: string) => void,
+  width?: string,
+  triggerStyle?: string
 }) {
   return (
-    <Select onValueChange={(value) => onChange(value)}>
+    <Select value={value} onValueChange={(value) => onChange(value)}>
       <div className={`flex flex-col gap-2 ${width}`}>
         {label && (
           <p
@@ -46,6 +39,7 @@ export function AppSelect({
           <SelectValue
             className="placeholder:text-gray-400 text-xs placeholder:text-xs"
             placeholder={<p className="text-gray-400 text-xs">{placeholder}</p>}
+            defaultValue={value}
           />
         </SelectTrigger>
 

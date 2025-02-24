@@ -1,21 +1,25 @@
 "use client";
 
 import AppButton from "@/app/_components/shared/button";
-import { useRouter } from "next/navigation";
-import PayrollReportOverviewTable from "./table";
-import { IoIosArrowBack } from "react-icons/io";
-import { DrawerDialog } from "@/components/drawer/modal";
-import { DialogTitle } from "@/components/ui/dialog";
-import { LuDownload } from "react-icons/lu";
 import AppCheckbox from "@/app/_components/shared/checkbox";
-import { CgFileDocument } from "react-icons/cg";
-import { TbCalendar, TbCalendarCheck } from "react-icons/tb";
-import { PiUsersBold } from "react-icons/pi";
-import { AppPieChart } from "./piechart";
+import { AppModal } from "@/components/drawer/modal";
 import { ChartConfig } from "@/components/ui/chart";
-import { GoDotFill } from "react-icons/go";
-import { BarChartComponent } from "./bar-chart";
+import { DialogTitle } from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { CgFileDocument } from "react-icons/cg";
+import { GoDotFill } from "react-icons/go";
+import { IoIosArrowBack } from "react-icons/io";
+import { LuDownload } from "react-icons/lu";
+import { PiUsersBold } from "react-icons/pi";
+import { TbCalendar, TbCalendarCheck } from "react-icons/tb";
+import { BarChartComponent } from "./bar-chart";
+import { AppPieChart } from "./piechart";
+import PayrollReportOverviewTable from "./table";
+
+
+
+
 
 const PayrollReportOverview = () => {
   const [chartType, setChartType] = useState("bar");
@@ -234,58 +238,42 @@ const DownloadModal = ({ trigger }: { trigger: React.ReactNode }) => {
     excel: false,
   });
 
-  return (
-    <DrawerDialog
-      trigger={trigger}
-      header={
-        <DialogTitle className="text-lg font-bold text-center">
-          Download Report
-        </DialogTitle>
-      }
-      footer={
-        <div className="flex flex-col md:flex-row items-center justify-center gap-2">
-          <AppButton
-            label="Cancel"
-            className="bg-white border-2 border-gray-400 text-gray-500 md:w-[150px] w-full"
-          />
-          <AppButton
-            label="Download"
-            className="bg-primary text-white md:w-[150px] w-full border border-primary"
-            leftIcon={<LuDownload />}
-          />
-        </div>
-      }
-    >
-      <div className="space-y-4">
-        <p className="text-sm text-gray-500 text-center">
-          Select the format you would like to download your report
-        </p>
-        <div className="flex items-center justify-center gap-10">
-          <AppCheckbox
-            id="pdf"
-            checked={filterType.pdf}
-            label={"PDF"}
-            name="format"
-            className=""
-            onChange={(e) => {
-              setFileType({ ...filterType, pdf: Boolean(e.target.checked) });
-            }}
-          />
-          <AppCheckbox
-            id="excel"
-            checked={filterType.excel}
-            label={"Excel"}
-            name="format"
-            className=""
-            onChange={(e) => {
-              setFileType({ ...filterType, excel: Boolean(e.target.checked) });
-            }}
-          />
-        </div>
-      </div>
-    </DrawerDialog>
-  );
-};
+    return (
+        <AppModal
+            trigger={trigger}
+            header={<DialogTitle className="text-lg font-bold text-center">Download Report</DialogTitle>}
+            footer={
+                <div className="flex flex-col md:flex-row items-center justify-center gap-2">
+                    <AppButton label="Cancel" className="bg-white border-2 border-gray-400 text-gray-500 md:w-[150px] w-full" />
+                    <AppButton label="Download" className="bg-primary text-white md:w-[150px] w-full border border-primary" leftIcon={<LuDownload />} />
+                </div>
+            }
+        >
+            <div className="space-y-4">
+                <p className="text-sm text-gray-500 text-center">Select the format you would like to download your report</p>
+                <div className="flex items-center justify-center gap-10">
+                    <AppCheckbox
+                        id="pdf"
+                        checked={filterType.pdf}
+                        label={"PDF"}
+                        name="format"
+                        className=""
+                        onChange={(e) => { setFileType({ ...filterType, pdf: Boolean(e.target.checked) }) }}
+                    />
+                    <AppCheckbox
+                        id="excel"
+                        checked={filterType.excel}
+                        label={"Excel"}
+                        name="format"
+                        className=""
+                        onChange={(e) => { setFileType({ ...filterType, excel: Boolean(e.target.checked) }) }}
+                    />
+                </div>
+            </div>
+        </AppModal>
+    )
+}
+
 
 const ChartDataLabel = ({
   title,

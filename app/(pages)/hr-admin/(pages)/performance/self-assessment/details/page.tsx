@@ -1,15 +1,15 @@
 "use client";
 
+import AppButton from "@/app/_components/shared/button";
 import CardLayout from "@/app/_components/shared/cards";
+import { AppModal } from "@/components/drawer/modal";
+import { DialogTitle } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
+import { GoDotFill } from "react-icons/go";
 import { IoIosArrowBack } from "react-icons/io";
+import { LuDownload } from "react-icons/lu";
 import { OpenDonughtChart } from "./open-donught-chart";
 import DetailsTable from "./table";
-import AppButton from "@/app/_components/shared/button";
-import { LuDownload } from "react-icons/lu";
-import { DialogTitle } from "@/components/ui/dialog";
-import { DrawerDialog } from "@/components/drawer/modal";
-import { GoDotFill } from "react-icons/go";
 
 export default function TemplateDetailsPage() {
   const router = useRouter();
@@ -105,7 +105,7 @@ const PreviewTitle = ({
 
 const DownloadModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <DialogTitle className="text-lg font-bold text-center">
@@ -137,6 +137,6 @@ const DownloadModal = ({ trigger }: { trigger: React.ReactNode }) => {
           <label htmlFor="excel">Excel</label>
         </div>
       </div>
-    </DrawerDialog>
+    </AppModal>
   );
 };

@@ -3,7 +3,7 @@
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { fetchReviewCycleById } from "@/app/api/services/performance/review cycle";
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -95,7 +95,7 @@ const PageHeader = () => {
 
 const DownloadModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <DialogTitle className="text-lg font-bold text-center">
@@ -127,13 +127,13 @@ const DownloadModal = ({ trigger }: { trigger: React.ReactNode }) => {
           <label htmlFor="excel">Excel</label>
         </div>
       </div>
-    </DrawerDialog>
+    </AppModal>
   );
 };
 
 const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={trigger}
       header={
         <DialogTitle className="text-lg font-bold text-center">
@@ -164,7 +164,7 @@ const DeleteModal = ({ trigger }: { trigger: React.ReactNode }) => {
       }
     >
       <></>
-    </DrawerDialog>
+    </AppModal>
   );
 };
 

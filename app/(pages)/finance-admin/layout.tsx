@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import FinanceAdminSidebar from "./components/sidebar";
 import Header from "@/app/_components/shared/header";
+import { Suspense, useState } from "react";
+import FinanceAdminSidebar from "./components/sidebar";
 
 const FinanceAdminLayout = ({ children }: { children: React.ReactNode }) => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const handleToggleMenu = () => setToggleMenu(!toggleMenu);
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <FinanceAdminSidebar
         setOpenMobileMenu={handleToggleMenu}
         openMobileMenu={toggleMenu}
@@ -24,7 +24,7 @@ const FinanceAdminLayout = ({ children }: { children: React.ReactNode }) => {
           {children}
         </main>
       </div>
-    </>
+    </Suspense>
   );
 };
 

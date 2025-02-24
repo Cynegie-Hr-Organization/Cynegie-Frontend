@@ -2,22 +2,28 @@
 
 import AddBudgetModal from "@/app/(pages)/finance-admin/(pages)/budgets/budget-form-modal";
 import AppButton from "@/app/_components/shared/button";
+import CardSkeleton from "@/app/_components/shared/skelentons/card";
+import { useBudgetSummary } from "@/app/_core/use-cases/finance/useBudget";
+import { getLocalCurrency } from "@/lib/utils";
 import { LuPlus } from "react-icons/lu";
 import BudgetsTable from "./table";
 
 const BudgetsPage = () => {
+  const { data: budgetSummary, isLoading } = useBudgetSummary()
+  const { remainingBudget, totalAllocated, totalSpent } = budgetSummary ?? {}
+
   const pageCards = [
     {
       title: "Total Budget Allocated ",
-      description: "₦34,886,000",
+      description: (totalAllocated || totalAllocated === 0) ? getLocalCurrency(totalAllocated) : '...',
     },
     {
       title: "Total Budget Spent",
-      description: "₦3,000,000",
+      description: (totalSpent || totalSpent === 0) ? getLocalCurrency(totalSpent) : '...',
     },
     {
       title: "Remaining Funds",
-      description: "₦27,000,000",
+      description: (remainingBudget || remainingBudget === 0) ? getLocalCurrency(remainingBudget) : '...',
     },
   ];
 
@@ -49,16 +55,20 @@ const BudgetsPage = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {pageCards.map((card, index) => (
-          <div className="common-card space-y-5" key={index}>
-            <div className="flex items-center gap-2">
-              <h3 className="font-roboto lg:text-xs text-sm text-[#848897] font-medium">
-                {card.title}
-              </h3>
+        {isLoading ? (
+          <CardSkeleton numberOfCards={pageCards.length} />
+        ) : (
+          pageCards.map((card, index) => (
+            <div className="common-card space-y-5" key={index}>
+              <div className="flex items-center gap-2">
+                <h3 className="font-roboto lg:text-xs text-sm text-[#848897] font-medium">
+                  {card.title}
+                </h3>
+              </div>
+              <p className="font-roboto text-xl font-bold">{card.description}</p>
             </div>
-            <p className="font-roboto text-xl font-bold">{card.description}</p>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       <BudgetsTable />

@@ -1,5 +1,7 @@
 import { AppSelect } from "@/app/_components/shared/select";
+import CardSkeleton from "@/app/_components/shared/skelentons/card";
 import Todo from "@/app/_components/todo";
+import { useDashboardOverviewData } from "@/app/_core/use-cases/hr-admin/useDashboard";
 import { newIndex } from "@/lib/utils";
 import { Box, Grid2, Stack } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
@@ -26,30 +28,9 @@ const size = {
   height: 200,
 };
 
-const overviewContents = [
-  {
-    color: "#EADAFF",
-    title: "Total Open Positions",
-    count: 15,
-  },
-  {
-    color: "#D2F1DE",
-    title: "Total Applications",
-    count: 900,
-  },
-  {
-    color: "#DEE3FF",
-    title: "Pending Offer",
-    count: 5,
-  },
-  {
-    color: "#DEE3FF",
-    title: "Interview Scheduled",
-    count: 4,
-  },
-];
 
 const OverViewSection = () => {
+
   return (
     <>
       <OverViewCards />
@@ -60,12 +41,44 @@ const OverViewSection = () => {
 };
 
 const OverViewCards = () => {
+  const { data, isLoading } = useDashboardOverviewData();
+
+  const { interviewsScheduled, pendingOffers, totalApplications, totalOpenPositions } = data ?? {}
+
+
+
+  const overviewContents = [
+    {
+      color: "#EADAFF",
+      title: "Total Open Positions",
+      count: totalOpenPositions ?? '...',
+    },
+    {
+      color: "#D2F1DE",
+      title: "Total Applications",
+      count: totalApplications ?? '...',
+    },
+    {
+      color: "#DEE3FF",
+      title: "Pending Offer",
+      count: pendingOffers ?? '...',
+    },
+    {
+      color: "#DEE3FF",
+      title: "Interview Scheduled",
+      count: interviewsScheduled ?? '...',
+    },
+  ];
+
+
   return (
     <div className="space-y-8">
       <h3 className="text-base font-bold text-black">Overview</h3>
 
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {overviewContents.map((content) => (
+        {isLoading ? (
+          <CardSkeleton numberOfCards={overviewContents.length} />
+        ) : overviewContents.map((content) => (
           <div
             key={content.title}
             className="common-card p-3 md:p-5 rounded-[12.56px] space-y-4"

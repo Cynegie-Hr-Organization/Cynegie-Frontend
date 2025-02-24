@@ -95,7 +95,7 @@ const useAttendanceRecordTable = () => {
             : null;
 
           return {
-            id: record.attendanceId,
+            id: record.id,
             date: new Date(record.date).toLocaleDateString(),
             clockInTime:
               clockInDate && !isNaN(clockInDate.getTime())
@@ -118,7 +118,7 @@ const useAttendanceRecordTable = () => {
               !isNaN(clockOutDate.getTime())
                 ? `${Math.round((clockOutDate.getTime() - clockInDate.getTime()) / 3600000)} hours`
                 : "N/A",
-            status: record.attendanceStatus,
+            status: record.status,
           };
         })
       : [];
@@ -142,12 +142,18 @@ const useAttendanceRecordTable = () => {
       "hoursWorked",
       "status",
     ],
+    statusMap: {
+      present: "success",
+      late: "warning",
+      on_leave: "warning",
+      absent: "error",
+    },
     fieldTypes: [
       FieldType.text,
       FieldType.text,
       FieldType.text,
       FieldType.text,
-      FieldType.attendanceStatus,
+      FieldType.status,
     ],
     actions: [
       {

@@ -1,12 +1,8 @@
 "use client";
 
-import { DrawerDialog } from "@/components/drawer/modal";
+import { AppModal } from "@/components/drawer/modal";
 import { DialogTitle } from "@/components/ui/dialog";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Avatar } from "@mui/material";
 import { ReactNode, useState } from "react";
 import { BsPerson } from "react-icons/bs";
@@ -100,7 +96,7 @@ function AddDocumentModal({ children }: { children: ReactNode }) {
   };
 
   return (
-    <DrawerDialog
+    <AppModal
       trigger={children}
       header={
         <DialogTitle className="">
@@ -207,7 +203,7 @@ function AddDocumentModal({ children }: { children: ReactNode }) {
           />
         </div>
       </form>
-    </DrawerDialog>
+    </AppModal>
   );
 }
 
@@ -228,7 +224,7 @@ export function EditDocumentModal({ triggers }: { triggers: ReactNode }) {
     );
   };
   return (
-    <DrawerDialog
+    <AppModal
       trigger={triggers}
       header={
         <DialogTitle>
@@ -302,7 +298,9 @@ export function EditDocumentModal({ triggers }: { triggers: ReactNode }) {
               }
             >
               {selectedFiles.length === 0 ? (
-                <p className="text-sm text-gray-500">click to upload</p>
+                <p className='text-sm text-gray-500'>
+                  click to upload
+                </p>
               ) : (
                 <p className="text-sm text-primary mt-2">+ Add more files</p>
               )}
@@ -335,13 +333,13 @@ export function EditDocumentModal({ triggers }: { triggers: ReactNode }) {
           />
         </div>
       </form>
-    </DrawerDialog>
+    </AppModal>
   );
 }
 
 function ViewTaskModal({ children }: { children: ReactNode }) {
   return (
-    <DrawerDialog
+    <AppModal
       trigger={children}
       header={
         <DialogTitle className="">
@@ -459,7 +457,7 @@ function ViewTaskModal({ children }: { children: ReactNode }) {
           </div>
         </div>
       </>
-    </DrawerDialog>
+    </AppModal>
   );
 }
 

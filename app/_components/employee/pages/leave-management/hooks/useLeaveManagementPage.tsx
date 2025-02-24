@@ -10,6 +10,7 @@ import {
   getLeaveType,
   requestLeave,
 } from "@/app/api/services/employee/leave";
+import { getEmployee } from "@/app/api/services/employee";
 import { APRStatusMap, color } from "@/constants";
 import { FetchParams } from "@/types";
 import Skeleton from "@mui/material/Skeleton";
@@ -20,6 +21,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { InputFieldValue, ModalProps } from "../../../modal/types";
 import { LeaveManagementChartProps } from "../chart";
+import { SortOrder } from "@/types/enum";
 
 const INIT_FETCH_PARAMS: FetchParams = {
   page: 1,
@@ -41,6 +43,7 @@ const useLeaveManagementPage = () => {
   const [leavePeriod, setLeavePeriod] = useState({ startDate: "", endDate: "" });
   const [reliefOfficer, setReliefOfficer] = useState<string | number | undefined>("");
   const [statusFilter, setStatusFilter] = useState<InputFieldValue>();
+  const [employees, setEmployees] = useState<any[]>([]);
 
   const [fetchParams, setFetchParams] = useState<FetchParams & { status?: InputFieldValue }>(INIT_FETCH_PARAMS);
 
@@ -83,6 +86,15 @@ const useLeaveManagementPage = () => {
     fetchLeaveTypes();
   }, []);
 
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      const response = await getEmployee(1, 50, SortOrder.Asc, undefined, "");
+      setEmployees(response.data);
+       console.log("Fetched employees data:", response);
+    };
+    fetchEmployees();
+  }, []);
+
   // Define the mutation
   const requestLeaveMutation = useMutation({
     mutationFn: requestLeave,
@@ -120,7 +132,8 @@ const useLeaveManagementPage = () => {
     queryKey: ["leave-requests", { ...fetchParams }],
     queryFn: async () => {
       const response = await getAllLeaveRequest(fetchParams);
-      return response?.data;
+      console.log(response);
+      return response;
     },
     refetchOnWindowFocus: false,
     staleTime: 60000, // Cache for 1 minute
@@ -349,10 +362,15 @@ const useLeaveManagementPage = () => {
         },
         {
           label: "Relief Officer",
-          type: "text",
-          placeholder: "Placeholder",
+          type: "select",
+          placeholder: "Select",
+          options: employees.map((employee) => ({
+            label: `${employee.personalInfo.firstName} ${employee.personalInfo.lastName}`,
+            value: employee.id,
+          })),
           value: reliefOfficer,
           setValue: setReliefOfficer,
+          disabled: loading,
         },
       ],
     },
