@@ -11,15 +11,15 @@ import { getDepartments } from "../../../payroll-management/pages/benefits-manag
 import { getBulkAttendanceReport } from "../../../payroll-management/pages/overview/api";
 import HrAdminEmployeeAttendanceManagementReport from "../report";
 
-const attendanceRateChartData = [
-  { item: "Monday", present: 580, absent: 750 },
-  { item: "Tuesday", present: 300, absent: 400 },
-  { item: "Wednesday", present: 630, absent: 200 },
-  { item: "Thursday", present: 450, absent: 300 },
-  { item: "Friday", present: 580, absent: 400 },
-  { item: "Saturday", present: 450, absent: 400 },
-  { item: "Sunday", present: 400, absent: 500 },
-];
+// const attendanceRateChartData = [
+//   { item: "Monday", present: 580, absent: 750 },
+//   { item: "Tuesday", present: 300, absent: 400 },
+//   { item: "Wednesday", present: 630, absent: 200 },
+//   { item: "Thursday", present: 450, absent: 300 },
+//   { item: "Friday", present: 580, absent: 400 },
+//   { item: "Saturday", present: 450, absent: 400 },
+//   { item: "Sunday", present: 400, absent: 500 },
+// ];
 
 type MappedAttendanceRecord = {
   id: string;
