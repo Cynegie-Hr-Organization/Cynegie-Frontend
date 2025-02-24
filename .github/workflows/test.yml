@@ -25,12 +25,11 @@ jobs:
       # Install dependencies
       - name: Install dependencies
         run: yarn install
+        
+      # Run linting
+      - name: Run linting
+        run: yarn run lint --max-warnings=0
 
       # Build the Next.js app
       - name: Build Next.js app
         run: yarn run build
-        
-      - name: Run linting
-        run: yarn run lint
-
-
