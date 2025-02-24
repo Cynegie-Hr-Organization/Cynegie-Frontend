@@ -53,20 +53,22 @@ const HrAdminEmployeeAttendanceManagementIndividualReport = () => {
   useEffect(() => {
     if (employeeAttendanceData) {
       setAttendanceRecords(
-        employeeAttendanceData.data.map((record: any) => ({
-          date: record.date,
-          checkInTime:
-            dayjs(record.clockIn).format("hh:mm A") !== "Invalid Date"
-              ? dayjs(record.clockIn).format("hh:mm A")
-              : "N/A",
-          clockOutTime:
-            dayjs(record.clockOut).format("hh:mm A") !== "Invalid Date"
-              ? dayjs(record.clockOut).format("hh:mm A")
-              : "N/A",
-          hoursWorked: "N/A",
-          status: "N/A",
-          overtimeHours: "N/A",
-        }))
+        !employeeAttendanceData.data
+          ? []
+          : employeeAttendanceData.data.map((record: any) => ({
+              date: record.date,
+              checkInTime:
+                dayjs(record.clockIn).format("hh:mm A") !== "Invalid Date"
+                  ? dayjs(record.clockIn).format("hh:mm A")
+                  : "N/A",
+              clockOutTime:
+                dayjs(record.clockOut).format("hh:mm A") !== "Invalid Date"
+                  ? dayjs(record.clockOut).format("hh:mm A")
+                  : "N/A",
+              hoursWorked: "N/A",
+              status: "N/A",
+              overtimeHours: "N/A",
+            }))
       );
     }
   }, [employeeAttendanceData]);
@@ -84,6 +86,11 @@ const HrAdminEmployeeAttendanceManagementIndividualReport = () => {
         startDate ? dayjs(startDate).format("MMM D, YYYY") : ""
       } - ${endDate ? dayjs(endDate).format("MMM D, YYYY") : ""})`}
       cardsLoading={employeeAttendanceData ? false : true}
+      exportParams={{
+        employeeId: employeeId,
+        startDate: startDate,
+        endDate: endDate,
+      }}
       cards={[
         {
           labelText: "Total Days Analyzed",
@@ -94,6 +101,7 @@ const HrAdminEmployeeAttendanceManagementIndividualReport = () => {
         {
           labelText: "On Leave",
           value: `${employeeAttendanceData?.statusCounts["on_leave"]} Days`,
+          // value: "",
           valueBelow: true,
           loading: employeeAttendanceData ? false : true,
         },

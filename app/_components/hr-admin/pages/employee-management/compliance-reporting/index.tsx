@@ -24,6 +24,7 @@ import {
   getTaskSummary,
   getTurnoverChartData,
 } from "../../payroll-management/pages/overview/api";
+import { downloadFile } from "../attendance/report/api/export";
 
 type MappedTasks = {
   taskName: string;
@@ -47,7 +48,10 @@ type MappedTurnoverBreakdown = {
 };
 
 const HrAdminEmployeeComplianceReporting = () => {
-  const [openExportModal, setOpenExportModal] = useState(false);
+  const [openDownloadModal, setOpenDownloadModal] = useState(false);
+  const [selectedDoc, setSelectedDoc] = useState<"pdf" | "excel">();
+  const [mutationLoading, setMutationLoading] = useState(false);
+  const [currentReportTab, setCurrentReportTab] = useState(0);
   const userGroupIcon = (
     <SvgIcon path={icon.userGroupTwo} width={14} height={14} />
   );
@@ -292,6 +296,7 @@ const HrAdminEmployeeComplianceReporting = () => {
             component: (
               <TabFormat
                 type="button"
+                getTab={(number) => setCurrentReportTab(number)}
                 tabs={[
                   {
                     name: "Employee Demography",
@@ -435,33 +440,69 @@ const HrAdminEmployeeComplianceReporting = () => {
                 actionButton={{
                   type: ButtonType.contained,
                   text: "Export",
-                  onClick: () => setOpenExportModal(true),
+                  onClick: () => setOpenDownloadModal(true),
                 }}
               />
             ),
           },
         ]}
       />
-      {openExportModal && (
-        <Modal
-          open={openExportModal}
-          onClose={() => setOpenExportModal(false)}
-          hasHeading={false}
-          centerTitle="Export Report"
-          centerMessage="Select the format you would like to download your report"
-          hasDocSelect
-          buttonOne={{
-            type: ButtonType.outlined,
-            text: "Cancel",
-            onClick: () => setOpenExportModal(false),
-          }}
-          buttonTwo={{
-            type: ButtonType.download,
-            text: "Download",
-            onClick: () => setOpenExportModal(false),
-          }}
-          buttonGroupPosition="center"
-        />
+      {openDownloadModal && (
+        <>
+          <Modal
+            open={openDownloadModal}
+            onClose={() => {
+              if (!mutationLoading) setOpenDownloadModal(false);
+              if (selectedDoc) setSelectedDoc(undefined);
+            }}
+            hasHeading={false}
+            centerTitle="Download Report"
+            centerMessage="Select the format you would like to download your report"
+            hasDocSelect
+            getDoc={setSelectedDoc}
+            reduceVerticalGap
+            buttonOne={{
+              type: mutationLoading ? ButtonType.disabled : ButtonType.outlined,
+              text: "Cancel",
+              onClick: () => {
+                setOpenDownloadModal(false);
+                if (selectedDoc) setSelectedDoc(undefined);
+              },
+            }}
+            buttonTwo={{
+              type: mutationLoading
+                ? ButtonType.disabledLoading
+                : selectedDoc
+                ? ButtonType.download
+                : ButtonType.disabled,
+              text: mutationLoading ? "" : "Download",
+              onClick: async () => {
+                if (selectedDoc) {
+                  setMutationLoading(true);
+                  downloadFile(
+                    currentReportTab === 0
+                      ? "employees/export-totals"
+                      : "employees/turnover/export",
+                    `${
+                      currentReportTab === 0
+                        ? "employee_records"
+                        : "turnover_records"
+                    }.${selectedDoc === "pdf" ? "pdf" : "xlsx"}`,
+                    selectedDoc ?? "pdf",
+                    {
+                      format: selectedDoc,
+                    }
+                  )
+                    .then(() => setOpenDownloadModal(false))
+                    .catch(() => {
+                      console.error("An error occured");
+                    })
+                    .finally(() => setMutationLoading(false));
+                }
+              },
+            }}
+          />
+        </>
       )}
     </Page>
   );
