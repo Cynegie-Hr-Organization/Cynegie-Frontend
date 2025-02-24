@@ -3,6 +3,7 @@
 import AppButton from "@/app/_components/shared/button";
 import { AppDropdownMenu } from "@/app/_components/shared/dropdown-menu";
 import { AppSelect } from "@/app/_components/shared/select";
+import { useSuperAdminDashboard } from "@/app/_core/use-cases/superadmin/useDashboard";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { GoDotFill } from "react-icons/go";
@@ -15,7 +16,10 @@ import SuperAdminOverviewTable from "./table";
 
 const SuperAdminDashboard = () => {
   // const { data, status } = useCashflowTrends();
+  const { data, isLoading } = useSuperAdminDashboard()
 
+  const { permissionAnalytics, totalFinanceApprovalRequests, totalItApprovalRequests, totalHrRequests } = data ?? {};
+  const { full_access, limited_access, view_only } = permissionAnalytics ?? {}
 
 
   const getConfigKey = (config: ChartConfigType, label: string): string => {
@@ -47,9 +51,9 @@ const SuperAdminDashboard = () => {
   };
 
   const chartData2: ChartDataItem[] = [
-    { label: "Full Access", value: 45 },
-    { label: "Limited Access", value: 25 },
-    { label: "View Only", value: 15 },
+    { label: "Full Access", value: full_access ?? 0 },
+    { label: "Limited Access", value: limited_access ?? 0 },
+    { label: "View Only", value: view_only ?? 0 },
   ];
   const chartConfig2: ChartConfigType = {
     fullAccess: { color: "#335DCF", label: "Full Access" },
@@ -174,19 +178,19 @@ const SuperAdminDashboard = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <PendingApprovalCard
                   title="HR"
-                  value="12"
+                  value={totalHrRequests ?? '...'}
                   icon={<RiGroupLine color="#0035C3" />}
                   iconColor="#E6EBF9"
                 />
                 <PendingApprovalCard
                   title="Finance"
-                  value="8"
+                  value={totalFinanceApprovalRequests ?? '...'}
                   icon={<PiChartLineFill color="#FF9900" />}
                   iconColor="#FFF5E6"
                 />
                 <PendingApprovalCard
                   title="IT"
-                  value="14"
+                  value={totalItApprovalRequests ?? '...'}
                   icon={<PiDevicesFill color="#099137" />}
                   iconColor="#E7F6EC"
                 />
@@ -296,7 +300,7 @@ const PendingApprovalCard = ({
   iconColor,
 }: {
   title: string;
-  value: string;
+  value: string | number;
   icon: React.ReactNode;
   iconColor?: string;
 }) => {
