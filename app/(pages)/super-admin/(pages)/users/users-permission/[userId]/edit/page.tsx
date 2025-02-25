@@ -74,9 +74,16 @@ const EditUserPermission = () => {
       firstName: userData?.firstName ?? '',
       lastName: userData?.lastName ?? '',
       staffEmail: userData?.email ?? '',
+      role: (userData?.role?.map((role) => role.name).join(", ") ?? '') as UserRoles,
     }));
   }, [data, userId])
 
+  // {
+  //   "permissions": [
+  //     "507f1f77bcf86cd799439012",
+  //     "60d5ec49f9f6b30f78b9a9c3"
+  //   ]
+  // }
 
   const setAllSwitches = (
     prev: FormData,
@@ -472,3 +479,54 @@ interface FormData {
     itAdministration: boolean;
   };
 }
+
+
+
+
+
+
+
+
+
+
+// const [formData, setFormData] = useState<FormData>({
+//   firstName: '',
+//   middleName: "...",
+//   lastName: '',
+//   staffEmail: "",
+//   role: "",
+//   financeAdminSwitches: {
+//     accessType: {
+//       fullAccess: false,
+//       limitAccess: false,
+//       viewOnlyAccess: false,
+//     },
+//     chartOfAccount: false,
+//     budgets: false,
+//     journals: false,
+//     banking: false,
+//     bankingTransaction: false,
+//   },
+//   hrAdminSwitches: {
+//     accessType: {
+//       fullAccess: false,
+//       limitAccess: false,
+//       viewOnlyAccess: false,
+//     },
+//     onboarding: false,
+//     hiring: false,
+//     employeeManagement: false,
+//     performanceManagement: false,
+//     payroll: false,
+//     deviceManagement: false,
+//     appManagement: false,
+//   },
+//   itAdminSwitches: {
+//     accessType: {
+//       fullAccess: false,
+//       limitAccess: false,
+//       viewOnlyAccess: false,
+//     },
+//     itAdministration: false,
+//   },
+// });

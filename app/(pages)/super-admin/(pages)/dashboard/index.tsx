@@ -16,7 +16,7 @@ import SuperAdminOverviewTable from "./table";
 
 const SuperAdminDashboard = () => {
   // const { data, status } = useCashflowTrends();
-  const { data, isLoading } = useSuperAdminDashboard()
+  const { data } = useSuperAdminDashboard()
 
   const { permissionAnalytics, totalFinanceApprovalRequests, totalItApprovalRequests, totalHrRequests } = data ?? {};
   const { full_access, limited_access, view_only } = permissionAnalytics ?? {}
