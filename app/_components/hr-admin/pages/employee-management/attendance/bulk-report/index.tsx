@@ -7,18 +7,19 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { getDepartments } from "../../../payroll-management/pages/benefits-management/api";
 import { getBulkAttendanceReport } from "../../../payroll-management/pages/overview/api";
 import HrAdminEmployeeAttendanceManagementReport from "../report";
 
-const attendanceRateChartData = [
-  { item: "Monday", present: 580, absent: 750 },
-  { item: "Tuesday", present: 300, absent: 400 },
-  { item: "Wednesday", present: 630, absent: 200 },
-  { item: "Thursday", present: 450, absent: 300 },
-  { item: "Friday", present: 580, absent: 400 },
-  { item: "Saturday", present: 450, absent: 400 },
-  { item: "Sunday", present: 400, absent: 500 },
-];
+// const attendanceRateChartData = [
+//   { item: "Monday", present: 580, absent: 750 },
+//   { item: "Tuesday", present: 300, absent: 400 },
+//   { item: "Wednesday", present: 630, absent: 200 },
+//   { item: "Thursday", present: 450, absent: 300 },
+//   { item: "Friday", present: 580, absent: 400 },
+//   { item: "Saturday", present: 450, absent: 400 },
+//   { item: "Sunday", present: 400, absent: 500 },
+// ];
 
 type MappedAttendanceRecord = {
   id: string;
@@ -50,12 +51,42 @@ const HrAdminEmployeeAttendanceManagementBulkReport = () => {
       }),
   });
 
+  const [mappedDepartments, setMappedDepartments] =
+    useState<{ label: string; value: string }[]>();
+  const { data: departmentsData } = useQuery({
+    queryKey: ["departments"],
+    queryFn: () => getDepartments({ page: 1, limit: 50, sortOrder: "asc" }),
+  });
+
+  useEffect(() => {
+    if (departmentsData) {
+      setMappedDepartments(
+        departmentsData.data
+          ? departmentsData.data?.map((department) => ({
+              label: department.departmentName,
+              value: department.id,
+            }))
+          : []
+      );
+    } else {
+      setMappedDepartments([]);
+    }
+  }, [departmentsData]);
+
   const [attendanceRecords, setAttendanceRecords] =
     useState<MappedAttendanceRecord[]>();
 
+  const [mappedChartData, setMappedChartData] = useState<
+    {
+      item: string;
+      present: number;
+      absent: number;
+      on_leave: number;
+    }[]
+  >();
+
   useEffect(() => {
     if (data) {
-      console.log(data);
       setAttendanceRecords(
         data.data
           ? data.data?.map((record) => ({
@@ -80,14 +111,26 @@ const HrAdminEmployeeAttendanceManagementBulkReport = () => {
             }))
           : []
       );
+      const days = Object.keys(data.attendanceRate);
+      const present = Object.values(data.attendanceRate).map(
+        (data) => data.undefined ?? 0
+      );
+      const late = Object.values(data.attendanceRate).map(
+        (data) => data.late ?? 0
+      );
+      const onLeave = Object.values(data.attendanceRate).map(
+        (data) => data.on_leave ?? 0
+      );
+      const mappedData = days.map((_, index) => ({
+        item: days[index],
+        present: late[index],
+        absent: present[index],
+        on_leave: onLeave[index],
+      }));
+      console.log(mappedData);
+      setMappedChartData(mappedData);
     } else {
       setAttendanceRecords(undefined);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (data) {
-      console.log(data);
     }
   }, [data]);
 
@@ -96,7 +139,7 @@ const HrAdminEmployeeAttendanceManagementBulkReport = () => {
       alert("No details provided to generate the report");
       router.push(route.hrAdmin.employeeManagement.attendanceManagement.home);
     }
-  }, []);
+  }, [router, startDate.length]);
 
   return (
     <HrAdminEmployeeAttendanceManagementReport
@@ -116,12 +159,16 @@ const HrAdminEmployeeAttendanceManagementBulkReport = () => {
         inputFields: [
           {
             type: "select",
-            defaultValue: 0,
-            options: [{ label: "All Departments", value: 0 }],
+            placeholder: "All Departments",
+            selectValControlledFromOutside: true,
+            options: [
+              { label: "All", value: undefined },
+              ...(mappedDepartments ?? []),
+            ],
           },
         ],
         hasLegend: true,
-        data: attendanceRateChartData,
+        data: mappedChartData ?? [],
         yAxisLabel: "(Num of Employees)",
         xAxisLabel: "Days",
         barSize: 60,

@@ -9,7 +9,7 @@ import SectionCardContainer from "@/app/_components/shared/section-with-cards/co
 import { icon, route } from "@/constants";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import {  useParams, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -26,12 +26,10 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
 
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
 
-  // const { slug } = useParams();
+  const { slug } = useParams();
 
   const queryClient = useQueryClient();
 
-  const { slug } = useParams()
-  
   const { data } = useQuery({
     queryKey: ["leave-request", slug],
     ...(typeof slug === "string" && { queryFn: () => getLeaveRequest(slug) }),
@@ -51,7 +49,7 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
     if (myEmployees) {
       setEmployees(
         myEmployees.data.map((employee) => ({
-          label: `${employee.personalInfo.firstName} ${employee.personalInfo.lastName}`,
+          label: `${employee.personalInfo?.firstName} ${employee.personalInfo?.lastName}`,
           value: employee.id,
         }))
       );
@@ -125,16 +123,16 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
           details={[
             {
               name: "Name",
-              value: `${data?.employee.personalInfo.firstName} ${data?.employee.personalInfo.lastName}`, //Inform the backend team to return the correct value
+              value: `${data?.employee.personalInfo?.firstName} ${data?.employee.personalInfo?.lastName}`, //Inform the backend team to return the correct value
             },
             {
               name: "Staff ID",
-              value: data?.employee.employmentInformation.staffId, //Inform the backend team to return the correct value
+              value: data?.employee.employmentInformation?.staffId, //Inform the backend team to return the correct value
             },
             {
               name: "Department",
               value:
-                data?.employee.employmentInformation.department.departmentName, //Inform the backend team to return the correct value
+                data?.employee.employmentInformation?.department.departmentName, //Inform the backend team to return the correct value
             },
             {
               name: "Job Title",
@@ -164,7 +162,9 @@ const HrAdminEmployeeManagementApprovalRequestDetails = () => {
             },
             {
               name: "Total Days Requested",
-              value: `${data?.leaveType.numberOfDays}`,
+              value: `${
+                dayjs(data?.endDate).date() - dayjs(data?.startDate).date() + 1
+              }`,
             },
             {
               name: "Reason for Leave",
