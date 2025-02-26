@@ -31,4 +31,5 @@ export const queryKeys = {
   NEW_HIRE_LIST: 'new-hire-list',
   TEMPLATES: 'templates',
   TEMPLATE: 'template',
+  SUPER_ADMIN_DASHBOARD: 'super-admin-dashboard'
 }

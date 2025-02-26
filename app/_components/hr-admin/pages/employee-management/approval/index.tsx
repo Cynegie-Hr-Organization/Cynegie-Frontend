@@ -72,7 +72,11 @@ const HrAdminEmployeeManagementApproval = () => {
               department:
                 record.employee.employmentInformation?.department
                   .departmentName,
-              requestDetails: `${record.leaveType.name} (${record.leaveType.numberOfDays} days)`,
+              requestDetails: `${record.leaveType.name} (${
+                dayjs(record.endDate).date() -
+                dayjs(record.startDate).date() +
+                1
+              } days)`,
               requestDate: dayjs(record.createdAt).format("MMM D, YYYY"),
               status: record.status,
             }))
@@ -256,7 +260,7 @@ const HrAdminEmployeeManagementApproval = () => {
         paginationMeta={{
           page: leaveRequestsData?.currentPage,
           limit: fetchParams.limit,
-          itemsOnPage: leaveRequestsData?.data.length,
+          itemsOnPage: leaveRequestsData?.data?.length,
           itemCount: leaveRequestsData?.count,
           loading: leaveRequestsData ? false : true,
           onChangeLimit: (limit) =>

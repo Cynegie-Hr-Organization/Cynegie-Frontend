@@ -13,11 +13,13 @@ const TabFormat: React.FC<TabFormatProps> = ({
   customTabValue,
   customHandleChange,
   hasButtons,
+  getTab,
 }) => {
   const [value, setValue] = useState(0);
   const handleChange = (event?: React.SyntheticEvent, newValue?: number) => {
     event?.preventDefault();
     setValue(newValue ?? 0);
+    getTab?.(newValue ?? 0);
   };
 
   const popoverTabs = tabs?.map((tab, index) => ({

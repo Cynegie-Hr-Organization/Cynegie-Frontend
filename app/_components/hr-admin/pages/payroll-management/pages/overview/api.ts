@@ -31,6 +31,7 @@ import {
   SalaryAdvanceRequest,
   SalaryAdvanceSummary,
   Task,
+  WeeklyAttendance,
 } from "@/types";
 import { Employee } from "@/types/api-index";
 
@@ -475,7 +476,7 @@ export const bulkReject = async (payload: { leaveIds: string[] }) => {
 export const getTurnoverChartData = async () => {
   const session = await getServerSession(authOptions);
 
-  return request("GET", `${baseUrl}/v1/employees/turnover`, {
+  return request("GET", `${baseUrl}/v1/employees/turnover-chart`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${session?.token}`,
@@ -501,4 +502,19 @@ export const adjustAttendance = async (
     },
     data: payload,
   });
+};
+
+export const getAttendanceRateChart = async (params?: {
+  filter?: "weekly" | "monthly";
+  departmentId?: string;
+}) => {
+  const session = await getServerSession(authOptions);
+
+  return request("GET", `${baseUrl}/v1/attendance/attendance-rate`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token}`,
+    },
+    params: params,
+  }) as Promise<WeeklyAttendance>;
 };

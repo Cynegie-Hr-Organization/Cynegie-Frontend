@@ -1,6 +1,10 @@
 import { getAllPermissions } from "@/app/_core/actions/super-admin/permissions"
+import { IUserPermission } from "@/app/_core/interfaces/super-admin"
+import { Http } from "@/app/_core/utils/axios"
 import { queryKeys } from "@/app/_core/utils/queryKeys"
+import { headers } from "@/app/_core/utils/session"
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { getSession } from "next-auth/react"
 import { useParams, useSearchParams } from "next/navigation"
 import { getCashflowTrends } from "../../actions/super-admin/charts-and-cards"
 
@@ -16,11 +20,7 @@ export const useCashflowTrends = () => {
   })
 }
 
-export const usePermissionMutations = () => {
-  return useMutation({
 
-  })
-}
 
 export const useAllPermissions = ({
   queryKey = [queryKeys.PERMISSIONS],
@@ -63,4 +63,40 @@ export const useAllPermissions = ({
     initialData: undefined,
     retry: false
   })
+}
+
+
+
+export const usePermissionMutations = () => {
+
+  const grantPermission = useMutation({
+    mutationKey: ['grant-permission'],
+    mutationFn: async ({ userId, body }: { userId: string, body: Partial<IUserPermission> }) => {
+      const session = await getSession();
+
+      return Http.post(`assign-permission/${userId}`, { body }, {
+        headers: await headers(session?.token ?? '')
+      })
+    }
+  })
+
+  const adminStatusActions = useMutation({
+    mutationKey: ['deactivate-admin'],
+    mutationFn: async ({ userId, body }: { userId: string, body: Partial<AdminStatus> }) => {
+      const session = await getSession();
+
+      return Http.post(`user/${userId}status/`, { body }, {
+        headers: await headers(session?.token ?? '')
+      })
+    }
+  })
+
+  return {
+    grantPermission,
+    adminStatusActions
+  }
+}
+
+interface AdminStatus {
+  status: "active"
 }

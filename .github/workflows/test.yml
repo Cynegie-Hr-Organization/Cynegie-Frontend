@@ -33,5 +33,3 @@ jobs:
       # Build the Next.js app
       - name: Build Next.js app
         run: yarn run build
-
-

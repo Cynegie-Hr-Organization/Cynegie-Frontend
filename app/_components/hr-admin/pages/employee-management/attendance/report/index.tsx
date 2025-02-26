@@ -24,6 +24,7 @@ type HrAdminEmployeeAttendanceManagementReportProps = {
   barChart?: BarChartProps;
   cardsLoading?: boolean;
   exportParams?: {
+    employeeId?: string;
     startDate: string;
     endDate: string;
   };
@@ -104,7 +105,9 @@ const HrAdminEmployeeAttendanceManagementReport: React.FC<
                 if (selectedDoc && exportParams) {
                   setMutationLoading(true);
                   downloadFile(
-                    "attendance/export",
+                    exportParams.employeeId
+                      ? `attendance/export/${exportParams.employeeId}`
+                      : "attendance/export",
                     `attendance_${dayjs(exportParams.startDate).format(
                       "DD-MM-YYYY"
                     )}_${dayjs(exportParams.endDate).format("DD-MM-YYYY")}.${
@@ -115,7 +118,8 @@ const HrAdminEmployeeAttendanceManagementReport: React.FC<
                       page: 1,
                       limit: 10,
                       sortOrder: "asc",
-                      ...exportParams,
+                      startDate: exportParams.startDate,
+                      endDate: exportParams.endDate,
                       format: selectedDoc,
                     }
                   )
