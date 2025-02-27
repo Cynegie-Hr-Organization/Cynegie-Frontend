@@ -7,7 +7,7 @@ import { baseUrl } from "@/constants/config";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/options";
 import { Goal } from "@/types";
-import { GetAllMySelfAssessmentResponse } from "./types";
+import { AssessmentById, GetAllMySelfAssessmentResponse } from "./types";
 
 export interface GoalResponse {
   data: Goal[];
@@ -103,7 +103,7 @@ export const getAllMySelfAssessment = async (
   return response as GetAllMySelfAssessmentResponse;
 };
 
-export const getAssessmentById = async (id: any) => {
+export const getAssessmentById = async (id: string): Promise<AssessmentById> => {
   const session = await getServerSession(authOptions);
 
   const response = await request("GET", `${baseUrl}/v1/assessments/${id}`, {
@@ -113,7 +113,7 @@ export const getAssessmentById = async (id: any) => {
     },
   });
 
-  return response;
+  return response as AssessmentById;
 };
 
 export const answerAssessmentById = async (data: any) => {
