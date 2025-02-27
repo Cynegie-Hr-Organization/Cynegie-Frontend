@@ -1,38 +1,82 @@
 "use client";
 import AddItems from "@/app/_components/shared/custom-popover/content/add-items";
 import Form from "@/app/_components/shared/form";
+import InputField from "@/app/_components/shared/form/input-field";
 import Page from "@/app/_components/shared/page";
 import { ChevronRight } from "@mui/icons-material";
+import { Checkbox } from "@mui/material";
 import { useState } from "react";
 import PerformanceSettingComponent from "./performance-settings";
 
 const HrAdminSettings = () => {
   const dropdownComponents = [
-    <AddItems
-      key={0}
-      addText="Add Leave Type"
-      addedItems={[{ name: "Annual Value", value: 0 }]}
-      allItems={[
-        "Annual Leave",
-        "Sick Leave",
-        "Maternity Leave",
-        "Study Leave",
-      ]}
-      type="no-select"
-      inputFieldName="Leave Type"
-      inputFieldType="select"
-      hasSelectOptions
-      startIndexToShowDelete={1}
-      middleField={{
-        label: "Eligibilty Criteria",
-        type: "select",
-        options: [{ label: "All Employees", value: 2 }],
-      }}
-      hasSecondaryField
-      secondaryFieldType="text"
-      secondaryFieldName="Available Days"
-      gridCols={{ xs: 1, sm: 4, md: 4, lg: 4 }}
-    />,
+    <div key={0} className="flex flex-col gap-2">
+      <AddItems
+        addText="Add Leave Type"
+        addedItems={[{ name: "Annual Value", value: 0, checkValue: false }]}
+        itemsHaveCheckValue={true}
+        checkText="Enable Leave Accrual"
+        allItems={[
+          "Annual Leave",
+          "Sick Leave",
+          "Maternity Leave",
+          "Study Leave",
+        ]}
+        type="no-select"
+        inputFieldName="Leave Type"
+        inputFieldType="select"
+        hasSelectOptions
+        startIndexToShowDelete={1}
+        middleField={{
+          label: "Eligibilty Criteria",
+          type: "select",
+          options: [{ label: "All Employees", value: 2 }],
+        }}
+        hasSecondaryField
+        secondaryFieldType="text"
+        secondaryFieldName="Available Days"
+        gridCols={{ xs: 1, sm: 4, md: 4, lg: 4 }}
+      />
+      <p className="card-title-large mt-8 mb-4">Leave Policies</p>
+      <p className="card-subtitle-small">Leave Accrual</p>
+      <Form
+        gridItemSize={{ xs: 12, sm: 6, md: 4 }}
+        gridSpacing={3}
+        inputFields={[
+          {
+            label: "Accrual Frequency",
+            type: "select",
+            defaultValue: 0,
+            options: [{ label: "Monthly", value: 0 }],
+          },
+          {
+            label: "Accrual Rate",
+            type: "text",
+            defaultValue: "10 days per month",
+          },
+          {
+            label: "Max Carryover Days",
+            type: "text",
+            defaultValue: "20",
+          },
+        ]}
+      />
+      <p className="card-subtitle-small mt-4">
+        Public Holidays and Leave Calculation
+      </p>
+      <div className="flex ml-[-10] items-center">
+        <Checkbox />
+        Exclue public holiday from leave calculation
+      </div>
+      <p className="card-subtitle-small mt-2">Leave Restrictions</p>
+      <div className="w-[50%]">
+        <InputField
+          type="text"
+          label="Max consecutive leave days"
+          defaultValue={30}
+        />
+      </div>
+    </div>,
     <AddItems
       key={1}
       addText="Add Stage"
@@ -153,7 +197,7 @@ const HrAdminSettings = () => {
                   {isOpen && DropdownComponent}
                 </div>
               );
-            },
+            }
           )}
         </div>
 

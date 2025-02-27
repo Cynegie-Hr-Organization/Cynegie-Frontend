@@ -260,6 +260,8 @@ const basePath = {
 
 export const route = {
   hrAdmin: {
+    dashboard: `${basePath.hrAdmin}`,
+    calendar: `${basePath.hrAdmin}calendar`,
     payroll: {
       overview: {
         home: `${basePath.hrAdmin}${basePath.payroll}overview`,
