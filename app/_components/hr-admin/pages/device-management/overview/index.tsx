@@ -5,12 +5,12 @@ import SvgIcon from "@/app/_components/icons/container";
 import DoughnutChart from "@/app/_components/shared/charts/donut-chart";
 import DotLegend from "@/app/_components/shared/charts/legends/dot-legend";
 import Page from "@/app/_components/shared/page";
-import PageHeading from "@/app/_components/shared/page/heading";
 import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import CardGroup from "@/app/_components/shared/section-with-cards/card-group";
 import SectionCardContainer from "@/app/_components/shared/section-with-cards/container";
 import Table from "@/app/_components/shared/table";
 import { FieldType } from "@/app/_components/shared/table/types";
+import { get } from "@/app/api/services/it-admin/device";
 import {
   APRStatusMap,
   color,
@@ -19,6 +19,8 @@ import {
   icon,
   route,
 } from "@/constants";
+import { DeviceAnalytics } from "@/types/api-index";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import DeviceActivity from "./device-activity";
@@ -36,25 +38,39 @@ const HrAdminDeviceOverview = () => {
   const router = useRouter();
   const [openAssignmentModal, setOpenAssignmentModal] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
+
+  const getDeviceAnalytics = (): Promise<DeviceAnalytics> =>
+    get("devices/analytics");
+
+  const { data: deviceMetricsData } = useQuery({
+    queryKey: ["devices", "analytics"],
+    queryFn: getDeviceAnalytics,
+  });
+
   return (
     <Page
       title="Device Dashboard"
       hasButtons
-      leftButton={{ type: ButtonType.outlined, text: "Manage Device" }}
-      rightButton={{ type: ButtonType.outlinedBlue, text: "Assign Device" }}
+      rightButton={{
+        type: ButtonType.contained,
+        text: "Request Device Assignment",
+      }}
       smActions={[
-        { name: "Manage Device", onClick: () => {} },
-        { name: "Assign Device", onClick: () => {} },
+        {
+          name: "Request Device Assignment",
+          onClick: () => setOpenAssignmentModal(true),
+        },
       ]}
     >
       <CardGroup
         gridItemSize={{ xs: 12, sm: 4 }}
+        loading={!deviceMetricsData}
         cards={[
           {
             icon: cardIcon,
             iconColorVariant: cardIconVariant,
             labelText: "Total Devices",
-            value: 327,
+            value: deviceMetricsData?.totalDevices,
             valueBelow: true,
             largeLabelText: true,
           },
@@ -62,7 +78,7 @@ const HrAdminDeviceOverview = () => {
             icon: cardIcon,
             iconColorVariant: cardIconVariant,
             labelText: "Assigned Devices",
-            value: 304,
+            value: deviceMetricsData?.requestStatusCounts.approved,
             valueBelow: true,
             largeLabelText: true,
           },
@@ -70,13 +86,15 @@ const HrAdminDeviceOverview = () => {
             icon: cardIcon,
             iconColorVariant: cardIconVariant,
             labelText: "Total Devices",
-            value: 23,
+            value:
+              deviceMetricsData?.requestStatusCounts.pending ??
+              0 + (deviceMetricsData?.requestStatusCounts.REJECTED ?? 0),
             valueBelow: true,
             largeLabelText: true,
           },
         ]}
       />
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-5">
+      <div className="block sm: hidden grid gap-6 grid-cols-1 md:grid-cols-5">
         <div className="md:col-span-3">
           <SectionCardContainer isCard title="Device by Type">
             <div className="grid grid-cols-2">
@@ -130,16 +148,8 @@ const HrAdminDeviceOverview = () => {
           </SectionCardContainer>
         </div>
       </div>
-      <PageHeading
-        title="Device Request"
-        hasButtons
-        rightButton={{
-          type: ButtonType.outlinedBlue,
-          text: "Request Device Assignment",
-          onClick: () => setOpenAssignmentModal(true),
-        }}
-      />
       <Table
+        title="Devices"
         hasCheckboxes
         hasActionsColumn
         headerRowData={["Date", "Employee Name", "Device Type", "Status"]}
@@ -158,7 +168,7 @@ const HrAdminDeviceOverview = () => {
               name: "View Details",
               onClick: () =>
                 router.push(
-                  route.hrAdmin.deviceManagement.overview.viewRequest,
+                  route.hrAdmin.deviceManagement.overview.viewRequest
                 ),
             },
           ],
@@ -167,7 +177,7 @@ const HrAdminDeviceOverview = () => {
               name: "View Details",
               onClick: () =>
                 router.push(
-                  route.hrAdmin.deviceManagement.overview.viewRequest,
+                  route.hrAdmin.deviceManagement.overview.viewRequest
                 ),
             },
             { name: "Approve Request", onClick: () => {} },
@@ -178,7 +188,7 @@ const HrAdminDeviceOverview = () => {
               name: "View Details",
               onClick: () =>
                 router.push(
-                  route.hrAdmin.deviceManagement.overview.viewRequest,
+                  route.hrAdmin.deviceManagement.overview.viewRequest
                 ),
             },
           ],
