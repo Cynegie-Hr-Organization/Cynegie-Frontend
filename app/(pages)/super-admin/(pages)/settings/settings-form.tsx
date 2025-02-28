@@ -6,7 +6,6 @@ import {
   useSuperAdminSettingsMutations,
 } from "@/app/_core/use-cases/superadmin/useSuperAdminSettings";
 import { useAppToast } from "@/app/_hooks/toast";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import ApprovalAndWorkflowSettingsForm from "./(forms)/approval-and-workflow";
 import ComplianceSettingsForm from "./(forms)/compliance";
@@ -22,7 +21,6 @@ const SettingsForm = () => {
   const { updateSettings } = useSuperAdminSettingsMutations();
   const { apptoast } = useAppToast();
   const isUpdating = updateSettings.isPending;
-  const router = useRouter();
 
   useEffect(() => {
     if (generalSettings) {
