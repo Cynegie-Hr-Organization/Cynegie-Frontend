@@ -6,6 +6,7 @@ import {
   useSuperAdminSettingsMutations,
 } from "@/app/_core/use-cases/superadmin/useSuperAdminSettings";
 import { useAppToast } from "@/app/_hooks/toast";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import ApprovalAndWorkflowSettingsForm from "./(forms)/approval-and-workflow";
 import ComplianceSettingsForm from "./(forms)/compliance";
@@ -21,18 +22,7 @@ const SettingsForm = () => {
   const { updateSettings } = useSuperAdminSettingsMutations();
   const { apptoast } = useAppToast();
   const isUpdating = updateSettings.isPending;
-
-  // const settings = useMemo(() => {
-  //   if (generalSettings) {
-  //     const { updatedAt, createdAt, } = generalSettings
-  //     if (!updatedAt || !createdAt) {
-  //       setData(generalSettings)
-  //       // console.log('***************', data);
-  //     }
-  //     // console.log('***************', data);
-  //   }
-  //   return generalSettings
-  // }, [generalSettings])
+  const router = useRouter();
 
   useEffect(() => {
     if (generalSettings) {
@@ -164,9 +154,8 @@ const FooterButtons = ({
 }) => {
   return (
     <div
-      className={`flex flex-col md:flex-row justify-end gap-4 ${
-        className ?? ""
-      }`}
+      className={`flex flex-col md:flex-row justify-end gap-4 ${className ?? ""
+        }`}
     >
       <AppButton
         label={btn1Label}
