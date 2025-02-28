@@ -6,36 +6,42 @@ import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import { route } from "@/constants";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AssessmentById } from "@/app/api/services/employee/performance-mgt/types";
 import {
   answerAssessmentById,
   getAssessmentById,
 } from "@/app/api/services/employee/performance-mgt";
 
+// Ensure getAssessmentById is typed properly
+const fetchAssessmentById = (id: string): Promise<AssessmentById> =>
+  getAssessmentById(id);
+
 const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
   const router = useRouter();
-  const { id } = useParams();
+  const { id } = useParams() as { id: string };
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [assessment, setAssessment] = useState<AssessmentById | null>(null);
   const [response, setResponse] = useState<string | number | undefined>("");
   const [questionId, setQuestionId] = useState<string>("");
 
-  const fetchAssessmentMutation = useMutation({
-    mutationFn: () => getAssessmentById(id),
-    onSuccess: (response) => {
-      setAssessment(response.data);
-      setQuestionId(response.data.template.questions[0].id);
-      console.log("Assessment fetched successfully:", response);
-    },
-    onError: (error) => {
-      console.error("Failed to fetch assessment:", error);
-    },
+  const { data: assessment, isLoading, error, isSuccess } = useQuery({
+    queryKey: ["assessment", id],
+    queryFn: () => fetchAssessmentById(id),
   });
 
+  // Handle side effects with useEffect
   useEffect(() => {
-    fetchAssessmentMutation.mutate();
-  }, [id, fetchAssessmentMutation]);
+    if (isSuccess && assessment) {
+      setQuestionId(assessment.data.template.questions[0].id);
+      console.log("Assessment fetched successfully:", assessment);
+    }
+  }, [isSuccess, assessment]);
+
+  useEffect(() => {
+    if (error) {
+      console.error("Failed to fetch assessment:", error);
+    }
+  }, [error]);
 
   const answerAssessmentMutation = useMutation({
     mutationFn: (data: any) => answerAssessmentById(data),
@@ -61,6 +67,8 @@ const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
     answerAssessmentMutation.mutate(data);
   };
 
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <Page
       title="Self Assessment"
@@ -74,7 +82,7 @@ const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
         isCard
         gridSpacing={4}
         inputFields={
-          assessment?.template.questions.map((question) => ({
+          assessment?.data.template.questions.map((question) => ({
             label: question.question,
             type: "text",
             value: response,

@@ -237,6 +237,7 @@ const basePath = {
   employee: "/employee/",
   hrAdmin: "/hr-admin/",
   performanceManagement: "performance-management/",
+  managerPerformanceManagement : "performance-management-manager/",
   learningDevelopment: "learning-development/",
   benefits: "benefits/",
   upcomingWidget: "upcoming-widget/",
@@ -319,6 +320,12 @@ export const route = {
       developmentPlan: `${basePath.employee}${basePath.performanceManagement}development-plan`,
       viewDevelopmentPlan: `${basePath.employee}${basePath.performanceManagement}view-development-plan`,
       createGoals: `${basePath.employee}${basePath.performanceManagement}create-goal`,
+    },
+    managerPerformanceManagement: {
+      createGoal : `${basePath.employee}${basePath.performanceManagement}create-goal`,
+      viewGoal : `${basePath.employee}${basePath.performanceManagement}view-goal/1`,
+      goalManagement : `${basePath.employee}${basePath.managerPerformanceManagement}goal-management`,
+      managerAssessment: `${basePath.employee}${basePath.managerPerformanceManagement}manager-assessment/1`,
     },
     learningDevelopment: {
       home: `${basePath.employee}${basePath.learningDevelopment}`,

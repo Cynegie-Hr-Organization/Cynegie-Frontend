@@ -80,33 +80,59 @@ export interface GoalResponse {
 }
 
 export interface AssessmentById {
-  assessmentName: string;
-  type: string;
-  template: {
-    templateName: string;
-    instructions: string;
-    deleted: boolean;
-    createdBy: string;
-    questions: Array<{
-      question: string;
-      description: string;
-      responseCriteria: string;
-      options: string[];
-      allowComments: boolean;
+  status: number;
+  message: string;
+  data: {
+    assessmentName: string;
+    type: string;
+    employees: Array<{
+      profileUpdateRequestStatus: string | null;
+      employmentInformation: string;
+      personalInfo: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        id: string;
+      };
+      compensation: string;
+      documents: string[];
+      NextOfKin: string[];
+      accessRights: string[];
+      deletedAt: string | null;
+      department: string;
+      company: string;
       createdAt: string;
       updatedAt: string;
       id: string;
     }>;
+    manager: string | null;
+    template: {
+      status: string;
+      templateName: string;
+      instructions: string;
+      deleted: boolean;
+      createdBy: string;
+      questions: Array<{
+        question: string;
+        description: string;
+        responseCriteria: string;
+        options: string[];
+        allowComments: boolean;
+        createdAt: string;
+        updatedAt: string;
+        id: string;
+      }>;
+      company: string;
+      createdAt: string;
+      updatedAt: string;
+      id: string;
+    };
+    dueDate: string;
+    status: string;
+    deletedAt: string | null;
     company: string;
     createdAt: string;
     updatedAt: string;
     id: string;
   };
-  dueDate: string;
-  status: string;
-  deletedAt: string | null;
-  company: string;
-  createdAt: string;
-  updatedAt: string;
-  id: string;
 }
