@@ -45,6 +45,7 @@ const Modal: React.FC<ModalProps> = (props) => {
     formControl,
     formButtonGroup,
     getDoc,
+    customBody,
   } = props;
 
   return (
@@ -62,6 +63,7 @@ const Modal: React.FC<ModalProps> = (props) => {
                 onCloseClick={onClose}
               />
             )}
+            {customBody && customBody}
             {viewTaskProps && <ViewTask {...viewTaskProps} />}
             {centerImage && (
               <div className="flex justify-center">
