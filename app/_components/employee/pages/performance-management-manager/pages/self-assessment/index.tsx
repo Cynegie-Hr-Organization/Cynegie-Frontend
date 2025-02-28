@@ -6,53 +6,35 @@ import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import { route } from "@/constants";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { AssessmentById } from "@/app/api/services/employee/performance-mgt/types";
-import {
-  answerAssessmentById,
-  getAssessmentById,
-} from "@/app/api/services/employee/performance-mgt";
 
-// Ensure getAssessmentById is typed properly
-const fetchAssessmentById = (id: string): Promise<AssessmentById> =>
-  getAssessmentById(id);
-
-const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
+const PerforamanceManagementManagerAssessment: React.FC = () => {
   const router = useRouter();
   const { id } = useParams() as { id: string };
+  console.log(id)
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [response, setResponse] = useState<string | number | undefined>("");
   const [questionId, setQuestionId] = useState<string>("");
 
-  const { data: assessment, isLoading, error, isSuccess } = useQuery({
-    queryKey: ["assessment", id],
-    queryFn: () => fetchAssessmentById(id),
-  });
-
-  // Handle side effects with useEffect
-  useEffect(() => {
-    if (isSuccess && assessment) {
-      setQuestionId(assessment.data.template.questions[0].id);
-      console.log("Assessment fetched successfully:", assessment);
-    }
-  }, [isSuccess, assessment]);
-
-  useEffect(() => {
-    if (error) {
-      console.error("Failed to fetch assessment:", error);
-    }
-  }, [error]);
-
-  const answerAssessmentMutation = useMutation({
-    mutationFn: (data: any) => answerAssessmentById(data),
-    onSuccess: (data) => {
-      console.log("Assessment answered successfully:", data);
-      setShowSuccessModal(true);
+  const dummyAssessment = {
+    data: {
+      template: {
+        questions: [
+          {
+            id: "question-1",
+            question: "How would you rate your performance this quarter?",
+          },
+          {
+            id: "question-2",
+            question: "What challenges did you face during this period?",
+          },
+        ],
+      },
     },
-    onError: (error) => {
-      console.error("Failed to answer assessment:", error);
-    },
-  });
+  };
+
+  useEffect(() => {
+    setQuestionId(dummyAssessment.data.template.questions[0].id);
+  }, []);
 
   const handleFormSubmit = () => {
     const data = {
@@ -62,16 +44,13 @@ const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
       comment: "",
       responseCriteria: "MULTI_SELECT",
     };
-
-    console.log("Data:", data);
-    answerAssessmentMutation.mutate(data);
+    console.log("Dummy submission data:", data);
+    setShowSuccessModal(true);
   };
-
-  if (isLoading) return <div>Loading...</div>;
 
   return (
     <Page
-      title="Self Assessment"
+      title="Manager Assessment"
       smallHeading
       backText="Back to assessments"
       onBackTextClick={() =>
@@ -82,12 +61,12 @@ const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
         isCard
         gridSpacing={4}
         inputFields={
-          assessment?.data.template.questions.map((question) => ({
+          dummyAssessment.data.template.questions.map((question) => ({
             label: question.question,
             type: "text",
             value: response,
             setValue: setResponse,
-          })) || []
+          }))
         }
         buttonGroup={{
           leftButton: {
@@ -124,4 +103,4 @@ const EmployeePerforamnceManagementSelfAssessment: React.FC = () => {
   );
 };
 
-export default EmployeePerforamnceManagementSelfAssessment;
+export default PerforamanceManagementManagerAssessment;
