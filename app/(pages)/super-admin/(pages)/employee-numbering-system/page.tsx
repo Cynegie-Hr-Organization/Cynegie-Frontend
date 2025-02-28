@@ -260,11 +260,15 @@ const EmployeeNumberingSystemPage = () => {
                     </div>
 
                     {formData.length > 1 ? (
-                      <button
-                        onClick={() => handleDeleteComponent(index)}
-                        className="h-10 w-10 flex items-center justify-center text-red-500 hover:bg-red-50 rounded-full transition-all duration-300">
-                        <TbTrash size={16} />
-                      </button>
+                      item.component !== "company-abbrevation" ? (
+                        <button
+                          onClick={() => handleDeleteComponent(index)}
+                          className="h-10 w-10 flex items-center justify-center text-red-500 hover:bg-red-50 rounded-full transition-all duration-300">
+                          <TbTrash size={16} />
+                        </button>
+                      ) : (
+                        <div className="h-10 w-10"></div>
+                      )
                     ) : (
                       <div className="h-10 w-10"></div>
                     )}
