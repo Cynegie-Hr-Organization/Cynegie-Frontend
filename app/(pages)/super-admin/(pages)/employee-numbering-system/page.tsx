@@ -4,6 +4,7 @@ import AppButton from "@/app/_components/shared/button"
 import { Spinner } from "@/app/_components/shared/buttons"
 import AppInputText from "@/app/_components/shared/input-text"
 import { AppSelect } from "@/app/_components/shared/select"
+import { EmployeeNumberingSystem } from "@/app/_core/actions/super-admin/employee-config"
 import { useEmployeeNumberingSystemMutations, useGetEmployeeNumberingSystem } from "@/app/_core/use-cases/superadmin/useEmployeeConfig"
 import { AppToast } from "@/app/_hooks/toast"
 import { useEffect, useState } from "react"
@@ -14,24 +15,70 @@ const EmployeeNumberingSystemPage = () => {
   const { data: employeeNumberingSystem, isLoading: isFetchingEmployeeNumberingSystem } = useGetEmployeeNumberingSystem();
   const { updateEmployeeNumberingSystemMutation } = useEmployeeNumberingSystemMutations();
   const [formData, setFormData] = useState<Array<{ component: string, value: string }>>([]);
+  const [originalData, setOriginalData] = useState<EmployeeNumberingSystem | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isFormValid, setIsFormValid] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
 
   useEffect(() => {
     if (employeeNumberingSystem) {
+      setOriginalData(employeeNumberingSystem);
+
       const initialFormData = [
-        { component: "company-abbrevation", value: employeeNumberingSystem.company ?? "" },
-        { component: "branch-abbrevation", value: employeeNumberingSystem.branchAbbreviation ?? "" },
-        { component: "department-abbrevation", value: employeeNumberingSystem.departmentAbbreviation ?? "" },
-        { component: "year", value: employeeNumberingSystem.year?.toString() ?? "" },
-        { component: "month", value: employeeNumberingSystem.month?.toString() ?? "" },
-        { component: "sequential-number", value: employeeNumberingSystem.sequentialNumber?.toString() ?? "" },
-        { component: "separator", value: employeeNumberingSystem.separator ?? "" }
+        { component: "company-abbrevation", value: employeeNumberingSystem.company || "" },
+        { component: "branch-abbrevation", value: employeeNumberingSystem.branchAbbreviation || "" },
+        { component: "department-abbrevation", value: employeeNumberingSystem.departmentAbbreviation || "" },
+        { component: "year", value: employeeNumberingSystem.year?.toString() || "" },
+        { component: "month", value: employeeNumberingSystem.month?.toString() || "" },
+        { component: "sequential-number", value: employeeNumberingSystem.sequentialNumber?.toString() || "" },
+        { component: "separator", value: employeeNumberingSystem.separator || "" }
       ].filter(item => item.value !== "");
 
       setFormData(initialFormData.length > 0 ? initialFormData : [{ component: "", value: "" }]);
     }
   }, [employeeNumberingSystem]);
+
+  useEffect(() => {
+    if (!originalData) return;
+
+    const currentFormattedData: any = {};
+    formData.forEach(item => {
+      switch (item.component) {
+        case 'company-abbrevation':
+          currentFormattedData.company = item.value;
+          break;
+        case 'branch-abbrevation':
+          currentFormattedData.branchAbbreviation = item.value;
+          break;
+        case 'department-abbrevation':
+          currentFormattedData.departmentAbbreviation = item.value;
+          break;
+        case 'year':
+          currentFormattedData.year = item.value ? parseInt(item.value) : undefined;
+          break;
+        case 'month':
+          currentFormattedData.month = item.value ? parseInt(item.value) : undefined;
+          break;
+        case 'sequential-number':
+          currentFormattedData.sequentialNumber = item.value ? parseInt(item.value) : undefined;
+          break;
+        case 'separator':
+          currentFormattedData.separator = item.value;
+          break;
+      }
+    });
+
+    const hasDataChanged =
+      originalData.company !== currentFormattedData.company ||
+      originalData.branchAbbreviation !== currentFormattedData.branchAbbreviation ||
+      originalData.departmentAbbreviation !== currentFormattedData.departmentAbbreviation ||
+      originalData.year !== currentFormattedData.year ||
+      originalData.month !== currentFormattedData.month ||
+      originalData.sequentialNumber !== currentFormattedData.sequentialNumber ||
+      originalData.separator !== currentFormattedData.separator;
+
+    setHasChanges(hasDataChanged);
+  }, [formData, originalData]);
 
   const idComponents = [
     { label: "Company Abbrevation", value: "company-abbrevation" },
@@ -45,6 +92,7 @@ const EmployeeNumberingSystemPage = () => {
 
 
   const isFormLengthValid = formData.length < idComponents.length;
+
   const handleAddComponent = () => {
     if (isFormLengthValid) {
       setFormData([...formData, { component: "", value: "" }]);
@@ -77,7 +125,7 @@ const EmployeeNumberingSystemPage = () => {
     const updatedFormData = [...formData];
     updatedFormData.splice(index, 1);
 
-    // If we deleted the last row, add an empty one
+
     if (updatedFormData.length === 0) {
       updatedFormData.push({ component: "", value: "" });
     }
@@ -116,7 +164,16 @@ const EmployeeNumberingSystemPage = () => {
   const handleSave = () => {
     if (!validateForm()) return;
 
-    const formattedData: any = {};
+    const formattedData: any = {
+      // company: null,
+      branchAbbreviation: null,
+      departmentAbbreviation: null,
+      year: null,
+      month: null,
+      sequentialNumber: null,
+      separator: null
+    };
+
 
     formData.forEach(item => {
       switch (item.component) {
@@ -144,11 +201,13 @@ const EmployeeNumberingSystemPage = () => {
       }
     });
 
+
     updateEmployeeNumberingSystemMutation.mutate(formattedData, {
       onSuccess: () => {
         AppToast.success({ title: "Successful", message: "Employee ID Configuration updated successfully" });
       },
-      onError: () => {
+      onError: (error) => {
+        console.error("API Error:", error);
         AppToast.error({ title: "Error", message: "Failed to update Employee ID Configuration" });
       }
     });
@@ -236,7 +295,7 @@ const EmployeeNumberingSystemPage = () => {
           onClick={handleSave}
           isLoading={updateEmployeeNumberingSystemMutation.isPending}
           className="btn btn-primary"
-          disabled={!isFormValid || updateEmployeeNumberingSystemMutation.isPending}
+          disabled={!isFormValid || !hasChanges || updateEmployeeNumberingSystemMutation.isPending}
         />
       </div>
     </div>
