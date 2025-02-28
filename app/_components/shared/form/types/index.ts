@@ -10,6 +10,7 @@ import { ButtonGroupProps } from "../../button-group/types";
 
 export type FormProps = {
   title?: string;
+  reduceTitleMargin?: boolean;
   inputFields?: InputFieldProps[];
   isCard?: boolean;
   gridSpacing?: number;

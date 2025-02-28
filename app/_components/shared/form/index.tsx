@@ -8,6 +8,7 @@ import { FormProps } from "./types";
 const Form: React.FC<FormProps> = (props) => {
   const {
     title,
+    reduceTitleMargin,
     inputFields,
     isCard,
     gridSpacing,
@@ -21,7 +22,11 @@ const Form: React.FC<FormProps> = (props) => {
   } = props;
   return (
     <div>
-      {title && <div className="card-title-small mb-8">{title}</div>}
+      {title && (
+        <div className={`card-title-small mb-${reduceTitleMargin ? 2 : 8}`}>
+          {title}
+        </div>
+      )}
       <div className="flex flex-col gap-7">
         <div
           className={isCard ? "common-card" : ""}

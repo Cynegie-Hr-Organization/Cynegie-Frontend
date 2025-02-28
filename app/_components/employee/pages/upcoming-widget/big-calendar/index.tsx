@@ -15,7 +15,7 @@ import "./styles.css";
 const localizer = momentLocalizer(moment);
 
 // Event type definition
-interface MyEvent {
+export interface CalendarEvent {
   title: string;
   start: Date;
   end: Date;
@@ -25,7 +25,7 @@ interface MyEvent {
 }
 
 // Sample events
-const events: MyEvent[] = [
+const sampleEvents: CalendarEvent[] = [
   {
     title: "Meeting with Cynegie",
     start: new Date(2024, 11, 10, 10, 0),
@@ -69,21 +69,30 @@ const events: MyEvent[] = [
 ];
 
 // Event styling function
-const eventStyleGetter = (event: MyEvent) => {
+const eventStyleGetter = (event: CalendarEvent) => {
   const style = {
     backgroundColor: event.color,
-    borderRadius: "5px",
     opacity: 0.8,
     color: "white",
     border: "none",
     display: "block",
+    height: "100vh",
+    textOverflow: "hidden",
   };
   return {
     style,
   };
 };
 
-const BigCalendar = () => {
+const BigCalendar = ({
+  events,
+  indicators,
+  onSelectEvent,
+}: {
+  events?: CalendarEvent[];
+  indicators?: { dotColor: string; label: string }[];
+  onSelectEvent?: (event: CalendarEvent) => void;
+}) => {
   const [calView, setCalView] = useState<View>("month");
 
   return (
@@ -110,11 +119,13 @@ const BigCalendar = () => {
           <div className="mt-8">
             <div className="mb-4 card-title-small">Indicators</div>
             <div className="flex flex-col gap-2">
-              {[
-                { dotColor: color.success.dark, label: "Meetings" },
-                { dotColor: color.info.dark, label: "Deadline" },
-                { dotColor: color.warning.dark, label: "Company Event" },
-              ].map((series) => (
+              {(
+                indicators ?? [
+                  { dotColor: color.success.dark, label: "Meetings" },
+                  { dotColor: color.info.dark, label: "Deadline" },
+                  { dotColor: color.warning.dark, label: "Company Event" },
+                ]
+              ).map((series) => (
                 <DotLegend
                   key={series.label}
                   type="meeting-indicator"
@@ -128,7 +139,8 @@ const BigCalendar = () => {
       <div className="flex-grow overflow-auto sm:w-full md:w-full bg-white">
         <Calendar
           localizer={localizer}
-          events={events}
+          events={events ?? sampleEvents}
+          onSelectEvent={onSelectEvent}
           startAccessor="start"
           endAccessor="end"
           className="w-[600] sm:w-full"

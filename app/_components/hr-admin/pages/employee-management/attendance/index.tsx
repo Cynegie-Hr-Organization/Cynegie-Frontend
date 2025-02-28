@@ -47,6 +47,8 @@ type MappedLeaveRecord = {
   endDate: string;
   daysOnLeave: string;
   backupEmployee: string;
+  adjustedLeaveDays: string;
+  accruedLeaveBalance: string;
 };
 
 const HrAdminEmployeeAttendanceManagement = () => {
@@ -239,6 +241,8 @@ const HrAdminEmployeeAttendanceManagement = () => {
               endDate: dayjs(record.endDate).format("DD-MM-YYYY"),
               daysOnLeave: record.numberOfDays.toString(),
               backupEmployee: "N/A",
+              adjustedLeaveDays: "N/A",
+              accruedLeaveBalance: "N/A",
             }))
           : []
       );
@@ -280,7 +284,7 @@ const HrAdminEmployeeAttendanceManagement = () => {
 
   return (
     <Page
-      title="Attendance Managment"
+      title="Attendance Management"
       hasButtons
       rightButton={{
         type: ButtonType.contained,
@@ -458,8 +462,10 @@ const HrAdminEmployeeAttendanceManagement = () => {
                   "End Date",
                   "Days on Leave",
                   "Backup Employee",
+                  "Adjusted Leave Days",
+                  "Accrued Leave Balance",
                 ]}
-                fieldTypes={Array(8).fill(FieldType.text)}
+                fieldTypes={Array(10).fill(FieldType.text)}
                 displayedFields={[
                   "employeeName",
                   "staffID",
@@ -469,6 +475,8 @@ const HrAdminEmployeeAttendanceManagement = () => {
                   "endDate",
                   "daysOnLeave",
                   "backupEmployee",
+                  "adjustedLeaveDays",
+                  "accruedLeaveBalance",
                 ]}
                 bodyRowData={leaveRecords}
                 filters={[

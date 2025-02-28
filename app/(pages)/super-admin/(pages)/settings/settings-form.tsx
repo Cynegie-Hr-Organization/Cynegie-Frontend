@@ -22,18 +22,6 @@ const SettingsForm = () => {
   const { apptoast } = useAppToast();
   const isUpdating = updateSettings.isPending;
 
-  // const settings = useMemo(() => {
-  //   if (generalSettings) {
-  //     const { updatedAt, createdAt, } = generalSettings
-  //     if (!updatedAt || !createdAt) {
-  //       setData(generalSettings)
-  //       // console.log('***************', data);
-  //     }
-  //     // console.log('***************', data);
-  //   }
-  //   return generalSettings
-  // }, [generalSettings])
-
   useEffect(() => {
     if (generalSettings) {
       setData(generalSettings);
@@ -164,9 +152,8 @@ const FooterButtons = ({
 }) => {
   return (
     <div
-      className={`flex flex-col md:flex-row justify-end gap-4 ${
-        className ?? ""
-      }`}
+      className={`flex flex-col md:flex-row justify-end gap-4 ${className ?? ""
+        }`}
     >
       <AppButton
         label={btn1Label}

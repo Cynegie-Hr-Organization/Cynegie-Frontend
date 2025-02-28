@@ -51,6 +51,10 @@ const NavLinks = ({
       name: "Settings",
       icon: <SlSettings size={16} />,
       path: "/super-admin/settings",
+      subMenu: [
+        { name: "Company Settings", path: "/super-admin/settings" },
+        { name: "Numbering System", path: "/super-admin/employee-numbering-system" },
+      ],
     },
   ];
 

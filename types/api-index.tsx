@@ -395,3 +395,48 @@ export interface Get360FeedbackResponse {
   totalPages: number;
   currentPage: number;
 }
+
+export interface DeviceAnalytics {
+  totalDevices: number;
+  deviceStatusCounts: {
+    ACTIVE: number;
+    INACTIVE: number;
+    UNDER_REPAIR: number;
+    active: number;
+  };
+  totalRequests: number;
+  requestStatusCounts: {
+    PENDING: number;
+    APPROVED: number;
+    REJECTED: number;
+    pending: number;
+    approved: number;
+  };
+}
+
+export type DeviceListResponse = {
+  totalDevices: number;
+  totalPages: number;
+  currentPage: number;
+  devices: NewDevice[];
+};
+
+type NewDevice = {
+  deviceName: string;
+  description: string;
+  location: string;
+  serialNumber: string;
+  deviceType: DeviceType;
+  status: string;
+  deletedAt: string | null;
+  employeeAssigned: Employee;
+  company: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+};
+
+type DeviceType = {
+  name: string;
+  id: string;
+};
