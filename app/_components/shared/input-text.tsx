@@ -11,7 +11,7 @@ const AppInputText = ({
   disabled,
   isLoadingContent = false,
 }: {
-  label: string;
+  label?: string;
   id: string;
   placeholder: string;
   requiredField?: boolean;
