@@ -7,7 +7,7 @@ import { DetailGroupProps } from "@/app/_components/shared/detail-group/types";
 import { FormProps } from "@/app/_components/shared/form/types";
 import { ButtonProps } from "@/app/_components/shared/page/heading/types";
 import { Dayjs } from "dayjs";
-import { Dispatch, FormEventHandler, SetStateAction } from "react";
+import { Dispatch, FormEventHandler, ReactNode, SetStateAction } from "react";
 import {
   Control,
   FieldErrors,
@@ -52,6 +52,7 @@ export type ModalProps = {
   formControl?: Control<FieldValues, any>;
   formButtonGroup?: ButtonGroupProps;
   getDoc?: (doc?: "pdf" | "excel") => void;
+  customBody?: ReactNode;
 };
 
 export type ModalData = Omit<ModalProps, "open" | "onClose">;
