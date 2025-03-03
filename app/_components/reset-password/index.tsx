@@ -15,7 +15,9 @@ const ResetPasswordPage = () => {
   const [step] = useState<"email" | "password">("email");
   const [email] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   //   const { ref: emailRef, inView: emailInView } = useInView({
@@ -162,18 +164,18 @@ const ResetPasswordPage = () => {
                 </label>
                 <div className="flex items-center border-2 rounded-md px-2 py-2">
                   <input
-                    type={showPassword ? "text" : "password"}
+                    type={showConfirmPassword ? "text" : "password"}
                     placeholder="Re-enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     className="w-full border-none px-2 py-2 rounded-md placeholder:text-sm focus:outline-none"
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="ml-2 focus:outline-none"
                   >
-                    {showPassword ? (
+                    {showConfirmPassword ? (
                       <VscEye size={20} />
                     ) : (
                       <VscEyeClosed size={20} />

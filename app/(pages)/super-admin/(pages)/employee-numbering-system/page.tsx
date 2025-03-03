@@ -27,7 +27,8 @@ const EmployeeNumberingSystemPage = () => {
   const [originalData, setOriginalData] =
     useState<EmployeeNumberingSystem | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [isFormValid, setIsFormValid] = useState(false);
+  // const [isFormValid, setIsFormValid] = useState(false);
+  const [isFormValid] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
 
   useEffect(() => {

@@ -235,7 +235,10 @@ const ForgotPasswordSuccessPage = () => {
           )}
           <p className="text-xs md:text-sm text-center mt-5 text-[#98A2B3] leading-relaxed">
             I did not receive the email.{" "}
-            <Link href="/" className="text-[#0035C3] underline">
+            <Link
+              href="/forgot-password-success"
+              className="text-[#0035C3] underline"
+            >
               Resend now
             </Link>
           </p>

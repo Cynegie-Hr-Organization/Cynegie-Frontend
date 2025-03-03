@@ -13,7 +13,8 @@ const PerforamanceManagementManagerAssessment: React.FC = () => {
   console.log(id);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [response, setResponse] = useState<string | number | undefined>("");
-  const [questionId, setQuestionId] = useState<string>("");
+  // const [questionId, setQuestionId] = useState<string>("");
+  const [questionId] = useState<string>("");
 
   const dummyAssessment = {
     data: {
