@@ -8,10 +8,6 @@ import Cookies from "js-cookie";
 
 
 
-
-
-
-
 export const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 export const testMode = process.env.NEXT_PUBLIC_TEST == "true";
 
