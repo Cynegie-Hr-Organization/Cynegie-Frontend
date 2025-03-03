@@ -34,7 +34,7 @@ const PerforamanceManagementManagerAssessment: React.FC = () => {
 
   useEffect(() => {
     setQuestionId(dummyAssessment.data.template.questions[0].id);
-  }, []);
+  }, [dummyAssessment.data.template.questions]);
 
   const handleFormSubmit = () => {
     const data = {
