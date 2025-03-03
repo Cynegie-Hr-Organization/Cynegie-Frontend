@@ -1,17 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React from "react";
+import { registerCompany } from "@/app/api/services/signup";
+import { emailRegex, nameRegex, passwordRegex } from "@/utils/regex";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { registerCompany } from "@/app/api/services/signup";
-import { nameRegex, emailRegex, passwordRegex } from "@/utils/regex";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import PasswordField from "../ui/password-fields";
 import TextField from "../ui/input-fields";
-import { useRouter } from "next/navigation";
+import PasswordField from "../ui/password-fields";
 
 const SignUpMain = () => {
   //useRouter
@@ -71,13 +70,19 @@ const SignUpMain = () => {
             response.message || "Registration failed. Please try again.",
             {
               className: "text-blue-600",
-            },
+            }
           );
         }
       } else {
-        toast.error("An unexpected error occurred. Please try again later.", {
-          className: "text-blue-600",
-        });
+        if (response.message.includes("Email is already registered")) {
+          toast.error(response.message, {
+            className: "text-blue-600",
+          });
+        } else {
+          toast.error("An unexpected error occurred. Please try again later.", {
+            className: "text-blue-600",
+          });
+        }
       }
     } catch (error: any) {
       console.error("Error:", error.message);
@@ -112,7 +117,7 @@ const SignUpMain = () => {
           </section>
 
           <form
-            className="lg:grid lg:grid-cols-2 gap-5"
+            className="flex flex-col lg:grid lg:grid-cols-2 gap-5"
             onSubmit={handleSubmit(onSubmit)}
           >
             <TextField
@@ -189,7 +194,7 @@ const SignUpMain = () => {
               })}
             />
 
-            <div className="mx-auto col-span-2 place-items-center">
+            <div className="mt-4 lg:mx-auto col-span-2 place-items-center">
               <button
                 className="bg-[#0035C3] lg:px-48 py-2 rounded-md text-white font-semibold w-full"
                 type="submit"

@@ -4,13 +4,13 @@ import Form from "@/app/_components/shared/form";
 import Page from "@/app/_components/shared/page";
 import { ButtonType } from "@/app/_components/shared/page/heading/types";
 import { route } from "@/constants";
-import { useRouter, useParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
 
 const PerforamanceManagementManagerAssessment: React.FC = () => {
   const router = useRouter();
   const { id } = useParams() as { id: string };
-  console.log(id)
+  console.log(id);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [response, setResponse] = useState<string | number | undefined>("");
   const [questionId, setQuestionId] = useState<string>("");
@@ -32,9 +32,9 @@ const PerforamanceManagementManagerAssessment: React.FC = () => {
     },
   };
 
-  useEffect(() => {
-    setQuestionId(dummyAssessment.data.template.questions[0].id);
-  }, []);
+  // useEffect(() => {
+  //   setQuestionId(dummyAssessment.data.template.questions[0].id);
+  // }, []);
 
   const handleFormSubmit = () => {
     const data = {
@@ -60,14 +60,14 @@ const PerforamanceManagementManagerAssessment: React.FC = () => {
       <Form
         isCard
         gridSpacing={4}
-        inputFields={
-          dummyAssessment.data.template.questions.map((question) => ({
+        inputFields={dummyAssessment.data.template.questions.map(
+          (question) => ({
             label: question.question,
             type: "text",
             value: response,
             setValue: setResponse,
-          }))
-        }
+          })
+        )}
         buttonGroup={{
           leftButton: {
             type: ButtonType.outlined,
