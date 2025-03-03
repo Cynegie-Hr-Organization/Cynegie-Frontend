@@ -11,25 +11,6 @@ import { Check } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 
-export function AppDropdownMenu({ trigger, menuItems, width = "w-56", isOpen, setIsOpen }: {
-  trigger: ReactNode,
-  menuItems: ReactNode,
-  width?: string,
-  isOpen?: boolean,
-  setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>
-}) {
-  return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger asChild>
-        {trigger}
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className={cn("bg-white rounded-lg", width)}>
-        <DropdownMenuGroup>{menuItems}</DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
-
 export function AppMultipleSelect({
   label,
   requiredField,
@@ -40,6 +21,7 @@ export function AppMultipleSelect({
   triggerStyle = "border-gray-300",
   noResultsText = "No results found",
   placeholder = "Select an option",
+  className, // Added optional className prop
 }: {
   label?: string;
   requiredField?: boolean;
@@ -50,6 +32,7 @@ export function AppMultipleSelect({
   triggerStyle?: string;
   noResultsText?: string;
   placeholder?: string;
+  className?: string; // Define className as optional
 }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -78,7 +61,7 @@ export function AppMultipleSelect({
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
-      <div className={`flex flex-col gap-1 ${width}`}>
+      <div className={`flex flex-col gap-2 ${width}`}>
         {label && (
           <p
             className={`text-xs font-semibold flex justify-start w-full ${
@@ -93,7 +76,10 @@ export function AppMultipleSelect({
 
         <DropdownMenuTrigger asChild>
           <button
-            className={`${triggerStyle} relative outline-none h-9 w-full rounded-md border bg-white px-3 py-2 text-xs ring-offset-white placeholder:text-gray-400 focus:outline-none focus:border-primary focus:ring-gray-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`}
+            className={cn(
+              `${triggerStyle} relative outline-none  w-full rounded-md border bg-white px-3 py-1 text-xs ring-offset-white placeholder:text-gray-400 focus:outline-none focus:border-primary focus:ring-gray-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`,
+              className, // Merge custom className with defaults
+            )}
           >
             <div className="grid grid-cols-[1fr_auto] items-center w-full gap-2">
               <p className="truncate text-left text-xs">{displayValue()}</p>
@@ -158,6 +144,30 @@ export function AppMultipleSelect({
           )}
         </DropdownMenuContent>
       </div>
+    </DropdownMenu>
+  );
+}
+
+// AppDropdownMenu exported as before (unchanged)
+export function AppDropdownMenu({
+  trigger,
+  menuItems,
+  width = "w-56",
+  isOpen,
+  setIsOpen,
+}: {
+  trigger: ReactNode;
+  menuItems: ReactNode;
+  width?: string;
+  isOpen?: boolean;
+  setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  return (
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+      <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
+      <DropdownMenuContent className={cn("bg-white rounded-lg", width)}>
+        <DropdownMenuGroup>{menuItems}</DropdownMenuGroup>
+      </DropdownMenuContent>
     </DropdownMenu>
   );
 }

@@ -24,6 +24,19 @@ interface PaginatedCandidateResponse {
   };
 }
 
+
+// types/jobCandidateMetrics.ts
+export interface JobCandidateMetrics {
+  total: number;
+  counts: {
+    Hired: number;  
+    Interviewed: number;
+    Applied: number;
+    Screened: number;
+  };
+}
+
+
 export const fetchCandidateById = async (
   id: string,
 ): Promise<CandidateResponse> => {
@@ -115,4 +128,24 @@ export const candidateReject = async (id: string, payload: any) => {
   );
 
   return response;
+};
+
+
+
+//fetch job candidate metrics
+export const getJobCandidateMetrics = async () : Promise<JobCandidateMetrics> => {
+  const session = await getServerSession(authOptions);
+
+  const response = await request(
+    "GET",
+    `${baseUrl}/v1/job-candidate/count-by-stage`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.token}`,
+      },
+    },
+  );
+
+  return response as Promise<JobCandidateMetrics>;
 };

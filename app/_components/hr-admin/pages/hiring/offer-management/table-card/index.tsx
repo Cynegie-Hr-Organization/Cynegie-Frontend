@@ -121,7 +121,7 @@ const OfferManagementTable = () => {
         {/* Filter Dropdown */}
         <div className="relative" ref={filterDropdownRef}>
           <button
-            className="text-gray-400 font-bold flex gap-2 items-center border rounded-lg px-4 py-2"
+            className="text-gray-400 font-bold flex  gap-2 items-center border rounded-lg px-4 py-2"
             onClick={toggleFilterDropdown}
           >
             <LuListFilter /> Filter

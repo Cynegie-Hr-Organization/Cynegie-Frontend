@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { FiSearch } from "react-icons/fi";
-import { MdFilterList } from "react-icons/md";
 import CandidateTable from "./candidate-table";
 import { Dropdown } from "@/app/_components/ui/dropdown";
 import { SortOrder } from "@/types/enum";
 import { getJobCandidate } from "@/app/api/services/candidate";
+import { RiSearchLine } from "react-icons/ri";
+import { LuListFilter } from "react-icons/lu";
 
 const CandidateManagementTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -101,29 +101,26 @@ const CandidateManagementTable = () => {
       {/* Header */}
       <div className="p-4  w-full flex justify-between items-center">
         {/* Search Input */}
-        <div className="relative w-56">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="border border-gray-300 rounded-md md:w-[300px] py-2 pl-10"
-          />
-          <FiSearch
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-            size={20}
-          />
-        </div>
-
-        {/* Filter Dropdown */}
-        <div className="relative" ref={filterDropdownRef}>
-          <button
-            className="flex items-center border border-gray-300 rounded-md px-4 py-2 text-sm hover:bg-gray-100"
-            onClick={toggleFilterDropdown}
-          >
-            <MdFilterList className="mr-2 text-gray-500" size={20} />
-            Filter
-          </button>
+           {/* Search Input */}
+          <div className="flex-grow max-w-[300px] mx-2 xl:max-w-[479px] flex items-center border pl-4 border-gray-300 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-1 focus-within:border-primary focus-within:ring-primary">
+            <RiSearchLine className="text-gray-400" size={20} />
+            <input
+              type="text"
+              placeholder="Search here..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full h-9 px-2 outline-none"
+            />
+          </div>
+  
+          {/* Filter Dropdown */}
+          <div className="relative" ref={filterDropdownRef}>
+            <button
+              className="text-gray-400 font-bold flex  gap-2 items-center border rounded-lg px-4 py-2"
+              onClick={toggleFilterDropdown}
+            >
+              <LuListFilter /> Filter
+            </button>
           {isFilterDropdownOpen && (
             <div className="absolute bg-white shadow-lg border border-gray-300 w-44 rounded-md mt-1 p-4 z-10 right-0">
               <Dropdown

@@ -36,7 +36,7 @@ const InterviewTabTable = <T extends Record<string, any>>({
   const router = useRouter();
 
   return (
-    <div className="bg-white w-full h-full flex flex-col">
+    <div className="bg-white w-full h-full flex flex-col overflow-x-scroll">
       {/* Table */}
       <div className="mt-4">
         {isLoading ? (
@@ -113,13 +113,7 @@ const InterviewTabTable = <T extends Record<string, any>>({
                                           `/hr-admin/hiring/interview-details/${row.id}`,
                                         ),
                                     },
-                                    {
-                                      key: "cancel",
-                                      label: "Cancel",
-                                      onClick: () =>
-                                        console.log("Cancel action clicked"), // Replace with cancel logic
-                                      className: "text-red-500", // Style for cancel option
-                                    },
+                                    
                                   ]
                                 : []),
                               ...(row.status === "Scheduled"

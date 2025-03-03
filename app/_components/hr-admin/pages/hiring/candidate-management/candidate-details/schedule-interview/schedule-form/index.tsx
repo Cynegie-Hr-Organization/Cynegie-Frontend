@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Dayjs } from "dayjs";
 import ScheduleSuccessModal from "../modal";
 import { useParams, useRouter } from "next/navigation";
 import useFetchEmployees from "@/utils/usefetchEmployees";
@@ -8,8 +7,10 @@ import { scheduleInterview } from "@/app/api/services/interview";
 import { CandidateResponse } from "@/types";
 import AppButton from "@/app/_components/shared/button";
 import { AppMultipleSelect } from "@/app/_components/shared/dropdown-menu";
-import CustomTimePicker from "@/app/_components/ui/time-picker";
-import { AppDatePicker } from "@/app/_components/shared/date-picker";
+import { AppDatePicker, AppTimePicker } from "@/app/_components/shared/date-picker";
+import AppInputText, { AppInputTextArea } from "@/app/_components/shared/input-text";
+
+// Import the new components
 
 const ScheduleForm: React.FC = () => {
   const { employees } = useFetchEmployees();
@@ -21,9 +22,9 @@ const ScheduleForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const [pickDate, setPickDate] = useState<Date | undefined>(undefined);
-  const [pickTime, setPickTime] = useState<Dayjs | null>(null);
+  const [pickTime, setPickTime] = useState<Date | undefined>(undefined);
   const [reminderDate, setReminderDate] = useState<Date | undefined>(undefined);
-  const [reminderTime, setReminderTime] = useState<Dayjs | null>(null);
+  const [reminderTime, setReminderTime] = useState<Date | undefined>(undefined);
   const [reminderDescription, setReminderDescription] = useState("");
   const [interviewer, setInterviewer] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -61,10 +62,17 @@ const ScheduleForm: React.FC = () => {
       return;
     }
 
+    const formatTime = (date: Date) => {
+      const hours = date.getHours() % 12 || 12;
+      const minutes = date.getMinutes().toString().padStart(2, "0");
+      const period = date.getHours() >= 12 ? "PM" : "AM";
+      return `${hours}:${minutes} ${period}`;
+    };
+
     const payload = {
       description: reminderDescription,
-      startTime: pickTime.format("hh:mm A"),
-      reminderTime: reminderTime ? reminderTime.format("hh:mm A") : null,
+      startTime: formatTime(pickTime),
+      reminderTime: reminderTime ? formatTime(reminderTime) : null,
       startDate: pickDate.toISOString(),
       candidate: candidateId,
       interviewer,
@@ -86,104 +94,107 @@ const ScheduleForm: React.FC = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="p-4 md:p-6 bg-white">
+      <form onSubmit={handleSubmit} className="grid gap-6">
+        <div className="grid gap-6 p-4 md:p-6 bg-white rounded-lg shadow-sm border border-gray-200">
           {/* Candidate and Interviewer Fields */}
-          <div className="grid grid-cols-1 mb-4 md:grid-cols-2 gap-4 md:gap-6">
-            <div>
-              <label className="block text-sm font-semibold mb-1 text-gray-700">
-                Candidate
-              </label>
-              <input
-                type="text"
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid gap-2">
+              <AppInputText
+                label="Candidate"
+                id="candidate"
+                placeholder="Candidate Name"
+                requiredField={true}
                 value={`${candidate?.firstName} ${candidate?.lastName}` || ""}
-                disabled
-                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-300"
+                disabled={true}
+                isLoadingContent={isLoading} 
               />
             </div>
 
-            <div>
+            <div className="grid gap-2">
               <AppMultipleSelect
-                label="Interviewer"
+                label="Interviewer *"
                 placeholder="Select Interviewer"
                 items={employees.map((emp: any) => ({
                   label: `${emp.personalInfo.firstName} ${emp.personalInfo.lastName}`,
                   value: emp.id as string,
                 }))}
-                selectedValues={interviewer ? [interviewer] : []} // Ensures it's a single value
+                selectedValues={interviewer ? [interviewer] : []}
                 onSelectionChange={(values: string[]) =>
                   setInterviewer(values[values.length - 1])
-                } // Use only the last selected value
+                }
+                className="w-full py-2"
               />
             </div>
           </div>
 
           {/* Date and Time Selection */}
-          <div className="grid grid-cols-1 mb-4 md:grid-cols-2 gap-4 md:gap-6">
-            <div className="w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid gap-2">
               <AppDatePicker
-                label="Pick Date"
+                label="Pick Date *"
                 placeholder="Select a date"
                 selectedDate={pickDate}
                 setSelectedDate={setPickDate}
+                className="w-full"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Pick Time <span className="text-red-500">*</span>
-              </label>
-              <CustomTimePicker value={pickTime} onChange={setPickTime} />
+            <div className="grid gap-2">
+              <AppTimePicker
+                label="Pick Time *"
+                selectedTime={pickTime}
+                setSelectedTime={setPickTime}
+                className="w-full"
+              />
             </div>
           </div>
 
           {/* Reminder Section */}
-          <div className="my-4">
-            <h3 className="text-lg mb-4 font-semibold">Set Reminder</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div className="w-full">
+          <div className="grid gap-4">
+            <h3 className="text-lg font-semibold text-gray-900">
+              Set Reminder
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid gap-2">
                 <AppDatePicker
                   label="Reminder Date"
                   placeholder="Select a date"
                   selectedDate={reminderDate}
                   setSelectedDate={setReminderDate}
+                className="w-full"
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-gray-700">
-                  Set Time
-                </label>
-                <CustomTimePicker
-                  value={reminderTime}
-                  onChange={setReminderTime}
+              <div className="grid gap-2">
+                <AppTimePicker
+                  label="Set Time"
+                  selectedTime={reminderTime}
+                  setSelectedTime={setReminderTime}
+                className="w-full"
                 />
               </div>
             </div>
           </div>
 
           {/* Reminder Description */}
-          <div className="mt-4">
-            <label className="block text-sm font-semibold text-gray-700">
-              Reminder Description
-            </label>
-            <textarea
+          <div className="grid gap-2">
+            <AppInputTextArea
+              label="Reminder Description"
+              id="reminder-description"
               placeholder="Reminder Description"
-              className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-300"
-              rows={4}
               value={reminderDescription}
               onChange={(e) => setReminderDescription(e.target.value)}
-            ></textarea>
+            />
           </div>
         </div>
 
         {/* Submit Button */}
-        <div className="flex justify-end">
+        <div className="grid justify-end">
           <AppButton
             type="submit"
             label={isLoading ? "Scheduling..." : "Schedule"}
             isLoading={isLoading}
-            className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
+            className="px-6 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
             disabled={isLoading}
           />
         </div>
@@ -191,7 +202,11 @@ const ScheduleForm: React.FC = () => {
 
       <ScheduleSuccessModal isOpen={isModalOpen} onClose={handleModalClose} />
 
-      {error && <p className="text-red-500 mt-4">{error}</p>}
+      {error && (
+        <div className="grid">
+          <p className="text-red-500">{error}</p>
+        </div>
+      )}
     </>
   );
 };

@@ -3,11 +3,22 @@
 import React from "react";
 import HiringCandidateOfferHeader from "./header";
 import Image from "next/image";
-
 import OfferManagementTable from "./table-card";
 import OverviewCards from "../cards/overview-card";
+import { useOfferManagementMetrics } from "../hook/useOfferManagement";
 
 const HrAdminHiringOfferManagement: React.FC = () => {
+  const { metrics, loading, error } = useOfferManagementMetrics();
+
+  // Handle error state
+  if (error) {
+    return (
+      <div className="p-[4px] md:p-[30px] text-red-500">
+        Error: {error}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4 p-[4px] md:p-[30px]">
       <HiringCandidateOfferHeader />
@@ -24,7 +35,8 @@ const HrAdminHiringOfferManagement: React.FC = () => {
             />
           }
           title="Offers sent"
-          value="30"
+          value={metrics?.total.toString() || "0"} // Use total for "Offers sent"
+          loading={loading} // Pass loading state
         />
         <OverviewCards
           icon={
@@ -36,7 +48,8 @@ const HrAdminHiringOfferManagement: React.FC = () => {
             />
           }
           title="Pending"
-          value="15"
+          value={metrics?.counts.Pending.toString() || "0"}
+          loading={loading}
         />
         <OverviewCards
           icon={
@@ -48,7 +61,8 @@ const HrAdminHiringOfferManagement: React.FC = () => {
             />
           }
           title="Accepted"
-          value="10"
+          value={metrics?.counts.Accepted.toString() || "0"}
+          loading={loading}
         />
         <OverviewCards
           icon={
@@ -60,11 +74,12 @@ const HrAdminHiringOfferManagement: React.FC = () => {
             />
           }
           title="Rejected"
-          value="5"
+          value={metrics?.counts.Rejected.toString() || "0"}
+          loading={loading}
         />
       </div>
 
-      {/* Tabs Section*/}
+      {/* Tabs Section */}
       <div className="w-full">
         <OfferManagementTable />
       </div>

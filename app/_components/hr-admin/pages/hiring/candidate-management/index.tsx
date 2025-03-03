@@ -3,11 +3,22 @@
 import React from "react";
 import HiringCandidateManagementHeader from "./header";
 import Image from "next/image";
-
 import CandidateManagementTable from "./table-card";
 import OverviewCards from "../cards/overview-card";
+import { useJobCandidateMetrics } from "../hook/useHiringMetrics";
 
 const HrAdminHiringCandidateManagement: React.FC = () => {
+  const { metrics, loading, error } = useJobCandidateMetrics();
+
+  // Handle error state
+  if (error) {
+    return (
+      <div className="p-[4px] md:p-[30px] text-red-500">
+        Error: {error}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4 p-[4px] md:p-[30px]">
       <HiringCandidateManagementHeader />
@@ -24,7 +35,8 @@ const HrAdminHiringCandidateManagement: React.FC = () => {
             />
           }
           title="Applied"
-          value="327"
+          value={metrics?.counts.Applied.toString() || "0"}
+          loading={loading} // Pass loading state
         />
         <OverviewCards
           icon={
@@ -36,7 +48,8 @@ const HrAdminHiringCandidateManagement: React.FC = () => {
             />
           }
           title="Screened"
-          value="304"
+          value={metrics?.counts.Screened.toString() || "0"}
+          loading={loading}
         />
         <OverviewCards
           icon={
@@ -48,7 +61,8 @@ const HrAdminHiringCandidateManagement: React.FC = () => {
             />
           }
           title="Interviewed"
-          value="56"
+          value={metrics?.counts.Interviewed.toString() || "0"}
+          loading={loading}
         />
         <OverviewCards
           icon={
@@ -59,8 +73,9 @@ const HrAdminHiringCandidateManagement: React.FC = () => {
               height={30}
             />
           }
-          title="Offer Appointment "
-          value="23"
+          title="Offer Appointment"
+          value="23" // Hardcoded as requested
+          loading={false} // No loading state for this card
         />
         <OverviewCards
           icon={
@@ -72,11 +87,12 @@ const HrAdminHiringCandidateManagement: React.FC = () => {
             />
           }
           title="Hired"
-          value="23"
+          value={metrics?.counts.Hired.toString() || "0"}
+          loading={loading}
         />
       </div>
 
-      {/* Tabs Section*/}
+      {/* Tabs Section */}
       <div className="w-full">
         <CandidateManagementTable />
       </div>

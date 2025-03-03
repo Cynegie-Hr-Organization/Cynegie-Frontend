@@ -15,6 +15,18 @@ interface ApiResponse {
   data: JobOffer;
 }
 
+
+// types - jobCandidateMetrics
+export interface JobOfferMetrics {
+  total: number;
+  counts: {
+    Pending: number;  
+    Withdrawn: number;
+    Accepted: number;
+    Rejected: number;
+  };
+}
+
 export const createJobOffer = async (payload: any) => {
   const session = await getServerSession(authOptions);
 
@@ -132,4 +144,24 @@ export const editJobOffer = async (id: string, payload: any) => {
     },
     data: payload,
   });
+};
+
+
+
+//fetch job candidate metrics
+export const getJobOfferMetrics = async () : Promise<JobOfferMetrics> => {
+  const session = await getServerSession(authOptions);
+
+  const response = await request(
+    "GET",
+    `${baseUrl}/v1/job-offers/count-by-status`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.token}`,
+      },
+    },
+  );
+
+  return response as Promise<JobOfferMetrics>;
 };

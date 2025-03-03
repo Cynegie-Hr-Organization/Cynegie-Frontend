@@ -72,7 +72,7 @@ const InterviewDetailsTopHeader: React.FC<InterviewDetailsTopHeaderProps> = ({
     <>
       {/* Header Section */}
       <header className="flex flex-row justify-between items-center">
-        <h1 className="ml-2 text-xl md:text-2xl font-bold text-gray-900 md:mb-4">
+        <h1 className="ml-2 text-base md:text-xl font-bold text-gray-900 md:mb-4">
           Interview Details
         </h1>
         <div
@@ -81,7 +81,7 @@ const InterviewDetailsTopHeader: React.FC<InterviewDetailsTopHeaderProps> = ({
         >
           {/* Actions Button */}
           <button
-            className="w-full flex flex-row items-center gap-2 md:w-auto px-4 md:px-6 py-2 border-gray-300 border-2 text-base font-semibold bg-white text-gray-700 rounded-lg hover:border-blue-600 cursor-pointer"
+            className="w-full flex flex-row items-center gap-2 md:w-auto px-4 md:px-2 py-1 border-gray-300 border-2 text-sm font-semibold bg-white text-gray-700 rounded-lg hover:border-blue-600 cursor-pointer"
             onClick={toggleDropdown}
           >
             Actions
@@ -105,19 +105,19 @@ const InterviewDetailsTopHeader: React.FC<InterviewDetailsTopHeaderProps> = ({
           {dropdownOpen && (
             <div className="absolute right-0 top-9 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
               <button
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
+                className="block w-full text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
                 onClick={() => alert("Schedule follow up interview")}
               >
                 Schedule follow up interview
               </button>
               <button
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
+                className="block w-full text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
                 onClick={() => alert("Move to next stage")}
               >
                 Move to next stage
               </button>
               <button
-                className="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100 focus:outline-none"
+                className="block w-full text-left px-2 py-2 text-sm text-red-500 hover:bg-gray-100 focus:outline-none"
                 onClick={handleRejectClick}
               >
                 Reject Candidate

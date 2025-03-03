@@ -26,8 +26,8 @@ const BarChartComponent: React.FC<BarChartComponentProps> = ({
     <div className="">
       <CardHeader>
         <div className="flex flex-wrap flex-col items-start justify-between gap-4">
-          <div className="flex w-full items-center justify-between flex-row">
-            <div className="text-base font-semibold text-black tracking-[-0.02em] leading-[24px] md:text-[20px] md:leading-[32px] order-1">
+          <div className="flex w-full items-start md:items-center justify-between flex-col md:flex-row">
+            <div className="text-base mb-2 font-semibold text-black tracking-[-0.02em] leading-[24px] md:text-[20px] md:leading-[32px] order-1 md:mb-0">
               Hiring Pipeline
             </div>
 
@@ -62,30 +62,28 @@ const BarChartComponent: React.FC<BarChartComponentProps> = ({
             </div>
           </div>
           {/* Legend */}
-          <div className="flex flex-col gap-4 w-full items-end order-8 md:order-3">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-gray-200 rounded-full" />
-                <span className="text-[11px] md:text-sm">Screening</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-blue-200 rounded-full" />
-                <span className="text-[11px] md:text-sm">Interviewing</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-blue-400 rounded-full" />
-                <span className="text-[11px] md:text-sm">Offered</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-blue-600 rounded-full" />
-                <span className="text-[11px] md:text-sm">Hired</span>
-              </div>
-            </div>
-          </div>
+         <div className="grid gap-4 w-full  order-8 md:order-3 grid-cols-1 md:grid-cols-4 justify-items-start ">
+  <div className="grid grid-cols-[auto,1fr] gap-x-2  items-center">
+    <div className="w-3 h-3 bg-gray-200 rounded-full" />
+    <span className="text-[11px] md:text-sm">Screening</span>
+  </div>
+  <div className="grid grid-cols-[auto,1fr] gap-x-2 items-center">
+    <div className="w-3 h-3 bg-blue-200 rounded-full" />
+    <span className="text-[11px] md:text-sm">Interviewing</span>
+  </div>
+  <div className="grid grid-cols-[auto,1fr] gap-x-2 items-center">
+    <div className="w-3 h-3 bg-blue-400 rounded-full" />
+    <span className="text-[11px] md:text-sm">Offered</span>
+  </div>
+  <div className="grid grid-cols-[auto,1fr] gap-x-2 items-center">
+    <div className="w-3 h-3 bg-blue-600 rounded-full" />
+    <span className="text-[11px] md:text-sm">Hired</span>
+  </div>
+</div>
         </div>
       </CardHeader>
       <CardContent>
-        <div className="h-[300px] w-full overflow-x-auto">
+        <div className="h-[250px] w-full overflow-x-auto">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={barChartData}

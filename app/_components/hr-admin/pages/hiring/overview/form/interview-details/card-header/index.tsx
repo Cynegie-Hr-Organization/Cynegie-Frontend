@@ -35,7 +35,7 @@ const InterviewDetailsHeader: React.FC<InterviewDetailsProps> = ({
 
   // Return the interview details UI with dynamic data
   return (
-    <div className="bg-white rounded-lg p-4">
+    <div className="bg-white rounded-lg p-0 md:p-4">
       <h1 className="text-xl font-semibold mb-4">Interview Details</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
@@ -45,7 +45,7 @@ const InterviewDetailsHeader: React.FC<InterviewDetailsProps> = ({
             Interviewer Name
           </h2>
           <p className="text-sm font-medium text-gray-900">
-            {`${interviewData?.interviewer.personalInfo?.firstName || "N/A"} ${interviewData?.interviewer.personalInfo?.lastName || ""}`}
+            {`${interviewData?.interviewer?.personalInfo?.firstName || "N/A"} ${interviewData?.interviewer?.personalInfo?.lastName || ""}`}
           </p>
         </div>
 

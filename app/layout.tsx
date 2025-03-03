@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import QueryClientProvider from "@/contexts/ReactQueryProvider";
 import "rsuite/dist/rsuite.min.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import QueryClientProvider from "@/contexts/ReactQueryProvider";
 import { NetworkStatusProvider } from "@/contexts/NetworkStatusProvider";
 
 export const metadata: Metadata = {
@@ -21,11 +19,8 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased font-sans">
         <NetworkStatusProvider>
-          <ToastContainer />
-        <QueryClientProvider>{children}</QueryClientProvider>
-            </NetworkStatusProvider>
-
-        
+          <QueryClientProvider>{children}</QueryClientProvider>
+        </NetworkStatusProvider>
       </body>
     </html>
   );

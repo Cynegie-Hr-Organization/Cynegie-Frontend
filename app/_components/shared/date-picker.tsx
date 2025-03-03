@@ -18,12 +18,14 @@ export function AppDatePicker({
   selectedDate,
   setSelectedDate,
   placeholder = "Pick a date",
+  className, // Added optional className prop
 }: {
   label?: string;
   requiredField?: boolean;
   selectedDate?: Date;
   setSelectedDate: (date?: Date) => void;
   placeholder?: string;
+  className?: string; // Define className as optional
 }) {
   const [open, setOpen] = useState(false);
 
@@ -38,7 +40,10 @@ export function AppDatePicker({
         <div className="flex flex-col gap-2 w-full">
           {label && (
             <label
-              className={`text-xs font-semibold text-gray-700 ${requiredField ? 'after:content-["*"] after:text-red-500 after:ml-1 after:font-bold' : ""}`}
+              className={cn(
+                "text-xs font-semibold text-gray-700",
+                requiredField && 'after:content-["*"] after:text-red-500 after:ml-1 after:font-bold',
+              )}
             >
               {label}
             </label>
@@ -49,13 +54,14 @@ export function AppDatePicker({
             className={cn(
               "w-full text-left font-normal flex items-center gap-2 justify-between border border-gray-300 rounded-md p-2 outline-none text-xs",
               !selectedDate && "text-muted-foreground",
+              className, // Merge custom className with defaults
             )}
           >
             {selectedDate ? (
               format(selectedDate, "MMM d, yyyy")
             ) : (
               <span className="text-gray-400 text-xs">{placeholder}</span>
-            )}{" "}
+            )}
             <Calendar1 size={18} />
           </button>
         </div>
@@ -87,7 +93,7 @@ export function AppTimePicker({
   selectedTime,
   setSelectedTime,
   placeholder = "Pick a time",
-  className,
+  className, // Added optional className prop
   minutesOnly = false,
 }: {
   label?: string;
@@ -95,7 +101,7 @@ export function AppTimePicker({
   selectedTime?: Date;
   setSelectedTime: (time?: Date) => void;
   placeholder?: string;
-  className?: string;
+  className?: string; // Define className as optional
   minutesOnly?: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -150,10 +156,13 @@ export function AppTimePicker({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <div className={`flex flex-col gap-1 w-full ${className}`}>
+        <div className={cn("flex flex-col gap-2 w-full", className)}>
           {label && (
             <label
-              className={`text-xs font-semibold text-gray-700 ${requiredField ? 'after:content-["*"] after:text-red-500 after:ml-1 after:font-bold' : ""}`}
+              className={cn(
+                "text-xs font-semibold text-gray-700",
+                requiredField && 'after:content-["*"] after:text-red-500 after:ml-1 after:font-bold',
+              )}
             >
               {label}
             </label>
@@ -164,6 +173,7 @@ export function AppTimePicker({
             className={cn(
               "w-full text-left font-normal flex items-center gap-2 justify-between border border-gray-300 rounded-md p-2 outline-none text-xs",
               !selectedTime && "text-muted-foreground",
+              className, // Merge custom className with defaults
             )}
           >
             {renderDisplayText()}

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { createContext, useState, useEffect, useContext } from "react";
-import { toast } from "react-toastify";
 
 const NetworkStatusContext = createContext<{ isOffline: boolean }>({ isOffline: false });
 
@@ -13,19 +12,9 @@ export const NetworkStatusProvider = ({ children }: { children: React.ReactNode 
     if (typeof window !== "undefined" && typeof navigator !== "undefined") {
       setIsOffline(!navigator.onLine);
 
-      if (!navigator.onLine) {
-        toast.error("You are currently offline. Some features may not be available.");
-      }
-
       const updateOnlineStatus = () => {
         const offline = !navigator.onLine;
         setIsOffline(offline);
-
-        if (offline) {
-          toast.error("You are currently offline. Some features may not be available.");
-        } else {
-          toast.success("Your internet connection has been restored.");
-        }
       };
 
       window.addEventListener("online", updateOnlineStatus);
@@ -40,6 +29,14 @@ export const NetworkStatusProvider = ({ children }: { children: React.ReactNode 
 
   return (
     <NetworkStatusContext.Provider value={{ isOffline }}>
+      {isOffline && (
+        <div
+          className="w-full bg-red-600 text-white text-center  text-xs"
+          style={{ backgroundColor: "#DC2626", color: "#FFFFFF" , height : "20px"  }} 
+        >
+          You are currently offline.
+        </div>
+      )}
       {children}
     </NetworkStatusContext.Provider>
   );

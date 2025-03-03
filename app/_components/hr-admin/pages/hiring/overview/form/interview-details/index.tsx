@@ -13,7 +13,7 @@ export default function InterviewDetails() {
   const interviewId = typeof id === "string" ? id : "";
 
   return (
-    <div className="p-[15px] flex gap-4 flex-col md:p-[30px]">
+    <div className="p-[15px] h-screen flex gap-4 flex-col md:p-[30px]">
       <div className="flex  justify-start items-center gap-2">
         <Image
           src="/button-icon.svg"
@@ -23,7 +23,7 @@ export default function InterviewDetails() {
           className="object-contain"
           onClick={() => router.back()}
         />
-        <h1 className="text-lg text-black font-semibold">
+        <h1 className="text-base text-black font-semibold">
           Back to Interviews{" "}
         </h1>
       </div>
