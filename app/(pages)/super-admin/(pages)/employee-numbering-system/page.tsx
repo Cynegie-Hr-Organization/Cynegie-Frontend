@@ -135,7 +135,20 @@ const EmployeeNumberingSystemPage = () => {
   };
 
   const getFormattedId = () => {
-    return formData.map(item => item.value).join('') || '---';
+
+    //Extract the selector value from the formData
+    const separatorItem = formData.find(item => item.component === "separator");
+    const separator = separatorItem ? separatorItem.value : undefined;
+
+
+    const values = formData
+      .filter(item => item.component !== 'separator' && item.value)
+      .map(item => item.value.trim())
+      .filter(Boolean) // Remove any remaining falsy values
+    
+    // Join the values with the separator (or default to '')
+    return values.length > 0 ? values.join(separator ?? "") : "---" ;
+  
   };
 
   const validateForm = () => {
