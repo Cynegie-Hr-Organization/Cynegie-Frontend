@@ -12,10 +12,10 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AppButton from "../shared/button";
 
-const SigninMain = () => {
+const ForgotPasswordSuccessPage = () => {
   const router = useRouter();
   const [step, setStep] = useState<"email" | "password">("email");
-  const [email, setEmail] = useState("");
+  const [email] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -114,11 +114,17 @@ const SigninMain = () => {
               alt="Logo"
               className="mb-1 md:mb-5 w-32"
             />
+            <img
+              src="/forgot-password-success.svg"
+              alt="Logo"
+              className="mb-1 md:mb-5 w-32"
+            />
             <h2 className="text-[#001652] text-2xl font-bold mb-2">
-              Welcome back!
+              Verify your Email
             </h2>
             <p className="font-medium text-center text-base text-[#98A2B3]">
-              Sign in to continue managing your employee.
+              Thank you, check your email for instructions to reset your
+              password
             </p>
           </div>
 
@@ -131,7 +137,7 @@ const SigninMain = () => {
                 emailInView ? "opacity-100" : "opacity-0"
               }`}
             >
-              <div className="mb-8">
+              {/* <div className="mb-8">
                 <label className="mb-2 block text-sm text-gray-700">
                   Email Address
                 </label>
@@ -144,14 +150,16 @@ const SigninMain = () => {
                     className="w-full border-none px-2 py-2 rounded-md placeholder:text-sm focus:outline-none"
                   />
                 </div>
-              </div>
-              <AppButton
-                type="submit"
-                label="Continue"
-                className="btn-primary md:w-full"
-                isLoading={isLoading}
-                disabled={isLoading || email.length < 3}
-              />
+              </div> */}
+              <Link href="/reset-password">
+                <AppButton
+                  type="submit"
+                  label="Proceed to Sign In"
+                  className="btn-primary md:w-full"
+                  isLoading={isLoading}
+                  // disabled={isLoading || email.length < 3}
+                />
+              </Link>
             </form>
           )}
 
@@ -196,7 +204,7 @@ const SigninMain = () => {
                   </button>
                 </div>
                 <div className="flex justify-end mt-2">
-                  <a href="/forgot-password" className="text-blue-600 text-sm">
+                  <a href="/reset-password" className="text-blue-600 text-sm">
                     Reset Password
                   </a>
                 </div>
@@ -226,15 +234,13 @@ const SigninMain = () => {
             </form>
           )}
           <p className="text-xs md:text-sm text-center mt-5 text-[#98A2B3] leading-relaxed">
-            By clicking &quot;Continue&quot; you agree to Cynegie&apos;s{" "}
-            <Link href="/" className="text-[#0035C3] underline">
-              User Terms of Service
-            </Link>{" "}
-            and{" "}
-            <Link href="/" className="text-[#0035C3] underline">
-              Privacy Notice
+            I did not receive the email.{" "}
+            <Link
+              href="/forgot-password-success"
+              className="text-[#0035C3] underline"
+            >
+              Resend now
             </Link>
-            .
           </p>
         </div>
       </section>
@@ -242,4 +248,4 @@ const SigninMain = () => {
   );
 };
 
-export default SigninMain;
+export default ForgotPasswordSuccessPage;

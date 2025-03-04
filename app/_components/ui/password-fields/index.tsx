@@ -32,7 +32,7 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
         className="absolute top-[45px] right-3 text-gray-500 cursor-pointer"
         onClick={() => setShowPassword(!showPassword)}
       >
-        {showPassword ? <FaEyeSlash /> : <FaEye />}
+        {showPassword ? <FaEye /> : <FaEyeSlash />}
       </span>
       {error && <p className="text-red-500">{error}</p>}
     </div>
